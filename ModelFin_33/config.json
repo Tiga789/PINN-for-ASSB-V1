@@ -1,0 +1,39 @@
+{
+    "activation": "tanh",
+    "activeBound": true,
+    "activeData": true,
+    "activeInt": true,
+    "activeReg": false,
+    "annealingWeights": false,
+    "dynamicAttentionWeights": false,
+    "exponentialLimiter": 10.0,
+    "hard_IC_timescale": 1.0,
+    "hidden_units_cs_a": [],
+    "hidden_units_cs_c": [],
+    "hidden_units_phie": [],
+    "hidden_units_phis_c": [],
+    "hidden_units_t": [
+        20
+    ],
+    "hidden_units_t_r": [
+        20
+    ],
+    "hnn_modelFolder": null,
+    "hnn_params": null,
+    "hnn_utilFolder": null,
+    "linearizeJ": true,
+    "local_utilFolder": "C:\\Users\\Tiga_QJW\\Desktop\\PINN_V2\\pinn_spm_param\\util",
+    "n_grad_path_layers": 3,
+    "n_grad_path_units": 20,
+    "n_hidden_res_blocks": 0,
+    "n_res_block_layers": 1,
+    "n_res_block_units": 1,
+    "params_max": [
+        4.0,
+        10.0
+    ],
+    "params_min": [
+        0.5,
+        1.0
+    ]
+}
