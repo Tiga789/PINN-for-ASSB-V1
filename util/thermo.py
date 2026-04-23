@@ -1,37 +1,33 @@
-import numpy as np
-import tensorflow as tf
-from keras.backend import set_floatx
-from uocp_cs import uocp_c_fun_x
+from __future__ import annotations
 
-set_floatx("float64")
+import numpy as np
+import torch
+
+try:
+    from .uocp_cs import uocp_c_fun_x, uocp_c_fun_x_numpy
+except ImportError:  # pragma: no cover
+    from uocp_cs import uocp_c_fun_x, uocp_c_fun_x_numpy
+
 
 # -----------------------------------------------------------------------------
 # ASSB gradient-preserving v1-in-place revision.
 #
-# This file keeps the same filename so it can overwrite the previous v0 script,
-# but the logic is updated to address three issues discussed in the chat:
-# 1) avoid using an overly large constant D_s,c that washes out radial gradients;
-# 2) expose robust NumPy helpers so the batch script can infer cs_c0 from the
-#    cycle starting / pre-cycle-rest voltage instead of fixing cs_c0=0.39*cmax;
-# 3) keep the Li-In negative electrode as an effective flat-potential boundary,
-#    but preserve compatibility with the existing project API.
+# This PyTorch-compatible rewrite preserves the original API and formulas while
+# removing the TensorFlow / Keras runtime dependency from the prior model.
+# Functions below accept either NumPy values or torch.Tensor inputs.
 # -----------------------------------------------------------------------------
 
 UOCP_A_LIIN_V = np.float64(0.62)
 I0_A_REF = np.float64(0.1)  # A / m^2
 
-# Lower than the old constant 1e-14 m^2/s to reduce radial over-smoothing.
 DS_C_REF = np.float64(5.0e-15)
 DS_C_MIN_FACTOR = np.float64(0.35)
 DS_C_PEAK_CENTER = np.float64(0.45)
 DS_C_PEAK_WIDTH = np.float64(0.22)
 
-# Legacy cathode OCP remapped to an ASSB-compatible full-cell window.
 UOCP_C_SCALE = np.float64(0.7624151100416336)
 UOCP_C_SHIFT = np.float64(0.44293391056209597)
 
-# Pure NumPy polynomial coefficients copied from uocp_cs.py so that the batch
-# generator can invert the cathode OCP without relying on TensorFlow ops.
 UOCP_C_COEFFS_NUMPY = np.array(
     [
         -43309.69063512314,
@@ -68,6 +64,44 @@ UOCP_C_COEFFS_NUMPY = np.array(
 )
 
 
+def _first_tensor(*vals):
+    for v in vals:
+        if isinstance(v, torch.Tensor):
+            return v
+    return None
+
+
+def _to_torch(x, like: torch.Tensor) -> torch.Tensor:
+    if isinstance(x, torch.Tensor):
+        return x.to(dtype=torch.float64, device=like.device)
+    return torch.as_tensor(x, dtype=torch.float64, device=like.device)
+
+
+def _clip_by_value(x, low, high):
+    if isinstance(x, torch.Tensor):
+        return torch.clamp(x, float(low), float(high))
+    return np.clip(np.asarray(x, dtype=np.float64), np.float64(low), np.float64(high))
+
+
+def _exp(x):
+    if isinstance(x, torch.Tensor):
+        return torch.exp(x)
+    return np.exp(np.asarray(x, dtype=np.float64))
+
+
+def _maximum(x, y):
+    like = _first_tensor(x, y)
+    if like is not None:
+        return torch.maximum(_to_torch(x, like), _to_torch(y, like))
+    return np.maximum(np.asarray(x, dtype=np.float64), np.asarray(y, dtype=np.float64))
+
+
+def _ones_like(x):
+    if isinstance(x, torch.Tensor):
+        return torch.ones_like(x, dtype=torch.float64)
+    return np.ones_like(np.asarray(x, dtype=np.float64), dtype=np.float64)
+
+
 def cathode_ocp_theta_numpy(theta):
     theta = np.clip(np.asarray(theta, dtype=np.float64), 0.0, 1.0)
     u_old = np.polyval(UOCP_C_COEFFS_NUMPY, theta)
@@ -80,18 +114,10 @@ def cathode_ocp_cs_numpy(cs_c, cscamax):
 
 
 def infer_theta_c_from_fullcell_voltage(fullcell_voltage_V, uocp_a=UOCP_A_LIIN_V):
-    """
-    Infer the cathode stoichiometric fraction from a rested / quasi-rested
-    full-cell voltage using the flat Li-In negative electrode approximation.
-
-    Because the remapped cathode OCP is strictly monotonic decreasing over
-    theta in [0, 1], inversion is done by interpolation on a dense lookup grid.
-    """
     theta_grid = np.linspace(0.0, 1.0, 20001, dtype=np.float64)
     u_grid = cathode_ocp_theta_numpy(theta_grid)
     target_uc = np.float64(fullcell_voltage_V) + np.float64(uocp_a)
     target_uc = np.clip(target_uc, np.min(u_grid), np.max(u_grid))
-    # u_grid is decreasing, so reverse both sides for np.interp
     theta = np.interp(target_uc, u_grid[::-1], theta_grid[::-1])
     return np.float64(theta)
 
@@ -101,10 +127,6 @@ def infer_cs_c0_from_fullcell_voltage(fullcell_voltage_V, cscamax, uocp_a=UOCP_A
     return np.float64(theta_c0 * np.float64(cscamax))
 
 
-# Legacy reference pair was roughly theta_c0=0.39 and theta_a0=0.91, so their
-# sum is ~1.30. Reusing that affine complement keeps the new initial state close
-# to the old project inventory while allowing voltage-anchored cycle-specific
-# cathode initialization.
 def infer_theta_a0_from_theta_c(theta_c):
     theta_c = np.float64(theta_c)
     theta_a = np.float64(1.30) - theta_c
@@ -112,34 +134,31 @@ def infer_theta_a0_from_theta_c(theta_c):
 
 
 def uocp_a_simp(cs_a, csanmax):
-    x = cs_a / csanmax
-    x = tf.clip_by_value(x, np.float64(0.0), np.float64(1.0))
+    x = _clip_by_value(cs_a / csanmax, 0.0, 1.0)
     return np.float64(0.2) - np.float64(0.2) * x
 
 
-# Li-In negative electrode approximated as a flat plateau.
 def uocp_a_fun(cs_a, csanmax):
-    x = cs_a / csanmax
-    x = tf.clip_by_value(x, np.float64(0.0), np.float64(1.0))
-    return UOCP_A_LIIN_V + np.float64(0.0) * x
+    x = _clip_by_value(cs_a / csanmax, 0.0, 1.0)
+    return np.float64(UOCP_A_LIIN_V) + np.float64(0.0) * x
 
 
-# Keep a copy of the original smooth cathode shape.
 def uocp_c_fun_legacy(cs_c, cscamax):
     x = cs_c / cscamax
-    x = tf.clip_by_value(x, np.float64(0.0), np.float64(1.0))
-    return uocp_c_fun_x(x)
+    if isinstance(x, torch.Tensor):
+        x = torch.clamp(x.to(dtype=torch.float64), 0.0, 1.0)
+        return uocp_c_fun_x(x)
+    x = np.clip(np.asarray(x, dtype=np.float64), 0.0, 1.0)
+    return uocp_c_fun_x_numpy(x)
 
 
-# Remapped cathode OCP.
 def uocp_c_fun(cs_c, cscamax):
     u_old = uocp_c_fun_legacy(cs_c, cscamax)
-    return UOCP_C_SCALE * u_old + UOCP_C_SHIFT
+    return np.float64(UOCP_C_SCALE) * u_old + np.float64(UOCP_C_SHIFT)
 
 
 def uocp_c_simp(cs_c, cscamax):
-    x = cs_c / cscamax
-    x = tf.clip_by_value(x, np.float64(0.0), np.float64(1.0))
+    x = _clip_by_value(cs_c / cscamax, 0.0, 1.0)
     return np.float64(4.30) - np.float64(1.50) * x
 
 
@@ -147,43 +166,31 @@ def i0_a_fun(cs_a_max, ce, T, alpha, csanmax, R):
     return (
         np.float64(2.5)
         * np.float64(0.27)
-        * tf.exp(
-            np.float64(
-                (-30.0e6 / R)
-                * (np.float64(1.0) / T - np.float64(1.0) / np.float64(303.15))
-            )
-        )
-        * tf.math.maximum(ce, np.float64(0.0)) ** alpha
-        * tf.math.maximum(csanmax - cs_a_max, np.float64(0.0)) ** alpha
-        * tf.math.maximum(cs_a_max, np.float64(0.0))
-        ** (np.float64(1.0) - alpha)
+        * _exp(np.float64((-30.0e6 / R) * (np.float64(1.0) / T - np.float64(1.0) / np.float64(303.15))))
+        * _maximum(ce, np.float64(0.0)) ** alpha
+        * _maximum(csanmax - cs_a_max, np.float64(0.0)) ** alpha
+        * _maximum(cs_a_max, np.float64(0.0)) ** (np.float64(1.0) - alpha)
     )
 
 
-# Effective Li-In kinetic baseline times degradation factor.
-def i0_a_degradation_param_fun(
-    cs_a_max, ce, T, alpha, csanmax, R, degradation_param
-):
-    deg = tf.maximum(tf.cast(degradation_param, tf.float64), np.float64(1e-12))
-    ce_like = tf.ones_like(tf.cast(ce, tf.float64))
-    return I0_A_REF * deg * ce_like
+def i0_a_degradation_param_fun(cs_a_max, ce, T, alpha, csanmax, R, degradation_param):
+    deg = _maximum(degradation_param, np.float64(1e-12))
+    ce_like = _ones_like(ce)
+    return np.float64(I0_A_REF) * deg * ce_like
 
 
 def i0_a_simp(cs_a_max, ce, T, alpha, csanmax, R):
-    return np.float64(2.0) * np.ones(np.shape(ce), dtype="float64")
+    return np.float64(2.0) * _ones_like(ce)
 
 
-def i0_a_simp_degradation_param(
-    cs_a_max, ce, T, alpha, csanmax, R, degradation_param
-):
-    ce_like = tf.ones_like(tf.cast(ce, tf.float64))
-    deg = tf.maximum(tf.cast(degradation_param, tf.float64), np.float64(1e-12))
+def i0_a_simp_degradation_param(cs_a_max, ce, T, alpha, csanmax, R, degradation_param):
+    deg = _maximum(degradation_param, np.float64(1e-12))
+    ce_like = _ones_like(ce)
     return np.float64(2.0) * deg * ce_like
 
 
 def i0_c_fun(cs_c_max, ce, T, alpha, cscamax, R):
-    x = cs_c_max / cscamax
-    x = tf.clip_by_value(x, np.float64(0.0), np.float64(1.0))
+    x = _clip_by_value(cs_c_max / cscamax, 0.0, 1.0)
     return (
         np.float64(9.0)
         * (
@@ -194,23 +201,17 @@ def i0_c_fun(cs_c_max, ce, T, alpha, cscamax, R):
             + np.float64(3.249768821737960e01) * x
             - np.float64(3.585290065824760e00)
         )
-        * tf.math.maximum(ce / np.float64(1.2), np.float64(0.0)) ** alpha
-        * tf.exp(
-            (np.float64(-30.0e6) / R)
-            * (np.float64(1.0) / T - np.float64(1.0 / 303.15))
-        )
+        * _maximum(ce / np.float64(1.2), np.float64(0.0)) ** alpha
+        * _exp((np.float64(-30.0e6) / R) * (np.float64(1.0) / T - np.float64(1.0 / 303.15)))
     )
 
 
 def i0_c_simp(cs_c_max, ce, T, alpha, cscamax, R):
-    return np.float64(3.0) * np.ones(np.shape(ce), dtype="float64")
+    return np.float64(3.0) * _ones_like(ce)
 
 
 def ds_a_fun(T, R):
-    return np.float64(3.0e-14) * tf.exp(
-        (np.float64(-30.0e6) / R)
-        * (np.float64(1.0) / T - np.float64(1.0 / 303.15))
-    )
+    return np.float64(3.0e-14) * _exp((np.float64(-30.0e6) / R) * (np.float64(1.0) / T - np.float64(1.0 / 303.15)))
 
 
 def grad_ds_a_cs_a(T, R):
@@ -221,34 +222,27 @@ def ds_a_fun_simp(T, R):
     return np.float64(3.0e-14)
 
 
-# NMC811 effective diffusivity with SOC dependence.
 def ds_c_fun(cs_c, T, R, cscamax):
-    theta = tf.clip_by_value(cs_c / cscamax, np.float64(0.0), np.float64(1.0))
-    envelope = DS_C_MIN_FACTOR + (np.float64(1.0) - DS_C_MIN_FACTOR) * tf.exp(
-        -((theta - DS_C_PEAK_CENTER) / DS_C_PEAK_WIDTH) ** np.float64(2.0)
+    theta = _clip_by_value(cs_c / cscamax, 0.0, 1.0)
+    envelope = np.float64(DS_C_MIN_FACTOR) + (np.float64(1.0) - np.float64(DS_C_MIN_FACTOR)) * _exp(
+        -((theta - np.float64(DS_C_PEAK_CENTER)) / np.float64(DS_C_PEAK_WIDTH)) ** np.float64(2.0)
     )
-    return DS_C_REF * envelope
+    return np.float64(DS_C_REF) * envelope
 
 
-# Analytical derivative of the Gaussian-envelope diffusivity.
 def grad_ds_c_cs_c(cs_c, T, R, cscamax):
-    theta = tf.clip_by_value(cs_c / cscamax, np.float64(0.0), np.float64(1.0))
-    exp_term = tf.exp(-((theta - DS_C_PEAK_CENTER) / DS_C_PEAK_WIDTH) ** np.float64(2.0))
+    theta = _clip_by_value(cs_c / cscamax, 0.0, 1.0)
+    exp_term = _exp(-((theta - np.float64(DS_C_PEAK_CENTER)) / np.float64(DS_C_PEAK_WIDTH)) ** np.float64(2.0))
     d_env_d_theta = (
-        (np.float64(1.0) - DS_C_MIN_FACTOR)
+        (np.float64(1.0) - np.float64(DS_C_MIN_FACTOR))
         * exp_term
-        * (
-            -np.float64(2.0)
-            * (theta - DS_C_PEAK_CENTER)
-            / (DS_C_PEAK_WIDTH**np.float64(2.0))
-        )
+        * (-np.float64(2.0) * (theta - np.float64(DS_C_PEAK_CENTER)) / (np.float64(DS_C_PEAK_WIDTH) ** np.float64(2.0)))
     )
-    return DS_C_REF * d_env_d_theta / cscamax
+    return np.float64(DS_C_REF) * d_env_d_theta / cscamax
 
 
-# degradation factor > 1 means slower effective diffusion.
 def ds_c_degradation_param_fun(cs_c, T, R, cscamax, degradation_param):
-    deg = tf.maximum(tf.cast(degradation_param, tf.float64), np.float64(1e-12))
+    deg = _maximum(degradation_param, np.float64(1e-12))
     return ds_c_fun(cs_c, T, R, cscamax) / deg
 
 
@@ -278,7 +272,6 @@ def phis_c0_fun(i0_a, j_a, F, R, T, Uocp_a0, j_c, i0_c, Uocp_c0):
 
 
 def setParams(params, deg, bat, an, ca, ic):
-    # Parametric domain
     params["deg_i0_a_min"] = deg.bounds[deg.ind_i0_a][0]
     params["deg_i0_a_max"] = deg.bounds[deg.ind_i0_a][1]
     params["deg_ds_c_min"] = deg.bounds[deg.ind_ds_c][0]
@@ -289,30 +282,25 @@ def setParams(params, deg, bat, an, ca, ic):
     params["deg_ds_c_ref"] = deg.ref_vals[deg.ind_ds_c]
     params["deg_i0_a_min_eff"] = (
         params["deg_i0_a_ref"]
-        + (params["deg_i0_a_min"] - params["deg_i0_a_ref"])
-        * params["param_eff"]
+        + (params["deg_i0_a_min"] - params["deg_i0_a_ref"]) * params["param_eff"]
     )
     params["deg_i0_a_max_eff"] = (
         params["deg_i0_a_ref"]
-        + (params["deg_i0_a_max"] - params["deg_i0_a_ref"])
-        * params["param_eff"]
+        + (params["deg_i0_a_max"] - params["deg_i0_a_ref"]) * params["param_eff"]
     )
     params["deg_ds_c_min_eff"] = (
         params["deg_ds_c_ref"]
-        + (params["deg_ds_c_min"] - params["deg_ds_c_ref"])
-        * params["param_eff"]
+        + (params["deg_ds_c_min"] - params["deg_ds_c_ref"]) * params["param_eff"]
     )
     params["deg_ds_c_max_eff"] = (
         params["deg_ds_c_ref"]
-        + (params["deg_ds_c_max"] - params["deg_ds_c_ref"])
-        * params["param_eff"]
+        + (params["deg_ds_c_max"] - params["deg_ds_c_ref"]) * params["param_eff"]
     )
-    # Domain
+
     params["tmin"] = bat.tmin
     params["tmax"] = bat.tmax
     params["rmin"] = bat.rmin
 
-    # Params fixed
     params["A_a"] = an.A
     params["A_c"] = ca.A
     params["F"] = bat.F
@@ -324,7 +312,6 @@ def setParams(params, deg, bat, an, ca, ic):
     params["alpha_a"] = an.alpha
     params["alpha_c"] = ca.alpha
 
-    # Params to fit
     params["Rs_a"] = an.D50 / np.float64(2.0)
     params["Rs_c"] = ca.D50 / np.float64(2.0)
     params["rescale_R"] = np.float64(max(params["Rs_a"], params["Rs_c"]))
@@ -332,14 +319,12 @@ def setParams(params, deg, bat, an, ca, ic):
     params["cscamax"] = ca.csmax
     params["rescale_T"] = np.float64(max(bat.tmax, 1e-16))
 
-    # Typical variables magnitudes
     params["mag_cs_a"] = np.float64(25)
     params["mag_cs_c"] = np.float64(32.5)
     params["mag_phis_c"] = np.float64(4.25)
     params["mag_phie"] = np.float64(0.15)
     params["mag_ce"] = np.float64(1.2)
 
-    # FUNCTIONS
     params["Uocp_a"] = an.uocp
     params["Uocp_c"] = ca.uocp
     params["i0_a"] = an.i0
@@ -347,7 +332,6 @@ def setParams(params, deg, bat, an, ca, ic):
     params["D_s_a"] = an.ds
     params["D_s_c"] = ca.ds
 
-    # INIT
     params["ce0"] = ic.ce
     params["ce_a0"] = ic.ce
     params["ce_c0"] = ic.ce

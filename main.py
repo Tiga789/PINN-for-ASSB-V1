@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import os
+os.environ.setdefault("KMP_DUPLICATE_LIB_OK", "TRUE")
+
 import shutil
 import sys
 import time
@@ -13,7 +15,7 @@ import torch
 _THIS_DIR = Path(__file__).resolve().parent
 _UTIL_DIR = _THIS_DIR / 'util'
 if str(_UTIL_DIR) not in sys.path:
-    sys.path.append(str(_UTIL_DIR))
+    sys.path.insert(0, str(_UTIL_DIR))
 
 import argument
 from init_pinn import initialize_nn, initialize_params

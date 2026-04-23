@@ -1,12 +1,11 @@
-import os
-import sys
+from __future__ import annotations
 
 import numpy as np
-import tensorflow as tf
-from keras.backend import set_floatx
-from thermo import *
 
-set_floatx("float64")
+try:
+    from .thermo import *  # noqa: F401,F403
+except ImportError:  # pragma: no cover
+    from thermo import *  # type: ignore # noqa: F401,F403
 
 print("INFO: USING SIMPLE SPM MODEL")
 
@@ -17,10 +16,8 @@ def makeParams():
             self.n_params = 2
             self.ind_i0_a = 0
             self.ind_ds_c = 1
-
             self.bounds = [[] for _ in range(self.n_params)]
             self.ref_vals = [0 for _ in range(self.n_params)]
-
             self.eff = np.float64(0.0)
             self.bounds[self.ind_i0_a] = [np.float64(0.5), np.float64(4)]
             self.bounds[self.ind_ds_c] = [np.float64(1.0), np.float64(10)]
@@ -83,9 +80,7 @@ def makeParams():
             self.ca = self.Cathode_IC(self.an.cs)
             self.ce = np.float64(1.2)
             self.phie = -an.uocp(self.an.cs, an.csmax)
-            self.phis_c = ca.uocp(self.ca.cs, ca.csmax) - an.uocp(
-                self.an.cs, an.csmax
-            )
+            self.phis_c = ca.uocp(self.ca.cs, ca.csmax) - an.uocp(self.an.cs, an.csmax)
 
         class Anode_IC:
             def __init__(self):
@@ -101,84 +96,9 @@ def makeParams():
             def __init__(self, cs_a0):
                 self.ce = np.float64(1.2)
                 self.cs = np.float64(0.39 * ca.csmax)
-                self.phis = ca.uocp(self.cs, ca.csmax) - an.uocp(
-                    cs_a0, an.csmax
-                )
+                self.phis = ca.uocp(self.cs, ca.csmax) - an.uocp(cs_a0, an.csmax)
 
     ic = IC()
-
     params = {}
-
     params = setParams(params, deg, bat, an, ca, ic)
-
     return params
-
-
-if __name__ == "__main__":
-    from prettyPlot.plotting import plt, pretty_labels
-
-    params = makeParams()
-
-    print("rescalePhisCA = ", params["rescale_phis_c"])
-    print("rescalePhie = ", params["rescale_phie"])
-    print("rescaleCsCA = ", params["rescale_cs_c"])
-    print("rescaleCsAN = ", params["rescale_cs_a"])
-
-    # UOCP_a
-    fig = plt.figure()
-    cs = np.linspace(0, params["csanmax"], 100)
-    u = params["Uocp_a"](cs, params["csanmax"])
-    plt.plot(cs, u, color="k", linewidth=3)
-    pretty_labels("cs", "U [V]", 14, r"U$_{ocp,an}$")
-
-    # UOCP_c
-    fig = plt.figure()
-    cs = np.linspace(0, params["cscamax"], 100)
-    u = params["Uocp_c"](cs, params["cscamax"])
-    plt.plot(cs, u, color="k", linewidth=3)
-    pretty_labels("cs", "U [V]", 14, r"U$_{ocp,ca}$")
-
-    # I0_a
-    fig = plt.figure()
-    ce = np.linspace(0, 2 * params["ce0"], 100)
-    i0 = params["i0_a"](
-        params["csanmax"] / 2,
-        ce,
-        params["T"],
-        params["alpha_a"],
-        params["csanmax"],
-        params["R"],
-        np.ones(ce.shape).astype("float64"),
-    )
-    plt.plot(ce, np.array(i0), color="k", linewidth=3)
-    pretty_labels("ce", "i", 14, r"I$_{0,a}$, cmax=csanmax/2")
-
-    # I0_c
-    fig = plt.figure()
-    ce = np.linspace(0, 2 * params["ce0"], 100)
-    i0 = params["i0_c"](
-        params["cscamax"] / 2,
-        ce,
-        params["T"],
-        params["alpha_c"],
-        params["cscamax"],
-        params["R"],
-    )
-    plt.plot(ce, i0, color="k", linewidth=3)
-    pretty_labels("ce", "i", 14, r"I$_{0,c}$, cmax=csanmax/2")
-
-    # DS_a
-    fig = plt.figure()
-    ds_a = params["D_s_a"](params["T"], params["R"])
-    plt.plot(np.ones(100) * ds_a, color="k", linewidth=3)
-    pretty_labels("", "Ds", 14, r"D$_{s,a}$")
-
-    # DS_C
-    fig = plt.figure()
-    cs = np.linspace(0, params["cscamax"], 100)
-    params["D_s_c"] = ds_c_fun_plot_simp
-    ds = params["D_s_c"](cs, params["T"], params["R"], params["cscamax"])
-    plt.plot(cs, ds, color="k", linewidth=3)
-    pretty_labels("cs", "Ds", 14, r"D$_{s,c}$")
-
-    plt.show()

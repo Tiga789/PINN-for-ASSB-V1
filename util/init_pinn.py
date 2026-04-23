@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import os
+os.environ.setdefault("KMP_DUPLICATE_LIB_OK", "TRUE")
+
 import sys
 from pathlib import Path
 
@@ -15,7 +17,7 @@ import torch
 # Original project uses path-based imports. Keep that compatibility.
 _THIS_DIR = Path(__file__).resolve().parent
 if str(_THIS_DIR) not in sys.path:
-    sys.path.append(str(_THIS_DIR))
+    sys.path.insert(0, str(_THIS_DIR))
 
 try:
     from . import argument

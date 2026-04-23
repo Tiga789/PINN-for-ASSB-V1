@@ -1,36 +1,74 @@
+from __future__ import annotations
+
 import json
 from pathlib import Path
 
 import numpy as np
-from keras.backend import set_floatx
-from thermo import *
 
-set_floatx("float64")
+try:
+    from .thermo import *  # noqa: F401,F403
+except ImportError:  # pragma: no cover
+    from thermo import *  # type: ignore # noqa: F401,F403
 
 print("INFO: USING ASSB DISCHARGE TRAINING SPM PRIOR")
 
-ROOT = Path(__file__).resolve().parents[2]
-SUMMARY_JSON = ROOT / "Data" / "assb_csv_3targets_spm_v0_discharge_train70_val30" / "meta" / "train_pack_summary.json"
 
+def _infer_repo_root() -> Path:
+    here = Path(__file__).resolve()
+    candidates = [here.parents[1]]
+    if len(here.parents) > 2:
+        candidates.append(here.parents[2])
+    for cand in candidates:
+        if (cand / "Data").exists():
+            return cand
+    return here.parents[1]
+
+
+ROOT = _infer_repo_root()
+SUMMARY_JSON = (
+    ROOT / "Data" / "assb_csv_3targets_spm_v0_discharge_train70_val30" / "meta" / "train_pack_summary.json"
+)
 DEFAULT_AREA_M2 = np.float64(7.853981633974483e-05)
 DEFAULT_TMAX_S = np.float64(3600.0)
 DEFAULT_I_A = np.float64(-3.3e-4)
 
 
-def _load_summary():
+def _load_summary() -> dict:
     if SUMMARY_JSON.exists():
         try:
             with open(SUMMARY_JSON, "r", encoding="utf-8") as f:
-                return json.load(f)
+                data = json.load(f)
+            if isinstance(data, dict):
+                return data
         except Exception:
             return {}
     return {}
+
+
+def _infer_capacity_ah(summary: dict, tmax_s: float, current_ref_A: float) -> np.float64:
+    for key in ("capacity_ref_Ah", "capacity_Ah", "Q_ref_Ah", "q_ref_ah", "nominal_capacity_Ah"):
+        value = summary.get(key, None)
+        if value is None:
+            continue
+        try:
+            cap = abs(float(value))
+        except Exception:
+            continue
+        if np.isfinite(cap) and cap > 0.0:
+            return np.float64(cap)
+
+    cap = abs(float(current_ref_A)) * max(float(tmax_s), 1e-12) / 3600.0
+    if np.isfinite(cap) and cap > 0.0:
+        return np.float64(cap)
+
+    return np.float64(1.0)
 
 
 def makeParams():
     summary = _load_summary()
     tmax_s = np.float64(summary.get("tmax_train_s", DEFAULT_TMAX_S))
     current_ref_A = np.float64(summary.get("current_ref_A", DEFAULT_I_A))
+    capacity_ah = _infer_capacity_ah(summary, tmax_s=tmax_s, current_ref_A=current_ref_A)
 
     class Degradation:
         def __init__(self):
@@ -39,7 +77,6 @@ def makeParams():
             self.ind_ds_c = 1
             self.bounds = [[] for _ in range(self.n_params)]
             self.ref_vals = [0 for _ in range(self.n_params)]
-
             self.eff = np.float64(0.0)
             self.bounds[self.ind_i0_a] = [np.float64(0.5), np.float64(4.0)]
             self.bounds[self.ind_ds_c] = [np.float64(0.5), np.float64(40.0)]
@@ -53,11 +90,11 @@ def makeParams():
             self.T = np.float64(298.15)
             self.T_const = np.float64(298.15)
             self.T_ref = np.float64(298.15)
-            self.C = np.float64(0.0)
+            self.C = np.float64(capacity_ah)
             self.tmin = np.float64(0.0)
-            self.tmax = tmax_s
+            self.tmax = np.float64(tmax_s)
             self.rmin = np.float64(0.0)
-            self.I = current_ref_A
+            self.I = np.float64(current_ref_A)
 
     class Anode:
         def __init__(self):
@@ -102,9 +139,7 @@ def makeParams():
             self.ca = self.Cathode_IC(self.an.cs)
             self.ce = np.float64(1.2)
             self.phie = -an.uocp(self.an.cs, an.csmax)
-            self.phis_c = ca.uocp(self.ca.cs, ca.csmax) - an.uocp(
-                self.an.cs, an.csmax
-            )
+            self.phis_c = ca.uocp(self.ca.cs, ca.csmax) - an.uocp(self.an.cs, an.csmax)
 
         class Anode_IC:
             def __init__(self):
@@ -116,12 +151,17 @@ def makeParams():
             def __init__(self, cs_a0):
                 self.ce = np.float64(1.2)
                 self.cs = np.float64(0.39 * ca.csmax)
-                self.phis = ca.uocp(self.cs, ca.csmax) - an.uocp(
-                    cs_a0, an.csmax
-                )
+                self.phis = ca.uocp(self.cs, ca.csmax) - an.uocp(cs_a0, an.csmax)
 
     ic = IC()
     params = {}
     params = setParams(params, deg, bat, an, ca, ic)
     params["train_summary_json"] = str(SUMMARY_JSON)
+
+    print(
+        f"INFO: SPM prior summary = {SUMMARY_JSON} | "
+        f"tmax = {float(tmax_s):.6g} s | "
+        f"I = {float(current_ref_A):.6g} A | "
+        f"C = {float(capacity_ah):.6g} Ah"
+    )
     return params
