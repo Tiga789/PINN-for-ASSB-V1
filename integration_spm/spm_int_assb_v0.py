@@ -243,15 +243,16 @@ def rhs_torch(dt, r, ddr_cs, ds, ddDs_cs, cs, bound_grad, device: str):
 
 
 def _flux_from_current(I_now, params):
+    V_a = params.get("V_a", params["A_a"] * params["L_a"])
+    V_c = params.get("V_c", params["A_c"] * params["L_c"])
+
     j_a = (
-        -(I_now / params["A_a"])
-        * params["Rs_a"]
-        / (np.float64(3.0) * params["eps_s_a"] * params["F"] * params["L_a"])
+            -I_now * params["Rs_a"]
+            / (np.float64(3.0) * params["eps_s_a"] * params["F"] * V_a)
     )
     j_c = (
-        +(I_now / params["A_c"])
-        * params["Rs_c"]
-        / (np.float64(3.0) * params["eps_s_c"] * params["F"] * params["L_c"])
+            I_now * params["Rs_c"]
+            / (np.float64(3.0) * params["eps_s_c"] * params["F"] * V_c)
     )
     return np.float64(j_a), np.float64(j_c)
 

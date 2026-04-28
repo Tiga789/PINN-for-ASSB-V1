@@ -1,0 +1,79 @@
+ASSB PINN vs soft-label evaluation
+================================================
+
+model_dir: C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\ModelFin_52
+checkpoint: best.pt
+soft_label_dir: C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\Data\assb_soft_labels_cycles5plus_v3
+device: cuda:0
+
+[phie]
+  n: 3000
+  mae: 0.1895567957701745
+  rmse: 0.19480707851093595
+  maxabs: 0.27255219866052344
+  bias_mean: 0.0016326954869874703
+  corr: 0.005647293311814141
+  label_min: -0.8172074473820048
+  label_max: -0.43207366690370846
+  pred_min: -0.7049174441905854
+  pred_max: -0.4320736669037084
+
+[phis_c]
+  n: 3000
+  mae: 0.33586556629040093
+  rmse: 0.4141654531137649
+  maxabs: 0.9115624876310631
+  bias_mean: 0.2469171901954468
+  corr: -0.00808132372838213
+  label_min: 2.415049667660356
+  label_max: 3.6528339944386015
+  pred_min: 3.049447913489881
+  pred_max: 3.423957171565307
+
+[cs_a]
+  n: 120000
+  mae: 3.8382798143422883
+  rmse: 3.8690002958514578
+  maxabs: 4.996969348923861
+  bias_mean: -3.8382798143422883
+  corr: 0.03257544697075815
+  label_min: 2.7000020658451716
+  label_max: 5.067446202602127
+  pred_min: 0.0
+  pred_max: 0.9070854366383148
+
+[cs_c]
+  n: 120000
+  mae: 5.6829428127406825
+  rmse: 7.092909265491585
+  maxabs: 23.088761186897624
+  bias_mean: -3.861364529826742
+  corr: -0.3999840509466608
+  label_min: 16.058871251460904
+  label_max: 46.61292172267015
+  pred_min: 23.520609021096515
+  pred_max: 24.0978238864921
+
+[theta_a]
+  n: 120000
+  mae: 0.6397133023903814
+  rmse: 0.6448333826419097
+  maxabs: 0.8328282248206436
+  bias_mean: -0.6397133023903814
+  corr: 0.03257544697075845
+  label_min: 0.4500003443075286
+  label_max: 0.8445743671003546
+  pred_min: 0.0
+  pred_max: 0.1511809061063858
+
+[theta_c]
+  n: 120000
+  mae: 0.10970932070927959
+  rmse: 0.13692875029906537
+  maxabs: 0.44572898044203907
+  bias_mean: -0.07454371679202206
+  corr: -0.39998405094665956
+  label_min: 0.3100168195262723
+  label_max: 0.899863353719501
+  pred_min: 0.4540658112180795
+  pred_max: 0.46520895533768536

@@ -15,6 +15,7 @@ if str(_THIS_DIR) not in sys.path:
 
 
 def _to_tensor(x, like: torch.Tensor | None = None) -> torch.Tensor:
+    """Convert scalar/array/tensor inputs to a 2D torch tensor."""
     if isinstance(x, torch.Tensor):
         out = x
         if like is not None:
@@ -25,6 +26,7 @@ def _to_tensor(x, like: torch.Tensor | None = None) -> torch.Tensor:
         dtype = torch.float64 if like is None else like.dtype
         device = None if like is None else like.device
         out = torch.as_tensor(x, dtype=dtype, device=device)
+
     if out.ndim == 0:
         out = out.reshape(1, 1)
     elif out.ndim == 1:
@@ -34,6 +36,132 @@ def _to_tensor(x, like: torch.Tensor | None = None) -> torch.Tensor:
 
 def _ones_like(x) -> torch.Tensor:
     return torch.ones_like(_to_tensor(x))
+
+
+def _param_float(params: dict, names: tuple[str, ...], default: float) -> float:
+    """Read the first available scalar parameter name from params."""
+    for name in names:
+        if name in params:
+            return float(params[name])
+    return float(default)
+
+
+def _concentration_rescale_mode(self) -> str:
+    """Return concentration rescaling mode.
+
+    cycle/bidirectional:
+        Allows solid concentration to increase or decrease from the initial value.
+        This is the correct first choice for full charge-discharge data.
+
+    discharge:
+        Keeps the original PINNSTRIPES discharge-only monotonic constraint.
+    """
+    mode = self.params.get(
+        "concentration_rescale_mode",
+        self.params.get("cs_rescale_mode", "cycle"),
+    )
+    mode = str(mode).strip().lower()
+    if mode in {"charge_discharge", "cycle", "cyclic", "bidirectional", "both"}:
+        return "cycle"
+    if mode in {"discharge", "discharge_only", "original"}:
+        return "discharge"
+    return "cycle"
+
+
+def _concentration_bounds(self, electrode: str, like: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
+    """Return lower/upper concentration bounds for an electrode.
+
+    Defaults are full physical concentration ranges [0, csmax]. Optional future
+    keys are supported so narrower stoichiometric windows can be imposed without
+    changing this file.
+    """
+    electrode = electrode.lower()
+    if electrode in {"a", "an", "anode", "negative", "n"}:
+        csmax = _param_float(self.params, ("csanmax", "cs_a_max", "cs_n_max"), 1.0)
+        theta_min = _param_float(self.params, ("theta_a_min", "theta_n_min"), 0.0)
+        theta_max = _param_float(self.params, ("theta_a_max", "theta_n_max"), 1.0)
+        lower = _param_float(self.params, ("cs_a_min", "cs_n_min", "csanmin"), theta_min * csmax)
+        upper = _param_float(self.params, ("cs_a_upper", "cs_n_upper"), theta_max * csmax)
+    elif electrode in {"c", "ca", "cathode", "positive", "p"}:
+        csmax = _param_float(self.params, ("cscamax", "cs_c_max", "cs_p_max"), 1.0)
+        theta_min = _param_float(self.params, ("theta_c_min", "theta_p_min"), 0.0)
+        theta_max = _param_float(self.params, ("theta_c_max", "theta_p_max"), 1.0)
+        lower = _param_float(self.params, ("cs_c_min", "cs_p_min", "cscamin"), theta_min * csmax)
+        upper = _param_float(self.params, ("cs_c_upper", "cs_p_upper"), theta_max * csmax)
+    else:
+        raise ValueError(f"Unknown electrode label: {electrode}")
+
+    lower_t = torch.full_like(like, float(lower))
+    upper_t = torch.full_like(like, float(upper))
+    # Guard against accidentally reversed bounds.
+    lower_t, upper_t = torch.minimum(lower_t, upper_t), torch.maximum(lower_t, upper_t)
+    return lower_t, upper_t
+
+
+def _cycle_concentration_target(
+    self,
+    raw: torch.Tensor,
+    start: torch.Tensor,
+    electrode: str,
+    base: torch.Tensor | None = None,
+) -> torch.Tensor:
+    """Bidirectional concentration map for charge-discharge cycles.
+
+    For the user's later-cycle data, the current alternates between nearly
+    constant charge and discharge values with rest steps between them. Therefore,
+    the solid concentrations must not be forced to be monotonic in one direction.
+
+    raw = 0 gives target=start when no HNN base is supplied. This keeps the
+    initial training behaviour gentle for small-current, smooth cycling data.
+    """
+    raw = _to_tensor(raw, start)
+    lower, upper = _concentration_bounds(self, electrode, start)
+
+    if base is None:
+        center = start
+        span = torch.maximum(upper - start, start - lower)
+        span = torch.clamp(span, min=np.float64(1e-12))
+        target = center + span * torch.tanh(raw)
+    else:
+        base = _to_tensor(base, start)
+        frac = _param_float(
+            self.params,
+            ("hnn_cycle_correction_fraction", "cycle_hnn_correction_fraction"),
+            0.25,
+        )
+        span = torch.clamp(upper - lower, min=np.float64(1e-12)) * float(frac)
+        target = base + span * torch.tanh(raw)
+
+    return torch.clamp(target, lower, upper)
+
+
+def _discharge_concentration_target(
+    self,
+    raw: torch.Tensor,
+    start: torch.Tensor,
+    electrode: str,
+    base: torch.Tensor | None = None,
+) -> torch.Tensor:
+    """Original discharge-only concentration map kept for optional fallback."""
+    raw = _to_tensor(raw, start)
+    lower, upper = _concentration_bounds(self, electrode, start)
+
+    if base is not None:
+        base = _to_tensor(base, start)
+        # Keep old HNN behaviour as a small additive correction.
+        if electrode.lower().startswith("a"):
+            resc = -start
+        else:
+            resc = upper - start
+        return torch.clamp(base + resc * raw * 0.01, lower, upper)
+
+    if electrode.lower().startswith("a"):
+        # Discharge: negative electrode Li concentration decreases.
+        target = start - start * torch.sigmoid(raw)
+    else:
+        # Discharge: positive electrode Li concentration increases.
+        target = start + (upper - start) * torch.sigmoid(raw)
+    return torch.clamp(target, lower, upper)
 
 
 def rescalePhie(self, phie, t, deg_i0_a, deg_ds_c):
@@ -103,19 +231,20 @@ def rescaleCs_a(self, cs_a, t, r, deg_i0_a, deg_ds_c, clip: bool = True):
     else:
         cs_a_start = torch.full_like(cs_a, float(self.cs_a0))
         timeDistance = 1.0 - torch.exp(-(t_reshape) / float(self.hard_IC_timescale))
-    resc_cs_a = -cs_a_start
 
-    offset = torch.zeros_like(cs_a)
+    base = None
     if self.use_hnn:
-        cs_a_hnn = self.get_cs_a_hnn(t_reshape, r_reshape, deg_i0_a_reshape, deg_ds_c_reshape)
-        offset = cs_a_hnn - cs_a_start
-        cs_a_nn = cs_a * 0.01
-    else:
-        cs_a_nn = torch.sigmoid(cs_a)
+        base = self.get_cs_a_hnn(t_reshape, r_reshape, deg_i0_a_reshape, deg_ds_c_reshape)
 
-    out = (resc_cs_a * cs_a_nn + offset) * timeDistance + cs_a_start
+    if _concentration_rescale_mode(self) == "discharge":
+        target = _discharge_concentration_target(self, cs_a, cs_a_start, "a", base=base)
+    else:
+        target = _cycle_concentration_target(self, cs_a, cs_a_start, "a", base=base)
+
+    out = (target - cs_a_start) * timeDistance + cs_a_start
     if clip:
-        out = torch.clamp(out, 0.0, float(self.params["csanmax"]))
+        lower, upper = _concentration_bounds(self, "a", out)
+        out = torch.clamp(out, lower, upper)
     return out
 
 
@@ -134,19 +263,20 @@ def rescaleCs_c(self, cs_c, t, r, deg_i0_a, deg_ds_c, clip: bool = True):
     else:
         cs_c_start = torch.full_like(cs_c, float(self.cs_c0))
         timeDistance = 1.0 - torch.exp(-(t_reshape) / float(self.hard_IC_timescale))
-    resc_cs_c = float(self.params["cscamax"]) - cs_c_start
 
-    offset = torch.zeros_like(cs_c)
+    base = None
     if self.use_hnn:
-        cs_c_hnn = self.get_cs_c_hnn(t_reshape, r_reshape, deg_i0_a_reshape, deg_ds_c_reshape)
-        offset = cs_c_hnn - cs_c_start
-        cs_c_nn = cs_c * 0.01
-    else:
-        cs_c_nn = torch.sigmoid(cs_c)
+        base = self.get_cs_c_hnn(t_reshape, r_reshape, deg_i0_a_reshape, deg_ds_c_reshape)
 
-    out = (resc_cs_c * cs_c_nn + offset) * timeDistance + cs_c_start
+    if _concentration_rescale_mode(self) == "discharge":
+        target = _discharge_concentration_target(self, cs_c, cs_c_start, "c", base=base)
+    else:
+        target = _cycle_concentration_target(self, cs_c, cs_c_start, "c", base=base)
+
+    out = (target - cs_c_start) * timeDistance + cs_c_start
     if clip:
-        out = torch.clamp(out, 0.0, float(self.params["cscamax"]))
+        lower, upper = _concentration_bounds(self, "c", out)
+        out = torch.clamp(out, lower, upper)
     return out
 
 
@@ -207,6 +337,7 @@ def get_phie_hnn(self, t, deg_i0_a, deg_ds_c):
     else:
         deg_i0_a_eff = deg_i0_a
         deg_ds_c_eff = deg_ds_c
+
     out = self.hnn.model(
         [
             t / float(self.hnn.params["rescale_T"]),
@@ -245,6 +376,7 @@ def get_phis_c_hnn(self, t, deg_i0_a, deg_ds_c):
     else:
         deg_i0_a_eff = deg_i0_a
         deg_ds_c_eff = deg_ds_c
+
     out = self.hnn.model(
         [
             t / float(self.hnn.params["rescale_T"]),
@@ -284,6 +416,7 @@ def get_cs_a_hnn(self, t, r, deg_i0_a, deg_ds_c):
     else:
         deg_i0_a_eff = deg_i0_a
         deg_ds_c_eff = deg_ds_c
+
     out = self.hnn.model(
         [
             t / float(self.hnn.params["rescale_T"]),
@@ -324,6 +457,7 @@ def get_cs_c_hnn(self, t, r, deg_i0_a, deg_ds_c):
     else:
         deg_i0_a_eff = deg_i0_a
         deg_ds_c_eff = deg_ds_c
+
     out = self.hnn.model(
         [
             t / float(self.hnn.params["rescale_T"]),

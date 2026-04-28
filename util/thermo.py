@@ -18,7 +18,14 @@ except ImportError:  # pragma: no cover
 # -----------------------------------------------------------------------------
 
 UOCP_A_LIIN_V = np.float64(0.62)
+
+# Negative electrode effective exchange-current reference.
+# Li-In/In is treated as an effective plateau electrode with a fitted scale factor.
 I0_A_REF = np.float64(0.1)  # A / m^2
+
+# Positive electrode exchange-current prefactor for ASSB NMC811 composite cathode.
+# First-prior value from ASSB prior scheme: lower than the original liquid-cell value 9.0.
+I0_C_PREFAC = np.float64(2.5)
 
 DS_C_REF = np.float64(5.0e-15)
 DS_C_MIN_FACTOR = np.float64(0.35)
@@ -192,8 +199,7 @@ def i0_a_simp_degradation_param(cs_a_max, ce, T, alpha, csanmax, R, degradation_
 def i0_c_fun(cs_c_max, ce, T, alpha, cscamax, R):
     x = _clip_by_value(cs_c_max / cscamax, 0.0, 1.0)
     return (
-        np.float64(9.0)
-        * (
+        I0_C_PREFAC * (
             np.float64(1.650452829641290e01) * x**5
             - np.float64(7.523567141488800e01) * x**4
             + np.float64(1.240524690073040e02) * x**3
@@ -207,7 +213,7 @@ def i0_c_fun(cs_c_max, ce, T, alpha, cscamax, R):
 
 
 def i0_c_simp(cs_c_max, ce, T, alpha, cscamax, R):
-    return np.float64(3.0) * _ones_like(ce)
+    return I0_C_PREFAC * torch.ones_like(ce)
 
 
 def ds_a_fun(T, R):
@@ -341,15 +347,18 @@ def setParams(params, deg, bat, an, ca, ic):
     params["eps_s_c"] = ca.solids.eps
     params["L_a"] = an.thickness
     params["L_c"] = ca.thickness
+
+    # Total electrode volumes used by the SPM surface-flux closure.
+    params["V_a"] = params["A_a"] * params["L_a"]
+    params["V_c"] = params["A_c"] * params["L_c"]
+
     j_a = (
-        -(params["I_discharge"] / params["A_a"])
-        * params["Rs_a"]
-        / (np.float64(3.0) * params["eps_s_a"] * params["F"] * params["L_a"])
+            -params["I_discharge"] * params["Rs_a"]
+            / (np.float64(3.0) * params["eps_s_a"] * params["F"] * params["V_a"])
     )
     j_c = (
-        (params["I_discharge"] / params["A_c"])
-        * params["Rs_c"]
-        / (np.float64(3.0) * params["eps_s_c"] * params["F"] * params["L_c"])
+            params["I_discharge"] * params["Rs_c"]
+            / (np.float64(3.0) * params["eps_s_c"] * params["F"] * params["V_c"])
     )
     params["j_a"] = j_a
     params["j_c"] = j_c
