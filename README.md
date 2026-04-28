@@ -1,221 +1,349 @@
-# PINNSTRIPES (Physics-Informed Neural Network SurrogaTe for Rapidly Identifying Parameters in Energy Systems) [![PINNSTRIPES-CI](https://github.com/NREL/PINNSTRIPES/actions/workflows/ci.yml/badge.svg)](https://github.com/NREL/PINNSTRIPES/actions/workflows/ci.yml) 
+# PINN-for-ASSB-V1
 
-## Installing
+Physics-informed neural-network surrogate workflow for an **NMC811 || Li-In/In all-solid-state battery (ASSB)** using an adapted effective single-particle model (**effective SPM**).
 
-1. `conda create --name pinnstripes python=3.11`
-2. `conda activate pinnstripes`
-3. `pip install -r requirements.txt`
+This repository is an active adaptation of **NREL/PINNSTRIPES** for the QJW-2 ASSB workflow. It is not yet a finalized or fully validated predictive model. The current priority is to close the soft-label generation, PINN training, and evaluation loop before using the model for formal parameter inference.
 
-## PINN for Li-ion Battery Single Particle Model (SPM)
+---
 
-Located in `pinn_spm_param`
+## Current project status
 
-### Quick start
+The project currently contains three connected workflows:
 
-1. `pinn_spm_param/preProcess`: make the data from finite difference integration. Do `bash exec.sh`
+1. **ASSB effective SPM prior**
+   - Positive electrode: NMC811 representative spherical particle.
+   - Negative electrode: Li-In/In foil represented as an equivalent pseudo-particle / effective diffusion length.
+   - Electrolyte concentration and electrolyte potential variables are retained from the original SPM notation but reinterpreted as effective quantities of the solid-state ionic conduction network.
 
-2. `pinn_spm_param`: the main script is `main.py` which starts the training. Do `bash exec_opt.sh` for training in production mode. Do `bash exec_noOpt.sh` for training in debug mode. The debug mode is slower but allows for easily inspecting the tensor shapes. This will execute a training with no data.
+2. **Soft-label generation**
+   - `integration_spm/spm_int_assb_cycle.py` generates ASSB soft labels from the effective SPM.
+   - The v3 generator supports both single-cycle generation and merged continuous `cycle >= 5` generation.
+   - Soft labels are treated as **model-generated training targets**, not as experimentally measured internal states.
 
-3. `pinn_spm_param/postProcess`: post-process the PINN training result. Link the correct model and log folder in `exec.sh` and do `bash exec.sh`
+3. **PINN training and evaluation**
+   - `main.py` trains the PyTorch/CUDA PINN model.
+   - `evaluate_assb_pinn_vs_softlabels.py` compares trained PINN outputs against soft labels.
+   - The current physics-only `ModelFin_52` evaluation against `cycles5plus_v3` is not acceptable yet; this is a known debugging target.
 
-Results may vary depending on your initial seed, but after step 3., `pinn_spm_param/postProcess/Figures` folder will contain (among other images) movies of the predicted solution. Left panel shows correlation between the PDE and the PINN solution, middle panel shows the time history of the predicted radial dependent Li concentration in each electrode as training advances, right panel shows the time history of the predicted electrolyte and cathode potentials as training advances.
+### Validation status
 
-<p float="left">
-  <img src="assets/corr_0.5_1.gif" width="175"/>
-  <img src="assets/cs2D_0.5_1.gif" width="265"/>
-  <img src="assets/phi_0.5_1.gif" width="240"/>
-</p>
+| Item | Status |
+|---|---|
+| ASSB prior parameters | Implemented as first-version effective SPM prior |
+| Cycle-5 v3 soft-label voltage fit | Good first workflow benchmark: MAE about 0.0456 V, RMSE about 0.0745 V, correlation about 0.972 |
+| Continuous `cycle >= 5` v3 soft labels | Generated, but harder for the current PINN training loop |
+| `ModelFin_52` vs `cycles5plus_v3` | Failed current benchmark: `phis_c` MAE about 0.3359 V and correlation near 0 |
+| Recommended next step | Debug evaluation + cycle5-only closure before formal data-loss fine-tuning |
 
-Consider looking at the test suite in `pinn_spm_param/tests`, `BayesianCalibration_spm/exec_test.sh`, and `.github/workflows/ci.yml` to understand how to use the code
+---
 
-### Precision
+## Important modeling assumptions
 
-`cd pinn_spm_param`
+This repository uses an **effective SPM** rather than a full P2D ASSB model.
 
-`bash convert_to_float32.sh` will enable training in single precision mode.
+The intended physical interpretation is:
 
-`bash convert_to_float64.sh` will enable training in double precision mode.
+- `cs_c(r,t)` is the NMC811 positive-electrode solid-phase lithium concentration.
+- `cs_a(r,t)` is the Li-In/In negative-side effective state variable over an equivalent diffusion length.
+- `ce` is retained as an effective mobile lithium-ion concentration scale in the solid-state ionic network.
+- `phie` is retained as an effective solid-state ionic network potential.
+- The current profile `I(t)` drives both charge and discharge through a unified sign convention.
+- Surface fluxes are closed using current, particle/effective radius, active material volume fraction, and total electrode volume:
 
-### Simple or realistic parameter set
+```text
+J_a(t) = -I(t) * R_a / (3 * eps_a * F * V_a)
+J_c(t) =  I(t) * R_c / (3 * eps_c * F * V_c)
+```
 
-`cd pinn_spm_param`
+The terminal voltage closure includes:
 
-`bash convert_to_simp.sh` will enable training with simple electrochemical and transport properties
+```text
+positive OCP - negative OCP
++ positive/negative reaction overpotentials
++ effective lumped ohmic term R_ohm_eff
++ v3 empirical voltage-alignment offset
+```
 
-`bash convert_to_nosimp.sh` will enable training with realistic electrochemical and transport properties
+The current v3-aligned training parameters include:
 
-`Data` contains experimental measurements of Uocp that are used to generate the Uocp functions in `pinn_spm_param/util/generateOCP.py` and `pinn_spm_param/util/generateOCP_poly_mon.py` 
+```text
+theta_c_bottom = 0.834
+theta_c_top    = 0.432
+R_ohm_eff      = 105.0 ohm
+voltage_alignment_offset = -0.11588681607942332 V
+csanmax        = 6.0  # Li-In/In effective scaling value, not a strict material constant
+```
 
+---
 
-### Two-stage training
+## Relationship to PINNSTRIPES
 
-The training occurs in two stages. First, we use SGD training, and next LBFGS training (for refinement). The number of epochs for SGD training and LBFGS training can be controlled via `EPOCHS` and `EPOCHS_LBFGS`. The SGD occurs in batches but the LBFGS does one step per epoch. To avoid memory issues, LBFGS can be set to accumulate the gradient by batches and then do use the accumulated gradient once all the batches are processed. The number of batches for SGD is controlled with `N_BATCH` and for LBFGS with `N_BATCH_LBFGS`. A warm start period can be used for `LBFGS` via `EPOCHS_START_LBFGS` which typically prevents blowup after the first steps.
+This project is based on the PINNSTRIPES workflow for physics-informed neural-network surrogates of battery models. The upstream framework uses interior physics losses, boundary losses, optional data losses, and optional regularization losses. For the SPM, particle-surface flux boundary residuals are especially important because the solid concentration dynamics are driven by the surface flux condition.
 
-`SGD` can be deactivated by setting `EPOCHS: 0` or by setting `SGD: False` in `pinn_spm_param/input`
+In this ASSB adaptation, the main changes are:
 
-`LBFGS` can be deactivated by setting `EPOCHS_LBFGS: 0` or by setting `LBFGS: False` in `pinn_spm_param/input`
+- use of ASSB-specific effective SPM parameters;
+- use of NMC811 and Li-In/In OCP priors;
+- time-dependent experimental current `I(t)` instead of a simple fixed discharge current;
+- bidirectional charge/discharge concentration rescaling;
+- v3 soft-label generation and evaluation utilities;
+- PyTorch/CUDA training entry point.
 
-### PINN losses
+---
 
-We use 4 different PINN losses
+## Main workflow files
 
-1. Interior losses compute the residual of governing equations at interior collocation points. The number of collocation points by batch is controlled with `BATCH_SIZE_INT`.
-2. Boundary losses compute the residual of boundary conditions at boundary collocation points. The number of collocation points by batch is controlled with `BATCH_SIZE_BOUND`.
-3. Data losses evaluate the mismatch with provided data. The maximum batch size for data is controlled with `MAX_BATCH_SIZE_DATA`. If this number is too low, the code will ignore some of the data. The amount of data ignored is printed at the beginning of training.
-4. Regularization losses compute regularization conditions at regularization collocation points. The number of collocation points by batch is controlled with `BATCH_SIZE_REG`. Some regularization loss require performing an integration. The number of points used for integrating over each domain is controlled by `BATCH_SIZE_STRUCT`.
-In the SPM case, no regularization is used.
+Some upstream, historical, IDE, and experimental files may still be present in the repository during the active debugging stage. The current ASSB workflow should be understood through the files below.
 
-The user may activate or deactivate each loss via the `alpha` parameter in `main.py`. The active or inactive losses are printed at the beginning of training.
+| Path | Role |
+|---|---|
+| `main.py` | Current PyTorch/CUDA training entry point |
+| `util/spm_assb_train_discharge.py` | ASSB parameter entry point; reads soft-label or experimental current profile |
+| `util/thermo_assb.py` | OCP, Butler-Volmer, exchange current, voltage-alignment, and effective SPM parameters |
+| `util/_losses.py` | Physics loss definitions, including time-dependent current flux closure |
+| `util/_rescale.py` | Neural-network output rescaling; adapted for charge/discharge bidirectional behavior |
+| `integration_spm/spm_int_assb_cycle.py` | v3 ASSB soft-label generator; supports single-cycle and merged-cycle generation |
+| `evaluate_assb_pinn_vs_softlabels.py` | Evaluation script comparing PINN outputs with `.npz` soft labels |
+| `input_assb_cycles5plus_pretrain` | Current physics-only pretraining input for merged `cycle >= 5` soft-label workflow |
 
-### PINN losses weighting
+---
 
-The 4 PINN losses can be independently weighted via `alpha : 1.0 1.0 0.0 0.0`. In order, these coefficients weigh the interior loss, the boundary loss, the data loss, and the regularization loss.
+## External data layout
 
-Individual physics loss can be weighted via `w_phie_int` and others `w_xxx_xxx`
+Large/generated data files are intentionally kept outside the Git repository during the current debugging stage.
 
-### Learning rate
+Recommended local paths on the current workstation:
 
-Learning rate is set with 2 parameters `LEARNING_RATE_MODEL` and `LEARNING_RATE_MODEL_FINAL`. The solver does half the epochs with the learning rate set with `LEARNING_RATE_MODEL` and then decays exponentially to `LEARNING_RATE_MODEL_FINAL`.
+```text
+Project root:
+C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1
 
-A similar workflow is set for the self-attention weights using `LEARNING_RATE_WEIGHTS` and `LEARNING_RATE_WEIGHTS_FINAL`.
+Experimental record CSV:
+C:\Users\Tiga_QJW\Desktop\ZHB_realDATA\record_extracted.csv
 
-The LBFGS learning rate can be set with `LEARNING_RATE_LBFGS`. The learning rate for LBFGS is dynamically adjusted during training to avoid instabilities. The learning rate given in the input file is a target that LBFGS tries to attain.
+OCP prior directory:
+C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\ocp_estimation_outputs
 
-### Battery model treatment
+Merged cycle>=5 v3 soft labels:
+C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\assb_soft_labels_cycles5plus_v3
 
-#### Strict enforcement of initial conditions
+Recommended cycle5-only debug soft labels:
+C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\assb_soft_labels_cycle5_v3
+```
 
-Initial conditions are strictly enforced. The rate at which we allow the neural net to deviate from the IC is given by `HARD_IC_TIMESCALE`. 
+At minimum, a soft-label directory should contain files such as:
 
-#### Exponential limiter
+```text
+solution.npz
+data_phie.npz
+data_phis_c.npz
+data_cs_a.npz
+data_cs_c.npz
+soft_label_summary.json
+```
 
-To avoid exploding gradients from the Butler Volmer relation, we clip the interior of exponentials using `EXP_LIMITER`. Not used for SPM
+The `.npz` soft labels are generated model targets. They are not ground-truth internal-state measurements.
 
-#### J linearization
+---
 
-An option to linearize the `sinh` to a linear function can be activated with `LINEARIZE_J`. This typically allows not having very large losses at the beginning of training.
+## Environment
 
-### Collocation mode
+The current training entry point requires a CUDA-enabled PyTorch runtime. `main.py` checks `torch.cuda.is_available()` and exits if CUDA is unavailable.
 
-The user can either demand a `fixed` set of collocation points carried through the training or demand that collocation points be `random`, i.e. randomly generated for each training step. Once LBFGS starts, the collocation points are held fixed.
+The existing `requirements.txt` may still reflect upstream or legacy dependencies and should not be treated as a complete current ASSB environment specification. For now, use the local CUDA PyTorch environment that has been used in development, for example:
 
-Random collocation is incompatible with self-attention weights.
+```powershell
+D:\Anaconda\envs\torchgpu\python.exe --version
+D:\Anaconda\envs\torchgpu\python.exe -c "import torch; print(torch.__version__); print(torch.cuda.is_available())"
+```
 
-### PINN training regularization
+Common Python packages used by the current workflow include:
 
-We can ask the PINN to gradually increase the time spanned by the collocation points via `GRADUAL_TIME`. If `fixed` collocation mode is used, then the collocation points' locations are gradually stretched over time only. The stretching schedule is controlled by `RATIO_FIRST_TIME : 1`. The stretching is done so that it reaches maximal time at the midpoint in the SGD Epoch.
+```text
+numpy
+pandas
+matplotlib
+torch
+```
 
-Likewise, the time interval can gradually increase during the LBFGS training. If the user sets a warm start epoch number for LBFGS, the warm start is redone every time the time interval increases. The time interval stretching is controlled via `N_GRADUAL_STEPS_LBFGS : 10` and `GRADUAL_TIME_MODE_LBFGS: exponential`. The time mode can be linear or exponential.
+Additional dependencies may be required by upstream PINNSTRIPES utilities or older scripts.
 
-We can use self-attention weights with the flag `DYNAMIC_ATTENTION_WEIGHTS`. Each collocation point and data point is assigned a weight that is trained at each step of the SGD process. The user can decide when to start weight training by adjusting `START_WEIGHT_TRAINING_EPOCH`. 
+---
 
-Weight annealing can be used by setting `ANNEALING_WEIGHTS: True`
+## Generate v3 soft labels
 
-### Neural net architecture
+### Single cycle 5 debug target
 
-Activation can be piloted via `ACTIVATION`. Available options are 
-- `tanh`
-- `swish`
-- `sigmoid`
-- `elu`
-- `selu`
-- `gelu`
+Use this first when debugging the training/evaluation loop:
 
+```powershell
+cd C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1
 
-Two architectures are available. Either a split architecture is used where each variable is determined by a separate branch. Otherwise, a merged architecture is available where a common latent space to all variables that depend of `[t]`, `[t,x]`, `[t,r]`, or `[t,x,r]` is constructed. Choose architecture with `MERGED` flag. The number of hidden layers can be decided with `hidden_unitsXXX` flags in `main.py`.
-Lastly, gradient pathology blocks, residual blocks, or fully connected blocks can be used.
+D:\Anaconda\envs\torchgpu\python.exe integration_spm\spm_int_assb_cycle.py `
+  --record_csv "C:\Users\Tiga_QJW\Desktop\ZHB_realDATA\record_extracted.csv" `
+  --ocp_dir "C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\ocp_estimation_outputs" `
+  --cycle 5 `
+  --output_dir "C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\assb_soft_labels_cycle5_v3" `
+  --n_r 64
+```
 
+### Merged continuous cycle >= 5 target
 
-### Hierarchy
+Use this only after the cycle5-only loop is confirmed:
 
-The models can be used in hierarchical modes by setting `HNN` and `HNNTIME`. Examples are available in `pinn_spm_param/tests`. The hierarchy can be done by training models over the same spatio-temporal and parametric domain. It can be done by training lower hierarchy levels up until a threshold time. It can be done by training the lower hierarchy levels for a specific parameter set.
+```powershell
+cd C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1
 
-## SPM Preprocess
+D:\Anaconda\envs\torchgpu\python.exe integration_spm\spm_int_assb_cycle.py `
+  --record_csv "C:\Users\Tiga_QJW\Desktop\ZHB_realDATA\record_extracted.csv" `
+  --ocp_dir "C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\ocp_estimation_outputs" `
+  --merge_cycles `
+  --cycle_from 5 `
+  --output_dir "C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\assb_soft_labels_cycles5plus_v3" `
+  --n_r 64
+```
 
-Under `pinn_spm_param/integration_spm` an implicit and an explicit integrator are provided to generate solutions of the SPM equations. 
+After generation, check `soft_label_summary.json` and confirm that the voltage alignment terms match the intended training configuration.
 
-Under `pinn_spm_param/integration_spm`, run `python main.py -nosimp -opt -lean` to generate a rapid example of the SPM solution.
+---
 
-Under `pinn_spm_param/preProcess`, run `python makeDataset_spm.py -nosimp -df ../integration_spm -frt 1` to generate a dataset usable by the PINN.
+## Train the PINN
 
-The implicit integration is recommended for fine spatial discretization due to the diffusive CFL constraint. For rapid integration using a coarse grid, the explicit integration will be preferable. The explicit integrator automatically adjusts the timestep based on the CFL constraint.
+Set the external data paths before training:
 
-## SPM post process
+```powershell
+cd C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1
 
-Under `pinn_spm_param/postProcess` see `exec.sh` for all the post-processing tools available.
+$env:ASSB_SOFT_LABEL_DIR="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\assb_soft_labels_cycles5plus_v3"
+$env:ASSB_OCP_DIR="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\ocp_estimation_outputs"
 
-- `plotData.py` will plot the data generated from the PDE integrator
-- `plotCorrelationPINNvsData.py` will show 45 degree plots to check the accuracy of the PINN againsts the PDE integrator
-- `plotPINNResult.py` will plot the fields predicted by the best PINN
-- `plotPINNResult_movie.py` will plot the field predicted by the best PINN and the correlation plots as movies to check the evolution of the predictions over epochs.
-- `plotResidualVariation.py` will display the different losses to ensure that they are properly balanced.
+D:\Anaconda\envs\torchgpu\python.exe main.py -i input_assb_cycles5plus_pretrain
+```
 
+For debugging, prefer a cycle5-only input file and set:
 
-## Bayesian calibration
+```powershell
+$env:ASSB_SOFT_LABEL_DIR="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\assb_soft_labels_cycle5_v3"
+```
 
-The Bayesian calibration module only needs to call the trained model which can be passed via the command line. See `BayesianCalibration_spm/exec_test.sh`
+Recommended training order:
 
-The observational data can be generated via `makeData.py` (see `BayesianCalibration_spm/exec_test.sh` for usage)
+```text
+1. cycle5-only physics-only training
+2. cycle5-only evaluation
+3. increase boundary sampling/weight if surface-flux residual remains dominant
+4. add L-BFGS only after ADAM/SGD has reached a stable plateau
+5. only then test merged cycle>=5
+6. only after physics/evaluation consistency is confirmed, introduce small-weight data loss
+```
 
-The calibration can be done via `cal_nosigma.py` (see `BayesianCalibration_spm/exec_test.sh` for usage)
+---
 
-The likelihood uncertainty `sigma` is set via bisectional hyperparameter search.
+## Evaluate a trained model
 
-## Formatting [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black) [![Imports: isort](https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336)](https://pycqa.github.io/isort/)
+Example for the current known failed benchmark:
 
-Code formatting and import sorting are done automatically with `black` and `isort`. 
+```powershell
+cd C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1
 
-Fix imports and format : `pip install black isort; bash fixFormat.sh`
+D:\Anaconda\envs\torchgpu\python.exe evaluate_assb_pinn_vs_softlabels.py `
+  --model_dir ModelFin_52 `
+  --soft_label_dir "C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\assb_soft_labels_cycles5plus_v3" `
+  --ocp_dir "C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\ocp_estimation_outputs" `
+  --output_dir EvalFin_52_vs_softlabels
+```
 
-Spelling is checked but not automatically fixed using `codespell`
+A successful first debug target should not merely reduce voltage MAE; it should also recover the time trend. For cycle5-only debugging, a practical first acceptance target is:
+
+```text
+phis_c correlation > 0.8
+phis_c MAE < 0.08 V
+theta_c correlation > 0.5
+no obvious constant-output solution for theta_a/theta_c
+```
+
+If `phis_c` correlation is close to zero or negative, first check model loading, input normalization, output variable index mapping, and `theta = cs / csmax` conversion before changing physical parameters.
+
+---
+
+## Known current issue
+
+`ModelFin_52` does not yet reproduce the `cycles5plus_v3` soft-label time series. The current result is interpreted as a failed training/evaluation closure, not as a validated model result.
+
+Most likely causes to check first:
+
+1. evaluation script mismatch;
+2. checkpoint not loaded as expected;
+3. time or radius rescaling mismatch;
+4. output index mismatch between model and evaluator;
+5. `theta_a/theta_c` conversion mismatch;
+6. continuous `cycle >= 5` task being too hard for the current network/collocation setup;
+7. insufficient learning of particle-surface flux boundary residuals.
+
+Do not use `ModelFin_52` for physical conclusions until the above checks pass.
+
+---
+
+## Debugging roadmap
+
+### P0 — close the simplest loop
+
+Use `cycle5_v3` only. Confirm that the generator, training input, trained checkpoint, and evaluator all use the same:
+
+```text
+I(t)
+OCP directory
+R_ohm_eff
+voltage_alignment_offset
+theta_c_bottom / theta_c_top
+csanmax / cscmax
+rescale_T / rescale_R
+output variable ordering
+```
+
+### P1 — strengthen physics training
+
+If the evaluator is correct but the model remains poor:
+
+- increase surface boundary collocation points or boundary weights;
+- check whether predictions are constant, reversed, or only offset-biased;
+- run L-BFGS only after the ADAM/SGD loss plateaus;
+- consider a larger network for merged multi-cycle time series.
+
+### P2 — introduce data loss carefully
+
+Data loss should be introduced only after the physics-only/evaluation loop is verified. The goal is to refine a physically consistent model, not to hide a mismatch between the soft-label generator and the PINN physics loss.
+
+---
+
+## Notes on repository cleanliness
+
+During the current debugging stage, some historical, upstream, IDE, or experimental files may remain in the repository. This README identifies the current ASSB mainline workflow and does not require immediate removal of those files.
+
+Before a formal public release, recommended cleanup tasks include:
+
+```text
+- add or update .gitignore for generated .npz labels, ModelFin_*, LogFin_*, EvalFin_*, and IDE files;
+- replace the legacy requirements.txt with a PyTorch/CUDA-oriented environment file;
+- add a small reproducible example or smoke-test dataset;
+- move project notes into docs/;
+- keep raw experimental data and generated soft labels outside normal Git history unless intentionally using Git LFS.
+```
+
+---
 
 ## Acknowledgements
-This work was authored by the National Laboratory of the Rockies (NLR) for the U.S. Department of Energy (DOE) under Contract No. DE-AC36-08GO28308. This work was supported by funding from DOE's Vehicle Technologies Office (VTO) and Advanced Scientific Computing Research (ASCR) program. The research was performed using computational resources sponsored by the Department of Energy's Office of Critical Minerals and Energy Innovation (CMEI) and located at the National Laboratory of the Rockies. The views expressed in the repository do not necessarily represent the views of the DOE or the U.S. Government.
 
-## References
+This project adapts ideas and code structure from NREL/PINNSTRIPES:
 
-Recommended citations
+```text
+Hassanaly et al., PINN surrogate of Li-ion battery models for parameter inference,
+Part I: Implementation and multi-fidelity hierarchies for the single-particle model.
+Journal of Energy Storage 98 (2024) 113103.
 
-[Paper 1 (Open access)](https://arxiv.org/pdf/2312.17329.pdf)
-
-[Paper 2 (Open access)](https://arxiv.org/pdf/2312.17336.pdf)
-
-
-
-```
-@article{hassanaly2024pinn1,
-  title={PINN surrogate of Li-ion battery models for parameter inference, Part I: Implementation and multi-fidelity hierarchies for the single-particle model},
-  author={Hassanaly, Malik and Weddle, Peter J and King, Ryan N and De, Subhayan and Doostan, Alireza and Randall, Corey R and Dufek, Eric J and Colclasure, Andrew M and Smith, Kandler},
-  journal={Journal of Energy Storage},
-  volume={98},
-  pages={113103},
-  year={2024},
-  publisher={Elsevier}
-}
-
-@article{hassanaly2024pinn2,
-  title={PINN surrogate of Li-ion battery models for parameter inference, Part II: Regularization and application of the pseudo-2D model},
-  author={Hassanaly, Malik and Weddle, Peter J and King, Ryan N and De, Subhayan and Doostan, Alireza and Randall, Corey R and Dufek, Eric J and Colclasure, Andrew M and Smith, Kandler},
-  journal={Journal of Energy Storage},
-  volume={98},
-  pages={113104},
-  year={2024},
-  publisher={Elsevier}
-}
-
-@misc{osti_2204976,
-title = {PINNSTRIPES (Physics-Informed Neural Network SurrogaTe for Rapidly Identifying Parameters in Energy Systems) [SWR-22-12]},
-author = {Hassanaly, Malik and Smith, Kandler and King, Ryan and Weddle, Peter and USDOE Office of Energy Efficiency and Renewable Energy and USDOE Office of Science},
-abstractNote = {Energy systems models typically take the form of complex partial differential equations which make multiple forward calculations prohibitively expensive. Fast and data-efficient construction of surrogate models is of utmost importance for applications that require parameter exploration such as design optimization and Bayesian calibration. In presence of a large number of parameters, surrogate models that capture correct dependencies may be difficult to construct with traditional techniques. The issue is addressed here with the formulation of the surrogate model constructed via Physics-Informed Neural Networks (PINN) which capture the dependence with respect to the parameters to estimate, while using a limited amount of data. Since forward evaluations of the surrogate model are cheap, parameter exploration is made inexpensive, even when considering a large number of parameters.},
-url = {https://www.osti.gov//servlets/purl/2204976},
-doi = {10.11578/dc.20231106.1},
-url = {https://www.osti.gov/biblio/2204976}, year = {2023},
-month = {10},
-note =
-}
-
+Hassanaly et al., PINN surrogate of Li-ion battery models for parameter inference,
+Part II: Regularization and application of the pseudo-2D model.
+Journal of Energy Storage 98 (2024) 113104.
 ```
 
-
-
-
+The present repository is an ASSB-specific adaptation for NMC811 || Li-In/In cells and should be cited or described separately from the upstream PINNSTRIPES project.
