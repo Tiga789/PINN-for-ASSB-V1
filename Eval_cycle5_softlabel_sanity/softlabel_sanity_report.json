@@ -1,0 +1,265 @@
+{
+  "soft_label_dir": "C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\PINN-for-ASSB-V1\\Data\\assb_soft_labels_cycle5_v3",
+  "required_files": {
+    "data_phie.npz": "True",
+    "data_phis_c.npz": "True",
+    "data_cs_a.npz": "True",
+    "data_cs_c.npz": "True",
+    "solution.npz": "True",
+    "soft_label_summary.json": "True"
+  },
+  "datasets": {
+    "phie": {
+      "keys": [
+        "x_train",
+        "y_train",
+        "x_params_train"
+      ],
+      "x_train_shape": [
+        925,
+        1
+      ],
+      "t_stats": {
+        "n": 925,
+        "min": 0.0,
+        "max": 9232.0,
+        "mean": 4616.647567567567,
+        "std": 2667.205864045141
+      },
+      "y_train_shape": [
+        925,
+        1
+      ],
+      "y_stats": {
+        "n": 925,
+        "min": -0.8172074473820048,
+        "max": -0.43207366690370846,
+        "mean": -0.6132939040456957,
+        "std": 0.1908448851285778
+      },
+      "x_params_train_shape": [
+        925,
+        2
+      ],
+      "n_x_equals_n_y": true,
+      "finite_y_fraction": 1.0
+    },
+    "phis_c": {
+      "keys": [
+        "x_train",
+        "y_train",
+        "x_params_train"
+      ],
+      "x_train_shape": [
+        925,
+        1
+      ],
+      "t_stats": {
+        "n": 925,
+        "min": 0.0,
+        "max": 9232.0,
+        "mean": 4616.647567567567,
+        "std": 2667.205864045141
+      },
+      "y_train_shape": [
+        925,
+        1
+      ],
+      "y_stats": {
+        "n": 925,
+        "min": 2.506884107012498,
+        "max": 3.7465719363719545,
+        "mean": 3.165358918918919,
+        "std": 0.30676991216414295
+      },
+      "x_params_train_shape": [
+        925,
+        2
+      ],
+      "n_x_equals_n_y": true,
+      "finite_y_fraction": 1.0
+    },
+    "cs_a": {
+      "keys": [
+        "x_train",
+        "y_train",
+        "x_params_train"
+      ],
+      "x_train_shape": [
+        59200,
+        2
+      ],
+      "t_stats": {
+        "n": 59200,
+        "min": 0.0,
+        "max": 9232.0,
+        "mean": 4616.647567567567,
+        "std": 2667.205864045141
+      },
+      "r_stats": {
+        "n": 59200,
+        "min": 0.0,
+        "max": 5e-05,
+        "mean": 2.5e-05,
+        "std": 1.4661073969770766e-05
+      },
+      "y_train_shape": [
+        59200,
+        1
+      ],
+      "y_stats": {
+        "n": 59200,
+        "min": 2.7,
+        "max": 5.081762569716032,
+        "mean": 3.8629754224110533,
+        "std": 0.6320798136087946
+      },
+      "x_params_train_shape": [
+        59200,
+        2
+      ],
+      "n_x_equals_n_y": true,
+      "finite_y_fraction": 1.0
+    },
+    "cs_c": {
+      "keys": [
+        "x_train",
+        "y_train",
+        "x_params_train"
+      ],
+      "x_train_shape": [
+        59200,
+        2
+      ],
+      "t_stats": {
+        "n": 59200,
+        "min": 0.0,
+        "max": 9232.0,
+        "mean": 4616.647567567567,
+        "std": 2667.205864045141
+      },
+      "r_stats": {
+        "n": 59200,
+        "min": 0.0,
+        "max": 1.8e-06,
+        "mean": 8.999999999999999e-07,
+        "std": 5.277986629117475e-07
+      },
+      "y_train_shape": [
+        59200,
+        1
+      ],
+      "y_stats": {
+        "n": 59200,
+        "min": 22.369408798562453,
+        "max": 46.62,
+        "mean": 33.98237366331517,
+        "std": 6.749327357984287
+      },
+      "x_params_train_shape": [
+        59200,
+        2
+      ],
+      "n_x_equals_n_y": true,
+      "finite_y_fraction": 1.0
+    }
+  },
+  "soft_label_summary": {
+    "source": "spm_int_assb_cycle.py v3",
+    "record_csv": "C:\\Users\\Tiga_QJW\\Desktop\\ZHB_realDATA\\record_extracted.csv",
+    "cycle": 5,
+    "n_t": 925,
+    "n_r": 64,
+    "tmax_s": 9232.0,
+    "I_min_A": -0.00033,
+    "I_max_A": 0.00033,
+    "capacity_charge_Ah": 0.00044226874999999993,
+    "capacity_discharge_Ah": 0.0003931776388888888,
+    "capacity_used_Ah": 0.0004177231944444444,
+    "T_K": 303.15,
+    "csanmax": 6.0,
+    "cscamax": 51.8,
+    "theta_a0": 0.45,
+    "theta_c0": 0.9,
+    "theta_c_bottom_v3": 0.834,
+    "theta_c_top_v3": 0.432,
+    "R_ohm_eff_v3": 105.0,
+    "voltage_alignment_offset_V": -0.11588681607942332,
+    "voltage_calibration_mode": "balanced",
+    "voltage_calibration_MAE_V": 0.045597843818968524,
+    "voltage_calibration_RMSE_V": 0.07445229631030224,
+    "voltage_calibration_MAXABS_V": 0.37004739347854754,
+    "voltage_calibration_mean_error_V": 9.601928861622976e-18,
+    "ocp_source_dir": "C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\ocp_estimation_outputs",
+    "ocp_positive_min_V": 3.487502013984152,
+    "ocp_positive_max_V": 4.254007421977475,
+    "ocp_negative_min_V": 0.6246405571428566,
+    "ocp_negative_max_V": 0.6246405571428566,
+    "cathode_effective_capacity_Ah": 0.0009595356359193445,
+    "Rs_a_m": 5e-05,
+    "Rs_c_m": 1.8e-06,
+    "eps_s_a": 0.95,
+    "eps_s_c": 0.55,
+    "V_a_m3": 7.853981633974483e-09,
+    "V_c_m3": 1.2566370614359171e-09,
+    "deg_i0_a": 1.0,
+    "deg_ds_c": 1.0,
+    "sanity_checks": {
+      "theta_a_min": 0.45,
+      "theta_a_max": 0.8469604282860054,
+      "theta_c_min": 0.43184186869811686,
+      "theta_c_max": 0.9,
+      "V_model_min": 2.506884107012498,
+      "V_model_max": 3.7465719363719545,
+      "Uocp_c_min": 3.487502013984152,
+      "Uocp_c_max": 4.254007421977475,
+      "Uocp_a_min": 0.6246405571428566,
+      "Uocp_a_max": 0.6246405571428566,
+      "V_exp_min": 2.1934,
+      "V_exp_max": 3.6795,
+      "V_mae_model_exp": 0.04559784381896854,
+      "V_rmse_model_exp": 0.07445229631030229,
+      "V_maxabs_model_exp": 0.37004739347854754,
+      "V_mean_error_model_exp": -1.0370083170552814e-16,
+      "V_corr_model_exp": 0.9723991510221722
+    }
+  },
+  "solution_keys": [
+    "t",
+    "r_a",
+    "r_c",
+    "cs_a",
+    "cs_c",
+    "phie",
+    "phis_c",
+    "phis_a",
+    "ce",
+    "I_profile",
+    "j_a",
+    "j_c",
+    "eta_a",
+    "eta_c",
+    "Uocp_a",
+    "Uocp_c",
+    "theta_c_ocp_soc",
+    "voltage_exp",
+    "cycle"
+  ],
+  "solution_voltage_comparison": {
+    "available": true,
+    "time_key": "t",
+    "voltage_key": "voltage_exp",
+    "metrics_phis_c_vs_experiment": {
+      "n": 925,
+      "mae": 0.04559784381896854,
+      "rmse": 0.07445229631030229,
+      "maxabs": 0.37004739347854754,
+      "bias_mean": -1.0370083170552814e-16,
+      "corr": 0.9723991510221721,
+      "y_true_min": 2.1934,
+      "y_true_max": 3.6795,
+      "y_pred_min": 2.506884107012498,
+      "y_pred_max": 3.7465719363719545
+    }
+  }
+}

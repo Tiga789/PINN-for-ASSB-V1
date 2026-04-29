@@ -1,0 +1,76 @@
+ASSB cycle5 soft-label sanity report
+========================================================
+soft_label_dir: C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\Data\assb_soft_labels_cycle5_v3
+
+[required files]
+  data_phie.npz: True
+  data_phis_c.npz: True
+  data_cs_a.npz: True
+  data_cs_c.npz: True
+  solution.npz: True
+  soft_label_summary.json: True
+
+[datasets]
+  phie:
+    keys: ['x_train', 'y_train', 'x_params_train']
+    x_train_shape: [925, 1]
+    y_train_shape: [925, 1]
+    x_params_train_shape: [925, 2]
+    n_x_equals_n_y: True
+    finite_y_fraction: 1.0
+    t_stats: {'n': 925, 'min': 0.0, 'max': 9232.0, 'mean': 4616.647567567567, 'std': 2667.205864045141}
+    y_stats: {'n': 925, 'min': -0.8172074473820048, 'max': -0.43207366690370846, 'mean': -0.6132939040456957, 'std': 0.1908448851285778}
+  phis_c:
+    keys: ['x_train', 'y_train', 'x_params_train']
+    x_train_shape: [925, 1]
+    y_train_shape: [925, 1]
+    x_params_train_shape: [925, 2]
+    n_x_equals_n_y: True
+    finite_y_fraction: 1.0
+    t_stats: {'n': 925, 'min': 0.0, 'max': 9232.0, 'mean': 4616.647567567567, 'std': 2667.205864045141}
+    y_stats: {'n': 925, 'min': 2.506884107012498, 'max': 3.7465719363719545, 'mean': 3.165358918918919, 'std': 0.30676991216414295}
+  cs_a:
+    keys: ['x_train', 'y_train', 'x_params_train']
+    x_train_shape: [59200, 2]
+    y_train_shape: [59200, 1]
+    x_params_train_shape: [59200, 2]
+    n_x_equals_n_y: True
+    finite_y_fraction: 1.0
+    t_stats: {'n': 59200, 'min': 0.0, 'max': 9232.0, 'mean': 4616.647567567567, 'std': 2667.205864045141}
+    r_stats: {'n': 59200, 'min': 0.0, 'max': 5e-05, 'mean': 2.5e-05, 'std': 1.4661073969770766e-05}
+    y_stats: {'n': 59200, 'min': 2.7, 'max': 5.081762569716032, 'mean': 3.8629754224110533, 'std': 0.6320798136087946}
+  cs_c:
+    keys: ['x_train', 'y_train', 'x_params_train']
+    x_train_shape: [59200, 2]
+    y_train_shape: [59200, 1]
+    x_params_train_shape: [59200, 2]
+    n_x_equals_n_y: True
+    finite_y_fraction: 1.0
+    t_stats: {'n': 59200, 'min': 0.0, 'max': 9232.0, 'mean': 4616.647567567567, 'std': 2667.205864045141}
+    r_stats: {'n': 59200, 'min': 0.0, 'max': 1.8e-06, 'mean': 8.999999999999999e-07, 'std': 5.277986629117475e-07}
+    y_stats: {'n': 59200, 'min': 22.369408798562453, 'max': 46.62, 'mean': 33.98237366331517, 'std': 6.749327357984287}
+
+[solution voltage comparison]
+{
+  "available": true,
+  "time_key": "t",
+  "voltage_key": "voltage_exp",
+  "metrics_phis_c_vs_experiment": {
+    "n": 925,
+    "mae": 0.04559784381896854,
+    "rmse": 0.07445229631030229,
+    "maxabs": 0.37004739347854754,
+    "bias_mean": -1.0370083170552814e-16,
+    "corr": 0.9723991510221721,
+    "y_true_min": 2.1934,
+    "y_true_max": 3.6795,
+    "y_pred_min": 2.506884107012498,
+    "y_pred_max": 3.7465719363719545
+  }
+}
+
+[summary json]
+  cycle: 5
+  voltage_alignment_offset_V: -0.11588681607942332
+  csanmax: 6.0
+  cscamax: 51.8

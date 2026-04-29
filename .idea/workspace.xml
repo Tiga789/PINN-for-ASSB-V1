@@ -5,14 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7b854bbc-0a8a-4911-bc87-dd9f1f68d852" name="更改" comment="">
-      <change afterPath="$PROJECT_DIR$/evaluate_assb_pinn_vs_softlabels.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ASSB_cycle5_debug_plan.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/assb_soft_labels_cycle5_v3/data_cs_a.npz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/assb_soft_labels_cycle5_v3/data_cs_c.npz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/assb_soft_labels_cycle5_v3/data_phie.npz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/assb_soft_labels_cycle5_v3/data_phis_c.npz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/assb_soft_labels_cycle5_v3/soft_label_summary.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/assb_soft_labels_cycle5_v3/solution.npz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assb_cycle5_softlabel_sanity.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/evaluate_assb_cycle5_pinn_vs_softlabels_debug.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/input_assb_cycle5_debug_boundary" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/input_assb_cycle5_debug_lbfgs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/input_assb_cycle5_debug_sgd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/input_assb_cycle5_debug_smoke" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/run_assb_cycle5_debug.ps1" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/integration_spm/spm_int_assb_v0.py" beforeDir="false" afterPath="$PROJECT_DIR$/integration_spm/spm_int_assb_v0.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/util/_losses.py" beforeDir="false" afterPath="$PROJECT_DIR$/util/_losses.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/util/_rescale.py" beforeDir="false" afterPath="$PROJECT_DIR$/util/_rescale.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/util/spm_assb_train_discharge.py" beforeDir="false" afterPath="$PROJECT_DIR$/util/spm_assb_train_discharge.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/util/thermo.py" beforeDir="false" afterPath="$PROJECT_DIR$/util/thermo.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/util/thermo_assb.py" beforeDir="false" afterPath="$PROJECT_DIR$/util/thermo_assb.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,6 +78,7 @@
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1" />
+      <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\Data" />
       <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\util" />
       <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\integration_spm" />
       <recent name="C:\Users\Tiga_QJW\Desktop\pinn_spm_param" />
@@ -151,7 +159,7 @@
       <updated>1776541030565</updated>
       <workItem from="1776541032895" duration="5739000" />
       <workItem from="1776793294745" duration="2000" />
-      <workItem from="1776796578394" duration="49097000" />
+      <workItem from="1776796578394" duration="54365000" />
     </task>
     <servers />
   </component>

@@ -1,0 +1,138 @@
+ASSB cycle5 PINN vs soft-label debug evaluation
+================================================================
+model_dir: C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\ModelFin_61
+checkpoint: C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\ModelFin_61\best.pt
+soft_label_dir: C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\Data\assb_soft_labels_cycle5_v3
+output_dir: C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\EvalFin_61_cycle5_baseline
+device: cuda:0
+config_prior_model: assb_discharge
+config_train_summary_json_original: C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\Data\assb_csv_3targets_spm_v0_discharge_train70_val30\meta\train_pack_summary.json
+chosen_train_summary_json: C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\Data\assb_soft_labels_cycle5_v3\soft_label_summary.json
+
+[model params]
+  rescale_T: 9232.0
+  rescale_R: 5e-05
+  csanmax: 6.0
+  cscamax: 51.8
+  R_ohm_eff: 105.0
+  voltage_alignment_offset_V: -0.11588681607942332
+  theta_c_bottom: 0.834
+  theta_c_top: 0.432
+  Rs_a: 5e-05
+  Rs_c: 1.8e-06
+
+[phie]
+  n: 925
+  mae: 0.17088763197318588
+  rmse: 0.19869697004163783
+  maxabs: 0.3144131823845582
+  bias_mean: 0.08784439791995996
+  corr: 0.5157947532517614
+  label_min: -0.8172074473820048
+  label_max: -0.43207366690370846
+  label_std: 0.1908448851285778
+  pred_min: -0.6097514333808518
+  pred_max: -0.4320736669037084
+  pred_std: 0.027501050577221995
+  std_ratio_pred_over_label: 0.14410158573908716
+
+[phis_c]
+  n: 925
+  mae: 0.33512234365805976
+  rmse: 0.40920510175180197
+  maxabs: 0.8821519857925524
+  bias_mean: -0.317112801104108
+  corr: 0.7839127532153431
+  label_min: 2.506884107012498
+  label_max: 3.7465719363719545
+  label_std: 0.30676991216414295
+  pred_min: 2.7231719192935824
+  pred_max: 2.9887029634675617
+  pred_std: 0.06551929302900236
+  std_ratio_pred_over_label: 0.2135779632584862
+
+[cs_a]
+  n: 59200
+  mae: 3.523243692918253
+  rmse: 3.70253152466563
+  maxabs: 5.081762569716032
+  bias_mean: -3.523243692918253
+  corr: -0.699739924350902
+  label_min: 2.7
+  label_max: 5.081762569716032
+  label_std: 0.6320798136087946
+  pred_min: 0.0
+  pred_max: 2.7
+  pred_std: 0.6025005724241181
+  std_ratio_pred_over_label: 0.9532033130186569
+
+[cs_c]
+  n: 59200
+  mae: 12.719685082232687
+  rmse: 14.412497653121497
+  maxabs: 24.33984467397002
+  bias_mean: 12.719684651597088
+  corr: -0.32819280958219127
+  label_min: 22.369408798562453
+  label_max: 46.62
+  label_std: 6.749327357984287
+  pred_min: 46.55919927706437
+  pred_max: 46.84615945998659
+  pred_std: 0.08336957921720929
+  std_ratio_pred_over_label: 0.012352279685854199
+
+[theta_a]
+  n: 59200
+  mae: 0.5872072821530421
+  rmse: 0.6170885874442718
+  maxabs: 0.8469604282860054
+  bias_mean: -0.5872072821530421
+  corr: -0.6997399243508963
+  label_min: 0.45
+  label_max: 0.8469604282860054
+  label_std: 0.10534663560146575
+  pred_min: 0.0
+  pred_max: 0.45
+  pred_std: 0.10041676207068634
+  std_ratio_pred_over_label: 0.9532033130186569
+
+[theta_c]
+  n: 59200
+  mae: 0.2455537660662681
+  rmse: 0.2782335454270559
+  maxabs: 0.4698811713121626
+  bias_mean: 0.24555375775283955
+  corr: -0.3281928095821912
+  label_min: 0.43184186869811686
+  label_max: 0.9
+  label_std: 0.13029589494178162
+  pred_min: 0.8988262408699687
+  pred_max: 0.9043660127410539
+  pred_std: 0.0016094513362395616
+  std_ratio_pred_over_label: 0.012352279685854195
+
+[soft-label voltage sanity]
+{
+  "available": true,
+  "time_key": "t",
+  "voltage_key": "voltage_exp",
+  "metrics_phis_c_label_vs_experiment": {
+    "n": 925,
+    "mae": 0.04559784381896854,
+    "rmse": 0.07445229631030229,
+    "maxabs": 0.37004739347854754,
+    "bias_mean": -1.0370083170552814e-16,
+    "corr": 0.9723991510221721,
+    "label_min": 2.1934,
+    "label_max": 3.6795,
+    "label_std": 0.31879492711708574,
+    "pred_min": 2.506884107012498,
+    "pred_max": 3.7465719363719545,
+    "pred_std": 0.30676991216414295,
+    "std_ratio_pred_over_label": 0.9622797794755176
+  }
+}
+
+[diagnosis]
+  - phis_c MAE is above 0.2 V. Do not open data loss yet; check loading/rescale/boundary loss first.
+  - theta_c correlation is negative. Check cathode theta/cs conversion, current sign, and bidirectional rescale mapping.
