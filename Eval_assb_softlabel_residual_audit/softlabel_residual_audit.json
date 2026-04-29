@@ -1,0 +1,175 @@
+{
+  "repo_root": "C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\PINN-for-ASSB-V1",
+  "soft_label_dir": "C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\PINN-for-ASSB-V1\\Data\\assb_soft_labels_cycle5_v3",
+  "summary_json": "C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\PINN-for-ASSB-V1\\Data\\assb_soft_labels_cycle5_v3\\soft_label_summary.json",
+  "current_profile_source": "params.time_profile/current_profile_A",
+  "params": {
+    "train_summary_json": "C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\PINN-for-ASSB-V1\\Data\\assb_soft_labels_cycle5_v3\\soft_label_summary.json",
+    "soft_label_dir": "C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\PINN-for-ASSB-V1\\Data\\assb_soft_labels_cycle5_v3",
+    "rescale_T": 9232.0,
+    "rescale_R": 5e-05,
+    "Rs_a": 5e-05,
+    "Rs_c": 1.8e-06,
+    "eps_s_a": 0.95,
+    "eps_s_c": 0.55,
+    "V_a": 7.853981633974483e-09,
+    "V_c": 1.2566370614359171e-09,
+    "F": 96485332.1,
+    "R": 8314.5,
+    "T": 303.15,
+    "csanmax": 6.0,
+    "cscamax": 51.8,
+    "R_ohm_eff": 105.0,
+    "voltage_alignment_offset_V": -0.11588681607942332
+  },
+  "cs_a": {
+    "name": "cs_a",
+    "n_time": 925,
+    "n_r": 64,
+    "t_stats": {
+      "min": 0.0,
+      "max": 9232.0
+    },
+    "r_min": 0.0,
+    "r_max": 5e-05,
+    "I_stats": {
+      "min": -0.00033,
+      "max": 0.00033,
+      "mean": 1.944464864864869e-05
+    },
+    "J_stats": {
+      "n": 925,
+      "mean_abs": 7.536629610666922e-09,
+      "rmse": 7.584955728643927e-09,
+      "max_abs": 7.63990409474936e-09,
+      "mean": -4.501674267629497e-10,
+      "std": 7.571585216674904e-09
+    },
+    "D_stats": {
+      "n": 925,
+      "mean_abs": 5e-13,
+      "rmse": 5e-13,
+      "max_abs": 5e-13,
+      "mean": 5e-13,
+      "std": 0.0
+    },
+    "surface_bc_residual_abs": {
+      "n": 925,
+      "mean_abs": 9.123253675608103e-11,
+      "rmse": 2.8014784020764927e-10,
+      "max_abs": 7.63990409474936e-09,
+      "mean": -8.4874580750503e-12,
+      "std": 2.800192411753785e-10
+    },
+    "surface_bc_residual_relative_to_J": {
+      "n": 925,
+      "mean_abs": 5.148034391287914e+18,
+      "rmse": 5.323298229085992e+19,
+      "max_abs": 9.084824175052343e+20,
+      "mean": 5.466518858145613e+16,
+      "std": 5.323295422288869e+19
+    },
+    "mass_balance_residual_abs": {
+      "n": 925,
+      "mean_abs": 4.797051748489432e-06,
+      "rmse": 1.3391737449621042e-05,
+      "max_abs": 0.00023959215950055074,
+      "mean": -9.82772901448333e-08,
+      "std": 1.3391376833388883e-05
+    },
+    "mass_balance_residual_relative_to_3J_over_R": {
+      "n": 925,
+      "mean_abs": 2.3812653151014287e+23,
+      "rmse": 4.4525242978181177e+24,
+      "max_abs": 1.3085915764796117e+26,
+      "mean": -1.3790033441046638e+23,
+      "std": 4.450388311196024e+24
+    },
+    "surface_theta_stats": {
+      "n": 925,
+      "mean_abs": 0.64698074575499,
+      "rmse": 0.655618474843422,
+      "max_abs": 0.8469604282860054,
+      "mean": 0.64698074575499,
+      "std": 0.10607308413698426
+    }
+  },
+  "cs_c": {
+    "name": "cs_c",
+    "n_time": 925,
+    "n_r": 64,
+    "t_stats": {
+      "min": 0.0,
+      "max": 9232.0
+    },
+    "r_min": 0.0,
+    "r_max": 1.8e-06,
+    "I_stats": {
+      "min": -0.00033,
+      "max": 0.00033,
+      "mean": 1.944464864864869e-05
+    },
+    "J_stats": {
+      "n": 925,
+      "mean_abs": 2.929008325963735e-09,
+      "rmse": 2.9477896127229792e-09,
+      "max_abs": 2.969144545913955e-09,
+      "mean": 1.7495143176469188e-10,
+      "std": 2.942593345571382e-09
+    },
+    "D_stats": {
+      "n": 925,
+      "mean_abs": 3.293979427218782e-15,
+      "rmse": 3.4865507939941898e-15,
+      "max_abs": 4.999999992748018e-15,
+      "mean": 3.293979427218782e-15,
+      "std": 1.1426880467393277e-15
+    },
+    "surface_bc_residual_abs": {
+      "n": 925,
+      "mean_abs": 2.8806414722375287e-11,
+      "rmse": 1.019927979844093e-10,
+      "max_abs": 2.9691445459130968e-09,
+      "mean": -2.516666960062358e-12,
+      "std": 1.0196174394399428e-10
+    },
+    "surface_bc_residual_relative_to_J": {
+      "n": 925,
+      "mean_abs": 7.291106952975354e+17,
+      "rmse": 8.584504937847953e+18,
+      "max_abs": 1.858262463065659e+20,
+      "mean": -2.677120190947935e+17,
+      "std": 8.580329556769255e+18
+    },
+    "mass_balance_residual_abs": {
+      "n": 925,
+      "mean_abs": 4.9595040441650024e-05,
+      "rmse": 0.00010465314208914496,
+      "max_abs": 0.0018437880299323212,
+      "mean": -4.10239329488898e-06,
+      "std": 0.00010457270446146459
+    },
+    "mass_balance_residual_relative_to_3J_over_R": {
+      "n": 925,
+      "mean_abs": 3.4148976809974375e+24,
+      "rmse": 4.014063596429972e+25,
+      "max_abs": 8.578952778688364e+26,
+      "mean": 1.3877080121383677e+23,
+      "std": 4.014039609026251e+25
+    },
+    "surface_theta_stats": {
+      "n": 925,
+      "mean_abs": 0.6549781646962288,
+      "rmse": 0.6675275747788911,
+      "max_abs": 0.9,
+      "mean": 0.6549781646962288,
+      "std": 0.12882805153128685
+    }
+  },
+  "diagnosis": [
+    "cs_a: surface flux residual is large relative to J. Check D_s, sign convention, and r-grid ordering.",
+    "cs_a: spherical-average mass balance residual is large. This strongly suggests soft-label dynamics and training-side flux closure differ.",
+    "cs_c: surface flux residual is large relative to J. Check D_s, sign convention, and r-grid ordering.",
+    "cs_c: spherical-average mass balance residual is large. This strongly suggests soft-label dynamics and training-side flux closure differ."
+  ]
+}

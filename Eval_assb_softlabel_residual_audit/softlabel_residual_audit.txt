@@ -1,0 +1,21 @@
+ASSB soft-label residual audit
+============================================================
+soft_label_dir: C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\Data\assb_soft_labels_cycle5_v3
+summary_json: C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\Data\assb_soft_labels_cycle5_v3\soft_label_summary.json
+current_profile_source: params.time_profile/current_profile_A
+
+[cs_a]
+  surface BC rel mean_abs: 5.148034391287914e+18
+  mass balance rel mean_abs: 2.3812653151014287e+23
+  surface theta min/max: 0.64698074575499 mean, max_abs_res_BC 7.63990409474936e-09
+
+[cs_c]
+  surface BC rel mean_abs: 7.291106952975354e+17
+  mass balance rel mean_abs: 3.4148976809974375e+24
+  surface theta min/max: 0.6549781646962288 mean, max_abs_res_BC 2.9691445459130968e-09
+
+[diagnosis]
+  - cs_a: surface flux residual is large relative to J. Check D_s, sign convention, and r-grid ordering.
+  - cs_a: spherical-average mass balance residual is large. This strongly suggests soft-label dynamics and training-side flux closure differ.
+  - cs_c: surface flux residual is large relative to J. Check D_s, sign convention, and r-grid ordering.
+  - cs_c: spherical-average mass balance residual is large. This strongly suggests soft-label dynamics and training-side flux closure differ.

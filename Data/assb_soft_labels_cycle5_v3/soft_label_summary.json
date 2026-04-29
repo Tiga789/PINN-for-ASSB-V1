@@ -56,5 +56,361 @@
     "V_maxabs_model_exp": 0.37004739347854754,
     "V_mean_error_model_exp": -1.0370083170552814e-16,
     "V_corr_model_exp": 0.9723991510221722
-  }
+  },
+  "soft_label_dir": "C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\PINN-for-ASSB-V1\\Data\\assb_soft_labels_cycle5_v3",
+  "soft_label_summary_json": "C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\PINN-for-ASSB-V1\\Data\\assb_soft_labels_cycle5_v3\\soft_label_summary.json",
+  "repo_root_at_patch_time": "C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\PINN-for-ASSB-V1",
+  "provenance_patch_applied": true,
+  "provenance_patch_script": "integration_spm/spm_int_assb_cycle_patch_summary.py",
+  "solution_stats": {
+    "available": true,
+    "keys": [
+      "t",
+      "r_a",
+      "r_c",
+      "cs_a",
+      "cs_c",
+      "phie",
+      "phis_c",
+      "phis_a",
+      "ce",
+      "I_profile",
+      "j_a",
+      "j_c",
+      "eta_a",
+      "eta_c",
+      "Uocp_a",
+      "Uocp_c",
+      "theta_c_ocp_soc",
+      "voltage_exp",
+      "cycle"
+    ],
+    "t": {
+      "n": 925,
+      "min": 0.0,
+      "max": 9232.0,
+      "mean": 4616.647567567567,
+      "std": 2667.205864045141
+    },
+    "t_head_tail": {
+      "first": [
+        0.0,
+        10.0,
+        20.0,
+        30.0,
+        40.0
+      ],
+      "last": [
+        9192.0,
+        9202.0,
+        9212.0,
+        9222.0,
+        9232.0
+      ]
+    },
+    "I_profile": {
+      "n": 925,
+      "min": -0.00033,
+      "max": 0.00033,
+      "mean": 1.944464864864869e-05,
+      "std": 0.00032704901665191514
+    },
+    "I_profile_head_tail": {
+      "first": [
+        0.00033,
+        0.00033,
+        0.00033,
+        0.00033,
+        0.00033
+      ],
+      "last": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "voltage_exp": {
+      "n": 925,
+      "min": 2.1934,
+      "max": 3.6795,
+      "mean": 3.1653589189189186,
+      "std": 0.31879492711708574
+    },
+    "voltage_exp_head_tail": {
+      "first": [
+        2.9771,
+        3.131,
+        3.1392,
+        3.1437,
+        3.1467
+      ],
+      "last": [
+        2.9135,
+        2.9235,
+        2.9295,
+        2.9336,
+        2.9369
+      ]
+    },
+    "phis_c": {
+      "n": 925,
+      "min": 2.506884107012498,
+      "max": 3.7465719363719545,
+      "mean": 3.165358918918919,
+      "std": 0.30676991216414295
+    },
+    "phie": {
+      "n": 925,
+      "min": -0.8172074473820048,
+      "max": -0.43207366690370846,
+      "mean": -0.6132939040456957,
+      "std": 0.1908448851285778
+    },
+    "t_start_s": 0.0,
+    "t_end_s": 9232.0,
+    "tmax_train_s": 9232.0,
+    "charge_capacity_Ah": 0.00044226874999999993,
+    "discharge_capacity_Ah": 0.0003931776388888888,
+    "current_ref_A": 0.00033
+  },
+  "dataset_stats": {
+    "phie": {
+      "available": true,
+      "keys": [
+        "x_train",
+        "y_train",
+        "x_params_train"
+      ],
+      "x_train_shape": [
+        925,
+        1
+      ],
+      "t_stats": {
+        "n": 925,
+        "min": 0.0,
+        "max": 9232.0,
+        "mean": 4616.647567567567,
+        "std": 2667.205864045141
+      },
+      "y_train_shape": [
+        925,
+        1
+      ],
+      "y_stats": {
+        "n": 925,
+        "min": -0.8172074473820048,
+        "max": -0.43207366690370846,
+        "mean": -0.6132939040456957,
+        "std": 0.1908448851285778
+      },
+      "x_params_train_shape": [
+        925,
+        2
+      ]
+    },
+    "phis_c": {
+      "available": true,
+      "keys": [
+        "x_train",
+        "y_train",
+        "x_params_train"
+      ],
+      "x_train_shape": [
+        925,
+        1
+      ],
+      "t_stats": {
+        "n": 925,
+        "min": 0.0,
+        "max": 9232.0,
+        "mean": 4616.647567567567,
+        "std": 2667.205864045141
+      },
+      "y_train_shape": [
+        925,
+        1
+      ],
+      "y_stats": {
+        "n": 925,
+        "min": 2.506884107012498,
+        "max": 3.7465719363719545,
+        "mean": 3.165358918918919,
+        "std": 0.30676991216414295
+      },
+      "x_params_train_shape": [
+        925,
+        2
+      ]
+    },
+    "cs_a": {
+      "available": true,
+      "keys": [
+        "x_train",
+        "y_train",
+        "x_params_train"
+      ],
+      "x_train_shape": [
+        59200,
+        2
+      ],
+      "t_stats": {
+        "n": 59200,
+        "min": 0.0,
+        "max": 9232.0,
+        "mean": 4616.647567567567,
+        "std": 2667.205864045141
+      },
+      "r_stats": {
+        "n": 59200,
+        "min": 0.0,
+        "max": 5e-05,
+        "mean": 2.5e-05,
+        "std": 1.4661073969770766e-05
+      },
+      "y_train_shape": [
+        59200,
+        1
+      ],
+      "y_stats": {
+        "n": 59200,
+        "min": 2.7,
+        "max": 5.081762569716032,
+        "mean": 3.8629754224110533,
+        "std": 0.6320798136087946
+      },
+      "x_params_train_shape": [
+        59200,
+        2
+      ]
+    },
+    "cs_c": {
+      "available": true,
+      "keys": [
+        "x_train",
+        "y_train",
+        "x_params_train"
+      ],
+      "x_train_shape": [
+        59200,
+        2
+      ],
+      "t_stats": {
+        "n": 59200,
+        "min": 0.0,
+        "max": 9232.0,
+        "mean": 4616.647567567567,
+        "std": 2667.205864045141
+      },
+      "r_stats": {
+        "n": 59200,
+        "min": 0.0,
+        "max": 1.8e-06,
+        "mean": 8.999999999999999e-07,
+        "std": 5.277986629117475e-07
+      },
+      "y_train_shape": [
+        59200,
+        1
+      ],
+      "y_stats": {
+        "n": 59200,
+        "min": 22.369408798562453,
+        "max": 46.62,
+        "mean": 33.98237366331517,
+        "std": 6.749327357984287
+      },
+      "x_params_train_shape": [
+        59200,
+        2
+      ]
+    }
+  },
+  "training_param_snapshot": {
+    "train_summary_json": "C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\PINN-for-ASSB-V1\\Data\\assb_soft_labels_cycle5_v3\\soft_label_summary.json",
+    "soft_label_dir": "C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\PINN-for-ASSB-V1\\Data\\assb_soft_labels_cycle5_v3",
+    "current_profile_source": "C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\PINN-for-ASSB-V1\\Data\\assb_soft_labels_cycle5_v3\\solution.npz",
+    "rescale_T": 9232.0,
+    "rescale_R": 5e-05,
+    "tmax": 9232.0,
+    "I_discharge": 0.00033,
+    "I_app": 0.00033,
+    "C": 0.0004177231944444444,
+    "T": 303.15,
+    "F": 96485332.1,
+    "R": 8314.5,
+    "A_a": 7.853981633974483e-05,
+    "A_c": 7.853981633974483e-05,
+    "L_a": 0.0001,
+    "L_c": 1.6e-05,
+    "V_a": 7.853981633974483e-09,
+    "V_c": 1.2566370614359171e-09,
+    "Rs_a": 5e-05,
+    "Rs_c": 1.8e-06,
+    "eps_s_a": 0.95,
+    "eps_s_c": 0.55,
+    "csanmax": 6.0,
+    "cscamax": 51.8,
+    "theta_a0": 0.45,
+    "theta_c0": 0.9,
+    "cs_a0": 2.7,
+    "cs_c0": 46.62,
+    "R_ohm_eff": 105.0,
+    "voltage_alignment_offset_V": -0.11588681607942332,
+    "theta_c_bottom": 0.834,
+    "theta_c_top": 0.432,
+    "cs_rescale_mode": "cycle",
+    "time_profile_head_tail": {
+      "first": [
+        0.0,
+        10.0,
+        20.0,
+        30.0,
+        40.0
+      ],
+      "last": [
+        9192.0,
+        9202.0,
+        9212.0,
+        9222.0,
+        9232.0
+      ]
+    },
+    "current_profile_A_head_tail": {
+      "first": [
+        0.00033,
+        0.00033,
+        0.00033,
+        0.00033,
+        0.00033
+      ],
+      "last": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "time_profile_n": 925,
+    "current_profile_A_stats": {
+      "n": 925,
+      "min": -0.00033,
+      "max": 0.00033,
+      "mean": 1.944464864864869e-05,
+      "std": 0.00032704901665191514
+    }
+  },
+  "tmax_train_s": 9232.0,
+  "current_ref_A": 0.00033,
+  "charge_capacity_Ah": 0.00044226874999999993,
+  "discharge_capacity_Ah": 0.0003931776388888888,
+  "R_ohm_eff": 105.0,
+  "theta_c_bottom": 0.834,
+  "theta_c_top": 0.432,
+  "Rs_a": 5e-05,
+  "Rs_c": 1.8e-06,
+  "V_a": 7.853981633974483e-09,
+  "V_c": 1.2566370614359171e-09
 }

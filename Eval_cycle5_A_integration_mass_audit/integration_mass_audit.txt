@@ -1,0 +1,25 @@
+ASSB cycle5 integration mass-balance audit
+================================================
+soft_label_dir: C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\Data\assb_soft_labels_cycle5_v3
+flux function: integration_spm.spm_int_assb_cycle.surface_flux_from_current
+
+[anode]
+  cbar range: 2.7003401 to 4.9288683
+  corr dcbar_dt vs -3J/R: 0.999593
+  expected plus residual RMSE: 1.3487169e-05
+  opposite minus residual RMSE: 0.00091364048
+  preferred sign by RMSE: expected_plus
+  rmse expected/opposite: 0.014762
+
+[cathode]
+  cbar range: 22.560754 to 46.625873
+  corr dcbar_dt vs -3J/R: 0.999795
+  expected plus residual RMSE: 0.00010488115
+  opposite minus residual RMSE: 0.0098579778
+  preferred sign by RMSE: expected_plus
+  rmse expected/opposite: 0.0106392
+
+Interpretation
+--------------
+expected_plus means d<c>/dt + 3J/R is smaller, consistent with the generator boundary convention D dc/dr = -J.
+opposite_minus means the sign used by the generator-derived current and the soft-label average trend disagree and should be inspected before more training.

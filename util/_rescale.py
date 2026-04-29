@@ -14,8 +14,18 @@ if str(_THIS_DIR) not in sys.path:
     sys.path.append(str(_THIS_DIR))
 
 
+# -----------------------------------------------------------------------------
+# Generic tensor / parameter helpers
+# -----------------------------------------------------------------------------
+
+
 def _to_tensor(x, like: torch.Tensor | None = None) -> torch.Tensor:
-    """Convert scalar/array/tensor inputs to a 2D torch tensor."""
+    """Convert scalar/array/tensor inputs to a 2D torch tensor.
+
+    The translated PINNSTRIPES code calls these rescale functions from many
+    locations.  Keeping this helper permissive avoids shape/device/dtype
+    mismatches when evaluating data, residuals, HNN levels, or checkpoints.
+    """
     if isinstance(x, torch.Tensor):
         out = x
         if like is not None:
@@ -42,24 +52,86 @@ def _param_float(params: dict, names: tuple[str, ...], default: float) -> float:
     """Read the first available scalar parameter name from params."""
     for name in names:
         if name in params:
-            return float(params[name])
+            value = params[name]
+            try:
+                if isinstance(value, torch.Tensor):
+                    return float(value.detach().reshape(-1)[0].cpu())
+                arr = np.asarray(value, dtype=np.float64).reshape(-1)
+                if arr.size:
+                    return float(arr[0])
+            except Exception:
+                try:
+                    return float(value)
+                except Exception:
+                    pass
     return float(default)
+
+
+def _param_bool(params: dict, names: tuple[str, ...], default: bool) -> bool:
+    for name in names:
+        if name in params:
+            value = params[name]
+            if isinstance(value, str):
+                return value.strip().lower() not in {"false", "0", "no", "off", "none"}
+            return bool(value)
+    return bool(default)
+
+
+# -----------------------------------------------------------------------------
+# Radial and concentration rescale policy
+# -----------------------------------------------------------------------------
+
+
+def _use_per_electrode_radial_rescale_from_params(params: dict) -> bool:
+    """Whether r should be normalized by Rs_a/Rs_c instead of one shared scale.
+
+    For ASSB, Rs_a=50 um and Rs_c=1.8 um.  A shared rescale_R=max(Rs_a,Rs_c)
+    compresses cathode inputs into only ~0--0.036, which makes learning the
+    cathode surface-gradient dynamics unnecessarily hard.  The new thermo file
+    sets use_per_electrode_rescale_R=True and provides rescale_R_a/rescale_R_c.
+
+    For old HNN checkpoints without the new keys, this function falls back to
+    legacy shared rescale_R to avoid silently changing old hierarchy levels.
+    """
+    if any(k in params for k in ("use_per_electrode_rescale_R", "use_per_electrode_radial_rescale")):
+        return _param_bool(params, ("use_per_electrode_rescale_R", "use_per_electrode_radial_rescale"), True)
+
+    mode = str(params.get("radial_rescale_mode", "")).strip().lower()
+    if mode in {"per_electrode", "electrode", "separate", "separated", "assb"}:
+        return True
+
+    return any(k in params for k in ("rescale_R_a", "rescale_R_c", "rescale_R_negative", "rescale_R_positive"))
+
+
+def _radial_rescale_from_params(params: dict, electrode: str) -> float:
+    """Return the physical radius scale used to normalize r for a branch."""
+    electrode = electrode.lower()
+    if not _use_per_electrode_radial_rescale_from_params(params):
+        return _param_float(params, ("rescale_R",), 1.0)
+
+    if electrode.startswith("a") or electrode.startswith("n"):
+        return _param_float(params, ("rescale_R_a", "rescale_R_negative", "Rs_a", "rescale_R"), 1.0)
+    return _param_float(params, ("rescale_R_c", "rescale_R_positive", "Rs_c", "rescale_R"), 1.0)
+
+
+def _radial_rescale_from_nn(nn_obj, electrode: str) -> float:
+    """Return r-normalization scale for an HNN/HNN-time object."""
+    params = getattr(nn_obj, "params", {}) or {}
+    return _radial_rescale_from_params(params, electrode)
 
 
 def _concentration_rescale_mode(self) -> str:
     """Return concentration rescaling mode.
 
     cycle/bidirectional:
-        Allows solid concentration to increase or decrease from the initial value.
-        This is the correct first choice for full charge-discharge data.
+        Allows solid concentration to increase or decrease from the initial
+        value.  This is the correct mode for the user's cycle5 and cycles5plus
+        charge-discharge data.
 
     discharge:
         Keeps the original PINNSTRIPES discharge-only monotonic constraint.
     """
-    mode = self.params.get(
-        "concentration_rescale_mode",
-        self.params.get("cs_rescale_mode", "cycle"),
-    )
+    mode = self.params.get("concentration_rescale_mode", self.params.get("cs_rescale_mode", "cycle"))
     mode = str(mode).strip().lower()
     if mode in {"charge_discharge", "cycle", "cyclic", "bidirectional", "both"}:
         return "cycle"
@@ -71,9 +143,10 @@ def _concentration_rescale_mode(self) -> str:
 def _concentration_bounds(self, electrode: str, like: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
     """Return lower/upper concentration bounds for an electrode.
 
-    Defaults are full physical concentration ranges [0, csmax]. Optional future
-    keys are supported so narrower stoichiometric windows can be imposed without
-    changing this file.
+    The new ASSB thermo file writes narrower theta/cs bounds, e.g. roughly
+    theta_a=0.40--0.90 and theta_c=0.40--0.92.  Those bounds are used here when
+    available.  The initial concentration is always included so that strict IC
+    enforcement cannot be clipped out by an accidentally tight user bound.
     """
     electrode = electrode.lower()
     if electrode in {"a", "an", "anode", "negative", "n"}:
@@ -81,21 +154,43 @@ def _concentration_bounds(self, electrode: str, like: torch.Tensor) -> tuple[tor
         theta_min = _param_float(self.params, ("theta_a_min", "theta_n_min"), 0.0)
         theta_max = _param_float(self.params, ("theta_a_max", "theta_n_max"), 1.0)
         lower = _param_float(self.params, ("cs_a_min", "cs_n_min", "csanmin"), theta_min * csmax)
-        upper = _param_float(self.params, ("cs_a_upper", "cs_n_upper"), theta_max * csmax)
+        upper = _param_float(self.params, ("cs_a_upper", "cs_a_max_bound", "cs_n_upper"), theta_max * csmax)
+        start = _param_float(self.params, ("cs_a0", "csan0", "cs_n0"), 0.5 * (lower + upper))
     elif electrode in {"c", "ca", "cathode", "positive", "p"}:
         csmax = _param_float(self.params, ("cscamax", "cs_c_max", "cs_p_max"), 1.0)
         theta_min = _param_float(self.params, ("theta_c_min", "theta_p_min"), 0.0)
         theta_max = _param_float(self.params, ("theta_c_max", "theta_p_max"), 1.0)
         lower = _param_float(self.params, ("cs_c_min", "cs_p_min", "cscamin"), theta_min * csmax)
-        upper = _param_float(self.params, ("cs_c_upper", "cs_p_upper"), theta_max * csmax)
+        upper = _param_float(self.params, ("cs_c_upper", "cs_c_max_bound", "cs_p_upper"), theta_max * csmax)
+        start = _param_float(self.params, ("cs_c0", "csca0", "cs_p0"), 0.5 * (lower + upper))
     else:
         raise ValueError(f"Unknown electrode label: {electrode}")
 
-    lower_t = torch.full_like(like, float(lower))
-    upper_t = torch.full_like(like, float(upper))
-    # Guard against accidentally reversed bounds.
-    lower_t, upper_t = torch.minimum(lower_t, upper_t), torch.maximum(lower_t, upper_t)
+    lower_raw = float(lower)
+    upper_raw = float(upper)
+    start_raw = float(start)
+    lower = min(lower_raw, upper_raw, start_raw)
+    upper = max(lower_raw, upper_raw, start_raw)
+    if not np.isfinite(lower) or not np.isfinite(upper) or upper <= lower:
+        lower, upper = 0.0, max(float(csmax), 1.0)
+
+    lower_t = torch.full_like(like, lower)
+    upper_t = torch.full_like(like, upper)
     return lower_t, upper_t
+
+
+def _asymmetric_bounded_delta(raw: torch.Tensor, center: torch.Tensor, lower: torch.Tensor, upper: torch.Tensor) -> torch.Tensor:
+    """Smoothly map raw NN output to [lower, upper] around center.
+
+    Compared with a symmetric span followed by clamp, this avoids a cathode
+    branch near the upper SOC endpoint immediately saturating on the small side
+    while still allowing a large decrease over the rest of the cycle.
+    """
+    z = torch.tanh(raw)
+    pos_span = torch.clamp(upper - center, min=np.float64(1e-12))
+    neg_span = torch.clamp(center - lower, min=np.float64(1e-12))
+    delta = torch.where(z >= 0.0, pos_span * z, neg_span * z)
+    return center + delta
 
 
 def _cycle_concentration_target(
@@ -107,30 +202,28 @@ def _cycle_concentration_target(
 ) -> torch.Tensor:
     """Bidirectional concentration map for charge-discharge cycles.
 
-    For the user's later-cycle data, the current alternates between nearly
-    constant charge and discharge values with rest steps between them. Therefore,
-    the solid concentrations must not be forced to be monotonic in one direction.
-
-    raw = 0 gives target=start when no HNN base is supplied. This keeps the
-    initial training behaviour gentle for small-current, smooth cycling data.
+    raw=0 gives target=start when no HNN base is supplied.  This keeps strict
+    initial-condition behavior while allowing either electrode concentration to
+    move upward or downward during the same cycle.
     """
     raw = _to_tensor(raw, start)
     lower, upper = _concentration_bounds(self, electrode, start)
 
     if base is None:
-        center = start
-        span = torch.maximum(upper - start, start - lower)
-        span = torch.clamp(span, min=np.float64(1e-12))
-        target = center + span * torch.tanh(raw)
+        center = torch.clamp(start, lower, upper)
+        target = _asymmetric_bounded_delta(raw, center, lower, upper)
     else:
-        base = _to_tensor(base, start)
+        base = torch.clamp(_to_tensor(base, start), lower, upper)
         frac = _param_float(
             self.params,
             ("hnn_cycle_correction_fraction", "cycle_hnn_correction_fraction"),
             0.25,
         )
-        span = torch.clamp(upper - lower, min=np.float64(1e-12)) * float(frac)
-        target = base + span * torch.tanh(raw)
+        # For HNN levels, apply a bounded local correction around the base.
+        z = torch.tanh(raw)
+        pos_span = torch.clamp(upper - base, min=np.float64(1e-12)) * float(frac)
+        neg_span = torch.clamp(base - lower, min=np.float64(1e-12)) * float(frac)
+        target = base + torch.where(z >= 0.0, pos_span * z, neg_span * z)
 
     return torch.clamp(target, lower, upper)
 
@@ -147,21 +240,27 @@ def _discharge_concentration_target(
     lower, upper = _concentration_bounds(self, electrode, start)
 
     if base is not None:
-        base = _to_tensor(base, start)
-        # Keep old HNN behaviour as a small additive correction.
-        if electrode.lower().startswith("a"):
-            resc = -start
+        base = torch.clamp(_to_tensor(base, start), lower, upper)
+        if electrode.lower().startswith(("a", "n")):
+            resc = torch.clamp(base - lower, min=np.float64(1e-12))
+            target = base - 0.01 * resc * torch.sigmoid(raw)
         else:
-            resc = upper - start
-        return torch.clamp(base + resc * raw * 0.01, lower, upper)
+            resc = torch.clamp(upper - base, min=np.float64(1e-12))
+            target = base + 0.01 * resc * torch.sigmoid(raw)
+        return torch.clamp(target, lower, upper)
 
-    if electrode.lower().startswith("a"):
+    if electrode.lower().startswith(("a", "n")):
         # Discharge: negative electrode Li concentration decreases.
-        target = start - start * torch.sigmoid(raw)
+        target = start - torch.clamp(start - lower, min=np.float64(1e-12)) * torch.sigmoid(raw)
     else:
         # Discharge: positive electrode Li concentration increases.
-        target = start + (upper - start) * torch.sigmoid(raw)
+        target = start + torch.clamp(upper - start, min=np.float64(1e-12)) * torch.sigmoid(raw)
     return torch.clamp(target, lower, upper)
+
+
+# -----------------------------------------------------------------------------
+# Public rescale functions attached to myNN
+# -----------------------------------------------------------------------------
 
 
 def rescalePhie(self, phie, t, deg_i0_a, deg_ds_c):
@@ -280,6 +379,11 @@ def rescaleCs_c(self, cs_c, t, r, deg_i0_a, deg_ds_c, clip: bool = True):
     return out
 
 
+# -----------------------------------------------------------------------------
+# Initial-condition helpers
+# -----------------------------------------------------------------------------
+
+
 def get_phie0(self, deg_i0_a):
     deg_i0_a = _to_tensor(deg_i0_a)
     i0_a = self.params["i0_a"](
@@ -325,7 +429,10 @@ def get_phis_c0(self, deg_i0_a):
     )
 
 
+# -----------------------------------------------------------------------------
 # HNN helpers
+# -----------------------------------------------------------------------------
+
 
 def get_phie_hnn(self, t, deg_i0_a, deg_ds_c):
     t = _to_tensor(t)
@@ -417,10 +524,11 @@ def get_cs_a_hnn(self, t, r, deg_i0_a, deg_ds_c):
         deg_i0_a_eff = deg_i0_a
         deg_ds_c_eff = deg_ds_c
 
+    r_scale = _radial_rescale_from_nn(self.hnn, "a")
     out = self.hnn.model(
         [
             t / float(self.hnn.params["rescale_T"]),
-            r / float(self.hnn.params["rescale_R"]),
+            r / float(r_scale),
             self.hnn.rescale_param(deg_i0_a_eff, self.hnn.ind_deg_i0_a),
             self.hnn.rescale_param(deg_ds_c_eff, self.hnn.ind_deg_ds_c),
         ],
@@ -434,10 +542,11 @@ def get_cs_a_hnntime(self, r, deg_i0_a, deg_ds_c):
     deg_i0_a = _to_tensor(deg_i0_a, r)
     deg_ds_c = _to_tensor(deg_ds_c, r)
     t = torch.full_like(deg_i0_a, float(self.hnntime_val))
+    r_scale = _radial_rescale_from_nn(self.hnntime, "a")
     out = self.hnntime.model(
         [
             t / float(self.hnntime.params["rescale_T"]),
-            r / float(self.hnntime.params["rescale_R"]),
+            r / float(r_scale),
             self.hnntime.rescale_param(deg_i0_a, self.hnntime.ind_deg_i0_a),
             self.hnntime.rescale_param(deg_ds_c, self.hnntime.ind_deg_ds_c),
         ],
@@ -458,10 +567,11 @@ def get_cs_c_hnn(self, t, r, deg_i0_a, deg_ds_c):
         deg_i0_a_eff = deg_i0_a
         deg_ds_c_eff = deg_ds_c
 
+    r_scale = _radial_rescale_from_nn(self.hnn, "c")
     out = self.hnn.model(
         [
             t / float(self.hnn.params["rescale_T"]),
-            r / float(self.hnn.params["rescale_R"]),
+            r / float(r_scale),
             self.hnn.rescale_param(deg_i0_a_eff, self.hnn.ind_deg_i0_a),
             self.hnn.rescale_param(deg_ds_c_eff, self.hnn.ind_deg_ds_c),
         ],
@@ -475,16 +585,22 @@ def get_cs_c_hnntime(self, r, deg_i0_a, deg_ds_c):
     deg_i0_a = _to_tensor(deg_i0_a, r)
     deg_ds_c = _to_tensor(deg_ds_c, r)
     t = torch.full_like(deg_i0_a, float(self.hnntime_val))
+    r_scale = _radial_rescale_from_nn(self.hnntime, "c")
     out = self.hnntime.model(
         [
             t / float(self.hnntime.params["rescale_T"]),
-            r / float(self.hnntime.params["rescale_R"]),
+            r / float(r_scale),
             self.hnntime.rescale_param(deg_i0_a, self.hnntime.ind_deg_i0_a),
             self.hnntime.rescale_param(deg_ds_c, self.hnntime.ind_deg_ds_c),
         ],
         training=False,
     )[self.hnntime.ind_cs_c]
     return self.hnntime.rescaleCs_c(out, t, r, deg_i0_a, deg_ds_c)
+
+
+# -----------------------------------------------------------------------------
+# Parameter rescaling helpers
+# -----------------------------------------------------------------------------
 
 
 def rescale_param(self, param, ind):
