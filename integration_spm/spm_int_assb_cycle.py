@@ -29,6 +29,21 @@ Main consistency points
 5. Uses the same output variables expected by PINNSTRIPES/PyTorch training:
        data_phie.npz, data_phis_c.npz, data_cs_a.npz, data_cs_c.npz
 
+Important terminology fix
+-------------------------
+In this file the legacy suffixes are electrode-fixed variables, not
+charge/discharge role labels:
+
+       a = negative electrode = Li-In/In effective pseudo-particle
+       c = positive electrode = NMC811 representative particle
+
+During discharge the positive electrode is the cathode and the negative
+electrode is the anode. During charge these reaction roles switch. The
+material identity, geometry, OCP table, diffusivity and i0 callable of each
+electrode do NOT switch. The reaction-role switch is represented by the
+sign of I(t), hence by J_a/J_c, eta_a/eta_c and I*R_ohm. This avoids mixing
+"positive/negative electrode" with "anode/cathode reaction role".
+
 Default experimental current source
 -----------------------------------
 By default the script looks for the user's local ASSB CSV:
@@ -604,6 +619,110 @@ def _first_nonzero_current(current_A: np.ndarray, threshold_A: float = 1.0e-8) -
     return float(current_A[idx[0]])
 
 
+# -----------------------------------------------------------------------------
+# Charge/discharge role helpers
+# -----------------------------------------------------------------------------
+
+def current_mode_from_value(I_now: float, threshold_A: float = 1.0e-10) -> str:
+    """Return charge/discharge/rest from the signed experimental current.
+
+    Convention used throughout this project:
+        +I = charge
+        -I = discharge
+
+    This function is deliberately separate from electrode material labels.
+    The NMC811 positive electrode and Li-In/In negative electrode keep their
+    own OCP/i0/D_s functions. Only their electrochemical reaction roles switch.
+    """
+    I_now = float(I_now)
+    if I_now > threshold_A:
+        return "charge"
+    if I_now < -threshold_A:
+        return "discharge"
+    return "rest"
+
+
+def electrode_role_map_from_current(I_now: float, threshold_A: float = 1.0e-10) -> dict[str, str]:
+    """Map fixed electrodes to reaction roles for metadata/auditing only.
+
+    The returned role labels must NOT be used to swap material parameters.
+    They only document the electrochemical role implied by the current sign.
+    """
+    mode = current_mode_from_value(I_now, threshold_A=threshold_A)
+    if mode == "charge":
+        return {
+            "mode": "charge",
+            "positive_electrode": "anode_reaction_role",
+            "negative_electrode": "cathode_reaction_role",
+        }
+    if mode == "discharge":
+        return {
+            "mode": "discharge",
+            "positive_electrode": "cathode_reaction_role",
+            "negative_electrode": "anode_reaction_role",
+        }
+    return {
+        "mode": "rest",
+        "positive_electrode": "near_equilibrium_no_net_role",
+        "negative_electrode": "near_equilibrium_no_net_role",
+    }
+
+
+def current_role_code_arrays(current_A: np.ndarray, threshold_A: float = 1.0e-10) -> dict[str, np.ndarray]:
+    """Return numeric role/sign arrays saved into solution.npz.
+
+    Codes:
+        current_mode_code: -1 discharge, 0 rest, +1 charge
+        positive_electrode_role_code: -1 anode role, 0 rest, +1 cathode role
+        negative_electrode_role_code: -1 anode role, 0 rest, +1 cathode role
+
+    These arrays are provenance/debug metadata. They are not used to change
+    the OCP, D_s, i0 or geometry of either fixed electrode.
+    """
+    current_A = np.asarray(current_A, dtype=np.float64)
+    mode = np.zeros_like(current_A, dtype=np.int8)
+    mode[current_A > threshold_A] = 1
+    mode[current_A < -threshold_A] = -1
+
+    # For discharge: positive=NMC cathode role, negative=Li-In anode role.
+    # For charge:    positive=NMC anode role,   negative=Li-In cathode role.
+    positive_role = np.zeros_like(mode, dtype=np.int8)
+    negative_role = np.zeros_like(mode, dtype=np.int8)
+    positive_role[mode < 0] = 1
+    negative_role[mode < 0] = -1
+    positive_role[mode > 0] = -1
+    negative_role[mode > 0] = 1
+
+    return {
+        "current_mode_code": mode,
+        "positive_electrode_role_code": positive_role,
+        "negative_electrode_role_code": negative_role,
+    }
+
+
+def charge_discharge_role_summary(current_A: np.ndarray, threshold_A: float = 1.0e-10) -> dict[str, Any]:
+    """Compact summary of charge/discharge role alignment for JSON metadata."""
+    current_A = np.asarray(current_A, dtype=np.float64)
+    codes = current_role_code_arrays(current_A, threshold_A=threshold_A)["current_mode_code"]
+    n_charge = int(np.sum(codes > 0))
+    n_discharge = int(np.sum(codes < 0))
+    n_rest = int(np.sum(codes == 0))
+    first_nonzero = _first_nonzero_current(current_A, threshold_A=threshold_A)
+    return {
+        "current_sign_convention": "+I charge, -I discharge",
+        "fixed_electrode_a": "negative electrode, Li-In/In effective pseudo-particle",
+        "fixed_electrode_c": "positive electrode, NMC811 representative particle",
+        "role_rule_discharge": "positive electrode is cathode role; negative electrode is anode role",
+        "role_rule_charge": "positive electrode is anode role; negative electrode is cathode role",
+        "material_parameter_switching": "disabled: OCP/i0/D_s/geometry remain fixed to electrode identity",
+        "n_charge_points": n_charge,
+        "n_discharge_points": n_discharge,
+        "n_rest_points": n_rest,
+        "first_nonzero_current_A": float(first_nonzero),
+        "first_nonzero_mode": current_mode_from_value(first_nonzero, threshold_A=threshold_A),
+    }
+
+
 
 def _apply_profile_to_params(params: dict, profile: CurrentProfile) -> dict:
     """Synchronize makeParams() output with the selected cycle profile."""
@@ -758,7 +877,17 @@ def make_sim_config(t_dom: dict, r_dom: dict) -> dict:
 # -----------------------------------------------------------------------------
 
 def surface_flux_from_current(I_now: float, params: dict) -> tuple[np.float64, np.float64]:
-    """Return (J_a, J_c) in kmol m^-2 s^-1 from applied current in A."""
+    """Return (J_a, J_c) in kmol m^-2 s^-1 from applied current in A.
+
+    Important:
+        a is the fixed negative electrode and c is the fixed positive electrode.
+        The signs below already encode charge/discharge role switching:
+
+            +I charge    -> J_a < 0, J_c > 0
+            -I discharge -> J_a > 0, J_c < 0
+
+        Do not swap OCP/i0/D_s functions between electrodes here.
+    """
     I_now = np.float64(I_now)
     F = np.float64(params["F"])
     V_a = np.float64(params.get("V_a", params["A_a"] * params["L_a"]))
@@ -802,6 +931,11 @@ def compute_potentials(
     R = np.float64(params["R"])
     F = np.float64(params["F"])
 
+    # Electrode-fixed OCPs:
+    #   U_a = Li-In/In negative-electrode OCP
+    #   U_c = NMC811 positive-electrode OCP
+    # They are not swapped during charge. The charge/discharge role switch is
+    # carried by J_a/J_c, eta_a/eta_c and I_now * R_ohm_eff.
     U_a = _to_scalar(params["Uocp_a"](_torch_scalar(cse_a), params["csanmax"]))
     U_c = _to_scalar(_uocp_c_raw(params)(_torch_scalar(cse_c), params["cscamax"]))
 
@@ -1262,6 +1396,7 @@ def save_solution_and_datasets(
 
     phis_c_raw = np.asarray(sol.get("phis_c_raw", sol["phis_c"]), dtype=np.float64)
     voltage_alignment = np.asarray(sol.get("voltage_alignment_V", sol["phis_c"] - phis_c_raw), dtype=np.float64)
+    role_codes = current_role_code_arrays(sol["I_profile"])
 
     solution_path = out / "solution.npz"
     np.savez(
@@ -1278,6 +1413,9 @@ def save_solution_and_datasets(
         phis_a=np.zeros_like(sol["phie"]),
         ce=np.full_like(sol["phie"], np.float64(params.get("ce0", 1.2))),
         I_profile=sol["I_profile"],
+        current_mode_code=role_codes["current_mode_code"],
+        positive_electrode_role_code=role_codes["positive_electrode_role_code"],
+        negative_electrode_role_code=role_codes["negative_electrode_role_code"],
         j_a=sol["j_a"],
         j_c=sol["j_c"],
         eta_a=sol["eta_a"],
@@ -1309,7 +1447,7 @@ def save_solution_and_datasets(
     fit_report = {} if fit_report is None else fit_report
     metadata = {
         "source": "spm_int_assb_cycle.py",
-        "version": "v3_voltage_aligned",
+        "version": "v3_voltage_aligned_electrode_fixed_sign_v4",
         "record_csv": None if profile.csv_path is None else str(profile.csv_path),
         "cycle": profile.cycle,
         "merge_cycles": bool(getattr(profile, "merge_cycles", False)),
@@ -1321,6 +1459,12 @@ def save_solution_and_datasets(
         "tmax_s": float(t[-1]),
         "I_min_A": float(np.min(sol["I_profile"])),
         "I_max_A": float(np.max(sol["I_profile"])),
+        "charge_discharge_role_summary": charge_discharge_role_summary(sol["I_profile"]),
+        "solution_role_code_description": {
+            "current_mode_code": "-1 discharge, 0 rest, +1 charge",
+            "positive_electrode_role_code": "-1 anode role, 0 rest, +1 cathode role",
+            "negative_electrode_role_code": "-1 anode role, 0 rest, +1 cathode role",
+        },
         "capacity_charge_Ah": float(profile.charge_capacity_Ah),
         "capacity_discharge_Ah": float(profile.discharge_capacity_Ah),
         "capacity_used_Ah": float(params.get("C", 0.0)),
@@ -1405,7 +1549,7 @@ def sanity_check_solution(params: dict, profile: CurrentProfile, sol: dict) -> d
 
 
 def build_arg_parser() -> argparse.ArgumentParser:
-    p = argparse.ArgumentParser(description="Generate ASSB SPM v3 soft labels for one charge/discharge cycle.")
+    p = argparse.ArgumentParser(description="Generate ASSB SPM v3/v4 soft labels with electrode-fixed charge/discharge sign provenance.")
     p.add_argument("--record_csv", "--record-csv", dest="record_csv", type=str, default=str(DEFAULT_RECORD_CSV), help="Path to record_extracted.csv")
     p.add_argument("--ocp_dir", "--ocp-dir", dest="ocp_dir", type=str, default=str(DEFAULT_OCP_DIR), help="Path to ocp_estimation_outputs folder")
     p.add_argument("--cycle", type=int, default=5, help="Cycle number to generate soft labels for; default skips activation cycles and uses 5")

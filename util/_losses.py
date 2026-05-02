@@ -550,10 +550,28 @@ def setResidualRescaling(self, weights):
     mass_rhs_a = max(3.0 * j_a_abs / max(Rs_a, 1.0e-30), 1.0e-30)
     mass_rhs_c = max(3.0 * j_c_abs / max(Rs_c, 1.0e-30), 1.0e-30)
     if self.activeReg:
-        w_mass_a = float(self.params.get("w_cs_a_mass_reg", self.params.get("w_mass_a_reg", 1.0)))
-        w_mass_c = float(self.params.get("w_cs_c_mass_reg", self.params.get("w_mass_c_reg", 1.0)))
+        # ID=91 / ASSB cycle5-v4: allow anode-only or cathode-only mass
+        # conservation without relying on init_pinn.py to forward new input keys
+        # into params. Environment variables have highest priority.
+        w_mass_a = float(
+            os.environ.get(
+                "ASSB_W_CS_A_MASS_REG",
+                self.params.get("w_cs_a_mass_reg", self.params.get("w_mass_a_reg", 1.0)),
+            )
+        )
+        w_mass_c = float(
+            os.environ.get(
+                "ASSB_W_CS_C_MASS_REG",
+                self.params.get("w_cs_c_mass_reg", self.params.get("w_mass_c_reg", 1.0)),
+            )
+        )
         self.regTerms_rescale_unweighted = [1.0 / mass_rhs_a, 1.0 / mass_rhs_c]
-        self.regTerms_rescale = [w_mass_a * self.regTerms_rescale_unweighted[0], w_mass_c * self.regTerms_rescale_unweighted[1]]
+        self.regTerms_rescale = [
+            w_mass_a * self.regTerms_rescale_unweighted[0],
+            w_mass_c * self.regTerms_rescale_unweighted[1],
+        ]
+        self.params["w_cs_a_mass_reg_effective"] = np.float64(w_mass_a)
+        self.params["w_cs_c_mass_reg_effective"] = np.float64(w_mass_c)
     else:
         self.regTerms_rescale_unweighted = [0.0]
         self.regTerms_rescale = [0.0]

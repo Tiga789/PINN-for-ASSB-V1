@@ -56,6 +56,9 @@ def _candidate_soft_label_summaries() -> list[Path]:
 
     candidates.extend(
         [
+            # Prefer the newest cycle5 soft-label metadata when present.
+            ROOT / "Data" / "assb_soft_labels_cycle5_v4" / "soft_label_summary.json",
+            ROOT / "Data" / "assb_soft_labels_cycles5plus_v4" / "soft_label_summary.json",
             ROOT / "Data" / "assb_soft_labels_cycle5_v3" / "soft_label_summary.json",
             ROOT / "Data" / "assb_soft_labels_cycles5plus_v3" / "soft_label_summary.json",
         ]
@@ -81,6 +84,17 @@ def _summary_float(names: tuple[str, ...], default: float) -> np.float64:
                     return np.float64(val)
             except Exception:
                 pass
+
+    fit_report = _SOFT_SUMMARY.get("fit_report", {})
+    if isinstance(fit_report, dict):
+        for name in names:
+            if name in fit_report:
+                try:
+                    val = float(fit_report[name])
+                    if np.isfinite(val):
+                        return np.float64(val)
+                except Exception:
+                    pass
 
     for name in names:
         env_name = "ASSB_" + name.upper()
@@ -120,14 +134,19 @@ UOCP_A_LIIN_V = np.float64(0.6246405571428566)
 CSANMAX_EFF = _summary_float(("csanmax", "csanmax_eff"), 6.0)
 
 # Positive OCP usable-window mapping, fitted in the v3 soft-label generator.
-THETA_C_BOTTOM = _summary_float(("theta_c_bottom_v3", "theta_c_bottom"), 0.834)
-THETA_C_TOP = _summary_float(("theta_c_top_v3", "theta_c_top"), 0.432)
+THETA_C_BOTTOM = _summary_float(("theta_c_bottom_v4", "theta_c_bottom_v3", "theta_c_bottom"), 0.9325)
+THETA_C_TOP = _summary_float(("theta_c_top_v4", "theta_c_top_v3", "theta_c_top"), 0.4675)
 
-# Terminal-voltage shift used by v3 labels: V_term = V_interface + I(t)R + offset.
-R_OHM_EFF = _summary_float(("R_ohm_eff_v3", "R_ohm_eff"), 105.0)
+# Terminal-voltage shift compatible with v4 labels. In the v4 generator this
+# constant appears as U_p_offset_V, i.e. a constant positive-OCP offset. In the
+# training loss it is mathematically equivalent to adding a constant terminal
+# shift alongside I(t) * R_ohm_eff, so both key names are kept.
+R_OHM_EFF = _summary_float(("R_ohm_eff_v4", "R_ohm_eff_v3", "R_ohm_eff"), 143.6913493166367)
 VOLTAGE_ALIGNMENT_OFFSET_V = _summary_float(
-    ("voltage_alignment_offset_V", "voltage_offset_V"), -0.11588681607942332
+    ("voltage_alignment_offset_V", "U_p_offset_V", "up_offset_V", "voltage_offset_V"),
+    -0.2186690603079502,
 )
+U_P_OFFSET_V = VOLTAGE_ALIGNMENT_OFFSET_V
 
 # Kinetic and diffusion priors.
 I0_A_REF = np.float64(0.1)       # A / m^2, multiplied by degradation parameter
@@ -554,6 +573,11 @@ def setParams(params, deg, bat, an, ca, ic):
 
     params["Rs_a"] = an.D50 / np.float64(2.0)
     params["Rs_c"] = ca.D50 / np.float64(2.0)
+    # If a soft-label summary is active, let it be the source of truth for the
+    # effective SPM geometry. This prevents training from silently using a
+    # different particle radius than the integration_spm-generated labels.
+    params["Rs_a"] = _summary_float(("Rs_a_m", "Rs_a"), float(params["Rs_a"]))
+    params["Rs_c"] = _summary_float(("Rs_c_m", "Rs_c"), float(params["Rs_c"]))
 
     # Backward-compatible scalar radius scale, plus new per-electrode scales.
     # The legacy scalar is kept so old code still runs. _losses.py should later
@@ -566,8 +590,8 @@ def setParams(params, deg, bat, an, ca, ic):
     params["radial_rescale_mode"] = "per_electrode"
     params["use_per_electrode_rescale_R"] = True
 
-    params["csanmax"] = an.csmax
-    params["cscamax"] = ca.csmax
+    params["csanmax"] = _summary_float(("csanmax", "csanmax_eff"), float(an.csmax))
+    params["cscamax"] = _summary_float(("cscamax",), float(ca.csmax))
     params["rescale_T"] = np.float64(max(bat.tmax, 1.0e-16))
     params["mag_cs_a"] = np.float64(max(1.0, float(an.csmax)))
     params["mag_cs_c"] = np.float64(51.8)
@@ -585,6 +609,7 @@ def setParams(params, deg, bat, an, ca, ic):
     params["D_s_c"] = ca.ds
 
     params["R_ohm_eff"] = np.float64(R_OHM_EFF)
+    params["U_p_offset_V"] = np.float64(U_P_OFFSET_V)
     params["voltage_alignment_offset_V"] = np.float64(VOLTAGE_ALIGNMENT_OFFSET_V)
     params["theta_c_bottom"] = np.float64(THETA_C_BOTTOM)
     params["theta_c_top"] = np.float64(THETA_C_TOP)
@@ -595,15 +620,23 @@ def setParams(params, deg, bat, an, ca, ic):
     params["ce0"] = ic.ce
     params["ce_a0"] = ic.ce
     params["ce_c0"] = ic.ce
-    params["cs_a0"] = ic.an.cs
-    params["cs_c0"] = ic.ca.cs
+    theta_a0_summary = _summary_float(("theta_a0",), np.nan)
+    theta_c0_summary = _summary_float(("theta_c0",), np.nan)
+    if np.isfinite(theta_a0_summary):
+        params["cs_a0"] = np.float64(theta_a0_summary * params["csanmax"])
+    else:
+        params["cs_a0"] = ic.an.cs
+    if np.isfinite(theta_c0_summary):
+        params["cs_c0"] = np.float64(theta_c0_summary * params["cscamax"])
+    else:
+        params["cs_c0"] = ic.ca.cs
 
-    params["eps_s_a"] = an.solids.eps
-    params["eps_s_c"] = ca.solids.eps
+    params["eps_s_a"] = _summary_float(("eps_s_a",), float(an.solids.eps))
+    params["eps_s_c"] = _summary_float(("eps_s_c",), float(ca.solids.eps))
     params["L_a"] = an.thickness
     params["L_c"] = ca.thickness
-    params["V_a"] = params["A_a"] * params["L_a"]
-    params["V_c"] = params["A_c"] * params["L_c"]
+    params["V_a"] = _summary_float(("V_a_m3", "V_a"), float(params["A_a"] * params["L_a"]))
+    params["V_c"] = _summary_float(("V_c_m3", "V_c"), float(params["A_c"] * params["L_c"]))
 
     j_a = -params["I_discharge"] * params["Rs_a"] / (
         np.float64(3.0) * params["eps_s_a"] * params["F"] * params["V_a"]
@@ -679,9 +712,14 @@ def setParams(params, deg, bat, an, ca, ic):
     # Make provenance visible in smoke tests and ModelFin_*/config.json.
     params["ocp_table_source"] = "csv" if (_POS_TABLE is not None and _NEG_TABLE is not None) else "legacy_fallback"
     params["soft_label_summary_path"] = _SOFT_SUMMARY.get("_summary_path", "")
+    params["current_sign_convention"] = "+I charge, -I discharge"
+    params["fixed_electrode_a"] = "negative electrode, Li-In/In effective pseudo-particle"
+    params["fixed_electrode_c"] = "positive electrode, NMC811 representative particle"
+    params["material_parameter_switching"] = "disabled: OCP/i0/D_s/geometry remain fixed to electrode identity"
     params["thermo_patch_note"] = (
-        "2026-04 cycle5 debug: added per-electrode radial rescale params "
-        "(rescale_R_a/rescale_R_c) and narrower theta bounds. Legacy rescale_R is kept."
+        "2026-04 v4 training sync: read v4 soft-label summary first, keep fixed "
+        "electrode identity, use I(t) sign only for flux direction, mirror v4 "
+        "theta window/R_ohm/U_p_offset, and expose per-electrode radial scaling."
     )
 
     return params
