@@ -1,0 +1,346 @@
+{
+  "repo_root": "C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\PINN-for-ASSB-V1",
+  "model_dir": "C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\PINN-for-ASSB-V1\\ModelFin_92",
+  "checkpoint": "C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\PINN-for-ASSB-V1\\ModelFin_92\\best.pt",
+  "soft_label_dir": "C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\PINN-for-ASSB-V1\\Data\\assb_soft_labels_cycle5_v4",
+  "output_dir": "C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\PINN-for-ASSB-V1\\EvalFin_92_cycle5_v4_anode_seccons",
+  "device": "cuda:0",
+  "config_prior_model": "assb_discharge",
+  "config_train_summary_json_original": "C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\PINN-for-ASSB-V1\\Data\\assb_soft_labels_cycle5_v4\\soft_label_summary.json",
+  "chosen_train_summary_json": "C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\PINN-for-ASSB-V1\\Data\\assb_soft_labels_cycle5_v4\\soft_label_summary.json",
+  "model_params": {
+    "rescale_T": 9232.0,
+    "rescale_R": 5e-05,
+    "rescale_R_a": 5e-05,
+    "rescale_R_c": 1.8e-06,
+    "radial_rescale_mode": "per_electrode",
+    "use_per_electrode_rescale_R": "True",
+    "csanmax": 6.0,
+    "cscamax": 51.8,
+    "R_ohm_eff": 143.6913493166367,
+    "voltage_alignment_offset_V": -0.2186690603079502,
+    "theta_c_bottom": 0.9325,
+    "theta_c_top": 0.4675,
+    "Rs_a": 5e-05,
+    "Rs_c": 1.8e-06
+  },
+  "output_indices": {
+    "phie": 0,
+    "phis_c": 1,
+    "cs_a": 2,
+    "cs_c": 3
+  },
+  "datasets": {
+    "phie": {
+      "keys": [
+        "x_train",
+        "y_train",
+        "x_params_train"
+      ],
+      "x_train_shape": [
+        925,
+        1
+      ],
+      "t_stats": {
+        "n": 925,
+        "min": 0.0,
+        "max": 9232.0,
+        "mean": 4616.647567567567,
+        "std": 2667.205864045141
+      },
+      "y_train_shape": [
+        925,
+        1
+      ],
+      "y_stats": {
+        "n": 925,
+        "min": -0.8172074473820048,
+        "max": -0.43207366690370846,
+        "mean": -0.6132939040456957,
+        "std": 0.1908448851285778
+      },
+      "x_params_train_shape": [
+        925,
+        2
+      ]
+    },
+    "phis_c": {
+      "keys": [
+        "x_train",
+        "y_train",
+        "x_params_train"
+      ],
+      "x_train_shape": [
+        925,
+        1
+      ],
+      "t_stats": {
+        "n": 925,
+        "min": 0.0,
+        "max": 9232.0,
+        "mean": 4616.647567567567,
+        "std": 2667.205864045141
+      },
+      "y_train_shape": [
+        925,
+        1
+      ],
+      "y_stats": {
+        "n": 925,
+        "min": 2.6739798672249164,
+        "max": 3.6569615035560616,
+        "mean": 3.165358918918919,
+        "std": 0.28951978295640923
+      },
+      "x_params_train_shape": [
+        925,
+        2
+      ]
+    },
+    "cs_a": {
+      "keys": [
+        "x_train",
+        "y_train",
+        "x_params_train"
+      ],
+      "x_train_shape": [
+        59200,
+        2
+      ],
+      "t_stats": {
+        "n": 59200,
+        "min": 0.0,
+        "max": 9232.0,
+        "mean": 4616.647567567567,
+        "std": 2667.205864045141
+      },
+      "r_stats": {
+        "n": 59200,
+        "min": 0.0,
+        "max": 5e-05,
+        "mean": 2.5e-05,
+        "std": 1.4661073969770766e-05
+      },
+      "y_train_shape": [
+        59200,
+        1
+      ],
+      "y_stats": {
+        "n": 59200,
+        "min": 2.7,
+        "max": 5.081762569716032,
+        "mean": 3.8629754224110533,
+        "std": 0.6320798136087946
+      },
+      "x_params_train_shape": [
+        59200,
+        2
+      ]
+    },
+    "cs_c": {
+      "keys": [
+        "x_train",
+        "y_train",
+        "x_params_train"
+      ],
+      "x_train_shape": [
+        59200,
+        2
+      ],
+      "t_stats": {
+        "n": 59200,
+        "min": 0.0,
+        "max": 9232.0,
+        "mean": 4616.647567567567,
+        "std": 2667.205864045141
+      },
+      "r_stats": {
+        "n": 59200,
+        "min": 0.0,
+        "max": 1.8e-06,
+        "mean": 8.999999999999999e-07,
+        "std": 5.277986629117475e-07
+      },
+      "y_train_shape": [
+        59200,
+        1
+      ],
+      "y_stats": {
+        "n": 59200,
+        "min": 22.369408798562453,
+        "max": 46.62,
+        "mean": 33.98237366331517,
+        "std": 6.749327357984287
+      },
+      "x_params_train_shape": [
+        59200,
+        2
+      ]
+    }
+  },
+  "radial_consistency": {
+    "model_radial_params": {
+      "rescale_R": 5e-05,
+      "rescale_R_a": 5e-05,
+      "rescale_R_c": 1.8e-06,
+      "Rs_a": 5e-05,
+      "Rs_c": 1.8e-06
+    },
+    "cs_a": {
+      "data_r_min": 0.0,
+      "data_r_max": 5e-05,
+      "scale_key_used": "rescale_R_a",
+      "scale_used": 5e-05,
+      "data_rmax_over_scale_used": 1.0,
+      "data_rmax_over_global_rescale_R": 1.0
+    },
+    "cs_c": {
+      "data_r_min": 0.0,
+      "data_r_max": 1.8e-06,
+      "scale_key_used": "rescale_R_c",
+      "scale_used": 1.8e-06,
+      "data_rmax_over_scale_used": 1.0,
+      "data_rmax_over_global_rescale_R": 0.036
+    }
+  },
+  "phie": {
+    "n": 925,
+    "mae": 0.0948562117796985,
+    "rmse": 0.11562609445054187,
+    "maxabs": 0.3264375613257653,
+    "bias_mean": 0.005343224063703107,
+    "corr": 0.8117647963092571,
+    "label_min": -0.8172074473820048,
+    "label_max": -0.43207366690370846,
+    "label_std": 0.1908448851285778,
+    "pred_min": -0.9510781184686219,
+    "pred_max": -0.17860590264109533,
+    "pred_std": 0.1852467111456237,
+    "std_ratio_pred_over_label": 0.9706663661476572
+  },
+  "phis_c": {
+    "n": 925,
+    "mae": 0.26567251291983535,
+    "rmse": 0.28338727640493194,
+    "maxabs": 0.3725390058730458,
+    "bias_mean": 0.2290429811703297,
+    "corr": 0.8363316309596415,
+    "label_min": 2.6739798672249164,
+    "label_max": 3.6569615035560616,
+    "label_std": 0.28951978295640923,
+    "pred_min": 3.0412398853596794,
+    "pred_max": 3.6422364880234093,
+    "pred_std": 0.19060691030384616,
+    "std_ratio_pred_over_label": 0.6583553923586092
+  },
+  "cs_a": {
+    "n": 59200,
+    "mae": 1.410917220686813,
+    "rmse": 1.5707138276830708,
+    "maxabs": 2.669131540595062,
+    "bias_mean": -1.410917220686813,
+    "corr": -0.6719263838082432,
+    "label_min": 2.7,
+    "label_max": 5.081762569716032,
+    "label_std": 0.6320798136087946,
+    "pred_min": 2.4020029622246497,
+    "pred_max": 2.7,
+    "pred_std": 0.08254539524513221,
+    "std_ratio_pred_over_label": 0.13059331031922658
+  },
+  "theta_a": {
+    "n": 59200,
+    "mae": 0.2351528701144688,
+    "rmse": 0.26178563794717846,
+    "maxabs": 0.44485525676584375,
+    "bias_mean": -0.2351528701144688,
+    "corr": -0.6719263838082431,
+    "label_min": 0.45,
+    "label_max": 0.8469604282860054,
+    "label_std": 0.10534663560146575,
+    "pred_min": 0.40033382703744164,
+    "pred_max": 0.45,
+    "pred_std": 0.013757565874188698,
+    "std_ratio_pred_over_label": 0.13059331031922658
+  },
+  "cs_c": {
+    "n": 59200,
+    "mae": 10.776411025618055,
+    "rmse": 12.204612436417092,
+    "maxabs": 23.70231576423761,
+    "bias_mean": -10.760876816778572,
+    "corr": 0.5940156318412784,
+    "label_min": 22.369408798562453,
+    "label_max": 46.62,
+    "label_std": 6.749327357984287,
+    "pred_min": 20.758932715708845,
+    "pred_max": 46.92499910117289,
+    "pred_std": 5.926601965819911,
+    "std_ratio_pred_over_label": 0.8781026095598827
+  },
+  "theta_c": {
+    "n": 59200,
+    "mae": 0.2080388228883794,
+    "rmse": 0.23561027869531065,
+    "maxabs": 0.45757366340227046,
+    "bias_mean": -0.20773893468684504,
+    "corr": 0.5940156318412786,
+    "label_min": 0.43184186869811686,
+    "label_max": 0.9,
+    "label_std": 0.13029589494178162,
+    "pred_min": 0.4007515968283561,
+    "pred_max": 0.9058880135361561,
+    "pred_std": 0.11441316536331876,
+    "std_ratio_pred_over_label": 0.8781026095598827
+  },
+  "solution_keys": [
+    "t",
+    "r_a",
+    "r_c",
+    "cs_a",
+    "cs_c",
+    "phie",
+    "phis_c",
+    "phis_c_raw",
+    "voltage_alignment_V",
+    "phis_a",
+    "ce",
+    "I_profile",
+    "current_mode_code",
+    "positive_electrode_role_code",
+    "negative_electrode_role_code",
+    "j_a",
+    "j_c",
+    "eta_a",
+    "eta_c",
+    "Uocp_a",
+    "Uocp_c",
+    "voltage_exp",
+    "cycle",
+    "cycle_profile"
+  ],
+  "soft_label_voltage_sanity": {
+    "available": true,
+    "time_key": "t",
+    "voltage_key": "voltage_exp",
+    "metrics_phis_c_label_vs_experiment": {
+      "n": 925,
+      "mae": 0.04631181542930769,
+      "rmse": 0.08390891574910635,
+      "maxabs": 0.5449699157071008,
+      "bias_mean": 3.84077154464919e-18,
+      "corr": 0.9665013883190117,
+      "label_min": 2.1934,
+      "label_max": 3.6795,
+      "label_std": 0.31879492711708574,
+      "pred_min": 2.6739798672249164,
+      "pred_max": 3.6569615035560616,
+      "pred_std": 0.28951978295640923,
+      "std_ratio_pred_over_label": 0.908169353805544
+    }
+  },
+  "diagnosis": [
+    "phis_c MAE is above 0.2 V. Do not open data loss yet; check loading/rescale/boundary loss first.",
+    "theta_a prediction variance is too small. This supports a boundary-flux/trivial-solution diagnosis."
+  ]
+}

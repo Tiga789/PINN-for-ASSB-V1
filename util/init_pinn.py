@@ -233,6 +233,13 @@ def initialize_params_from_inpt(inpt: Dict[str, str]) -> Dict[str, Any]:
     MAX_BATCH_SIZE_DATA = int(inpt["MAX_BATCH_SIZE_DATA"])
     BATCH_SIZE_REG = int(inpt["BATCH_SIZE_REG"])
     BATCH_SIZE_STRUCT = _get_int(inpt, "BATCH_SIZE_STRUCT", 64)
+
+    # ASSB secondary-conservation controls. These keys are optional in the
+    # original PINNSTRIPES inputs, so read them defensively. They are forwarded
+    # into params and config.json in initialize_nn().
+    w_cs_a_mass_reg = _get_float(inpt, "w_cs_a_mass_reg", float(os.environ.get("ASSB_W_CS_A_MASS_REG", 1.0)))
+    w_cs_c_mass_reg = _get_float(inpt, "w_cs_c_mass_reg", float(os.environ.get("ASSB_W_CS_C_MASS_REG", 1.0)))
+    mass_reg_n_quad = _get_int(inpt, "mass_reg_n_quad", _get_int(inpt, "N_MASS_REG_QUAD", 8))
     N_BATCH = int(inpt["N_BATCH"])
     N_BATCH_LBFGS = int(inpt["N_BATCH_LBFGS"])
     NEURONS_NUM = int(inpt["NEURONS_NUM"])
@@ -315,6 +322,9 @@ def initialize_params_from_inpt(inpt: Dict[str, str]) -> Dict[str, Any]:
         "MAX_BATCH_SIZE_DATA": MAX_BATCH_SIZE_DATA,
         "BATCH_SIZE_REG": BATCH_SIZE_REG,
         "BATCH_SIZE_STRUCT": BATCH_SIZE_STRUCT,
+        "w_cs_a_mass_reg": w_cs_a_mass_reg,
+        "w_cs_c_mass_reg": w_cs_c_mass_reg,
+        "mass_reg_n_quad": mass_reg_n_quad,
         "N_BATCH": N_BATCH,
         "N_BATCH_LBFGS": N_BATCH_LBFGS,
         "NUM_RES_BLOCKS": NUM_RES_BLOCKS,
@@ -388,6 +398,9 @@ def initialize_nn(args, input_params: Dict[str, Any]) -> myNN:
     BATCH_SIZE_BOUND = input_params["BATCH_SIZE_BOUND"]
     BATCH_SIZE_REG = input_params["BATCH_SIZE_REG"]
     BATCH_SIZE_STRUCT = input_params["BATCH_SIZE_STRUCT"]
+    w_cs_a_mass_reg = float(input_params.get("w_cs_a_mass_reg", os.environ.get("ASSB_W_CS_A_MASS_REG", 1.0)))
+    w_cs_c_mass_reg = float(input_params.get("w_cs_c_mass_reg", os.environ.get("ASSB_W_CS_C_MASS_REG", 1.0)))
+    mass_reg_n_quad = int(input_params.get("mass_reg_n_quad", 8))
     MAX_BATCH_SIZE_DATA = input_params["MAX_BATCH_SIZE_DATA"]
     N_BATCH_LBFGS = input_params["N_BATCH_LBFGS"]
     HARD_IC_TIMESCALE = input_params["HARD_IC_TIMESCALE"]
@@ -421,6 +434,17 @@ def initialize_nn(args, input_params: Dict[str, Any]) -> myNN:
     HNNTIME_utilFolder = input_params["HNNTIME_utilFolder"]
     HNNTIME_val = input_params["HNNTIME_val"]
     weights = input_params["weights"]
+
+    # Forward ASSB secondary-conservation controls into the physical parameter
+    # dictionary before myNN.__init__ calls setResidualRescaling(). This avoids
+    # relying on environment variables and makes the values visible in
+    # ModelFin_*/config.json.
+    params["w_cs_a_mass_reg"] = np.float64(w_cs_a_mass_reg)
+    params["w_cs_c_mass_reg"] = np.float64(w_cs_c_mass_reg)
+    params["mass_reg_n_quad"] = int(mass_reg_n_quad)
+    os.environ["ASSB_W_CS_A_MASS_REG"] = str(w_cs_a_mass_reg)
+    os.environ["ASSB_W_CS_C_MASS_REG"] = str(w_cs_c_mass_reg)
+    os.environ["ASSB_MASS_REG_N_QUAD"] = str(mass_reg_n_quad)
 
     if MERGED:
         hidden_units_t = [NEURONS_NUM] * LAYERS_T_NUM
@@ -545,8 +569,39 @@ def initialize_nn(args, input_params: Dict[str, Any]) -> myNN:
     )
 
     nn.configDict["prior_model"] = str(PRIOR_MODEL)
+    # ASSB training/provenance diagnostics. These fields are intentionally
+    # duplicated in config.json so a finished ModelFin_* can prove whether
+    # regularization was active and which electrode was weighted.
+    nn.configDict["ID"] = int(ID)
+    nn.configDict["alpha"] = [float(x) for x in alpha]
+    nn.configDict["BATCH_SIZE_INT"] = int(BATCH_SIZE_INT)
+    nn.configDict["BATCH_SIZE_BOUND"] = int(BATCH_SIZE_BOUND)
+    nn.configDict["BATCH_SIZE_REG"] = int(BATCH_SIZE_REG)
+    nn.configDict["MAX_BATCH_SIZE_DATA"] = int(MAX_BATCH_SIZE_DATA)
+    nn.configDict["N_BATCH"] = int(N_BATCH)
+    nn.configDict["w_cs_a_mass_reg"] = float(w_cs_a_mass_reg)
+    nn.configDict["w_cs_c_mass_reg"] = float(w_cs_c_mass_reg)
+    nn.configDict["mass_reg_n_quad"] = int(mass_reg_n_quad)
+    nn.configDict["activeReg_runtime"] = bool(getattr(nn, "activeReg", False))
+    nn.configDict["regTerms_rescale"] = [float(x) for x in getattr(nn, "regTerms_rescale", [])]
+    nn.configDict["regTerms_rescale_unweighted"] = [float(x) for x in getattr(nn, "regTerms_rescale_unweighted", [])]
+    nn.configDict["w_cs_a_mass_reg_effective"] = float(params.get("w_cs_a_mass_reg_effective", params.get("w_cs_a_mass_reg", w_cs_a_mass_reg)))
+    nn.configDict["w_cs_c_mass_reg_effective"] = float(params.get("w_cs_c_mass_reg_effective", params.get("w_cs_c_mass_reg", w_cs_c_mass_reg)))
+    nn.configDict["ASSB_SOFT_LABEL_DIR"] = os.environ.get("ASSB_SOFT_LABEL_DIR", "")
+    nn.configDict["ASSB_SOFT_LABEL_SUMMARY"] = os.environ.get("ASSB_SOFT_LABEL_SUMMARY", "")
+    nn.configDict["ASSB_OCP_DIR"] = os.environ.get("ASSB_OCP_DIR", "")
     if "train_summary_json" in params:
         nn.configDict["train_summary_json"] = params["train_summary_json"]
+
+    print(
+        "INFO: ASSB reg diagnostics | "
+        f"alpha={nn.configDict['alpha']} | "
+        f"BATCH_SIZE_REG={BATCH_SIZE_REG} | "
+        f"activeReg={nn.configDict['activeReg_runtime']} | "
+        f"w_a={nn.configDict['w_cs_a_mass_reg']} | "
+        f"w_c={nn.configDict['w_cs_c_mass_reg']} | "
+        f"reg_rescale={nn.configDict['regTerms_rescale']}"
+    )
 
     if LOAD_MODEL is not None:
         print(f"INFO: Loading model {LOAD_MODEL}")

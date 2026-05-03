@@ -969,17 +969,7 @@ class myNN:
                     n_batch=self.n_batch_lbfgs,
                     tmax=new_tmax,
                 )
-                bestLoss = self.logTraining(
-                    epoch + 1,
-                    epoch_loss,
-                    bestLoss,
-                    mse_unweighted=final_unweighted,
-                    int_loss=epoch_int,
-                    bound_loss=epoch_bound,
-                    data_loss=epoch_data,
-                    reg_loss=epoch_reg,
-                    stage="SGD",
-                )
+                bestLoss = self.logTraining(epoch + 1, epoch_loss, bestLoss, mse_unweighted=final_unweighted)
                 print(
                     f"Epoch {epoch+1:4d} summary loss {epoch_loss:12.6g} iL {epoch_int:12.6g} bL {epoch_bound:12.6g} dL {epoch_data:12.6g} rL {epoch_reg:12.6g}"
                 )
@@ -1026,17 +1016,7 @@ class myNN:
                     n_batch=self.n_batch_lbfgs,
                     tmax=lbfgs_tmax,
                 )
-                bestLoss = self.logTraining(
-                    self.nEpochs + epoch + 1,
-                    epoch_loss,
-                    bestLoss,
-                    mse_unweighted=final_unweighted,
-                    int_loss=epoch_int,
-                    bound_loss=epoch_bound,
-                    data_loss=epoch_data,
-                    reg_loss=epoch_reg,
-                    stage="LBFGS",
-                )
+                bestLoss = self.logTraining(self.nEpochs + epoch + 1, epoch_loss, bestLoss, mse_unweighted=final_unweighted)
                 print(
                     f"LBFGS Epoch {epoch+1:4d} summary loss {epoch_loss:12.6g} iL {epoch_int:12.6g} bL {epoch_bound:12.6g} dL {epoch_data:12.6g} rL {epoch_reg:12.6g}"
                 )
@@ -1045,94 +1025,12 @@ class myNN:
             final_unweighted = 0.0
         return final_unweighted
 
-    def _config_snapshot(self):
-        """Return a JSON-safe config snapshot with ASSB training diagnostics.
-
-        The old config.json only contained architecture metadata.  For the
-        cycle5-v4 debugging runs we also need to prove whether regularization
-        was actually active and whether anode-only/cathode-only mass weights
-        were used.
-        """
-        cfg = dict(getattr(self, "configDict", {}))
-        alpha_vals = list(getattr(self, "alpha", []))
-        while len(alpha_vals) < 4:
-            alpha_vals.append(float("nan"))
-
-        cfg.update(
-            {
-                "alpha": alpha_vals,
-                "batch_size_int": int(getattr(self, "batch_size_int", -1)),
-                "batch_size_bound": int(getattr(self, "batch_size_bound", -1)),
-                "batch_size_data": int(getattr(self, "batch_size_data", -1)),
-                "batch_size_reg": int(getattr(self, "batch_size_reg", -1)),
-                "BATCH_SIZE_REG": int(getattr(self, "batch_size_reg", -1)),
-                "activeInt_runtime": bool(getattr(self, "activeInt", False)),
-                "activeBound_runtime": bool(getattr(self, "activeBound", False)),
-                "activeData_runtime": bool(getattr(self, "activeData", False)),
-                "activeReg_runtime": bool(getattr(self, "activeReg", False)),
-                "regTerms_rescale": getattr(self, "regTerms_rescale", None),
-                "regTerms_rescale_unweighted": getattr(self, "regTerms_rescale_unweighted", None),
-                "interiorTerms_rescale": getattr(self, "interiorTerms_rescale", None),
-                "boundaryTerms_rescale": getattr(self, "boundaryTerms_rescale", None),
-                "w_cs_a_mass_reg": self.params.get("w_cs_a_mass_reg", None),
-                "w_cs_c_mass_reg": self.params.get("w_cs_c_mass_reg", None),
-                "w_cs_a_mass_reg_effective": self.params.get(
-                    "w_cs_a_mass_reg_effective", self.params.get("w_cs_a_mass_reg", None)
-                ),
-                "w_cs_c_mass_reg_effective": self.params.get(
-                    "w_cs_c_mass_reg_effective", self.params.get("w_cs_c_mass_reg", None)
-                ),
-                "mass_reg_n_quad": self.params.get("mass_reg_n_quad", self.params.get("N_MASS_REG_QUAD", None)),
-                "train_summary_json_runtime": self.params.get(
-                    "train_summary_json", self.params.get("soft_label_summary_path", "")
-                ),
-                "soft_label_summary_path_runtime": self.params.get("soft_label_summary_path", ""),
-                "assb_logging_patch": "direct_v3_integrated",
-            }
-        )
-
-        # A compact selected-param block avoids dumping non-serializable callables
-        # while preserving the values we keep checking by hand.
-        selected_keys = [
-            "rescale_T",
-            "rescale_R",
-            "rescale_R_a",
-            "rescale_R_c",
-            "radial_rescale_mode",
-            "use_per_electrode_rescale_R",
-            "csanmax",
-            "cscamax",
-            "R_ohm_eff",
-            "voltage_alignment_offset_V",
-            "theta_c_bottom",
-            "theta_c_top",
-            "Rs_a",
-            "Rs_c",
-            "V_a",
-            "V_c",
-            "eps_s_a",
-            "eps_s_c",
-            "cs_a0",
-            "cs_c0",
-        ]
-        cfg["assb_selected_params"] = {k: self.params.get(k, None) for k in selected_keys if k in self.params}
-        return cfg
-
-    def _write_config_snapshot(self):
-        cfg = self._json_safe(self._config_snapshot())
-        with open(os.path.join(self.modelFolder, "config.json"), "w", encoding="utf-8") as outfile:
-            json.dump(cfg, outfile, ensure_ascii=False, indent=4, sort_keys=True)
-        with open(os.path.join(self.modelFolder, "assb_training_diagnostics.json"), "w", encoding="utf-8") as outfile:
-            json.dump(cfg, outfile, ensure_ascii=False, indent=4, sort_keys=True)
-
     def prepareLog(self):
         os.makedirs(self.modelFolder, exist_ok=True)
         os.makedirs(self.logLossFolder, exist_ok=True)
         for name in [
             os.path.join(self.modelFolder, "config.json"),
-            os.path.join(self.modelFolder, "assb_training_diagnostics.json"),
             os.path.join(self.logLossFolder, "log.csv"),
-            os.path.join(self.logLossFolder, "log_detailed.csv"),
             os.path.join(self.logLossFolder, "interiorTerms.csv"),
             os.path.join(self.logLossFolder, "boundaryTerms.csv"),
             os.path.join(self.logLossFolder, "dataTerms.csv"),
@@ -1142,40 +1040,22 @@ class myNN:
                 os.remove(name)
             except FileNotFoundError:
                 pass
-        self._write_config_snapshot()
-        header = (
-            "epoch;step;stage;loss;unweighted_loss;int_loss;bound_loss;data_loss;reg_loss;"
-            "activeInt;activeBound;activeData;activeReg;"
-            "alpha0;alpha1;alpha2;alpha3;"
-            "batch_size_int;batch_size_bound;batch_size_data;batch_size_reg;"
-            "w_cs_a_mass_reg_effective;w_cs_c_mass_reg_effective\n"
-        )
-        for name in ["log.csv", "log_detailed.csv"]:
-            with open(os.path.join(self.logLossFolder, name), "w", encoding="utf-8") as f:
-                f.write(header)
+        with open(os.path.join(self.modelFolder, "config.json"), "w+", encoding="utf-8") as outfile:
+            json.dump(self._json_safe(self.configDict), outfile, indent=4, sort_keys=True)
+        with open(os.path.join(self.logLossFolder, "log.csv"), "a+", encoding="utf-8") as f:
+            f.write("epoch;step;mseloss\n")
         for name in ["interiorTerms.csv", "boundaryTerms.csv", "dataTerms.csv", "regTerms.csv"]:
-            with open(os.path.join(self.logLossFolder, name), "w", encoding="utf-8") as f:
+            with open(os.path.join(self.logLossFolder, name), "a+", encoding="utf-8") as f:
                 f.write("step;lossArray\n")
 
     def _json_safe(self, obj):
         if isinstance(obj, dict):
-            return {str(k): self._json_safe(v) for k, v in obj.items()}
+            return {k: self._json_safe(v) for k, v in obj.items()}
         if isinstance(obj, (list, tuple)):
             return [self._json_safe(v) for v in obj]
-        if isinstance(obj, torch.Tensor):
-            arr = obj.detach().cpu().numpy()
-            return arr.tolist()
-        if isinstance(obj, np.ndarray):
-            return obj.tolist()
         if isinstance(obj, (np.floating, np.integer)):
             return obj.item()
-        if isinstance(obj, Path):
-            return str(obj)
-        if isinstance(obj, (str, int, float, bool)) or obj is None:
-            return obj
-        if callable(obj):
-            return getattr(obj, "__name__", str(obj))
-        return str(obj)
+        return obj
 
     def initLearningRateControl(self, learningRateModel, learningRateWeights=None):
         with open(os.path.join(self.modelFolder, "learningRateModel"), "w+", encoding="utf-8") as f:
@@ -1289,59 +1169,13 @@ class myNN:
     def ltHasChanged(self):
         return abs(os.stat(os.path.join(self.modelFolder, "lossThreshold")).st_mtime - self.lossThresholdStamp) > 1e-6
 
-    def logTraining(
-        self,
-        epoch,
-        mse,
-        bestLoss,
-        mse_unweighted=None,
-        int_loss=None,
-        bound_loss=None,
-        data_loss=None,
-        reg_loss=None,
-        stage=None,
-    ):
-        def _float_for_log(value, default=float("nan")):
-            try:
-                if value is None:
-                    return float(default)
-                if isinstance(value, torch.Tensor):
-                    return float(value.detach().cpu().reshape(-1)[0])
-                return float(value)
-            except Exception:
-                return float(default)
-
-        loss_f = _float_for_log(mse)
-        unweighted_f = _float_for_log(mse_unweighted)
-        int_f = _float_for_log(int_loss)
-        bound_f = _float_for_log(bound_loss)
-        data_f = _float_for_log(data_loss)
-        reg_f = _float_for_log(reg_loss)
-        stage = str(stage or getattr(self, "current_stage", "NA"))
-
-        alpha_vals = list(getattr(self, "alpha", [float("nan")] * 4))
-        while len(alpha_vals) < 4:
-            alpha_vals.append(float("nan"))
-
-        row = (
-            f"{int(epoch)};{int(getattr(self, 'total_step', int(epoch) * self.n_batch))};{stage};"
-            f"{loss_f:.16g};{unweighted_f:.16g};{int_f:.16g};{bound_f:.16g};{data_f:.16g};{reg_f:.16g};"
-            f"{bool(getattr(self, 'activeInt', False))};{bool(getattr(self, 'activeBound', False))};"
-            f"{bool(getattr(self, 'activeData', False))};{bool(getattr(self, 'activeReg', False))};"
-            f"{_float_for_log(alpha_vals[0]):.16g};{_float_for_log(alpha_vals[1]):.16g};"
-            f"{_float_for_log(alpha_vals[2]):.16g};{_float_for_log(alpha_vals[3]):.16g};"
-            f"{int(getattr(self, 'batch_size_int', -1))};{int(getattr(self, 'batch_size_bound', -1))};"
-            f"{int(getattr(self, 'batch_size_data', -1))};{int(getattr(self, 'batch_size_reg', -1))};"
-            f"{_float_for_log(self.params.get('w_cs_a_mass_reg_effective', self.params.get('w_cs_a_mass_reg', float('nan')))):.16g};"
-            f"{_float_for_log(self.params.get('w_cs_c_mass_reg_effective', self.params.get('w_cs_c_mass_reg', float('nan')))):.16g}\n"
-        )
-        for name in ["log.csv", "log_detailed.csv"]:
-            with open(os.path.join(self.logLossFolder, name), "a", encoding="utf-8") as f:
-                f.write(row)
-
-        # Keep old checkpoint semantics: best is selected by unweighted loss when
-        # available, otherwise by weighted training loss.
-        epochLoss = float(unweighted_f if mse_unweighted is not None and math.isfinite(unweighted_f) else loss_f)
+    def logTraining(self, epoch, mse, bestLoss, mse_unweighted=None):
+        with open(os.path.join(self.logLossFolder, "log.csv"), "a+", encoding="utf-8") as f:
+            if mse_unweighted is None:
+                f.write(f"{int(epoch)};{int(epoch * self.n_batch)};{float(mse)}\n")
+            else:
+                f.write(f"{int(epoch)};{int(epoch * self.n_batch)};{float(mse)};{float(mse_unweighted)}\n")
+        epochLoss = float(mse_unweighted if mse_unweighted is not None else mse)
         safe_save_state_dict(self.model, os.path.join(self.modelFolder, "last.pt"))
         if self.current_stage.upper() == "SGD":
             safe_save_state_dict(self.model, os.path.join(self.modelFolder, "lastSGD.pt"))
@@ -1350,11 +1184,6 @@ class myNN:
         if bestLoss is None or epochLoss < float(bestLoss):
             bestLoss = epochLoss
             safe_save_state_dict(self.model, os.path.join(self.modelFolder, "best.pt"))
-        # Refresh config every epoch so interrupted runs still expose diagnostics.
-        try:
-            self._write_config_snapshot()
-        except Exception as exc:
-            print(f"WARNING: could not refresh config diagnostics: {exc}")
         return bestLoss
 
     def logLosses(self, step, interiorTerms, boundaryTerms, dataTerms, regTerms):
