@@ -259,6 +259,431 @@ def _discharge_concentration_target(
 
 
 # -----------------------------------------------------------------------------
+# ASSB I(t)-integrated average-concentration baseline helpers
+# -----------------------------------------------------------------------------
+
+
+def _env_bool(name: str, default: bool = False) -> bool:
+    val = os.environ.get(name)
+    if val is None:
+        return bool(default)
+    return str(val).strip().lower() not in {"false", "0", "no", "off", "none", ""}
+
+
+def _env_float(name: str, default: float) -> float:
+    val = os.environ.get(name)
+    if val is None:
+        return float(default)
+    try:
+        out = float(val)
+        return out if np.isfinite(out) else float(default)
+    except Exception:
+        return float(default)
+
+
+def _get_param_first(params: dict, names: tuple[str, ...], default=None):
+    for name in names:
+        if name in params:
+            return params[name]
+    return default
+
+
+def _as_profile_pair(profile):
+    """Return (time, current) from supported profile layouts."""
+    if profile is None:
+        return None
+    if isinstance(profile, dict):
+        t = _get_param_first(profile, ("t", "time", "time_s", "times", "t_s"))
+        i = _get_param_first(profile, ("I", "current", "current_A", "I_A"))
+        if t is not None and i is not None:
+            return t, i
+    if isinstance(profile, (tuple, list)) and len(profile) == 2:
+        return profile[0], profile[1]
+    return None
+
+
+def _current_profile_tensors(params: dict, like: torch.Tensor):
+    """Read current profile from params and return sorted torch tensors."""
+    pair = _as_profile_pair(_get_param_first(params, ("current_profile", "I_profile", "I_app_profile")))
+    if pair is None:
+        t_values = _get_param_first(
+            params,
+            ("time_profile", "t_profile", "current_time_profile", "I_time_profile", "I_profile_t", "t_current"),
+        )
+        i_values = _get_param_first(
+            params,
+            ("current_profile_A", "I_profile_A", "I_values", "current_values", "I_app_values"),
+        )
+        if t_values is not None and i_values is not None:
+            pair = (t_values, i_values)
+    if pair is None:
+        return None
+    t_prof = _to_tensor(pair[0], like=like).reshape(-1).detach()
+    i_prof = _to_tensor(pair[1], like=like).reshape(-1).detach()
+    if t_prof.numel() < 2 or i_prof.numel() != t_prof.numel():
+        return None
+    order = torch.argsort(t_prof)
+    t_prof = t_prof[order]
+    i_prof = i_prof[order]
+    # Drop exact duplicate timestamps after sorting. makeParams normally already
+    # performs this cleanup, but this keeps the baseline robust.
+    keep = torch.ones_like(t_prof, dtype=torch.bool)
+    keep[1:] = torch.diff(t_prof) > 0
+    t_prof = t_prof[keep]
+    i_prof = i_prof[keep]
+    if t_prof.numel() < 2:
+        return None
+    return t_prof, i_prof
+
+
+def _interp1_torch(x: torch.Tensor, xp: torch.Tensor, fp: torch.Tensor) -> torch.Tensor:
+    """Piecewise-linear interpolation with autograd support in x."""
+    x_in = _to_tensor(x, like=x)
+    shape = x_in.shape
+    x_flat = x_in.reshape(-1)
+    xp = xp.to(dtype=x_flat.dtype, device=x_flat.device)
+    fp = fp.to(dtype=x_flat.dtype, device=x_flat.device)
+    xq = torch.clamp(x_flat, min=xp[0], max=xp[-1])
+    idx_hi = torch.searchsorted(xp, xq, right=False)
+    idx_hi = torch.clamp(idx_hi, 1, xp.numel() - 1)
+    idx_lo = idx_hi - 1
+    x0 = xp[idx_lo]
+    x1 = xp[idx_hi]
+    y0 = fp[idx_lo]
+    y1 = fp[idx_hi]
+    w = (xq - x0) / torch.clamp(x1 - x0, min=np.float64(1.0e-12))
+    return (y0 + w * (y1 - y0)).reshape(shape)
+
+
+def _use_i_cbar_baseline(self, electrode: str) -> bool:
+    """Whether to use I(t)-integrated mean concentration baseline."""
+    electrode = electrode.lower()
+    if electrode.startswith(("a", "n")):
+        if os.environ.get("ASSB_USE_I_CBAR_BASELINE_A") is not None:
+            return _env_bool("ASSB_USE_I_CBAR_BASELINE_A", False)
+        if any(k in self.params for k in ("use_i_cbar_baseline_a", "use_i_cbar_baseline_anode")):
+            return _param_bool(self.params, ("use_i_cbar_baseline_a", "use_i_cbar_baseline_anode"), False)
+    else:
+        if os.environ.get("ASSB_USE_I_CBAR_BASELINE_C") is not None:
+            return _env_bool("ASSB_USE_I_CBAR_BASELINE_C", False)
+        if any(k in self.params for k in ("use_i_cbar_baseline_c", "use_i_cbar_baseline_cathode")):
+            return _param_bool(self.params, ("use_i_cbar_baseline_c", "use_i_cbar_baseline_cathode"), False)
+
+    if os.environ.get("ASSB_USE_I_CBAR_BASELINE") is not None:
+        return _env_bool("ASSB_USE_I_CBAR_BASELINE", False)
+    if any(k in self.params for k in ("use_i_cbar_baseline", "use_integrated_cbar_baseline")):
+        return _param_bool(self.params, ("use_i_cbar_baseline", "use_integrated_cbar_baseline"), False)
+    mode = str(self.params.get("cs_rescale_mode", self.params.get("concentration_rescale_mode", ""))).lower()
+    return mode in {"integrated", "integrated_baseline", "i_cbar", "i_cbar_baseline"}
+
+
+def _cbar_baseline_deviation_fraction(self, electrode: str) -> float:
+    """Limit NN radial correction amplitude around the I-integrated baseline."""
+    electrode = electrode.lower()
+    if electrode.startswith(("a", "n")):
+        if os.environ.get("ASSB_CBAR_DEVIATION_FRACTION_A") is not None:
+            return _env_float("ASSB_CBAR_DEVIATION_FRACTION_A", 0.25)
+        return _param_float(
+            self.params,
+            ("cbar_deviation_fraction_a", "i_cbar_deviation_fraction_a", "cbar_baseline_deviation_fraction_a"),
+            0.25,
+        )
+    if os.environ.get("ASSB_CBAR_DEVIATION_FRACTION_C") is not None:
+        return _env_float("ASSB_CBAR_DEVIATION_FRACTION_C", 0.25)
+    return _param_float(
+        self.params,
+        ("cbar_deviation_fraction_c", "i_cbar_deviation_fraction_c", "cbar_baseline_deviation_fraction_c"),
+        0.25,
+    )
+
+
+def _use_zero_mean_radial_deviation(self, electrode: str) -> bool:
+    """Whether the I(t)-cbar correction should have a zero-mean radial basis.
+
+    ID95 used cs_j = cbar_j(t) + bounded NN correction. That improved the
+    average trajectory but still allowed the NN correction to shift the spherical
+    mean. ID96 can constrain the correction with a basis whose spherical average
+    is zero, so the I(t)-integrated cbar remains the dominant mean trajectory.
+    """
+    electrode = electrode.lower()
+    if electrode.startswith(("a", "n")):
+        if os.environ.get("ASSB_USE_ZERO_MEAN_RADIAL_DEVIATION_A") is not None:
+            return _env_bool("ASSB_USE_ZERO_MEAN_RADIAL_DEVIATION_A", False)
+        if any(k in self.params for k in ("use_zero_mean_radial_deviation_a", "use_zero_mean_cbar_deviation_a")):
+            return _param_bool(
+                self.params,
+                ("use_zero_mean_radial_deviation_a", "use_zero_mean_cbar_deviation_a"),
+                False,
+            )
+    else:
+        if os.environ.get("ASSB_USE_ZERO_MEAN_RADIAL_DEVIATION_C") is not None:
+            return _env_bool("ASSB_USE_ZERO_MEAN_RADIAL_DEVIATION_C", False)
+        if any(k in self.params for k in ("use_zero_mean_radial_deviation_c", "use_zero_mean_cbar_deviation_c")):
+            return _param_bool(
+                self.params,
+                ("use_zero_mean_radial_deviation_c", "use_zero_mean_cbar_deviation_c"),
+                False,
+            )
+
+    if os.environ.get("ASSB_USE_ZERO_MEAN_RADIAL_DEVIATION") is not None:
+        return _env_bool("ASSB_USE_ZERO_MEAN_RADIAL_DEVIATION", False)
+    if any(k in self.params for k in ("use_zero_mean_radial_deviation", "use_zero_mean_cbar_deviation")):
+        return _param_bool(
+            self.params,
+            ("use_zero_mean_radial_deviation", "use_zero_mean_cbar_deviation"),
+            False,
+        )
+    return False
+
+
+def _zero_mean_radial_basis(self, r: torch.Tensor, electrode: str, like: torch.Tensor) -> torch.Tensor:
+    """Return a radial basis with zero spherical average.
+
+    With s=r/R, <s^2>_sphere = 3/5.  The default basis
+
+        phi(s) = 2.5*s^2 - 1.5
+
+    therefore has <phi>_sphere = 0 and phi(1)=1 at the surface.  This is a
+    minimal ID96 structural prior: the NN can alter radial shape/surface value,
+    while the mean concentration remains anchored to cbar_from_I(t) when the
+    learned amplitude is approximately time-only.
+    """
+    r = _to_tensor(r, like=like)
+    electrode = electrode.lower()
+    if electrode.startswith(("a", "n")):
+        R = _param_float(self.params, ("Rs_a", "rescale_R_a"), 1.0)
+    else:
+        R = _param_float(self.params, ("Rs_c", "rescale_R_c"), 1.0)
+    s = torch.clamp(r / max(float(R), 1.0e-30), 0.0, 1.0)
+    mode = str(self.params.get("cbar_radial_basis_mode", "s2_zero_mean")).strip().lower()
+    if mode in {"s2_zero_mean", "quadratic", "s2", "default"}:
+        return np.float64(2.5) * s.square() - np.float64(1.5)
+    if mode in {"s_minus_mean", "linear"}:
+        # <s>_sphere = 3/4; scaled so that phi(1)=1.
+        return np.float64(4.0) * s - np.float64(3.0)
+    raise ValueError(f"Unknown cbar_radial_basis_mode={mode}")
+
+
+def _integrated_cbar_baseline(self, t: torch.Tensor, electrode: str, start: torch.Tensor) -> torch.Tensor:
+    """Return average concentration implied by I(t) and SPM flux closure.
+
+    The generator uses D_s dc/dr|R = -J and therefore
+        d<c_s>/dt + 3 J/R = 0.
+    With the ASSB current convention this gives
+        anode:   d<c_a>/dt =  I/(eps_a F V_a)
+        cathode: d<c_c>/dt = -I/(eps_c F V_c)
+    The discrete profile is integrated with the same right-endpoint convention
+    used by integration_spm/spm_int_assb_cycle.py.
+    """
+    t = _to_tensor(t, like=start)
+    prof = _current_profile_tensors(self.params, t)
+    if prof is None:
+        return torch.full_like(t, float(start.detach().reshape(-1)[0].cpu()))
+
+    t_prof, i_prof = prof
+    electrode = electrode.lower()
+    F = float(self.params["F"])
+    if electrode.startswith(("a", "n")):
+        eps = float(self.params["eps_s_a"])
+        V = float(self.params.get("V_a", float(self.params["A_a"]) * float(self.params["L_a"])))
+        deriv = i_prof / (np.float64(eps) * np.float64(F) * np.float64(V))
+        cs0 = float(self.params.get("cs_a0", start.detach().reshape(-1)[0].cpu()))
+        ekey = "a"
+    else:
+        eps = float(self.params["eps_s_c"])
+        V = float(self.params.get("V_c", float(self.params["A_c"]) * float(self.params["L_c"])))
+        deriv = -i_prof / (np.float64(eps) * np.float64(F) * np.float64(V))
+        cs0 = float(self.params.get("cs_c0", start.detach().reshape(-1)[0].cpu()))
+        ekey = "c"
+
+    dt = torch.diff(t_prof)
+    increments = deriv[1:] * dt
+    cbar_prof = torch.cat(
+        [torch.as_tensor([cs0], dtype=t.dtype, device=t.device), cs0 + torch.cumsum(increments, dim=0)],
+        dim=0,
+    )
+    baseline = _interp1_torch(t, t_prof, cbar_prof)
+    lower, upper = _concentration_bounds(self, ekey, baseline)
+    return torch.clamp(baseline, lower, upper)
+
+
+def _target_around_i_cbar_baseline(
+    self,
+    raw: torch.Tensor,
+    t: torch.Tensor,
+    r: torch.Tensor,
+    electrode: str,
+    start: torch.Tensor,
+) -> tuple[torch.Tensor, torch.Tensor]:
+    """Return (baseline, target) for baseline-anchored concentration output.
+
+    ID95 mode:
+        target = cbar_from_I(t) + bounded NN correction.
+
+    ID96 zero-mean mode:
+        target = cbar_from_I(t) + bounded NN correction * phi(r/R),
+        where phi has zero spherical mean. This makes the cbar_from_I(t)
+        trajectory a stronger structural prior and asks the NN to focus on the
+        radial/surface deviation.
+    """
+    raw = _to_tensor(raw, start)
+    t = _to_tensor(t, raw)
+    r = _to_tensor(r, raw)
+    baseline = _integrated_cbar_baseline(self, t, electrode, start)
+    lower, upper = _concentration_bounds(self, electrode, baseline)
+    frac = max(float(_cbar_baseline_deviation_fraction(self, electrode)), 0.0)
+    z = torch.tanh(raw)
+
+    if _use_zero_mean_radial_deviation(self, electrode):
+        basis = _zero_mean_radial_basis(self, r, electrode, baseline)
+        signed_shape = z * basis
+        pos_span = torch.clamp(upper - baseline, min=np.float64(1e-12)) * frac
+        neg_span = torch.clamp(baseline - lower, min=np.float64(1e-12)) * frac
+        span = torch.where(signed_shape >= 0.0, pos_span, neg_span)
+        target = baseline + span * signed_shape
+    else:
+        pos_span = torch.clamp(upper - baseline, min=np.float64(1e-12)) * frac
+        neg_span = torch.clamp(baseline - lower, min=np.float64(1e-12)) * frac
+        target = baseline + torch.where(z >= 0.0, pos_span * z, neg_span * z)
+
+    return baseline, torch.clamp(target, lower, upper)
+
+
+# -----------------------------------------------------------------------------
+# ASSB current-aware potential baseline helpers (ID100)
+# -----------------------------------------------------------------------------
+
+
+def _current_at_t_for_baseline(self, t: torch.Tensor) -> torch.Tensor:
+    """Return I(t) in A for potential baselines; +I=charge, -I=discharge."""
+    t = _to_tensor(t, like=t)
+    prof = _current_profile_tensors(self.params, t)
+    if prof is not None:
+        return _interp1_torch(t, prof[0], prof[1])
+    return torch.full_like(t, _param_float(self.params, ("I_app", "I_discharge", "current_A", "I"), 0.0))
+
+
+def _surface_flux_for_baseline(self, t: torch.Tensor, electrode: str) -> torch.Tensor:
+    """Same SPM surface-flux closure used by the soft-label generator."""
+    t = _to_tensor(t, like=t)
+    I_t = _current_at_t_for_baseline(self, t)
+    F = float(self.params["F"])
+    electrode = electrode.lower()
+    if electrode.startswith(("a", "n")):
+        Rs = float(self.params["Rs_a"])
+        eps = float(self.params["eps_s_a"])
+        V = float(self.params.get("V_a", float(self.params["A_a"]) * float(self.params["L_a"])))
+        return -I_t * Rs / (np.float64(3.0) * eps * F * V)
+    Rs = float(self.params["Rs_c"])
+    eps = float(self.params["eps_s_c"])
+    V = float(self.params.get("V_c", float(self.params["A_c"]) * float(self.params["L_c"])))
+    return I_t * Rs / (np.float64(3.0) * eps * F * V)
+
+
+def _use_current_potential_baseline(self, field: str) -> bool:
+    """Whether to use current-aware potential baseline for phie / phis_c.
+
+    This is intentionally separated from the concentration cbar baseline. ID100
+    uses the ID99 concentration structure and only turns this on for potentials.
+    """
+    field = field.lower()
+    if field in {"phie", "e"}:
+        if os.environ.get("ASSB_USE_CURRENT_POTENTIAL_BASELINE_PHIE") is not None:
+            return _env_bool("ASSB_USE_CURRENT_POTENTIAL_BASELINE_PHIE", False)
+        if any(k in self.params for k in ("use_current_potential_baseline_phie", "use_potential_baseline_phie")):
+            return _param_bool(self.params, ("use_current_potential_baseline_phie", "use_potential_baseline_phie"), False)
+    else:
+        if os.environ.get("ASSB_USE_CURRENT_POTENTIAL_BASELINE_PHIS_C") is not None:
+            return _env_bool("ASSB_USE_CURRENT_POTENTIAL_BASELINE_PHIS_C", False)
+        if any(k in self.params for k in ("use_current_potential_baseline_phis_c", "use_potential_baseline_phis_c")):
+            return _param_bool(self.params, ("use_current_potential_baseline_phis_c", "use_potential_baseline_phis_c"), False)
+
+    if os.environ.get("ASSB_USE_CURRENT_POTENTIAL_BASELINE") is not None:
+        return _env_bool("ASSB_USE_CURRENT_POTENTIAL_BASELINE", False)
+    return _param_bool(
+        self.params,
+        ("use_current_potential_baseline", "use_potential_baseline", "use_i_potential_baseline"),
+        False,
+    )
+
+
+def _potential_baseline_correction_fraction(self, field: str) -> float:
+    """Scale of NN correction around current-aware potential baseline."""
+    field = field.lower()
+    if field in {"phie", "e"}:
+        if os.environ.get("ASSB_POTENTIAL_BASELINE_CORRECTION_FRACTION_PHIE") is not None:
+            return _env_float("ASSB_POTENTIAL_BASELINE_CORRECTION_FRACTION_PHIE", 0.25)
+        return max(
+            0.0,
+            _param_float(
+                self.params,
+                ("potential_baseline_correction_fraction_phie", "phie_baseline_correction_fraction"),
+                0.25,
+            ),
+        )
+    if os.environ.get("ASSB_POTENTIAL_BASELINE_CORRECTION_FRACTION_PHIS_C") is not None:
+        return _env_float("ASSB_POTENTIAL_BASELINE_CORRECTION_FRACTION_PHIS_C", 0.25)
+    return max(
+        0.0,
+        _param_float(
+            self.params,
+            ("potential_baseline_correction_fraction_phis_c", "phis_c_baseline_correction_fraction"),
+            0.25,
+        ),
+    )
+
+
+def _current_aware_potential_baselines(self, t: torch.Tensor, deg_i0_a: torch.Tensor, deg_ds_c: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
+    """Compute (phie_base, phis_c_base) from I(t), cbar_a(t), cbar_c(t).
+
+    The baseline mirrors integration_spm.compute_potentials() at the cbar level:
+        phie = -U_a(cbar_a) - eta_a(I, cbar_a)
+        phis_c = phie + U_c(cbar_c) + eta_c(I, cbar_c) + I*R_ohm_eff + offset
+
+    It is not a data loss and does not read soft-label states. It uses only the
+    prescribed current profile, OCP/i0 functions, and ASSB SPM closure in params.
+    """
+    t = _to_tensor(t, like=t)
+    deg_i0_a = _to_tensor(deg_i0_a, like=t)
+    deg_ds_c = _to_tensor(deg_ds_c, like=t)
+    cs_a_start = torch.full_like(t, float(self.cs_a0))
+    cs_c_start = torch.full_like(t, float(self.cs_c0))
+    cbar_a = _integrated_cbar_baseline(self, t, "a", cs_a_start)
+    cbar_c = _integrated_cbar_baseline(self, t, "c", cs_c_start)
+
+    ce = float(self.params.get("ce0", 1.2)) * torch.ones_like(t)
+    j_a = _surface_flux_for_baseline(self, t, "a")
+    j_c = _surface_flux_for_baseline(self, t, "c")
+    R = float(self.params["R"])
+    T = float(self.params["T"])
+    F = float(self.params["F"])
+
+    U_a = self.params["Uocp_a"](cbar_a, self.params["csanmax"])
+    U_c_fun = self.params.get("Uocp_c_raw", self.params["Uocp_c"])
+    U_c = U_c_fun(cbar_c, self.params["cscamax"])
+    i0_a = self.params["i0_a"](cbar_a, ce, self.params["T"], self.params["alpha_a"], self.params["csanmax"], self.params["R"], deg_i0_a)
+    i0_c = self.params["i0_c"](cbar_c, ce, self.params["T"], self.params["alpha_c"], self.params["cscamax"], self.params["R"])
+
+    # Keep the default consistent with the current ID99/ID100 inputs.
+    linearize = bool(getattr(self, "linearizeJ", True))
+    if linearize:
+        eta_a = j_a * R * T / torch.clamp(i0_a, min=np.float64(1.0e-30))
+        eta_c = j_c * R * T / torch.clamp(i0_c, min=np.float64(1.0e-30))
+    else:
+        eta_a = (np.float64(2.0) * R * T / F) * torch.asinh(j_a * F / (np.float64(2.0) * torch.clamp(i0_a, min=np.float64(1.0e-30))))
+        eta_c = (np.float64(2.0) * R * T / F) * torch.asinh(j_c * F / (np.float64(2.0) * torch.clamp(i0_c, min=np.float64(1.0e-30))))
+
+    phie_base = -U_a - eta_a
+    I_t = _current_at_t_for_baseline(self, t)
+    terminal_shift = (
+        I_t * np.float64(_param_float(self.params, ("R_ohm_eff", "R_ohm"), 0.0))
+        + np.float64(_param_float(self.params, ("voltage_alignment_offset_V", "U_p_offset_V", "voltage_offset_V"), 0.0))
+    )
+    phis_c_base = phie_base + U_c + eta_c + terminal_shift
+    return phie_base, phis_c_base
+
+
+# -----------------------------------------------------------------------------
 # Public rescale functions attached to myNN
 # -----------------------------------------------------------------------------
 
@@ -269,6 +694,15 @@ def rescalePhie(self, phie, t, deg_i0_a, deg_ds_c):
     t_reshape = _to_tensor(t, phie)
     deg_i0_a_reshape = _to_tensor(deg_i0_a, phie)
     deg_ds_c_reshape = _to_tensor(deg_ds_c, phie)
+
+    # ID100: current-aware potential baseline. This gives the potential branch
+    # direct access to I(t)-driven jumps from OCP/BV/ohmic closure, while the NN
+    # learns only a bounded correction.
+    if _use_current_potential_baseline(self, "phie") and (not self.use_hnn) and (not self.use_hnntime):
+        phie_base, _ = _current_aware_potential_baselines(self, t_reshape, deg_i0_a_reshape, deg_ds_c_reshape)
+        timeDistance = 1.0 - torch.exp(-(t_reshape) / float(self.hard_IC_timescale))
+        frac = _potential_baseline_correction_fraction(self, "phie")
+        return phie_base + (resc_phie * frac * torch.tanh(phie)) * timeDistance
 
     if self.use_hnntime:
         phie_start = self.get_phie_hnntime(deg_i0_a_reshape, deg_ds_c_reshape)
@@ -288,13 +722,19 @@ def rescalePhie(self, phie, t, deg_i0_a, deg_ds_c):
 
     return (resc_phie * phie_nn + offset) * timeDistance + phie_start
 
-
 def rescalePhis_c(self, phis_c, t, deg_i0_a, deg_ds_c):
     resc_phis_c = float(self.params["rescale_phis_c"])
     phis_c = _to_tensor(phis_c)
     t_reshape = _to_tensor(t, phis_c)
     deg_i0_a_reshape = _to_tensor(deg_i0_a, phis_c)
     deg_ds_c_reshape = _to_tensor(deg_ds_c, phis_c)
+
+    # ID100: current-aware positive terminal potential baseline.
+    if _use_current_potential_baseline(self, "phis_c") and (not self.use_hnn) and (not self.use_hnntime):
+        _, phis_c_base = _current_aware_potential_baselines(self, t_reshape, deg_i0_a_reshape, deg_ds_c_reshape)
+        timeDistance = 1.0 - torch.exp(-(t_reshape) / float(self.hard_IC_timescale))
+        frac = _potential_baseline_correction_fraction(self, "phis_c")
+        return phis_c_base + (resc_phis_c * frac * torch.tanh(phis_c)) * timeDistance
 
     if self.use_hnntime:
         phis_c_start = self.get_phis_c_hnntime(deg_i0_a_reshape, deg_ds_c_reshape)
@@ -313,7 +753,6 @@ def rescalePhis_c(self, phis_c, t, deg_i0_a, deg_ds_c):
         resc_phis_c *= 0.1
 
     return (resc_phis_c * phis_c_nn + offset) * timeDistance + phis_c_start
-
 
 def rescaleCs_a(self, cs_a, t, r, deg_i0_a, deg_ds_c, clip: bool = True):
     cs_a = _to_tensor(cs_a)
@@ -335,12 +774,16 @@ def rescaleCs_a(self, cs_a, t, r, deg_i0_a, deg_ds_c, clip: bool = True):
     if self.use_hnn:
         base = self.get_cs_a_hnn(t_reshape, r_reshape, deg_i0_a_reshape, deg_ds_c_reshape)
 
-    if _concentration_rescale_mode(self) == "discharge":
-        target = _discharge_concentration_target(self, cs_a, cs_a_start, "a", base=base)
+    if _use_i_cbar_baseline(self, "a") and base is None:
+        baseline, target = _target_around_i_cbar_baseline(self, cs_a, t_reshape, r_reshape, "a", cs_a_start)
+        out = baseline + (target - baseline) * timeDistance
     else:
-        target = _cycle_concentration_target(self, cs_a, cs_a_start, "a", base=base)
+        if _concentration_rescale_mode(self) == "discharge":
+            target = _discharge_concentration_target(self, cs_a, cs_a_start, "a", base=base)
+        else:
+            target = _cycle_concentration_target(self, cs_a, cs_a_start, "a", base=base)
+        out = (target - cs_a_start) * timeDistance + cs_a_start
 
-    out = (target - cs_a_start) * timeDistance + cs_a_start
     if clip:
         lower, upper = _concentration_bounds(self, "a", out)
         out = torch.clamp(out, lower, upper)
@@ -367,12 +810,16 @@ def rescaleCs_c(self, cs_c, t, r, deg_i0_a, deg_ds_c, clip: bool = True):
     if self.use_hnn:
         base = self.get_cs_c_hnn(t_reshape, r_reshape, deg_i0_a_reshape, deg_ds_c_reshape)
 
-    if _concentration_rescale_mode(self) == "discharge":
-        target = _discharge_concentration_target(self, cs_c, cs_c_start, "c", base=base)
+    if _use_i_cbar_baseline(self, "c") and base is None:
+        baseline, target = _target_around_i_cbar_baseline(self, cs_c, t_reshape, r_reshape, "c", cs_c_start)
+        out = baseline + (target - baseline) * timeDistance
     else:
-        target = _cycle_concentration_target(self, cs_c, cs_c_start, "c", base=base)
+        if _concentration_rescale_mode(self) == "discharge":
+            target = _discharge_concentration_target(self, cs_c, cs_c_start, "c", base=base)
+        else:
+            target = _cycle_concentration_target(self, cs_c, cs_c_start, "c", base=base)
+        out = (target - cs_c_start) * timeDistance + cs_c_start
 
-    out = (target - cs_c_start) * timeDistance + cs_c_start
     if clip:
         lower, upper = _concentration_bounds(self, "c", out)
         out = torch.clamp(out, lower, upper)

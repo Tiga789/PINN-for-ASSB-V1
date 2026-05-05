@@ -124,6 +124,80 @@ def _get_float(inpt: Dict[str, str], key: str, default: float) -> float:
         return float(default)
 
 
+def _get_optional_bool(inpt: Dict[str, str], key: str, default: bool = False) -> bool:
+    return _get_bool(inpt, key, default) if key in inpt else bool(default)
+
+
+def _get_optional_float(inpt: Dict[str, str], key: str, default: float) -> float:
+    return _get_float(inpt, key, default) if key in inpt else float(default)
+
+
+def _as_bool_config(value, default: bool = False) -> bool:
+    if value is None:
+        return bool(default)
+    if isinstance(value, str):
+        return value.strip().lower() not in {"false", "0", "no", "off", "none", ""}
+    return bool(value)
+
+
+def _apply_cbar_baseline_params(params: Dict[str, Any], cfg: Dict[str, Any]) -> None:
+    """Forward I(t)-integrated cbar baseline flags into params.
+
+    These flags are consumed by util/_rescale.py. They change only the NN
+    output representation, not the ASSB SPM governing equations.
+    """
+    if "USE_I_CBAR_BASELINE" in cfg:
+        params["use_i_cbar_baseline"] = _as_bool_config(cfg.get("USE_I_CBAR_BASELINE"), False)
+    if "USE_I_CBAR_BASELINE_A" in cfg:
+        params["use_i_cbar_baseline_a"] = _as_bool_config(cfg.get("USE_I_CBAR_BASELINE_A"), False)
+    if "USE_I_CBAR_BASELINE_C" in cfg:
+        params["use_i_cbar_baseline_c"] = _as_bool_config(cfg.get("USE_I_CBAR_BASELINE_C"), False)
+    if "CBAR_BASELINE_DEVIATION_FRACTION_A" in cfg:
+        params["cbar_deviation_fraction_a"] = float(cfg.get("CBAR_BASELINE_DEVIATION_FRACTION_A"))
+    if "CBAR_BASELINE_DEVIATION_FRACTION_C" in cfg:
+        params["cbar_deviation_fraction_c"] = float(cfg.get("CBAR_BASELINE_DEVIATION_FRACTION_C"))
+    if "USE_ZERO_MEAN_RADIAL_DEVIATION" in cfg:
+        params["use_zero_mean_radial_deviation"] = _as_bool_config(cfg.get("USE_ZERO_MEAN_RADIAL_DEVIATION"), False)
+    if "USE_ZERO_MEAN_RADIAL_DEVIATION_A" in cfg:
+        params["use_zero_mean_radial_deviation_a"] = _as_bool_config(cfg.get("USE_ZERO_MEAN_RADIAL_DEVIATION_A"), False)
+    if "USE_ZERO_MEAN_RADIAL_DEVIATION_C" in cfg:
+        params["use_zero_mean_radial_deviation_c"] = _as_bool_config(cfg.get("USE_ZERO_MEAN_RADIAL_DEVIATION_C"), False)
+    if "CBAR_RADIAL_BASIS_MODE" in cfg:
+        params["cbar_radial_basis_mode"] = str(cfg.get("CBAR_RADIAL_BASIS_MODE"))
+
+    # ID100 potential baseline flags. These are consumed by util/_rescale.py
+    # and do not change the concentration structure.
+    if "USE_CURRENT_POTENTIAL_BASELINE" in cfg:
+        params["use_current_potential_baseline"] = _as_bool_config(cfg.get("USE_CURRENT_POTENTIAL_BASELINE"), False)
+    if "USE_CURRENT_POTENTIAL_BASELINE_PHIE" in cfg:
+        params["use_current_potential_baseline_phie"] = _as_bool_config(cfg.get("USE_CURRENT_POTENTIAL_BASELINE_PHIE"), False)
+    if "USE_CURRENT_POTENTIAL_BASELINE_PHIS_C" in cfg:
+        params["use_current_potential_baseline_phis_c"] = _as_bool_config(cfg.get("USE_CURRENT_POTENTIAL_BASELINE_PHIS_C"), False)
+    if "POTENTIAL_BASELINE_CORRECTION_FRACTION_PHIE" in cfg:
+        params["potential_baseline_correction_fraction_phie"] = float(cfg.get("POTENTIAL_BASELINE_CORRECTION_FRACTION_PHIE"))
+    if "POTENTIAL_BASELINE_CORRECTION_FRACTION_PHIS_C" in cfg:
+        params["potential_baseline_correction_fraction_phis_c"] = float(cfg.get("POTENTIAL_BASELINE_CORRECTION_FRACTION_PHIS_C"))
+
+
+def _cbar_config_payload(params: Dict[str, Any]) -> Dict[str, Any]:
+    return {
+        "USE_I_CBAR_BASELINE": bool(params.get("use_i_cbar_baseline", False)),
+        "USE_I_CBAR_BASELINE_A": bool(params.get("use_i_cbar_baseline_a", False)),
+        "USE_I_CBAR_BASELINE_C": bool(params.get("use_i_cbar_baseline_c", False)),
+        "CBAR_BASELINE_DEVIATION_FRACTION_A": float(params.get("cbar_deviation_fraction_a", 0.25)),
+        "CBAR_BASELINE_DEVIATION_FRACTION_C": float(params.get("cbar_deviation_fraction_c", 0.25)),
+        "USE_ZERO_MEAN_RADIAL_DEVIATION": bool(params.get("use_zero_mean_radial_deviation", False)),
+        "USE_ZERO_MEAN_RADIAL_DEVIATION_A": bool(params.get("use_zero_mean_radial_deviation_a", False)),
+        "USE_ZERO_MEAN_RADIAL_DEVIATION_C": bool(params.get("use_zero_mean_radial_deviation_c", False)),
+        "CBAR_RADIAL_BASIS_MODE": str(params.get("cbar_radial_basis_mode", "s2_zero_mean")),
+        "USE_CURRENT_POTENTIAL_BASELINE": bool(params.get("use_current_potential_baseline", False)),
+        "USE_CURRENT_POTENTIAL_BASELINE_PHIE": bool(params.get("use_current_potential_baseline_phie", False)),
+        "USE_CURRENT_POTENTIAL_BASELINE_PHIS_C": bool(params.get("use_current_potential_baseline_phis_c", False)),
+        "POTENTIAL_BASELINE_CORRECTION_FRACTION_PHIE": float(params.get("potential_baseline_correction_fraction_phie", 0.25)),
+        "POTENTIAL_BASELINE_CORRECTION_FRACTION_PHIS_C": float(params.get("potential_baseline_correction_fraction_phis_c", 0.25)),
+    }
+
+
 def initialize_params_from_inpt(inpt: Dict[str, str]) -> Dict[str, Any]:
     seed = _get_int(inpt, "seed", -1)
     ID = _get_int(inpt, "ID", 0)
@@ -270,6 +344,21 @@ def initialize_params_from_inpt(inpt: Dict[str, str]) -> Dict[str, Any]:
 
     PRIOR_MODEL = str(inpt.get("PRIOR_MODEL", "spm")).strip().lower()
 
+    USE_I_CBAR_BASELINE = _get_optional_bool(inpt, "USE_I_CBAR_BASELINE", False)
+    USE_I_CBAR_BASELINE_A = _get_optional_bool(inpt, "USE_I_CBAR_BASELINE_A", False)
+    USE_I_CBAR_BASELINE_C = _get_optional_bool(inpt, "USE_I_CBAR_BASELINE_C", False)
+    CBAR_BASELINE_DEVIATION_FRACTION_A = _get_optional_float(inpt, "CBAR_BASELINE_DEVIATION_FRACTION_A", 0.25)
+    CBAR_BASELINE_DEVIATION_FRACTION_C = _get_optional_float(inpt, "CBAR_BASELINE_DEVIATION_FRACTION_C", 0.25)
+    USE_ZERO_MEAN_RADIAL_DEVIATION = _get_optional_bool(inpt, "USE_ZERO_MEAN_RADIAL_DEVIATION", False)
+    USE_ZERO_MEAN_RADIAL_DEVIATION_A = _get_optional_bool(inpt, "USE_ZERO_MEAN_RADIAL_DEVIATION_A", False)
+    USE_ZERO_MEAN_RADIAL_DEVIATION_C = _get_optional_bool(inpt, "USE_ZERO_MEAN_RADIAL_DEVIATION_C", False)
+    CBAR_RADIAL_BASIS_MODE = str(inpt.get("CBAR_RADIAL_BASIS_MODE", "s2_zero_mean")).strip()
+    USE_CURRENT_POTENTIAL_BASELINE = _get_optional_bool(inpt, "USE_CURRENT_POTENTIAL_BASELINE", False)
+    USE_CURRENT_POTENTIAL_BASELINE_PHIE = _get_optional_bool(inpt, "USE_CURRENT_POTENTIAL_BASELINE_PHIE", False)
+    USE_CURRENT_POTENTIAL_BASELINE_PHIS_C = _get_optional_bool(inpt, "USE_CURRENT_POTENTIAL_BASELINE_PHIS_C", False)
+    POTENTIAL_BASELINE_CORRECTION_FRACTION_PHIE = _get_optional_float(inpt, "POTENTIAL_BASELINE_CORRECTION_FRACTION_PHIE", 0.25)
+    POTENTIAL_BASELINE_CORRECTION_FRACTION_PHIS_C = _get_optional_float(inpt, "POTENTIAL_BASELINE_CORRECTION_FRACTION_PHIS_C", 0.25)
+
     return {
         "MERGED": MERGED,
         "NEURONS_NUM": NEURONS_NUM,
@@ -335,6 +424,20 @@ def initialize_params_from_inpt(inpt: Dict[str, str]) -> Dict[str, Any]:
         "LOAD_MODEL": LOAD_MODEL,
         "LOCAL_utilFolder": LOCAL_utilFolder,
         "PRIOR_MODEL": PRIOR_MODEL,
+        "USE_I_CBAR_BASELINE": USE_I_CBAR_BASELINE,
+        "USE_I_CBAR_BASELINE_A": USE_I_CBAR_BASELINE_A,
+        "USE_I_CBAR_BASELINE_C": USE_I_CBAR_BASELINE_C,
+        "CBAR_BASELINE_DEVIATION_FRACTION_A": CBAR_BASELINE_DEVIATION_FRACTION_A,
+        "CBAR_BASELINE_DEVIATION_FRACTION_C": CBAR_BASELINE_DEVIATION_FRACTION_C,
+        "USE_ZERO_MEAN_RADIAL_DEVIATION": USE_ZERO_MEAN_RADIAL_DEVIATION,
+        "USE_ZERO_MEAN_RADIAL_DEVIATION_A": USE_ZERO_MEAN_RADIAL_DEVIATION_A,
+        "USE_ZERO_MEAN_RADIAL_DEVIATION_C": USE_ZERO_MEAN_RADIAL_DEVIATION_C,
+        "CBAR_RADIAL_BASIS_MODE": CBAR_RADIAL_BASIS_MODE,
+        "USE_CURRENT_POTENTIAL_BASELINE": USE_CURRENT_POTENTIAL_BASELINE,
+        "USE_CURRENT_POTENTIAL_BASELINE_PHIE": USE_CURRENT_POTENTIAL_BASELINE_PHIE,
+        "USE_CURRENT_POTENTIAL_BASELINE_PHIS_C": USE_CURRENT_POTENTIAL_BASELINE_PHIS_C,
+        "POTENTIAL_BASELINE_CORRECTION_FRACTION_PHIE": POTENTIAL_BASELINE_CORRECTION_FRACTION_PHIE,
+        "POTENTIAL_BASELINE_CORRECTION_FRACTION_PHIS_C": POTENTIAL_BASELINE_CORRECTION_FRACTION_PHIS_C,
     }
 
 
@@ -373,6 +476,7 @@ def initialize_nn(args, input_params: Dict[str, Any]) -> myNN:
     PRIOR_MODEL = input_params.get("PRIOR_MODEL", "spm")
     makeParams = _choose_param_builder(args, prior_model=PRIOR_MODEL)
     params = makeParams()
+    _apply_cbar_baseline_params(params, input_params)
     dataFolder = args.dataFolder
 
     if seed >= 0:
@@ -592,6 +696,7 @@ def initialize_nn(args, input_params: Dict[str, Any]) -> myNN:
     nn.configDict["ASSB_OCP_DIR"] = os.environ.get("ASSB_OCP_DIR", "")
     if "train_summary_json" in params:
         nn.configDict["train_summary_json"] = params["train_summary_json"]
+    nn.configDict.update(_cbar_config_payload(params))
 
     print(
         "INFO: ASSB reg diagnostics | "
@@ -610,6 +715,7 @@ def initialize_nn(args, input_params: Dict[str, Any]) -> myNN:
 
 
 def initialize_nn_from_params_config(params, configDict: Dict[str, Any]) -> myNN:
+    _apply_cbar_baseline_params(params, configDict)
     hidden_units_t = configDict.get("hidden_units_t")
     hidden_units_t_r = configDict.get("hidden_units_t_r")
     hidden_units_phie = configDict.get("hidden_units_phie")

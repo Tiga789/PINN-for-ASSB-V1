@@ -1,0 +1,168 @@
+ASSB cycle5 PINN vs soft-label debug evaluation
+================================================================
+model_dir: C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\ModelFin_98
+checkpoint: C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\ModelFin_98\best.pt
+soft_label_dir: C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\Data\assb_soft_labels_cycle5_v4
+output_dir: C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\EvalFin_98_cycle5_v4_cbarAC_hybridRadial_A035
+device: cuda:0
+config_prior_model: assb_discharge
+config_train_summary_json_original: C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\Data\assb_soft_labels_cycle5_v4\soft_label_summary.json
+chosen_train_summary_json: C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\Data\assb_soft_labels_cycle5_v4\soft_label_summary.json
+
+[model params]
+  rescale_T: 9232.0
+  rescale_R: 5e-05
+  rescale_R_a: 5e-05
+  rescale_R_c: 1.8e-06
+  radial_rescale_mode: per_electrode
+  use_per_electrode_rescale_R: True
+  csanmax: 6.0
+  cscamax: 51.8
+  R_ohm_eff: 143.6913493166367
+  voltage_alignment_offset_V: -0.2186690603079502
+  theta_c_bottom: 0.9325
+  theta_c_top: 0.4675
+  Rs_a: 5e-05
+  Rs_c: 1.8e-06
+
+[radial consistency]
+{
+  "model_radial_params": {
+    "rescale_R": 5e-05,
+    "rescale_R_a": 5e-05,
+    "rescale_R_c": 1.8e-06,
+    "Rs_a": 5e-05,
+    "Rs_c": 1.8e-06
+  },
+  "cs_a": {
+    "data_r_min": 0.0,
+    "data_r_max": 5e-05,
+    "scale_key_used": "rescale_R_a",
+    "scale_used": 5e-05,
+    "data_rmax_over_scale_used": 1.0,
+    "data_rmax_over_global_rescale_R": 1.0
+  },
+  "cs_c": {
+    "data_r_min": 0.0,
+    "data_r_max": 1.8e-06,
+    "scale_key_used": "rescale_R_c",
+    "scale_used": 1.8e-06,
+    "data_rmax_over_scale_used": 1.0,
+    "data_rmax_over_global_rescale_R": 0.036
+  }
+}
+
+[phie]
+  n: 925
+  mae: 0.04601746250891036
+  rmse: 0.07275410445685879
+  maxabs: 0.23824978112213063
+  bias_mean: -0.0013019304171056167
+  corr: 0.9245422076354428
+  label_min: -0.8172074473820048
+  label_max: -0.43207366690370846
+  label_std: 0.1908448851285778
+  pred_min: -0.8604362893941182
+  pred_max: -0.3943663500044281
+  pred_std: 0.177938500943107
+  std_ratio_pred_over_label: 0.9323723862089602
+
+[phis_c]
+  n: 925
+  mae: 0.04446055152950383
+  rmse: 0.07523771678217542
+  maxabs: 0.2806214477634219
+  bias_mean: -0.005804151759553214
+  corr: 0.9660172768418713
+  label_min: 2.6739798672249164
+  label_max: 3.6569615035560616
+  label_std: 0.28951978295640923
+  pred_min: 2.6541295046941107
+  pred_max: 3.5291679887755856
+  pred_std: 0.27449982712811055
+  std_ratio_pred_over_label: 0.9481211415851326
+
+[cs_a]
+  n: 59200
+  mae: 0.476237622031792
+  rmse: 0.54887926425631
+  maxabs: 1.010803834367211
+  bias_mean: -0.4654922330442203
+  corr: 0.9557251869610334
+  label_min: 2.7
+  label_max: 5.081762569716032
+  label_std: 0.6320798136087946
+  pred_min: 2.6951951963718495
+  pred_max: 4.071361783676398
+  pred_std: 0.38050832763849424
+  std_ratio_pred_over_label: 0.6019941144236535
+
+[cs_c]
+  n: 59200
+  mae: 0.17684895246962704
+  rmse: 0.21985366836841796
+  maxabs: 0.7521455973182753
+  bias_mean: 0.07415792910075429
+  corr: 0.9996382486626948
+  label_min: 22.369408798562453
+  label_max: 46.62
+  label_std: 6.749327357984287
+  pred_min: 22.710988169916387
+  pred_max: 46.62
+  pred_std: 6.647466579938685
+  std_ratio_pred_over_label: 0.9849080104367581
+
+[theta_a]
+  n: 59200
+  mae: 0.07937293700529865
+  rmse: 0.09147987737605168
+  maxabs: 0.1684673057278685
+  bias_mean: -0.07758203884070339
+  corr: 0.9557251869610317
+  label_min: 0.45
+  label_max: 0.8469604282860054
+  label_std: 0.10534663560146575
+  pred_min: 0.4491991993953082
+  pred_max: 0.6785602972793997
+  pred_std: 0.06341805460641571
+  std_ratio_pred_over_label: 0.6019941144236536
+
+[theta_c]
+  n: 59200
+  mae: 0.0034140724414985914
+  rmse: 0.004244279312131622
+  maxabs: 0.014520185276414632
+  bias_mean: 0.001431620252910315
+  corr: 0.9996382486626956
+  label_min: 0.43184186869811686
+  label_max: 0.9
+  label_std: 0.13029589494178162
+  pred_min: 0.43843606505630095
+  pred_max: 0.9
+  pred_std: 0.12832947065518696
+  std_ratio_pred_over_label: 0.9849080104367579
+
+[soft-label voltage sanity]
+{
+  "available": true,
+  "time_key": "t",
+  "voltage_key": "voltage_exp",
+  "metrics_phis_c_label_vs_experiment": {
+    "n": 925,
+    "mae": 0.04631181542930769,
+    "rmse": 0.08390891574910635,
+    "maxabs": 0.5449699157071008,
+    "bias_mean": 3.84077154464919e-18,
+    "corr": 0.9665013883190117,
+    "label_min": 2.1934,
+    "label_max": 3.6795,
+    "label_std": 0.31879492711708574,
+    "pred_min": 2.6739798672249164,
+    "pred_max": 3.6569615035560616,
+    "pred_std": 0.28951978295640923,
+    "std_ratio_pred_over_label": 0.908169353805544
+  }
+}
+
+[diagnosis]
+  - phis_c passes the cycle5 debug target: corr >= 0.85 and MAE <= 0.08 V.

@@ -1,0 +1,168 @@
+ASSB cycle5 PINN vs soft-label debug evaluation
+================================================================
+model_dir: C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\ModelFin_95
+checkpoint: C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\ModelFin_95\best.pt
+soft_label_dir: C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\Data\assb_soft_labels_cycle5_v4
+output_dir: C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\EvalFin_95_cycle5_v4_cbarAC_baseline
+device: cuda:0
+config_prior_model: assb_discharge
+config_train_summary_json_original: C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\Data\assb_soft_labels_cycle5_v4\soft_label_summary.json
+chosen_train_summary_json: C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\Data\assb_soft_labels_cycle5_v4\soft_label_summary.json
+
+[model params]
+  rescale_T: 9232.0
+  rescale_R: 5e-05
+  rescale_R_a: 5e-05
+  rescale_R_c: 1.8e-06
+  radial_rescale_mode: per_electrode
+  use_per_electrode_rescale_R: True
+  csanmax: 6.0
+  cscamax: 51.8
+  R_ohm_eff: 143.6913493166367
+  voltage_alignment_offset_V: -0.2186690603079502
+  theta_c_bottom: 0.9325
+  theta_c_top: 0.4675
+  Rs_a: 5e-05
+  Rs_c: 1.8e-06
+
+[radial consistency]
+{
+  "model_radial_params": {
+    "rescale_R": 5e-05,
+    "rescale_R_a": 5e-05,
+    "rescale_R_c": 1.8e-06,
+    "Rs_a": 5e-05,
+    "Rs_c": 1.8e-06
+  },
+  "cs_a": {
+    "data_r_min": 0.0,
+    "data_r_max": 5e-05,
+    "scale_key_used": "rescale_R_a",
+    "scale_used": 5e-05,
+    "data_rmax_over_scale_used": 1.0,
+    "data_rmax_over_global_rescale_R": 1.0
+  },
+  "cs_c": {
+    "data_r_min": 0.0,
+    "data_r_max": 1.8e-06,
+    "scale_key_used": "rescale_R_c",
+    "scale_used": 1.8e-06,
+    "data_rmax_over_scale_used": 1.0,
+    "data_rmax_over_global_rescale_R": 0.036
+  }
+}
+
+[phie]
+  n: 925
+  mae: 0.05687065281360524
+  rmse: 0.08378820167922896
+  maxabs: 0.2622637551788518
+  bias_mean: 0.0002048220480381477
+  corr: 0.8986815938860386
+  label_min: -0.8172074473820048
+  label_max: -0.43207366690370846
+  label_std: 0.1908448851285778
+  pred_min: -0.8869043123217084
+  pred_max: -0.4044889391711073
+  pred_std: 0.1752389504909338
+  std_ratio_pred_over_label: 0.9182271265633877
+
+[phis_c]
+  n: 925
+  mae: 0.09907234508769695
+  rmse: 0.11414981737990557
+  maxabs: 0.24001161282019545
+  bias_mean: 0.06275164354619152
+  corr: 0.9461180891458616
+  label_min: 2.6739798672249164
+  label_max: 3.6569615035560616
+  label_std: 0.28951978295640923
+  pred_min: 2.7059692613145723
+  pred_max: 3.544103653152519
+  pred_std: 0.25651815028540137
+  std_ratio_pred_over_label: 0.8860125123954771
+
+[cs_a]
+  n: 59200
+  mae: 0.34756941355469995
+  rmse: 0.4059031169075516
+  maxabs: 0.7685243465931952
+  bias_mean: -0.331824496080584
+  corr: 0.963872169745965
+  label_min: 2.7
+  label_max: 5.081762569716032
+  label_std: 0.6320798136087946
+  pred_min: 2.696956311402618
+  pred_max: 4.313717389688835
+  pred_std: 0.44706098206829703
+  std_ratio_pred_over_label: 0.7072856503925483
+
+[cs_c]
+  n: 59200
+  mae: 2.5307426054712314
+  rmse: 2.89296233484567
+  maxabs: 6.2951377864480875
+  bias_mean: -2.5300501507177438
+  corr: 0.9812454108097514
+  label_min: 22.369408798562453
+  label_max: 46.62
+  label_std: 6.749327357984287
+  pred_min: 22.253639545418434
+  pred_max: 46.714185326636596
+  pred_std: 6.097933508693119
+  std_ratio_pred_over_label: 0.9034875899861955
+
+[theta_a]
+  n: 59200
+  mae: 0.05792823559245
+  rmse: 0.06765051948459193
+  maxabs: 0.1280873910988659
+  bias_mean: -0.05530408268009734
+  corr: 0.9638721697459652
+  label_min: 0.45
+  label_max: 0.8469604282860054
+  label_std: 0.10534663560146575
+  pred_min: 0.449492718567103
+  pred_max: 0.7189528982814725
+  pred_std: 0.07451016367804951
+  std_ratio_pred_over_label: 0.7072856503925485
+
+[theta_c]
+  n: 59200
+  mae: 0.048856034854656984
+  rmse: 0.05584869372288939
+  maxabs: 0.12152775649513681
+  bias_mean: -0.04884266700227304
+  corr: 0.9812454108097508
+  label_min: 0.43184186869811686
+  label_max: 0.9
+  label_std: 0.13029589494178162
+  pred_min: 0.4296069410312439
+  pred_max: 0.901818249548969
+  pred_std: 0.11772072410604477
+  std_ratio_pred_over_label: 0.9034875899861953
+
+[soft-label voltage sanity]
+{
+  "available": true,
+  "time_key": "t",
+  "voltage_key": "voltage_exp",
+  "metrics_phis_c_label_vs_experiment": {
+    "n": 925,
+    "mae": 0.04631181542930769,
+    "rmse": 0.08390891574910635,
+    "maxabs": 0.5449699157071008,
+    "bias_mean": 3.84077154464919e-18,
+    "corr": 0.9665013883190117,
+    "label_min": 2.1934,
+    "label_max": 3.6795,
+    "label_std": 0.31879492711708574,
+    "pred_min": 2.6739798672249164,
+    "pred_max": 3.6569615035560616,
+    "pred_std": 0.28951978295640923,
+    "std_ratio_pred_over_label": 0.908169353805544
+  }
+}
+
+[diagnosis]
+  - No obvious failure signature from simple thresholds. Inspect PNG plots and debug_model_and_data.json.

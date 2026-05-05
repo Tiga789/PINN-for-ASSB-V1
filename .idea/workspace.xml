@@ -5,11 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7b854bbc-0a8a-4911-bc87-dd9f1f68d852" name="更改" comment="">
-      <change afterPath="$PROJECT_DIR$/apply_myNN_logging_patch_v2.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/patch_myNN_logging.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/input_assb_cycle5_v4_cbarAC_anodeSmallZeroMean_ID99" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/input_assb_cycle5_v4_cbarAC_baseline_ID95" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/input_assb_cycle5_v4_cbarAC_hybridRadial_ID97" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/input_assb_cycle5_v4_cbarAC_hybridRadial_ID98" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/input_assb_cycle5_v4_cbarAC_potentialBaseline_ID100" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/input_assb_cycle5_v4_cbarAC_zeroMean_ID96" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/input_assb_cycle5_v4_cbarA_baseline_ID94" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/util/_rescale_99.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/util/init_pinn_99.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EvalFin_91_cycle5_v4_anode_seccons.zip" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/util/_rescale.py" beforeDir="false" afterPath="$PROJECT_DIR$/util/_rescale.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/util/init_pinn.py" beforeDir="false" afterPath="$PROJECT_DIR$/util/init_pinn.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/util/myNN.py" beforeDir="false" afterPath="$PROJECT_DIR$/util/myNN.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -149,7 +157,7 @@
       <workItem from="1776541032895" duration="5739000" />
       <workItem from="1776793294745" duration="2000" />
       <workItem from="1776796578394" duration="75259000" />
-      <workItem from="1777704900369" duration="13672000" />
+      <workItem from="1777704900369" duration="37829000" />
     </task>
     <servers />
   </component>
