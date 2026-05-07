@@ -1,0 +1,45 @@
+{
+  "model_label": "ID101",
+  "cycle_label": "cycle5_v4",
+  "metrics": {
+    "cs_a": {
+      "mae": 0.10233453421241055,
+      "rmse": 0.13415393981648652,
+      "r2": 0.9549532958171351,
+      "nmae": 0.042965883969119344,
+      "nrmse": 0.05632548832626972,
+      "corr": 0.9834436364289896,
+      "range": 2.381762569716032
+    },
+    "cs_c": {
+      "mae": 0.19127433902088037,
+      "rmse": 0.2527428135876578,
+      "r2": 0.998597713846263,
+      "nmae": 0.007887409318480526,
+      "nrmse": 0.010422129979770371,
+      "corr": 0.9995650711127217,
+      "range": 24.250591201437544
+    }
+  },
+  "sources": {
+    "t": "soft_solution:t <- C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\PINN-for-ASSB-V1\\Data\\assb_soft_labels_cycle5_v4\\solution.npz",
+    "r_a": "soft_solution:r_a <- C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\PINN-for-ASSB-V1\\Data\\assb_soft_labels_cycle5_v4\\solution.npz",
+    "r_c": "soft_solution:r_c <- C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\PINN-for-ASSB-V1\\Data\\assb_soft_labels_cycle5_v4\\solution.npz",
+    "cs_a_true": "soft_solution:cs_a <- C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\PINN-for-ASSB-V1\\Data\\assb_soft_labels_cycle5_v4\\solution.npz",
+    "cs_a_pred": "cs_surface_cycle5_model101_cache:cs_a_pred <- C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\PINN-for-ASSB-V1\\EvalFin_101_cycle5_v4_cbarAC_potentialBaseline\\cs_surface_cycle5_model101_cache.npz",
+    "cs_c_true": "soft_solution:cs_c <- C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\PINN-for-ASSB-V1\\Data\\assb_soft_labels_cycle5_v4\\solution.npz",
+    "cs_c_pred": "cs_surface_cycle5_model101_cache:cs_c_pred <- C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\PINN-for-ASSB-V1\\EvalFin_101_cycle5_v4_cbarAC_potentialBaseline\\cs_surface_cycle5_model101_cache.npz"
+  },
+  "normalization": "NMAE and NRMSE are normalized by max(true)-min(true) over the full t-r surface.",
+  "plot_style": {
+    "font_family": "Times New Roman",
+    "true_colorscale": "Viridis",
+    "pred_colorscale": "RdBu_r"
+  },
+  "plot_downsampling": {
+    "time_stride": 5,
+    "r_stride": 2,
+    "max_t_points": 220,
+    "max_r_points": 40
+  }
+}
