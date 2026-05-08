@@ -1,0 +1,9 @@
+$ErrorActionPreference = "Stop"
+$repo = Split-Path -Parent $PSScriptRoot
+Set-Location $repo
+
+$env:ASSB_SOFT_LABEL_DIR = (Resolve-Path ".\Data\assb_soft_lable_cycle5-20_v1_smoke").Path
+$env:ASSB_OCP_DIR = "C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\ocp_estimation_outputs"
+$env:ASSB_COMPARE_EXPERIMENT_VOLTAGE = "False"
+
+D:\Anaconda\envs\torchgpu\python.exe main.py -i input_assb_cycles5to522_v4_continuous_ID102

@@ -1,20 +1,25 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-ASSB effective-SPM parameter builder with explicit soft-label provenance.
+ASSB effective-SPM parameter builder for ModelFin_102 all-cycle continuous soft labels.
 
 Replacement location:
     util/spm_assb_train_discharge.py
 
-Main change in this version:
-    ASSB_SOFT_LABEL_DIR and an explicit soft-label summary take precedence over
-    stale config.json/train_summary_json paths. The actual soft-label directory,
-    actual soft_label_summary.json and actual current-profile source are written
-    into params so ModelFin_*/config.json and evaluators can diagnose mismatches.
+Main change for cycle5-522_v1:
+    - Prefer the external continuous soft-label directory
+      C:/Users/Tiga_QJW/Desktop/ASSB_Scheme_V1/assb_soft_lable_cycle5-522_v1
+      unless ASSB_SOFT_LABEL_DIR is explicitly set.
+    - Read solution.npz time keys robustly: t_global_s, t, t_s, time_s, time.
+    - Read cycle_id and provenance fields when present.
+    - Use soft-label phis_c as the training/evaluation reference; experimental
+      voltage is only metadata and is not used as a target by this file.
 
-The physical model conventions are unchanged:
+Physical convention is unchanged:
     J_a(t) = -I(t) * R_a / (3 * eps_a * F * V_a)
     J_c(t) =  I(t) * R_c / (3 * eps_c * F * V_c)
+positive/cathode-like material identity remains NMC811, negative/anode-like
+material identity remains Li-In/In; they do not switch with current sign.
 """
 from __future__ import annotations
 
@@ -27,7 +32,7 @@ from typing import Any, Optional
 
 import numpy as np
 
-print("INFO: USING ASSB PROVENANCE-AWARE TRAINING SPM PRIOR")
+print("INFO: USING ASSB MODELFIN_102 CONTINUOUS ALL-CYCLE TRAINING SPM PRIOR")
 
 
 def _infer_repo_root() -> Path:
@@ -36,9 +41,14 @@ def _infer_repo_root() -> Path:
 
 
 ROOT = _infer_repo_root()
-DEFAULT_SOFT_LABEL_DIR_CYCLE5 = ROOT / "Data" / "assb_soft_labels_cycle5_v3"
-DEFAULT_SOFT_LABEL_DIR_CYCLES5PLUS = ROOT / "Data" / "assb_soft_labels_cycles5plus_v3"
-DEFAULT_SUMMARY_JSON = DEFAULT_SOFT_LABEL_DIR_CYCLE5 / "soft_label_summary.json"
+DEFAULT_SOFT_LABEL_DIR_ALLCYCLE = Path(
+    r"C:/Users/Tiga_QJW/Desktop/ASSB_Scheme_V1/assb_soft_lable_cycle5-522_v1"
+)
+DEFAULT_SOFT_LABEL_DIR_CYCLE5_V4 = ROOT / "Data" / "assb_soft_labels_cycle5_v4"
+DEFAULT_SOFT_LABEL_DIR_CYCLE5_V3 = ROOT / "Data" / "assb_soft_labels_cycle5_v3"
+DEFAULT_SOFT_LABEL_DIR_CYCLES5PLUS_V3 = ROOT / "Data" / "assb_soft_labels_cycles5plus_v3"
+DEFAULT_SUMMARY_JSON = DEFAULT_SOFT_LABEL_DIR_ALLCYCLE / "soft_label_summary.json"
+
 DEFAULT_AREA_M2 = np.float64(7.853981633974483e-05)  # 10 mm diameter area
 DEFAULT_TMAX_S = np.float64(3600.0)
 DEFAULT_I_A = np.float64(-3.3e-4)
@@ -124,53 +134,46 @@ def _dedupe_paths(paths: list[Path]) -> list[Path]:
 
 
 def _candidate_soft_label_dirs(summary: dict, summary_path: Path | None = None) -> list[Path]:
-    """Return candidate soft-label dirs.
-
-    IMPORTANT: environment override comes first. This prevents a stale
-    ModelFin_*/config.json train_summary_json from silently forcing old data.
-    """
+    """Return candidate soft-label dirs. Environment/input override comes first."""
     candidates: list[Path] = []
     env = os.environ.get("ASSB_SOFT_LABEL_DIR")
     if env:
         candidates.append(Path(env))
-
     if summary_path is not None:
         p = Path(summary_path)
         if p.name == "soft_label_summary.json":
             candidates.append(p.parent)
-
-    for key in ("soft_label_dir", "soft_labels_dir", "assb_soft_label_dir"):
+    for key in ("soft_label_dir", "soft_labels_dir", "assb_soft_label_dir", "output_dir"):
         val = summary.get(key)
         if val:
             candidates.append(Path(str(val)))
-
-    candidates.extend([DEFAULT_SOFT_LABEL_DIR_CYCLE5, DEFAULT_SOFT_LABEL_DIR_CYCLES5PLUS])
+    candidates.extend(
+        [
+            DEFAULT_SOFT_LABEL_DIR_ALLCYCLE,
+            DEFAULT_SOFT_LABEL_DIR_CYCLE5_V4,
+            DEFAULT_SOFT_LABEL_DIR_CYCLE5_V3,
+            DEFAULT_SOFT_LABEL_DIR_CYCLES5PLUS_V3,
+        ]
+    )
     return _dedupe_paths(candidates)
 
 
 def _resolve_soft_label_context(summary_json: Path | None) -> tuple[Path | None, Path | None, dict, str]:
     original_summary = Path(summary_json) if summary_json is not None else None
     original_data = _load_summary(original_summary)
-
     for d in _candidate_soft_label_dirs(original_data, original_summary):
         summary_file = d / "soft_label_summary.json"
-        if summary_file.exists():
+        solution_file = d / "solution.npz"
+        if summary_file.exists() or solution_file.exists():
             data = _load_summary(summary_file)
             data.setdefault("soft_label_dir", str(d.resolve()))
-            return d.resolve(), summary_file.resolve(), data, "soft_label_dir/soft_label_summary.json"
-
+            return d.resolve(), (summary_file.resolve() if summary_file.exists() else None), data, "soft_label_dir"
     if original_summary is not None and original_summary.exists():
         return None, original_summary.resolve(), original_data, "original summary_json"
-
     return None, None, {}, "fallback defaults"
 
 
 def _load_thermo(soft_label_dir: Path | None):
-    """Load thermo after selecting ASSB_SOFT_LABEL_DIR.
-
-    thermo_assb reads v3 constants from soft_label_summary.json at import time.
-    Reloading after the environment is set makes summary provenance explicit.
-    """
     if soft_label_dir is not None:
         os.environ["ASSB_SOFT_LABEL_DIR"] = str(soft_label_dir)
     try:
@@ -180,19 +183,29 @@ def _load_thermo(soft_label_dir: Path | None):
     return importlib.reload(thermo)
 
 
+def _find_npz_key(npz, candidates: tuple[str, ...]) -> str | None:
+    files = set(npz.files)
+    lower = {k.lower(): k for k in npz.files}
+    for c in candidates:
+        if c in files:
+            return c
+        if c.lower() in lower:
+            return lower[c.lower()]
+    return None
+
+
 def _load_profile_from_summary_arrays(summary: dict):
     profile = summary.get("current_profile") or summary.get("I_profile") or summary.get("I_app_profile")
     if isinstance(profile, dict):
-        t = profile.get("t") or profile.get("time") or profile.get("time_s") or profile.get("t_s")
+        t = profile.get("t") or profile.get("time") or profile.get("time_s") or profile.get("t_s") or profile.get("t_global_s")
         i = profile.get("I") or profile.get("current") or profile.get("current_A") or profile.get("I_A")
         if t is not None and i is not None:
             t_arr = np.asarray(t, dtype=np.float64).reshape(-1)
             i_arr = np.asarray(i, dtype=np.float64).reshape(-1)
             if t_arr.size >= 2 and t_arr.size == i_arr.size:
                 return t_arr, i_arr, "summary.current_profile", None
-
     t = None
-    for key in ("time_profile", "t_profile", "current_time_profile", "I_time_profile"):
+    for key in ("t_global_s", "time_profile", "t_profile", "current_time_profile", "I_time_profile"):
         if key in summary:
             t = summary[key]
             break
@@ -209,98 +222,8 @@ def _load_profile_from_summary_arrays(summary: dict):
     return None
 
 
-def _load_profile_from_soft_labels(soft_label_dir: Path | None):
-    if soft_label_dir is None:
-        return None
-    sol = soft_label_dir / "solution.npz"
-    if not sol.exists():
-        return None
-    try:
-        data = np.load(sol)
-        t = np.asarray(data["t"], dtype=np.float64).reshape(-1)
-        i = np.asarray(data["I_profile"], dtype=np.float64).reshape(-1)
-        if t.size >= 2 and t.size == i.size:
-            v0 = None
-            for key in ("voltage_exp", "V_exp", "voltage", "voltage_V"):
-                if key in data.files:
-                    v = np.asarray(data[key], dtype=np.float64).reshape(-1)
-                    valid = np.where(np.isfinite(v))[0]
-                    if valid.size:
-                        v0 = float(v[valid[0]])
-                    break
-            return t, i, f"{sol}", v0
-    except Exception:
-        return None
-    return None
-
-
-def _candidate_record_paths(summary: dict, summary_path: Path | None) -> list[Path]:
-    candidates: list[Path] = []
-    for key in (
-        "record_csv",
-        "record_csv_path",
-        "record_path",
-        "current_profile_csv",
-        "current_profile_path",
-        "assb_record_csv",
-        "assb_record_path",
-    ):
-        value = summary.get(key)
-        if value:
-            candidates.append(Path(str(value)))
-    for env_key in ("ASSB_RECORD_CSV", "ASSB_RECORD_ZIP", "ASSB_CURRENT_PROFILE_CSV"):
-        value = os.environ.get(env_key)
-        if value:
-            candidates.append(Path(value))
-
-    roots = [ROOT, ROOT / "Data"]
-    if summary_path is not None:
-        sp = Path(summary_path)
-        roots.extend([sp.parent, sp.parent.parent])
-    for base in roots:
-        candidates.extend([
-            base / "record_extracted.csv",
-            base / "record_extracted.zip",
-            base / "record" / "record_extracted.csv",
-            base / "records" / "record_extracted.csv",
-            base / "Data" / "record_extracted.csv",
-            base / "Data" / "record_extracted.zip",
-        ])
-    candidates.extend([
-        Path(r"C:/Users/Tiga_QJW/Desktop/ZHB_realDATA/record_extracted.csv"),
-        Path(r"C:/Users/Tiga_QJW/Desktop/ASSB_Scheme_V1/record_extracted.csv"),
-        Path(r"C:/Users/Tiga_QJW/Desktop/ASSB_Scheme_V1/record_extracted/record_extracted.csv"),
-        Path(r"C:/Users/Tiga_QJW/Desktop/ASSB_Scheme_V1/record_extracted.zip"),
-    ])
-    return _dedupe_paths(candidates)
-
-
-def _read_record_dataframe(path: Path):
-    try:
-        import pandas as pd
-    except Exception:
-        return None
-    if not path.exists():
-        return None
-    try:
-        if path.suffix.lower() == ".zip":
-            with zipfile.ZipFile(path, "r") as zf:
-                csv_names = [n for n in zf.namelist() if n.lower().endswith(".csv")]
-                if not csv_names:
-                    return None
-                csv_name = "record_extracted.csv" if "record_extracted.csv" in [Path(n).name for n in csv_names] else csv_names[0]
-                for name in csv_names:
-                    if Path(name).name == "record_extracted.csv":
-                        csv_name = name
-                        break
-                with zf.open(csv_name) as f:
-                    return pd.read_csv(f)
-        return pd.read_csv(path)
-    except Exception:
-        return None
-
-
-def _compress_profile(t: np.ndarray, i: np.ndarray, max_points: int = 5000):
+def _compress_profile(t: np.ndarray, i: np.ndarray, max_points: int = 6000):
+    """Compress a long piecewise-constant current profile while keeping jumps."""
     t = np.asarray(t, dtype=np.float64).reshape(-1)
     i = np.asarray(i, dtype=np.float64).reshape(-1)
     valid = np.isfinite(t) & np.isfinite(i)
@@ -333,18 +256,121 @@ def _compress_profile(t: np.ndarray, i: np.ndarray, max_points: int = 5000):
     return t[keep_idx], i[keep_idx]
 
 
+def _load_profile_from_soft_labels(soft_label_dir: Path | None):
+    if soft_label_dir is None:
+        return None
+    sol = soft_label_dir / "solution.npz"
+    if not sol.exists():
+        return None
+    try:
+        with np.load(sol, allow_pickle=False) as data:
+            t_key = _find_npz_key(data, ("t_global_s", "t", "t_s", "time_s", "time", "t_eval"))
+            i_key = _find_npz_key(data, ("I_profile", "current_profile_A", "current_A", "I", "I_A"))
+            if t_key is None or i_key is None:
+                return None
+            t = np.asarray(data[t_key], dtype=np.float64).reshape(-1)
+            i = np.asarray(data[i_key], dtype=np.float64).reshape(-1)
+            if t.size >= 2 and t.size == i.size:
+                # Shift to zero to keep training domain [0, Tmax].
+                t = t - float(t[0])
+                compressed = _compress_profile(t, i)
+                if compressed is not None:
+                    t_out, i_out = compressed
+                else:
+                    t_out, i_out = t, i
+                v0 = None
+                for key in ("phis_c", "voltage_soft", "voltage_exp", "V_exp", "voltage", "voltage_V"):
+                    if key in data.files:
+                        v = np.asarray(data[key], dtype=np.float64).reshape(-1)
+                        valid = np.where(np.isfinite(v))[0]
+                        if valid.size:
+                            v0 = float(v[valid[0]])
+                            break
+                return t_out, i_out, f"{sol}::{t_key}/{i_key}", v0
+    except Exception as exc:
+        print(f"WARNING: failed reading current profile from {sol}: {exc}")
+        return None
+    return None
+
+
+def _candidate_record_paths(summary: dict, summary_path: Path | None) -> list[Path]:
+    candidates: list[Path] = []
+    for key in (
+        "record_csv", "record_csv_path", "record_path", "current_profile_csv",
+        "current_profile_path", "assb_record_csv", "assb_record_path",
+    ):
+        value = summary.get(key)
+        if value:
+            candidates.append(Path(str(value)))
+    for env_key in ("ASSB_RECORD_CSV", "ASSB_RECORD_ZIP", "ASSB_CURRENT_PROFILE_CSV"):
+        value = os.environ.get(env_key)
+        if value:
+            candidates.append(Path(value))
+    roots = [ROOT, ROOT / "Data"]
+    if summary_path is not None:
+        sp = Path(summary_path)
+        roots.extend([sp.parent, sp.parent.parent])
+    for base in roots:
+        candidates.extend(
+            [
+                base / "record_extracted.csv",
+                base / "record_extracted.zip",
+                base / "record" / "record_extracted.csv",
+                base / "records" / "record_extracted.csv",
+                base / "Data" / "record_extracted.csv",
+                base / "Data" / "record_extracted.zip",
+            ]
+        )
+    candidates.extend(
+        [
+            Path(r"C:/Users/Tiga_QJW/Desktop/ZHB_realDATA/record_extracted.csv"),
+            Path(r"C:/Users/Tiga_QJW/Desktop/ASSB_Scheme_V1/record_extracted.csv"),
+            Path(r"C:/Users/Tiga_QJW/Desktop/ASSB_Scheme_V1/record_extracted/record_extracted.csv"),
+            Path(r"C:/Users/Tiga_QJW/Desktop/ASSB_Scheme_V1/record_extracted.zip"),
+        ]
+    )
+    return _dedupe_paths(candidates)
+
+
+def _read_record_dataframe(path: Path):
+    try:
+        import pandas as pd
+    except Exception:
+        return None
+    if not path.exists():
+        return None
+    try:
+        if path.suffix.lower() == ".zip":
+            with zipfile.ZipFile(path, "r") as zf:
+                csv_names = [n for n in zf.namelist() if n.lower().endswith(".csv")]
+                if not csv_names:
+                    return None
+                csv_name = csv_names[0]
+                for name in csv_names:
+                    if Path(name).name == "record_extracted.csv":
+                        csv_name = name
+                        break
+                with zf.open(csv_name) as f:
+                    return pd.read_csv(f)
+        return pd.read_csv(path)
+    except Exception:
+        return None
+
+
 def _build_record_current_profile(summary: dict, summary_path: Path | None, soft_label_dir: Path | None):
-    # Priority 1: solution.npz inside the actual selected soft-label directory.
-    soft = _load_profile_from_soft_labels(soft_label_dir)
-    if soft is not None:
-        return soft
-
-    # Priority 2: explicit arrays inside summary.
-    direct = _load_profile_from_summary_arrays(summary)
-    if direct is not None:
-        return direct
-
-    # Priority 3: record_extracted.csv fallback.
+    # Priority 1: solution.npz in the selected soft-label directory.
+    profile = _load_profile_from_soft_labels(soft_label_dir)
+    if profile is not None:
+        return profile
+    # Priority 2: arrays stored in summary JSON.
+    profile = _load_profile_from_summary_arrays(summary)
+    if profile is not None:
+        t, i, src, v0 = profile
+        comp = _compress_profile(t, i)
+        if comp is not None:
+            t, i = comp
+        return t, i, src, v0
+    # Priority 3: raw record_extracted fallback.
     df = None
     source = None
     for path in _candidate_record_paths(summary, summary_path):
@@ -354,14 +380,12 @@ def _build_record_current_profile(summary: dict, summary_path: Path | None, soft
             break
     if df is None:
         return None
-
     cycle_col = "循环号" if "循环号" in df.columns else None
     time_col = "总时间" if "总时间" in df.columns else ("时间" if "时间" in df.columns else None)
     current_col = "电流(A)" if "电流(A)" in df.columns else None
     voltage_col = "电压(V)" if "电压(V)" in df.columns else None
     if cycle_col is None or time_col is None or current_col is None:
         return None
-
     cycle_from = int(summary.get("cycle_from", summary.get("current_profile_cycle_from", DEFAULT_PROFILE_CYCLE_FROM)))
     cycle_to = summary.get("cycle_to", summary.get("current_profile_cycle_to", None))
     merge = _parse_bool(summary.get("merge_cycles", os.environ.get("ASSB_MERGE_CYCLES")), True)
@@ -383,7 +407,6 @@ def _build_record_current_profile(summary: dict, summary_path: Path | None, soft
         source_note = f"{source} | cycle {cycle_value}"
     if chosen.empty:
         return None
-
     t_abs = np.array([_parse_time_to_seconds(v) for v in chosen[time_col].to_numpy()], dtype=np.float64)
     i_arr = chosen[current_col].to_numpy(dtype=np.float64)
     valid = np.isfinite(t_abs) & np.isfinite(i_arr)
@@ -467,6 +490,7 @@ def _initial_thetas(summary: dict, current_profile=None, v0=None):
             return np.float64(theta_a_override), np.float64(theta_c_override), "soft-label summary override"
         except Exception:
             pass
+    # For generated all-cycle labels, preserve cycle5/v4 start convention unless explicitly overridden.
     first_i = _first_nonzero_current(current_profile)
     if first_i > 0 or (v0 is not None and v0 < 2.5):
         return ASSB_THETA_A0_DISCHARGED, ASSB_THETA_C0_DISCHARGED, "charge-first cycle initial state"
@@ -482,11 +506,25 @@ def _summary_float(summary: dict, keys: tuple[str, ...], default: float) -> np.f
                     return np.float64(val)
             except Exception:
                 pass
+    # some generator summaries put v4 fit fields in fit_report
+    fit_report = summary.get("fit_report", {})
+    if isinstance(fit_report, dict):
+        for key in keys:
+            if key in fit_report:
+                try:
+                    val = float(fit_report[key])
+                    if np.isfinite(val):
+                        return np.float64(val)
+                except Exception:
+                    pass
     return np.float64(default)
 
 
 def _to_jsonable(value: Any):
     if isinstance(value, np.ndarray):
+        # Keep config JSON small: never dump the full current profile.
+        if value.size > 20:
+            return {"shape": list(value.shape), "min": float(np.nanmin(value)), "max": float(np.nanmax(value))}
         return value.tolist()
     if isinstance(value, (np.integer, np.floating)):
         return float(value)
@@ -508,7 +546,6 @@ def makeParams(summary_json=None):
         Path(summary_json) if summary_json is not None else DEFAULT_SUMMARY_JSON
     )
     thermo = _load_thermo(soft_label_dir)
-
     record_profile_info = _build_record_current_profile(summary, actual_summary_path, soft_label_dir)
     current_profile = None
     profile_source = None
@@ -521,7 +558,7 @@ def makeParams(summary_json=None):
     if current_profile is not None and "tmax_train_s" not in summary:
         tmax_s = np.float64(np.max(current_profile[0]))
     else:
-        tmax_s = np.float64(summary.get("tmax_train_s", DEFAULT_TMAX_S))
+        tmax_s = np.float64(summary.get("tmax_train_s", summary.get("tmax_s", DEFAULT_TMAX_S)))
     capacity_ah = _infer_capacity_ah(summary, tmax_s=tmax_s, current_ref_A=current_ref_A, profile=current_profile)
     theta_a0, theta_c0, theta_source = _initial_thetas(summary, current_profile, profile_v0)
     csanmax_eff = _summary_float(summary, ("csanmax", "csanmax_eff"), float(getattr(thermo, "CSANMAX_EFF", 6.0)))
@@ -613,18 +650,28 @@ def makeParams(summary_json=None):
     ic = IC()
     params = thermo.setParams({}, deg, bat, an, ca, ic)
 
-    # Explicitly override v3 constants from the selected soft-label summary so the
-    # saved config reflects the actual data source, even if thermo_assb was already
-    # imported elsewhere in the process.
+    # Explicitly override constants from the selected soft-label summary.
     params["csanmax"] = np.float64(csanmax_eff)
     params["cscamax"] = np.float64(cscamax_eff)
     for key, aliases, default in [
-        ("R_ohm_eff", ("R_ohm_eff_v3", "R_ohm_eff"), params.get("R_ohm_eff", 105.0)),
-        ("voltage_alignment_offset_V", ("voltage_alignment_offset_V", "voltage_offset_V"), params.get("voltage_alignment_offset_V", -0.11588681607942332)),
-        ("theta_c_bottom", ("theta_c_bottom_v3", "theta_c_bottom"), params.get("theta_c_bottom", 0.834)),
-        ("theta_c_top", ("theta_c_top_v3", "theta_c_top"), params.get("theta_c_top", 0.432)),
+        ("R_ohm_eff", ("R_ohm_eff_v4", "R_ohm_eff_v3", "R_ohm_eff"), params.get("R_ohm_eff", 143.6913493166367)),
+        ("voltage_alignment_offset_V", ("voltage_alignment_offset_V", "U_p_offset_V", "voltage_offset_V"), params.get("voltage_alignment_offset_V", -0.2186690603079502)),
+        ("theta_c_bottom", ("theta_c_bottom_v4", "theta_c_bottom_v3", "theta_c_bottom"), params.get("theta_c_bottom", 0.9325)),
+        ("theta_c_top", ("theta_c_top_v4", "theta_c_top_v3", "theta_c_top"), params.get("theta_c_top", 0.4675)),
     ]:
         params[key] = _summary_float(summary, aliases, float(default))
+    params["U_p_offset_V"] = params["voltage_alignment_offset_V"]
+
+    # Dynamic time/radius scales; never write cycle5 tmax into all-cycle training.
+    params["tmin"] = np.float64(0.0)
+    params["tmax"] = np.float64(tmax_s)
+    params["rescale_T"] = np.float64(max(float(tmax_s), 1.0))
+    params["time_scale_s"] = params["rescale_T"]
+    params["time_scale_source"] = "continuous soft-label t_global_s max" if current_profile is not None else "fallback"
+    params["use_per_electrode_rescale_R"] = True
+    params["rescale_R_a"] = np.float64(params.get("Rs_a", 50e-6))
+    params["rescale_R_c"] = np.float64(params.get("Rs_c", 1.8e-6))
+    params["rescale_R"] = np.float64(max(float(params["rescale_R_a"]), float(params["rescale_R_c"])))
 
     # Provenance keys used by training config, evaluator and checks.
     params["train_summary_json"] = str(actual_summary_path) if actual_summary_path is not None else "NONE"
@@ -636,10 +683,17 @@ def makeParams(summary_json=None):
     params["theta_a0"] = np.float64(theta_a0)
     params["theta_c0"] = np.float64(theta_c0)
     params["initial_state_source"] = theta_source
-    params["provenance_summary_subset"] = _to_jsonable({k: summary.get(k) for k in [
-        "cycle", "cycle_from", "cycle_to", "merge_cycles", "tmax_train_s", "R_ohm_eff",
-        "voltage_alignment_offset_V", "theta_c_bottom", "theta_c_top", "csanmax", "cscamax"
-    ] if k in summary})
+    params["reference_voltage_for_training"] = "soft_label_phis_c"
+    params["use_experimental_voltage_in_training"] = False
+    params["long_sequence_soft_labels"] = True
+    params["cycle_id_used_as_network_input"] = False
+    params["provenance_summary_subset"] = _to_jsonable(
+        {k: summary.get(k) for k in [
+            "cycle", "cycle_from", "cycle_to", "merge_cycles", "tmax_train_s", "tmax_s",
+            "R_ohm_eff", "voltage_alignment_offset_V", "U_p_offset_V", "theta_c_bottom",
+            "theta_c_top", "csanmax", "cscamax",
+        ] if k in summary}
+    )
 
     if current_profile is not None:
         t_profile, i_profile = current_profile
@@ -649,6 +703,7 @@ def makeParams(summary_json=None):
         params["current_profile_source"] = profile_source
         params["actual_current_profile_source"] = profile_source
         params["I_app"] = np.float64(current_ref_A)
+        params["I_discharge"] = np.float64(current_ref_A)
     else:
         params["current_profile_source"] = "constant-current fallback"
         params["actual_current_profile_source"] = "constant-current fallback"
@@ -668,5 +723,4 @@ def makeParams(summary_json=None):
         )
     else:
         print("INFO: No ASSB soft-label/current profile found; using constant-current fallback.")
-
     return params
