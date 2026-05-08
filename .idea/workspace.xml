@@ -4,48 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7b854bbc-0a8a-4911-bc87-dd9f1f68d852" name="更改" comment="">
-      <change afterPath="$PROJECT_DIR$/diagnose_cbar_mass_weights.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/diagnose_cbar_mass_weights_v2.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/evaluate_assb_pinn_cycles5_100_softlabels.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/input_assb_ModelFin102_102_smoke" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/input_assb_allcycle_ID102" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/input_assb_cycles5to522_v4_continuous_ID102" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/input_assb_cycles5to522_v4_continuous_ID1022" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/input_assb_cycles5to522_v4_continuous_ID103_smoke" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/inspect_assb_softlabel_solution.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/integration_spm/generate_assb_soft_labels_cycle5_522_v1.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/integration_spm/generate_assb_softlabel_allcycle.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/repair_assb_solution_mass_closure.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/00_install_integration_generator.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/01_generate_allcycle_softlabel.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/01_generate_cycle5_20_smoke.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/01_train_102_smoke_existing_softlabels.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/02_check_allcycle_softlabel.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/02_eval_102_smoke_existing_softlabels.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/02_train_102_smoke.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/03_eval_102_smoke.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/check_102_smoke_existing_softlabels.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/check_102_smoke_patch.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/check_model102_no_wrapper.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/cleanup_old_model102_wrapper.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/install_102_smoke_existing_softlabels_patch.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/run_eval_model102.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/run_generate_assb_soft_labels_cycle5_522_v1.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/run_train_model102.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tools/inspect_assb_softlabel_solution.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EvalFin_100_cycle5_v4_cbarAC_potentialBaseline.zip" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/EvalFin_96_cycle5_v4_cbarAC_zeroMean.zip" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/EvalFin_97_cycle5_v4_cbarAC_hybridRadial.zip" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/EvalFin_98_cycle5_v4_cbarAC_hybridRadial_A035.zip" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/EvalFin_99_cycle5_v4_cbarAC_anodeSmallZeroMean.zip" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluate_assb_pinn_vs_softlabels.py" beforeDir="false" afterPath="$PROJECT_DIR$/evaluate_assb_pinn_vs_softlabels.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/util/_losses.py" beforeDir="false" afterPath="$PROJECT_DIR$/util/_losses.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/util/_rescale.py" beforeDir="false" afterPath="$PROJECT_DIR$/util/_rescale.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/util/init_pinn.py" beforeDir="false" afterPath="$PROJECT_DIR$/util/init_pinn.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/util/spm_assb_train_discharge.py" beforeDir="false" afterPath="$PROJECT_DIR$/util/spm_assb_train_discharge.py" afterDir="false" />
-    </list>
+    <list default="true" id="7b854bbc-0a8a-4911-bc87-dd9f1f68d852" name="更改" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -184,7 +143,7 @@
       <workItem from="1776541032895" duration="5739000" />
       <workItem from="1776793294745" duration="2000" />
       <workItem from="1776796578394" duration="75259000" />
-      <workItem from="1777704900369" duration="77535000" />
+      <workItem from="1777704900369" duration="78174000" />
     </task>
     <servers />
   </component>

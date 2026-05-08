@@ -1,118 +1,339 @@
 # PINN-for-ASSB-V1
 
-Physics-informed neural-network surrogate workflow for an **NMC811 || Li-In/In all-solid-state battery (ASSB)** using an adapted effective single-particle model (**effective SPM**).
+Physics-informed neural-network surrogate workflow for an **NMC811 || Li-In/In all-solid-state battery (ASSB)** using an adapted **effective single-particle model (effective SPM)**.
 
-This repository is an active adaptation of **NREL/PINNSTRIPES** for the QJW-2 ASSB workflow. It is not yet a finalized or fully validated predictive model. The current priority is to close the soft-label generation, PINN training, and evaluation loop before using the model for formal parameter inference.
-
----
-
-## Current project status
-
-The project currently contains three connected workflows:
-
-1. **ASSB effective SPM prior**
-   - Positive electrode: NMC811 representative spherical particle.
-   - Negative electrode: Li-In/In foil represented as an equivalent pseudo-particle / effective diffusion length.
-   - Electrolyte concentration and electrolyte potential variables are retained from the original SPM notation but reinterpreted as effective quantities of the solid-state ionic conduction network.
-
-2. **Soft-label generation**
-   - `integration_spm/spm_int_assb_cycle.py` generates ASSB soft labels from the effective SPM.
-   - The v3 generator supports both single-cycle generation and merged continuous `cycle >= 5` generation.
-   - Soft labels are treated as **model-generated training targets**, not as experimentally measured internal states.
-
-3. **PINN training and evaluation**
-   - `main.py` trains the PyTorch/CUDA PINN model.
-   - `evaluate_assb_pinn_vs_softlabels.py` compares trained PINN outputs against soft labels.
-   - The current physics-only `ModelFin_52` evaluation against `cycles5plus_v3` is not acceptable yet; this is a known debugging target.
-
-### Validation status
-
-| Item | Status |
-|---|---|
-| ASSB prior parameters | Implemented as first-version effective SPM prior |
-| Cycle-5 v3 soft-label voltage fit | Good first workflow benchmark: MAE about 0.0456 V, RMSE about 0.0745 V, correlation about 0.972 |
-| Continuous `cycle >= 5` v3 soft labels | Generated, but harder for the current PINN training loop |
-| `ModelFin_52` vs `cycles5plus_v3` | Failed current benchmark: `phis_c` MAE about 0.3359 V and correlation near 0 |
-| Recommended next step | Debug evaluation + cycle5-only closure before formal data-loss fine-tuning |
+This repository is an active QJW-2 research workflow adapted from the PINNSTRIPES idea. It is **not yet a finalized aging-prediction model**. The best single-cycle closed-loop baseline is still **ModelFin_101 on cycle5_v4**, while the current D3 work has moved into **continuous cycle5-522 soft labels** and **ModelFin_102 / ModelFin_103 long-sequence evaluation**.
 
 ---
 
-## Important modeling assumptions
+## 1. Battery system
 
-This repository uses an **effective SPM** rather than a full P2D ASSB model.
+Target cell: ZHB all-solid-state NMC811 / Li-In cell.
 
-The intended physical interpretation is:
+**Positive electrode**
 
-- `cs_c(r,t)` is the NMC811 positive-electrode solid-phase lithium concentration.
-- `cs_a(r,t)` is the Li-In/In negative-side effective state variable over an equivalent diffusion length.
-- `ce` is retained as an effective mobile lithium-ion concentration scale in the solid-state ionic network.
-- `phie` is retained as an effective solid-state ionic network potential.
-- The current profile `I(t)` drives both charge and discharge through a unified sign convention.
-- Surface fluxes are closed using current, particle/effective radius, active material volume fraction, and total electrode volume:
+- 5 mg composite positive electrode.
+- Composition: **30% LAOC + 70% single-crystal NMC811 + 1% VGCF**.
+- In the effective SPM, the positive electrode is represented by an **NMC811 representative spherical active particle**.
+
+**Negative electrode**
+
+- **10 mm diameter, 100 μm In foil + 8 mm diameter, 50 μm Li foil**, forming a **Li-In alloy / In negative side**, plus stainless-steel sheet.
+- In the effective SPM, the negative side is represented as a **Li-In/In effective pseudo-particle with an equivalent diffusion length**, not as a real porous particle electrode.
+
+**Solid electrolyte stack**
+
+- 60 mg LPSC layer.
+- 60 mg LAOC layer.
+- The SPM variables `ce` and `phie` are retained, but reinterpreted as effective variables of the solid-state ionic conduction network.
+
+**Voltage and temperature**
+
+- Full-cell charge cutoff voltage: **3.68 V**.
+- This corresponds approximately to **4.3 V vs. Li/Li+** because the Li-In negative electrode contributes an approximately **0.62 V** reference offset.
+- Temperature: **303.15 K**.
+
+---
+
+## 2. Current project status
+
+### D2 closed-loop baseline
+
+The D2-stage workflow returned to **cycle5-only** debugging and produced a strong baseline:
+
+```text
+Soft labels:  Data/assb_soft_labels_cycle5_v4
+Model:        ModelFin_101
+Evaluation:   EvalFin_101_cycle5_v4_cbarAC_potentialBaseline
+Input:        input_assb_cycle5_v4_cbarAC_potentialBaseline_ID101
+```
+
+ModelFin_101 metrics against cycle5_v4 soft labels:
+
+```text
+phis_c   MAE ≈ 0.00405 V, RMSE ≈ 0.00568 V, corr ≈ 0.999956
+phie     MAE ≈ 0.00633 V, RMSE ≈ 0.00840 V, corr ≈ 0.999114
+theta_a  MAE ≈ 0.01706,   corr ≈ 0.9834
+theta_c  MAE ≈ 0.00369,   corr ≈ 0.9996
+```
+
+### D3 continuous-cycle expansion
+
+D3 generated a continuous all-cycle soft-label dataset from cycle 5 to 522:
+
+```text
+Soft-label directory:
+C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\assb_soft_lable_cycle5-522_v1
+
+Main file:
+solution.npz
+```
+
+Integrity check result:
+
+```text
+Status: PASS
+N_time_points: 373235
+cycle_min / cycle_max / cycle_count: 5 / 522 / 518
+t_global_s range: 0.0 to 3727659.0 s
+dt min / median / max: 1.0 / 10.0 / 10.0 s
+I_profile: charge positive, discharge negative, rest zero
+flux signs: j_a opposite to I, j_c same as I
+fixed-B voltage global: MAE ≈ 0.16384 V, RMSE ≈ 0.21083 V, corr ≈ 0.93561
+```
+
+The fixed-B voltage error is expected to be larger than cycle5_v4 because no explicit SOH / aging mechanism is currently included.
+
+---
+
+## 3. Core physical conventions
+
+This repository uses fixed **positive / negative electrode identity** rather than switching material identity with charge/discharge role.
+
+```text
+a = negative electrode = Li-In/In effective pseudo-particle
+c = positive electrode = NMC811 representative particle
+```
+
+During discharge, the positive electrode has the cathode reaction role and the negative electrode has the anode reaction role. During charge, the reaction roles switch. However, the following properties **do not switch**:
+
+```text
+OCP tables
+geometry
+solid diffusivity
+exchange-current functions
+maximum concentration scales
+```
+
+The current sign controls the flux direction:
+
+```text
++I = charge
+-I = discharge
+ I = 0 = rest
+```
+
+Effective SPM surface-flux closure:
 
 ```text
 J_a(t) = -I(t) * R_a / (3 * eps_a * F * V_a)
 J_c(t) =  I(t) * R_c / (3 * eps_c * F * V_c)
 ```
 
-The terminal voltage closure includes:
+---
+
+## 4. Soft-label datasets
+
+### cycle5_v4
+
+Used for ModelFin_101 single-cycle baseline.
 
 ```text
-positive OCP - negative OCP
-+ positive/negative reaction overpotentials
-+ effective lumped ohmic term R_ohm_eff
-+ v3 empirical voltage-alignment offset
+Data/assb_soft_labels_cycle5_v4
 ```
 
-The current v3-aligned training parameters include:
+Known cycle5_v4 values:
 
 ```text
-theta_c_bottom = 0.834
-theta_c_top    = 0.432
-R_ohm_eff      = 105.0 ohm
-voltage_alignment_offset = -0.11588681607942332 V
-csanmax        = 6.0  # Li-In/In effective scaling value, not a strict material constant
+n_t = 925
+n_r = 64
+tmax_s = 9232.0
+I_min_A = -0.00033
+I_max_A =  0.00033
+Rs_a = 50 μm
+Rs_c = 1.8 μm
+eps_s_a = 0.95
+eps_s_c = 0.55
+csanmax = 6.0
+cscamax = 51.8
+T = 303.15 K
+```
+
+### cycle5-522 continuous v1
+
+Used for ModelFin_102 / ModelFin_103 long-sequence expansion.
+
+```text
+C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\assb_soft_lable_cycle5-522_v1
+```
+
+Important fields in `solution.npz`:
+
+```text
+t_global_s
+cycle_id
+step_id / step_type
+I_profile
+voltage_exp
+r_a / r_c
+cs_a / cs_c
+theta_a / theta_c
+phie / phis_c
+j_a / j_c
+eta_a / eta_c
+Uocp_a / Uocp_c
+```
+
+This is a single continuous trajectory. Do **not** reset time or concentration at cycle boundaries unless intentionally running a separate ablation.
+
+---
+
+## 5. Model status
+
+### ModelFin_101
+
+Current best single-cycle benchmark.
+
+Key design:
+
+- I(t)-cbar hard baseline.
+- Negative Li-In/In: small zero-mean radial deviation.
+- Positive NMC811: stronger zero-mean radial deviation.
+- Current-aware potential baseline for `phie` and `phis_c`.
+- Physics-only cycle5_v4 training.
+
+### ModelFin_102
+
+First full continuous cycle5-522 trial.
+
+Soft-label-only global metrics:
+
+```text
+phis_c   MAE ≈ 0.07836 V, corr ≈ 0.9720, R2 ≈ 0.8772
+phie     MAE ≈ 0.01238 V, corr ≈ 0.9977, R2 ≈ 0.9949
+theta_a  MAE ≈ 0.02159,   corr ≈ 0.9410, R2 ≈ 0.8568
+theta_c  MAE ≈ 0.21384,   corr ≈ 0.4715, R2 ≈ -3.497
+cs_c     MAE ≈ 11.08,     corr ≈ 0.4715, R2 ≈ -3.497
+```
+
+Interpretation: potential branches and negative concentration are usable, but the positive concentration/state branch is not closed. ModelFin_102 is therefore **not** the current full-state baseline.
+
+### ModelFin_103
+
+Current smoke / short-range long-sequence model.
+
+Current use:
+
+```text
+Input: input_assb_cycles5to522_v4_continuous_ID103_smoke
+Training slice: cycle 5-20
+Evaluation directory: EvalFin_103_cycles5to20_smoke
+```
+
+Observed potential per-cycle behavior:
+
+```text
+phis_c cycle5  MAE ≈ 0.01478 V, corr ≈ 0.999892, R2 ≈ 0.99675
+phis_c cycle20 MAE ≈ 0.03423 V, corr ≈ 0.999740, R2 ≈ 0.98570
+phie worst early cycles: MAE ≈ 0.0316-0.0343 V, corr ≈ 0.99998-0.999999
+```
+
+The old evaluator did not output per-cycle `theta_a`, `theta_c`, `cs_a`, or `cs_c`. Use the new cycle-range evaluator below to obtain all six variables.
+
+---
+
+## 6. Current evaluation target
+
+Do **not** create a new training ID only to evaluate cycle 5-100. Use ModelFin_103 directly:
+
+```powershell
+cd C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1
+
+D:\Anaconda\envs\torchgpu\python.exe .\evaluate_assb_pinn_cycles5_100_softlabels.py `
+  --model_dir ModelFin_103 `
+  --soft_label_dir "C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\assb_soft_lable_cycle5-522_v1" `
+  --ocp_dir "C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\ocp_estimation_outputs" `
+  --cycle_from 5 `
+  --cycle_to 100 `
+  --output_dir EvalFin_103_cycles5_100_v1_softlabel_only `
+  --debug_print_first_batch
+```
+
+Expected outputs:
+
+```text
+EvalFin_103_cycles5_100_v1_softlabel_only/metrics_global.json
+EvalFin_103_cycles5_100_v1_softlabel_only/metrics_by_cycle.csv
+EvalFin_103_cycles5_100_v1_softlabel_only/debug_model_and_data.json
+EvalFin_103_cycles5_100_v1_softlabel_only/eval_sampled_arrays_cycles5_100_softlabel_only.npz
+EvalFin_103_cycles5_100_v1_softlabel_only/plots_softlabel_only/*.png
+```
+
+`metrics_by_cycle.csv` should contain:
+
+```text
+phis_c
+phie
+theta_a
+theta_c
+cs_a
+cs_c
 ```
 
 ---
 
-## Relationship to PINNSTRIPES
+## 7. Important diagnostics and known issues
 
-This project is based on the PINNSTRIPES workflow for physics-informed neural-network surrogates of battery models. The upstream framework uses interior physics losses, boundary losses, optional data losses, and optional regularization losses. For the SPM, particle-surface flux boundary residuals are especially important because the solid concentration dynamics are driven by the surface flux condition.
+### 7.1 Stale summary environment variable
 
-In this ASSB adaptation, the main changes are:
+Before running long-sequence training/evaluation, clear stale cycle5_v4 summary paths:
 
-- use of ASSB-specific effective SPM parameters;
-- use of NMC811 and Li-In/In OCP priors;
-- time-dependent experimental current `I(t)` instead of a simple fixed discharge current;
-- bidirectional charge/discharge concentration rescaling;
-- v3 soft-label generation and evaluation utilities;
-- PyTorch/CUDA training entry point.
+```powershell
+Remove-Item Env:ASSB_SOFT_LABEL_SUMMARY -ErrorAction SilentlyContinue
+$env:ASSB_SOFT_LABEL_DIR="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\assb_soft_lable_cycle5-522_v1"
+$env:ASSB_OCP_DIR="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\ocp_estimation_outputs"
+```
+
+### 7.2 Windows path delimiter issue
+
+Some input parsers split lines by `:`. Absolute paths such as `C:\...` can therefore break parsing. Prefer relative paths in input files, for example:
+
+```text
+ASSB_SOFT_LABEL_DIR : ..\assb_soft_lable_cycle5-522_v1
+ASSB_OCP_DIR : ..\ocp_estimation_outputs
+```
+
+### 7.3 Positive concentration closure issue
+
+Diagnostics showed the negative-electrode cbar closure is much more consistent than the positive-electrode cbar closure in the continuous soft-label file. If `theta_c` / `cs_c` remains bad in ModelFin_103 cycle5-100 evaluation, check the positive-electrode soft-label mass closure before opening data loss.
+
+Useful scripts:
+
+```text
+diagnose_cbar_mass_weights.py
+diagnose_cbar_mass_weights_v2.py
+repair_assb_solution_mass_closure.py
+```
+
+The repair script exists, but the repaired solution should not be promoted to the main training dataset until its OCP, voltage, theta, and mass-closure consistency are verified.
 
 ---
 
-## Main workflow files
+## 8. Main workflow files
 
-Some upstream, historical, IDE, and experimental files may still be present in the repository during the active debugging stage. The current ASSB workflow should be understood through the files below.
-
-| Path | Role |
-|---|---|
-| `main.py` | Current PyTorch/CUDA training entry point |
-| `util/spm_assb_train_discharge.py` | ASSB parameter entry point; reads soft-label or experimental current profile |
-| `util/thermo_assb.py` | OCP, Butler-Volmer, exchange current, voltage-alignment, and effective SPM parameters |
-| `util/_losses.py` | Physics loss definitions, including time-dependent current flux closure |
-| `util/_rescale.py` | Neural-network output rescaling; adapted for charge/discharge bidirectional behavior |
-| `integration_spm/spm_int_assb_cycle.py` | v3 ASSB soft-label generator; supports single-cycle and merged-cycle generation |
-| `evaluate_assb_pinn_vs_softlabels.py` | Evaluation script comparing PINN outputs with `.npz` soft labels |
-| `input_assb_cycles5plus_pretrain` | Current physics-only pretraining input for merged `cycle >= 5` soft-label workflow |
+```text
+main.py
+util/spm_assb_train_discharge.py
+util/thermo_assb.py
+util/_losses.py
+util/_rescale.py
+util/init_pinn.py
+util/myNN.py
+integration_spm/spm_int_assb_cycle.py
+integration_spm/generate_assb_soft_labels_cycle5_522_v1.py
+integration_spm/generate_assb_softlabel_allcycle.py
+evaluate_assb_pinn_vs_softlabels.py
+evaluate_assb_pinn_cycles5_100_softlabels.py
+plot_cs_surface_cycle5.py
+plot_cs_surface_cycle5_plotly.py
+inspect_assb_softlabel_solution.py
+diagnose_cbar_mass_weights_v2.py
+repair_assb_solution_mass_closure.py
+```
 
 ---
 
-## External data layout
-
-Large/generated data files are intentionally kept outside the Git repository during the current debugging stage.
-
-Recommended local paths on the current workstation:
+## 9. Recommended local paths
 
 ```text
 Project root:
@@ -124,226 +345,48 @@ C:\Users\Tiga_QJW\Desktop\ZHB_realDATA\record_extracted.csv
 OCP prior directory:
 C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\ocp_estimation_outputs
 
-Merged cycle>=5 v3 soft labels:
-C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\assb_soft_labels_cycles5plus_v3
+cycle5_v4 soft labels:
+Data\assb_soft_labels_cycle5_v4
 
-Recommended cycle5-only debug soft labels:
-C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\assb_soft_labels_cycle5_v3
+continuous cycle5-522 soft labels:
+C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\assb_soft_lable_cycle5-522_v1
+
+Best cycle5 model:
+ModelFin_101
+
+Current long-sequence models:
+ModelFin_102 / ModelFin_103
 ```
 
-At minimum, a soft-label directory should contain files such as:
+---
+
+## 10. Next-step policy
+
+1. Keep ModelFin_101 as the frozen cycle5_v4 baseline.
+2. Evaluate ModelFin_103 on cycle 5-100 before creating a new training ID.
+3. Check all six variables in `metrics_by_cycle.csv`.
+4. If potential is good but `theta_c` / `cs_c` is bad, debug soft-label mass closure and positive-electrode cbar baseline first.
+5. Only after cycle5-100 is understood, expand to cycle5-200 and then cycle5-522.
+6. Add SOH / aging parameters only if per-cycle residuals show systematic drift with cycle number.
+7. Do not open formal data loss until physics/output mapping and soft-label consistency are confirmed.
+
+---
+
+## 11. Repository cleanup notes
+
+Before public GitHub release:
 
 ```text
-solution.npz
-data_phie.npz
-data_phis_c.npz
-data_cs_a.npz
-data_cs_c.npz
-soft_label_summary.json
-```
-
-The `.npz` soft labels are generated model targets. They are not ground-truth internal-state measurements.
-
----
-
-## Environment
-
-The current training entry point requires a CUDA-enabled PyTorch runtime. `main.py` checks `torch.cuda.is_available()` and exits if CUDA is unavailable.
-
-The existing `requirements.txt` may still reflect upstream or legacy dependencies and should not be treated as a complete current ASSB environment specification. For now, use the local CUDA PyTorch environment that has been used in development, for example:
-
-```powershell
-D:\Anaconda\envs\torchgpu\python.exe --version
-D:\Anaconda\envs\torchgpu\python.exe -c "import torch; print(torch.__version__); print(torch.cuda.is_available())"
-```
-
-Common Python packages used by the current workflow include:
-
-```text
-numpy
-pandas
-matplotlib
-torch
-```
-
-Additional dependencies may be required by upstream PINNSTRIPES utilities or older scripts.
-
----
-
-## Generate v3 soft labels
-
-### Single cycle 5 debug target
-
-Use this first when debugging the training/evaluation loop:
-
-```powershell
-cd C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1
-
-D:\Anaconda\envs\torchgpu\python.exe integration_spm\spm_int_assb_cycle.py `
-  --record_csv "C:\Users\Tiga_QJW\Desktop\ZHB_realDATA\record_extracted.csv" `
-  --ocp_dir "C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\ocp_estimation_outputs" `
-  --cycle 5 `
-  --output_dir "C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\assb_soft_labels_cycle5_v3" `
-  --n_r 64
-```
-
-### Merged continuous cycle >= 5 target
-
-Use this only after the cycle5-only loop is confirmed:
-
-```powershell
-cd C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1
-
-D:\Anaconda\envs\torchgpu\python.exe integration_spm\spm_int_assb_cycle.py `
-  --record_csv "C:\Users\Tiga_QJW\Desktop\ZHB_realDATA\record_extracted.csv" `
-  --ocp_dir "C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\ocp_estimation_outputs" `
-  --merge_cycles `
-  --cycle_from 5 `
-  --output_dir "C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\assb_soft_labels_cycles5plus_v3" `
-  --n_r 64
-```
-
-After generation, check `soft_label_summary.json` and confirm that the voltage alignment terms match the intended training configuration.
-
----
-
-## Train the PINN
-
-Set the external data paths before training:
-
-```powershell
-cd C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1
-
-$env:ASSB_SOFT_LABEL_DIR="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\assb_soft_labels_cycles5plus_v3"
-$env:ASSB_OCP_DIR="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\ocp_estimation_outputs"
-
-D:\Anaconda\envs\torchgpu\python.exe main.py -i input_assb_cycles5plus_pretrain
-```
-
-For debugging, prefer a cycle5-only input file and set:
-
-```powershell
-$env:ASSB_SOFT_LABEL_DIR="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\assb_soft_labels_cycle5_v3"
-```
-
-Recommended training order:
-
-```text
-1. cycle5-only physics-only training
-2. cycle5-only evaluation
-3. increase boundary sampling/weight if surface-flux residual remains dominant
-4. add L-BFGS only after ADAM/SGD has reached a stable plateau
-5. only then test merged cycle>=5
-6. only after physics/evaluation consistency is confirmed, introduce small-weight data loss
+- Keep ModelFin_*, LogFin_*, EvalFin_* directories out of normal Git history unless intentionally archived.
+- Keep large .npz soft-label files outside Git or use Git LFS.
+- Store project progress summaries under docs/.
+- Keep generated patch zips outside source history.
+- Add a small reproducible smoke-test example.
+- Update requirements/environment files for the CUDA PyTorch workflow.
 ```
 
 ---
 
-## Evaluate a trained model
+## 12. Acknowledgements
 
-Example for the current known failed benchmark:
-
-```powershell
-cd C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1
-
-D:\Anaconda\envs\torchgpu\python.exe evaluate_assb_pinn_vs_softlabels.py `
-  --model_dir ModelFin_52 `
-  --soft_label_dir "C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\assb_soft_labels_cycles5plus_v3" `
-  --ocp_dir "C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\ocp_estimation_outputs" `
-  --output_dir EvalFin_52_vs_softlabels
-```
-
-A successful first debug target should not merely reduce voltage MAE; it should also recover the time trend. For cycle5-only debugging, a practical first acceptance target is:
-
-```text
-phis_c correlation > 0.8
-phis_c MAE < 0.08 V
-theta_c correlation > 0.5
-no obvious constant-output solution for theta_a/theta_c
-```
-
-If `phis_c` correlation is close to zero or negative, first check model loading, input normalization, output variable index mapping, and `theta = cs / csmax` conversion before changing physical parameters.
-
----
-
-## Known current issue
-
-`ModelFin_52` does not yet reproduce the `cycles5plus_v3` soft-label time series. The current result is interpreted as a failed training/evaluation closure, not as a validated model result.
-
-Most likely causes to check first:
-
-1. evaluation script mismatch;
-2. checkpoint not loaded as expected;
-3. time or radius rescaling mismatch;
-4. output index mismatch between model and evaluator;
-5. `theta_a/theta_c` conversion mismatch;
-6. continuous `cycle >= 5` task being too hard for the current network/collocation setup;
-7. insufficient learning of particle-surface flux boundary residuals.
-
-Do not use `ModelFin_52` for physical conclusions until the above checks pass.
-
----
-
-## Debugging roadmap
-
-### P0 — close the simplest loop
-
-Use `cycle5_v3` only. Confirm that the generator, training input, trained checkpoint, and evaluator all use the same:
-
-```text
-I(t)
-OCP directory
-R_ohm_eff
-voltage_alignment_offset
-theta_c_bottom / theta_c_top
-csanmax / cscmax
-rescale_T / rescale_R
-output variable ordering
-```
-
-### P1 — strengthen physics training
-
-If the evaluator is correct but the model remains poor:
-
-- increase surface boundary collocation points or boundary weights;
-- check whether predictions are constant, reversed, or only offset-biased;
-- run L-BFGS only after the ADAM/SGD loss plateaus;
-- consider a larger network for merged multi-cycle time series.
-
-### P2 — introduce data loss carefully
-
-Data loss should be introduced only after the physics-only/evaluation loop is verified. The goal is to refine a physically consistent model, not to hide a mismatch between the soft-label generator and the PINN physics loss.
-
----
-
-## Notes on repository cleanliness
-
-During the current debugging stage, some historical, upstream, IDE, or experimental files may remain in the repository. This README identifies the current ASSB mainline workflow and does not require immediate removal of those files.
-
-Before a formal public release, recommended cleanup tasks include:
-
-```text
-- add or update .gitignore for generated .npz labels, ModelFin_*, LogFin_*, EvalFin_*, and IDE files;
-- replace the legacy requirements.txt with a PyTorch/CUDA-oriented environment file;
-- add a small reproducible example or smoke-test dataset;
-- move project notes into docs/;
-- keep raw experimental data and generated soft labels outside normal Git history unless intentionally using Git LFS.
-```
-
----
-
-## Acknowledgements
-
-This project adapts ideas and code structure from NREL/PINNSTRIPES:
-
-```text
-Hassanaly et al., PINN surrogate of Li-ion battery models for parameter inference,
-Part I: Implementation and multi-fidelity hierarchies for the single-particle model.
-Journal of Energy Storage 98 (2024) 113103.
-
-Hassanaly et al., PINN surrogate of Li-ion battery models for parameter inference,
-Part II: Regularization and application of the pseudo-2D model.
-Journal of Energy Storage 98 (2024) 113104.
-```
-
-The present repository is an ASSB-specific adaptation for NMC811 || Li-In/In cells and should be cited or described separately from the upstream PINNSTRIPES project.
+This work adapts the PINN surrogate concept and workflow style from NREL/PINNSTRIPES and the related PINN surrogate papers for Li-ion battery models. The present repository is an ASSB-specific adaptation for an NMC811 || Li-In/In all-solid-state cell and should be described separately from the upstream project.
