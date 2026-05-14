@@ -1,0 +1,31 @@
+{
+  "script_version": "ASSB_ModelFin106_csA_cbar_radial_diagnostic_v1",
+  "eval_npz": "EvalFin_106_cycles5_522_v2_massclosed_candidate_linearGauge_raw_softlabel_only\\eval_sampled_arrays_cycles5_522_v2_massclosed_softlabel_only.npz",
+  "cycle_from": 5,
+  "cycle_to": 522,
+  "cs_a_global": {
+    "n": 1280000,
+    "mae": 0.12260780927911401,
+    "rmse": 0.14745786626333615,
+    "bias_mean": 0.015873653871938585,
+    "corr": 0.953411929909801,
+    "r2": 0.9071692422848404
+  },
+  "cbar_global": {
+    "n": 20000,
+    "mae": 0.007980112225544636,
+    "rmse": 0.009777974553044341,
+    "bias_mean": -0.0026926380086936845,
+    "corr": 0.999928658279847,
+    "r2": 0.9995963163694728
+  },
+  "radial_global": {
+    "n": 1280000,
+    "mae": 0.12337919119536721,
+    "rmse": 0.14795999640382743,
+    "bias_mean": 0.01856629188063227,
+    "corr": 0.05719018370401497,
+    "r2": -0.06751958201245878
+  },
+  "interpretation": "If cbar error is small but radial error is large, improve anode radial/output residual. If cbar error dominates, check I-cbar baseline or inventory offset."
+}

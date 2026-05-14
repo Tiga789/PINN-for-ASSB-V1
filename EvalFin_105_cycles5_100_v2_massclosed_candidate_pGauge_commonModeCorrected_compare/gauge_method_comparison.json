@@ -1,0 +1,160 @@
+{
+  "methods": [
+    {
+      "method": "constant_mean",
+      "output_dir": "EvalFin_105_cycles5_100_v2_massclosed_candidate_pGauge_commonModeCorrected_compare\\constant_mean",
+      "offset_summary": {
+        "method": "constant_mean",
+        "calib_cycle_from": 5,
+        "calib_cycle_to": 20,
+        "apply_cycle_from": 5,
+        "apply_cycle_to": 100,
+        "calibration_n": 13785,
+        "calibration_common_mode_error_mean": -0.09524863935117926,
+        "calibration_common_mode_error_median": -0.09514723718166351,
+        "calibration_common_mode_error_std": 0.004259813343438741,
+        "offset_model": "constant",
+        "constant_bias_estimate": -0.09524863935117926,
+        "constant_offset_to_add_V": 0.09524863935117926,
+        "offset_to_add_mean_over_apply_samples_V": 0.09524863935117925,
+        "offset_to_add_min_over_apply_samples_V": 0.09524863935117926,
+        "offset_to_add_max_over_apply_samples_V": 0.09524863935117926
+      },
+      "phis_c_mae_before": 0.08211150548682444,
+      "phis_c_mae_after": 0.014232875710412709,
+      "phie_mae_before": 0.08423949079206235,
+      "phie_mae_after": 0.011993242933040573,
+      "theta_c_mae_after": 0.005657983205281198,
+      "cs_c_mae_after": 0.29308353491375844,
+      "common_mode_mae_before": 0.08317549813944339,
+      "common_mode_mae_after": 0.012803699522665168,
+      "differential_mae_after": 0.007229675519277749
+    },
+    {
+      "method": "constant_median",
+      "output_dir": "EvalFin_105_cycles5_100_v2_massclosed_candidate_pGauge_commonModeCorrected_compare\\constant_median",
+      "offset_summary": {
+        "method": "constant_median",
+        "calib_cycle_from": 5,
+        "calib_cycle_to": 20,
+        "apply_cycle_from": 5,
+        "apply_cycle_to": 100,
+        "calibration_n": 13785,
+        "calibration_common_mode_error_mean": -0.09524863935117926,
+        "calibration_common_mode_error_median": -0.09514723718166351,
+        "calibration_common_mode_error_std": 0.004259813343438741,
+        "offset_model": "constant",
+        "constant_bias_estimate": -0.09514723718166351,
+        "constant_offset_to_add_V": 0.09514723718166351,
+        "offset_to_add_mean_over_apply_samples_V": 0.09514723718166351,
+        "offset_to_add_min_over_apply_samples_V": 0.09514723718166351,
+        "offset_to_add_max_over_apply_samples_V": 0.09514723718166351
+      },
+      "phis_c_mae_before": 0.08211150548682444,
+      "phis_c_mae_after": 0.01416096949513789,
+      "phie_mae_before": 0.08423949079206235,
+      "phie_mae_after": 0.011927541366402585,
+      "theta_c_mae_after": 0.005657983205281198,
+      "cs_c_mae_after": 0.29308353491375844,
+      "common_mode_mae_before": 0.08317549813944339,
+      "common_mode_mae_after": 0.012725833982841477,
+      "differential_mae_after": 0.007229665818767937
+    },
+    {
+      "method": "linear_cycle_mean",
+      "output_dir": "EvalFin_105_cycles5_100_v2_massclosed_candidate_pGauge_commonModeCorrected_compare\\linear_cycle_mean",
+      "offset_summary": {
+        "method": "linear_cycle_mean",
+        "calib_cycle_from": 5,
+        "calib_cycle_to": 20,
+        "apply_cycle_from": 5,
+        "apply_cycle_to": 100,
+        "calibration_n": 13785,
+        "calibration_common_mode_error_mean": -0.09524863935117926,
+        "calibration_common_mode_error_median": -0.09514723718166351,
+        "calibration_common_mode_error_std": 0.004259813343438741,
+        "offset_model": "linear_cycle_mean",
+        "linear_bias_slope_V_per_cycle": 0.0002924856517888649,
+        "linear_bias_intercept_V": -0.09888082346895946,
+        "calibration_cycle_mean_biases": [
+          {
+            "cycle_id": 5,
+            "common_mode_error_mean": -0.09763396616815488
+          },
+          {
+            "cycle_id": 6,
+            "common_mode_error_mean": -0.09706146132565849
+          },
+          {
+            "cycle_id": 7,
+            "common_mode_error_mean": -0.09677619693199885
+          },
+          {
+            "cycle_id": 8,
+            "common_mode_error_mean": -0.09649667770425845
+          },
+          {
+            "cycle_id": 9,
+            "common_mode_error_mean": -0.09621243799438056
+          },
+          {
+            "cycle_id": 10,
+            "common_mode_error_mean": -0.09592297404969888
+          },
+          {
+            "cycle_id": 11,
+            "common_mode_error_mean": -0.09564255426327388
+          },
+          {
+            "cycle_id": 12,
+            "common_mode_error_mean": -0.09535126878995973
+          },
+          {
+            "cycle_id": 13,
+            "common_mode_error_mean": -0.09507301189790565
+          },
+          {
+            "cycle_id": 14,
+            "common_mode_error_mean": -0.09477932107365505
+          },
+          {
+            "cycle_id": 15,
+            "common_mode_error_mean": -0.09449300051154733
+          },
+          {
+            "cycle_id": 16,
+            "common_mode_error_mean": -0.09420923984876262
+          },
+          {
+            "cycle_id": 17,
+            "common_mode_error_mean": -0.09391633251411434
+          },
+          {
+            "cycle_id": 18,
+            "common_mode_error_mean": -0.09362581202012209
+          },
+          {
+            "cycle_id": 19,
+            "common_mode_error_mean": -0.09334552616445939
+          },
+          {
+            "cycle_id": 20,
+            "common_mode_error_mean": -0.093056263887628
+          }
+        ],
+        "offset_to_add_mean_over_apply_samples_V": 0.08378290352186865,
+        "offset_to_add_min_over_apply_samples_V": 0.06963225829007297,
+        "offset_to_add_max_over_apply_samples_V": 0.09741839521001514
+      },
+      "phis_c_mae_before": 0.08211150548682444,
+      "phis_c_mae_after": 0.007250759817729117,
+      "phie_mae_before": 0.08423949079206235,
+      "phie_mae_after": 0.001505306497525767,
+      "theta_c_mae_after": 0.005657983205281198,
+      "cs_c_mae_after": 0.29308353491375844,
+      "common_mode_mae_before": 0.08317549813944339,
+      "common_mode_mae_after": 0.0036465191336736984,
+      "differential_mae_after": 0.007229672364949386
+    }
+  ]
+}

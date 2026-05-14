@@ -1,0 +1,33 @@
+{
+  "cycle_from": 5,
+  "cycle_to": 100,
+  "common_mode_error_before": {
+    "n": 78419,
+    "mae": 0.08317549813944339,
+    "rmse": 0.08372295060965386,
+    "bias_mean": -0.08317549813906336,
+    "std": 0.009558711634169551
+  },
+  "common_mode_error_after": {
+    "n": 78419,
+    "mae": 0.0036465190678027217,
+    "rmse": 0.003872511909449148,
+    "bias_mean": 0.0006074053828052979,
+    "std": 0.003824579348080601
+  },
+  "differential_phis_minus_phie_error_before": {
+    "n": 78419,
+    "mae": 0.007229672354308278,
+    "rmse": 0.007886713128408496,
+    "bias_mean": 0.002127985304477824,
+    "std": 0.007594203217832491
+  },
+  "differential_phis_minus_phie_error_after": {
+    "n": 78419,
+    "mae": 0.007229672354308278,
+    "rmse": 0.007886713128408496,
+    "bias_mean": 0.0021279853044778255,
+    "std": 0.00759420321783249
+  },
+  "interpretation": "A successful common-mode gauge correction should reduce common-mode error while leaving the differential phis_c-phie error and concentration branches unchanged."
+}

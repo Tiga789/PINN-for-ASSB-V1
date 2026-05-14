@@ -1,0 +1,84 @@
+{
+  "script": "audit_positive_cbar_cycle5_100.py",
+  "eval_dir": "EvalFin_103_cycles5_100_v1_softlabel_only",
+  "eval_npz_path": "EvalFin_103_cycles5_100_v1_softlabel_only\\eval_sampled_arrays_cycles5_100_softlabel_only.npz",
+  "soft_label_dir": "C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\assb_soft_lable_cycle5-522_v1",
+  "solution_path": "C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\assb_soft_lable_cycle5-522_v1\\solution.npz",
+  "summary_path": "C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\assb_soft_lable_cycle5-522_v1\\soft_label_summary.json",
+  "cycle_from": 5,
+  "cycle_to": 100,
+  "n_eval_time_points_cs": 12000,
+  "n_r_c": 64,
+  "params_used": {
+    "csmax_c": 51.8,
+    "eps_s_c": 0.55,
+    "V_c_m3": 1.2566370614359174e-09,
+    "F": 96485332.12,
+    "F_unit_warning": null
+  },
+  "global_cbar_pred_vs_true": {
+    "n": 12000,
+    "mae": 1.7782282854728546,
+    "rmse": 2.0708283434900188,
+    "bias_mean": 1.6786054535143657,
+    "corr": 0.983692737389027,
+    "r2": 0.8787268683300625,
+    "true_min": 20.920626740293667,
+    "true_max": 46.61999893188477,
+    "pred_min": 23.713867360246986,
+    "pred_max": 46.61999893188477
+  },
+  "global_theta_cbar_pred_vs_true": {
+    "n": 12000,
+    "mae": 0.03432873137978485,
+    "rmse": 0.03997738114845597,
+    "bias_mean": 0.03240551068560552,
+    "corr": 0.9836927373890266,
+    "r2": 0.8787268683300625,
+    "true_min": 0.40387310309447233,
+    "true_max": 0.899999979380015,
+    "pred_min": 0.4577966671862353,
+    "pred_max": 0.899999979380015
+  },
+  "global_cbar_true_vs_I_baseline": {
+    "n": 12000,
+    "mae": 1.7582800028625043,
+    "rmse": 2.004940695420749,
+    "bias_mean": -1.7582728266992593,
+    "corr": 0.9867940832219901,
+    "r2": 0.8823780464423107,
+    "true_min": 22.568495307945625,
+    "true_max": 46.61999893188477,
+    "pred_min": 20.920626740293667,
+    "pred_max": 46.61999893188477
+  },
+  "global_eval_true_cbar_vs_solution_true": {
+    "n": 12000,
+    "mae": 0.0,
+    "rmse": 0.0,
+    "bias_mean": 0.0,
+    "corr": 1.0,
+    "r2": 1.0,
+    "true_min": 20.920626740293667,
+    "true_max": 46.61999893188477,
+    "pred_min": 20.920626740293667,
+    "pred_max": 46.61999893188477
+  },
+  "radial_amplitude_global": {
+    "true_mean_surface_minus_center": 0.004477988084157308,
+    "pred_mean_surface_minus_center": -6.687765168666839,
+    "pred_minus_true_mean": -6.692243156750997,
+    "true_median_surface_minus_center": 0.1327533721923828,
+    "pred_median_surface_minus_center": -6.499457359313965
+  },
+  "trend_slopes_per_cycle": {
+    "bias_pred_cbar_minus_true_per_cycle": 0.03741397975380843,
+    "bias_true_cbar_minus_I_per_cycle": -0.03461524970643345,
+    "radial_amp_pred_minus_true_per_cycle": -0.009067393409884581
+  },
+  "interpretation_hint": [
+    "If global/per-cycle cbar_true_vs_I_baseline is bad, the continuous soft-label positive cbar does not match the hard I(t)-cbar baseline used by training.",
+    "If cbar_true_vs_I_baseline is good but cbar_pred_vs_true is bad, prioritize model/output-map training or radial ansatz issues.",
+    "If radial_amp_pred_minus_true is large and sign-opposite, the network may be using radial distortion to compensate for an average-inventory mismatch."
+  ]
+}

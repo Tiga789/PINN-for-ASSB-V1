@@ -1,0 +1,356 @@
+{
+  "script_version": "ASSB_ModelFin106_linearCycleGauge_apply_cycle5_522_v1",
+  "model_dir": "ModelFin_106",
+  "raw_eval_dir": "EvalFin_106_cycles5_522_v2_massclosed_candidate_linearGauge_raw_softlabel_only",
+  "gauge_config": {
+    "model_id": 106,
+    "model_name": "ModelFin_106_linearCycleCommonModeGauge",
+    "definition": "ModelFin_105 checkpoint plus post-hoc linear-cycle common-mode potential gauge correction.",
+    "base_model_dir": "C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\PINN-for-ASSB-V1\\ModelFin_105",
+    "base_checkpoint_copied_from": "C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\PINN-for-ASSB-V1\\ModelFin_105\\best.pt",
+    "output_model_dir": "C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\PINN-for-ASSB-V1\\ModelFin_106",
+    "source_eval_dir": "C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\PINN-for-ASSB-V1\\EvalFin_105_cycles5_100_v2_massclosed_candidate_pGauge_softlabel_only",
+    "source_eval_npz": "C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\PINN-for-ASSB-V1\\EvalFin_105_cycles5_100_v2_massclosed_candidate_pGauge_softlabel_only\\eval_sampled_arrays_cycles5_100_v2_massclosed_softlabel_only.npz",
+    "calibration_method": "linear_cycle_mean",
+    "calibration_target": "common_mode_error = 0.5*((phie_pred-phie_true)+(phis_c_pred-phis_c_true))",
+    "apply_to": [
+      "phie_pred",
+      "phis_c_pred"
+    ],
+    "does_not_modify": [
+      "theta_a",
+      "theta_c",
+      "cs_a",
+      "cs_c",
+      "phis_c_minus_phie_differential"
+    ],
+    "apply_cycle_from": 5,
+    "apply_cycle_to": 100,
+    "calibration_n_samples": 13785,
+    "calib_cycle_from": 5,
+    "calib_cycle_to": 20,
+    "calibration_common_mode_error_mean_all_samples": -0.09524863935117926,
+    "calibration_common_mode_error_median_all_samples": -0.09514723718166351,
+    "calibration_common_mode_error_std_all_samples": 0.004259813343438741,
+    "linear_bias_slope_V_per_cycle": 0.0002924856517888649,
+    "linear_bias_intercept_V": -0.09888082346895946,
+    "offset_formula": "offset_to_add_V = -(linear_bias_slope_V_per_cycle * cycle_id + linear_bias_intercept_V)",
+    "calibration_cycle_mean_biases": [
+      {
+        "cycle_id": 5,
+        "n": 924,
+        "common_mode_error_mean": -0.09763396616815488,
+        "common_mode_error_median": -0.09742531180381775,
+        "common_mode_error_std": 0.005270716524537703
+      },
+      {
+        "cycle_id": 6,
+        "n": 878,
+        "common_mode_error_mean": -0.09706146132565849,
+        "common_mode_error_median": -0.09714043140411377,
+        "common_mode_error_std": 0.003968954198304493
+      },
+      {
+        "cycle_id": 7,
+        "n": 871,
+        "common_mode_error_mean": -0.09677619693199885,
+        "common_mode_error_median": -0.09685571491718292,
+        "common_mode_error_std": 0.0039681542174360715
+      },
+      {
+        "cycle_id": 8,
+        "n": 868,
+        "common_mode_error_mean": -0.09649667770425845,
+        "common_mode_error_median": -0.09657058119773865,
+        "common_mode_error_std": 0.003961226915616162
+      },
+      {
+        "cycle_id": 9,
+        "n": 862,
+        "common_mode_error_mean": -0.09621243799438056,
+        "common_mode_error_median": -0.09628638625144958,
+        "common_mode_error_std": 0.003959937156533739
+      },
+      {
+        "cycle_id": 10,
+        "n": 861,
+        "common_mode_error_mean": -0.09592297404969888,
+        "common_mode_error_median": -0.09600202739238739,
+        "common_mode_error_std": 0.003952890246935296
+      },
+      {
+        "cycle_id": 11,
+        "n": 858,
+        "common_mode_error_mean": -0.09564255426327388,
+        "common_mode_error_median": -0.09571756422519684,
+        "common_mode_error_std": 0.003948755788162132
+      },
+      {
+        "cycle_id": 12,
+        "n": 859,
+        "common_mode_error_mean": -0.09535126878995973,
+        "common_mode_error_median": -0.09543220698833466,
+        "common_mode_error_std": 0.003940577515194598
+      },
+      {
+        "cycle_id": 13,
+        "n": 854,
+        "common_mode_error_mean": -0.09507301189790565,
+        "common_mode_error_median": -0.09514641761779785,
+        "common_mode_error_std": 0.003937786084460179
+      },
+      {
+        "cycle_id": 14,
+        "n": 861,
+        "common_mode_error_mean": -0.09477932107365505,
+        "common_mode_error_median": -0.09485997259616852,
+        "common_mode_error_std": 0.003915908554829147
+      },
+      {
+        "cycle_id": 15,
+        "n": 853,
+        "common_mode_error_mean": -0.09449300051154733,
+        "common_mode_error_median": -0.09457136690616608,
+        "common_mode_error_std": 0.003927449920953089
+      },
+      {
+        "cycle_id": 16,
+        "n": 852,
+        "common_mode_error_mean": -0.09420923984876262,
+        "common_mode_error_median": -0.0942831039428711,
+        "common_mode_error_std": 0.003915863014895914
+      },
+      {
+        "cycle_id": 17,
+        "n": 847,
+        "common_mode_error_mean": -0.09391633251411434,
+        "common_mode_error_median": -0.0939953476190567,
+        "common_mode_error_std": 0.00391749840772996
+      },
+      {
+        "cycle_id": 18,
+        "n": 849,
+        "common_mode_error_mean": -0.09362581202012209,
+        "common_mode_error_median": -0.09370683133602142,
+        "common_mode_error_std": 0.003906580222966057
+      },
+      {
+        "cycle_id": 19,
+        "n": 844,
+        "common_mode_error_mean": -0.09334552616445939,
+        "common_mode_error_median": -0.09341779351234436,
+        "common_mode_error_std": 0.00390535100997619
+      },
+      {
+        "cycle_id": 20,
+        "n": 844,
+        "common_mode_error_mean": -0.093056263887628,
+        "common_mode_error_median": -0.09312821924686432,
+        "common_mode_error_std": 0.003892340125243915
+      }
+    ],
+    "notes": [
+      "This is a calibrated wrapper, not a new SGD/L-BFGS trained neural network.",
+      "The correction is common-mode: the same offset is added to phie and phis_c, preserving phis_c-phie.",
+      "The calibration uses cycle5-20 and is applied to cycle5-100 by default."
+    ]
+  },
+  "metrics_global_raw": {
+    "phis_c": {
+      "n": 373235,
+      "mae": 0.040129815093740875,
+      "rmse": 0.048380642731864355,
+      "max_abs_error": 0.10767102241516113,
+      "bias_mean": -0.018951547820245464,
+      "corr": 0.9877507295415879,
+      "r2": 0.9712363460690016,
+      "nmae": 0.040758750693941186,
+      "std_ratio_pred_over_label": 0.9864912781645979
+    },
+    "phie": {
+      "n": 373235,
+      "mae": 0.039384917947186154,
+      "rmse": 0.04823657348275194,
+      "max_abs_error": 0.10087069869041443,
+      "bias_mean": -0.02183932906898112,
+      "corr": 0.9755127522340913,
+      "r2": 0.9361032182475062,
+      "nmae": 0.10226295562539633,
+      "std_ratio_pred_over_label": 1.0247460851461014
+    },
+    "theta_a": {
+      "n": 1280000,
+      "mae": 0.020434634923934936,
+      "rmse": 0.02457631109012015,
+      "max_abs_error": 0.06225895881652832,
+      "bias_mean": 0.002645608995249495,
+      "corr": 0.9534119297417926,
+      "r2": 0.9071692419370367,
+      "nmae": 0.0517707730704196,
+      "std_ratio_pred_over_label": 0.9807856330393964
+    },
+    "theta_c": {
+      "n": 1280000,
+      "mae": 0.0075732383617665615,
+      "rmse": 0.010451154562818032,
+      "max_abs_error": 0.03470337390899658,
+      "bias_mean": 0.005564380216132849,
+      "corr": 0.9962260339658073,
+      "r2": 0.9892045143701629,
+      "nmae": 0.016299308879533007,
+      "std_ratio_pred_over_label": 0.9820269315576696
+    },
+    "cs_a": {
+      "n": 1280000,
+      "mae": 0.12260780927911401,
+      "rmse": 0.14745786626333615,
+      "max_abs_error": 0.3735537528991699,
+      "bias_mean": 0.015873653871938585,
+      "corr": 0.953411929909801,
+      "r2": 0.9071692422848404,
+      "nmae": 0.05177076904985575,
+      "std_ratio_pred_over_label": 0.980785632952254
+    },
+    "cs_c": {
+      "n": 1280000,
+      "mae": 0.39229374625384805,
+      "rmse": 0.541369805321455,
+      "max_abs_error": 1.7976341247558594,
+      "bias_mean": 0.2882348980754614,
+      "corr": 0.99622603401736,
+      "r2": 0.9892045144087881,
+      "nmae": 0.016299309238313922,
+      "std_ratio_pred_over_label": 0.9820269315309528
+    }
+  },
+  "metrics_global_corrected": {
+    "phis_c": {
+      "n": 373235,
+      "mae": 0.009458605287217078,
+      "rmse": 0.011171562504634233,
+      "max_abs_error": 0.09741830825805664,
+      "bias_mean": 0.006328313099345783,
+      "corr": 0.9996665400561875,
+      "r2": 0.9984663416370975,
+      "nmae": 0.009606845531521158,
+      "std_ratio_pred_over_label": 0.9803087709520653
+    },
+    "phie": {
+      "n": 373235,
+      "mae": 0.0061720498229695005,
+      "rmse": 0.007247528701715549,
+      "max_abs_error": 0.09741842746734619,
+      "bias_mean": 0.0034405322081725183,
+      "corr": 0.9994414127281823,
+      "r2": 0.998557532712045,
+      "nmae": 0.016025729900223374,
+      "std_ratio_pred_over_label": 1.0001724582546372
+    },
+    "theta_a": {
+      "n": 1280000,
+      "mae": 0.020434634923934936,
+      "rmse": 0.02457631109012015,
+      "max_abs_error": 0.06225895881652832,
+      "bias_mean": 0.002645608995249495,
+      "corr": 0.9534119297417926,
+      "r2": 0.9071692419370367,
+      "nmae": 0.0517707730704196,
+      "std_ratio_pred_over_label": 0.9807856330393964
+    },
+    "theta_c": {
+      "n": 1280000,
+      "mae": 0.0075732383617665615,
+      "rmse": 0.010451154562818032,
+      "max_abs_error": 0.03470337390899658,
+      "bias_mean": 0.005564380216132849,
+      "corr": 0.9962260339658073,
+      "r2": 0.9892045143701629,
+      "nmae": 0.016299308879533007,
+      "std_ratio_pred_over_label": 0.9820269315576696
+    },
+    "cs_a": {
+      "n": 1280000,
+      "mae": 0.12260780927911401,
+      "rmse": 0.14745786626333615,
+      "max_abs_error": 0.3735537528991699,
+      "bias_mean": 0.015873653871938585,
+      "corr": 0.953411929909801,
+      "r2": 0.9071692422848404,
+      "nmae": 0.05177076904985575,
+      "std_ratio_pred_over_label": 0.980785632952254
+    },
+    "cs_c": {
+      "n": 1280000,
+      "mae": 0.39229374625384805,
+      "rmse": 0.541369805321455,
+      "max_abs_error": 1.7976341247558594,
+      "bias_mean": 0.2882348980754614,
+      "corr": 0.99622603401736,
+      "r2": 0.9892045144087881,
+      "nmae": 0.016299309238313922,
+      "std_ratio_pred_over_label": 0.9820269315309528
+    }
+  },
+  "potential_common_mode_diagnostic": {
+    "before": {
+      "phie_error": {
+        "n": 373235,
+        "mae": 0.039384917947186154,
+        "rmse": 0.04823657348275194,
+        "bias_mean": -0.02183932906898112,
+        "std": 0.043009426027019744
+      },
+      "phis_c_error": {
+        "n": 373235,
+        "mae": 0.040129815093740875,
+        "rmse": 0.048380642731864355,
+        "bias_mean": -0.018951547820245464,
+        "std": 0.04451432832656524
+      },
+      "common_mode_error": {
+        "n": 373235,
+        "mae": 0.03966959978773447,
+        "rmse": 0.04817518357126938,
+        "bias_mean": -0.020395438444613292,
+        "std": 0.04364486685484896
+      },
+      "differential_phis_minus_phie_error": {
+        "n": 373235,
+        "mae": 0.006210684072040788,
+        "rmse": 0.00717732377062925,
+        "bias_mean": 0.002887781248735657,
+        "std": 0.006570745465157694
+      }
+    },
+    "after": {
+      "phie_error": {
+        "n": 373235,
+        "mae": 0.0061720498229695005,
+        "rmse": 0.007247528701715549,
+        "bias_mean": 0.0034405322081725183,
+        "std": 0.006378825158813981
+      },
+      "phis_c_error": {
+        "n": 373235,
+        "mae": 0.009458605287217078,
+        "rmse": 0.011171562504634233,
+        "bias_mean": 0.006328313099345783,
+        "std": 0.00920631642469441
+      },
+      "common_mode_error": {
+        "n": 373235,
+        "mae": 0.007411722666625065,
+        "rmse": 0.008705558414387249,
+        "bias_mean": 0.00488442265375915,
+        "std": 0.00720618919025535
+      },
+      "differential_phis_minus_phie_error": {
+        "n": 373235,
+        "mae": 0.006210684093599931,
+        "rmse": 0.007177323521274891,
+        "bias_mean": 0.002887780891173264,
+        "std": 0.006570745349929514
+      }
+    }
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "eval_npz": "EvalFin_104_cycles5_100_v2_massclosed_candidate_cRadial010_softlabel_only\\eval_sampled_arrays_cycles5_100_v2_massclosed_softlabel_only.npz",
+  "interpretation_hint": "If phie and phis_c have similar bias but the phis_c-phie differential is accurate, the main issue is a common-mode/gauge-like potential offset rather than a wrong current-dependent shape.",
+  "phie_error": {
+    "n": 78419,
+    "mae": 0.11269418058340477,
+    "rmse": 0.11315584808291973,
+    "bias_mean": -0.1126941805826447,
+    "std": 0.010211151657431989
+  },
+  "phis_c_error": {
+    "n": 78419,
+    "mae": 0.11195683030254336,
+    "rmse": 0.11245239470733412,
+    "bias_mean": -0.11195683030254336,
+    "std": 0.010545578410953762
+  },
+  "common_mode_error": {
+    "n": 78419,
+    "mae": 0.11232550544297407,
+    "rmse": 0.11273665401950515,
+    "bias_mean": -0.11232550544259402,
+    "std": 0.009619458746696024
+  },
+  "differential_phis_minus_phie_error": {
+    "n": 78419,
+    "mae": 0.007192805787760841,
+    "rmse": 0.007833353273236133,
+    "bias_mean": 0.0007373502801013376,
+    "std": 0.007798572822494749
+  }
+}

@@ -1,0 +1,153 @@
+{
+  "model_id": 106,
+  "model_name": "ModelFin_106_linearCycleCommonModeGauge",
+  "definition": "ModelFin_105 checkpoint plus post-hoc linear-cycle common-mode potential gauge correction.",
+  "base_model_dir": "C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\PINN-for-ASSB-V1\\ModelFin_105",
+  "base_checkpoint_copied_from": "C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\PINN-for-ASSB-V1\\ModelFin_105\\best.pt",
+  "output_model_dir": "C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\PINN-for-ASSB-V1\\ModelFin_106",
+  "source_eval_dir": "C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\PINN-for-ASSB-V1\\EvalFin_105_cycles5_100_v2_massclosed_candidate_pGauge_softlabel_only",
+  "source_eval_npz": "C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\PINN-for-ASSB-V1\\EvalFin_105_cycles5_100_v2_massclosed_candidate_pGauge_softlabel_only\\eval_sampled_arrays_cycles5_100_v2_massclosed_softlabel_only.npz",
+  "calibration_method": "linear_cycle_mean",
+  "calibration_target": "common_mode_error = 0.5*((phie_pred-phie_true)+(phis_c_pred-phis_c_true))",
+  "apply_to": [
+    "phie_pred",
+    "phis_c_pred"
+  ],
+  "does_not_modify": [
+    "theta_a",
+    "theta_c",
+    "cs_a",
+    "cs_c",
+    "phis_c_minus_phie_differential"
+  ],
+  "apply_cycle_from": 5,
+  "apply_cycle_to": 100,
+  "calibration_n_samples": 13785,
+  "calib_cycle_from": 5,
+  "calib_cycle_to": 20,
+  "calibration_common_mode_error_mean_all_samples": -0.09524863935117926,
+  "calibration_common_mode_error_median_all_samples": -0.09514723718166351,
+  "calibration_common_mode_error_std_all_samples": 0.004259813343438741,
+  "linear_bias_slope_V_per_cycle": 0.0002924856517888649,
+  "linear_bias_intercept_V": -0.09888082346895946,
+  "offset_formula": "offset_to_add_V = -(linear_bias_slope_V_per_cycle * cycle_id + linear_bias_intercept_V)",
+  "calibration_cycle_mean_biases": [
+    {
+      "cycle_id": 5,
+      "n": 924,
+      "common_mode_error_mean": -0.09763396616815488,
+      "common_mode_error_median": -0.09742531180381775,
+      "common_mode_error_std": 0.005270716524537703
+    },
+    {
+      "cycle_id": 6,
+      "n": 878,
+      "common_mode_error_mean": -0.09706146132565849,
+      "common_mode_error_median": -0.09714043140411377,
+      "common_mode_error_std": 0.003968954198304493
+    },
+    {
+      "cycle_id": 7,
+      "n": 871,
+      "common_mode_error_mean": -0.09677619693199885,
+      "common_mode_error_median": -0.09685571491718292,
+      "common_mode_error_std": 0.0039681542174360715
+    },
+    {
+      "cycle_id": 8,
+      "n": 868,
+      "common_mode_error_mean": -0.09649667770425845,
+      "common_mode_error_median": -0.09657058119773865,
+      "common_mode_error_std": 0.003961226915616162
+    },
+    {
+      "cycle_id": 9,
+      "n": 862,
+      "common_mode_error_mean": -0.09621243799438056,
+      "common_mode_error_median": -0.09628638625144958,
+      "common_mode_error_std": 0.003959937156533739
+    },
+    {
+      "cycle_id": 10,
+      "n": 861,
+      "common_mode_error_mean": -0.09592297404969888,
+      "common_mode_error_median": -0.09600202739238739,
+      "common_mode_error_std": 0.003952890246935296
+    },
+    {
+      "cycle_id": 11,
+      "n": 858,
+      "common_mode_error_mean": -0.09564255426327388,
+      "common_mode_error_median": -0.09571756422519684,
+      "common_mode_error_std": 0.003948755788162132
+    },
+    {
+      "cycle_id": 12,
+      "n": 859,
+      "common_mode_error_mean": -0.09535126878995973,
+      "common_mode_error_median": -0.09543220698833466,
+      "common_mode_error_std": 0.003940577515194598
+    },
+    {
+      "cycle_id": 13,
+      "n": 854,
+      "common_mode_error_mean": -0.09507301189790565,
+      "common_mode_error_median": -0.09514641761779785,
+      "common_mode_error_std": 0.003937786084460179
+    },
+    {
+      "cycle_id": 14,
+      "n": 861,
+      "common_mode_error_mean": -0.09477932107365505,
+      "common_mode_error_median": -0.09485997259616852,
+      "common_mode_error_std": 0.003915908554829147
+    },
+    {
+      "cycle_id": 15,
+      "n": 853,
+      "common_mode_error_mean": -0.09449300051154733,
+      "common_mode_error_median": -0.09457136690616608,
+      "common_mode_error_std": 0.003927449920953089
+    },
+    {
+      "cycle_id": 16,
+      "n": 852,
+      "common_mode_error_mean": -0.09420923984876262,
+      "common_mode_error_median": -0.0942831039428711,
+      "common_mode_error_std": 0.003915863014895914
+    },
+    {
+      "cycle_id": 17,
+      "n": 847,
+      "common_mode_error_mean": -0.09391633251411434,
+      "common_mode_error_median": -0.0939953476190567,
+      "common_mode_error_std": 0.00391749840772996
+    },
+    {
+      "cycle_id": 18,
+      "n": 849,
+      "common_mode_error_mean": -0.09362581202012209,
+      "common_mode_error_median": -0.09370683133602142,
+      "common_mode_error_std": 0.003906580222966057
+    },
+    {
+      "cycle_id": 19,
+      "n": 844,
+      "common_mode_error_mean": -0.09334552616445939,
+      "common_mode_error_median": -0.09341779351234436,
+      "common_mode_error_std": 0.00390535100997619
+    },
+    {
+      "cycle_id": 20,
+      "n": 844,
+      "common_mode_error_mean": -0.093056263887628,
+      "common_mode_error_median": -0.09312821924686432,
+      "common_mode_error_std": 0.003892340125243915
+    }
+  ],
+  "notes": [
+    "This is a calibrated wrapper, not a new SGD/L-BFGS trained neural network.",
+    "The correction is common-mode: the same offset is added to phie and phis_c, preserving phis_c-phie.",
+    "The calibration uses cycle5-20 and is applied to cycle5-100 by default."
+  ]
+}

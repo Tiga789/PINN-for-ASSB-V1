@@ -1,0 +1,18 @@
+{
+  "model": "ModelFin_106_linearCycleCommonModeGauge",
+  "eval_npz": "C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\PINN-for-ASSB-V1\\EvalFin_106_cycles5_100_v2_massclosed_candidate_linearGauge_raw_softlabel_only\\eval_sampled_arrays_cycles5_100_v2_massclosed_softlabel_only.npz",
+  "gauge_config": "C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\PINN-for-ASSB-V1\\ModelFin_106\\gauge_config.json",
+  "cycle_from": 5,
+  "cycle_to": 100,
+  "linear_bias_slope_V_per_cycle": 0.0002924856517888649,
+  "linear_bias_intercept_V": -0.09888082346895946,
+  "offset_formula": "offset_to_add_V = -(slope * cycle_id + intercept)",
+  "offset_stats_over_potential_samples": {
+    "n": 78419,
+    "mean": 0.08378290352186865,
+    "min": 0.06963225829007297,
+    "max": 0.09741839521001514,
+    "std": 0.008124027137629816
+  },
+  "note": "Only phie_pred and phis_c_pred are shifted by the same common-mode offset. Concentration/theta arrays are unchanged."
+}

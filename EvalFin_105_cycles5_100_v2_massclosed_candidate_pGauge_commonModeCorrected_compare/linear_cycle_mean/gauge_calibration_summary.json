@@ -1,0 +1,289 @@
+{
+  "script_version": "D4-common-mode-gauge-correction-v1",
+  "eval_npz": "EvalFin_105_cycles5_100_v2_massclosed_candidate_pGauge_softlabel_only\\eval_sampled_arrays_cycles5_100_v2_massclosed_softlabel_only.npz",
+  "method": "linear_cycle_mean",
+  "calibration": {
+    "method": "linear_cycle_mean",
+    "calib_cycle_from": 5,
+    "calib_cycle_to": 20,
+    "apply_cycle_from": 5,
+    "apply_cycle_to": 100,
+    "calibration_n": 13785,
+    "calibration_common_mode_error_mean": -0.09524863935117926,
+    "calibration_common_mode_error_median": -0.09514723718166351,
+    "calibration_common_mode_error_std": 0.004259813343438741,
+    "offset_model": "linear_cycle_mean",
+    "linear_bias_slope_V_per_cycle": 0.0002924856517888649,
+    "linear_bias_intercept_V": -0.09888082346895946,
+    "calibration_cycle_mean_biases": [
+      {
+        "cycle_id": 5,
+        "common_mode_error_mean": -0.09763396616815488
+      },
+      {
+        "cycle_id": 6,
+        "common_mode_error_mean": -0.09706146132565849
+      },
+      {
+        "cycle_id": 7,
+        "common_mode_error_mean": -0.09677619693199885
+      },
+      {
+        "cycle_id": 8,
+        "common_mode_error_mean": -0.09649667770425845
+      },
+      {
+        "cycle_id": 9,
+        "common_mode_error_mean": -0.09621243799438056
+      },
+      {
+        "cycle_id": 10,
+        "common_mode_error_mean": -0.09592297404969888
+      },
+      {
+        "cycle_id": 11,
+        "common_mode_error_mean": -0.09564255426327388
+      },
+      {
+        "cycle_id": 12,
+        "common_mode_error_mean": -0.09535126878995973
+      },
+      {
+        "cycle_id": 13,
+        "common_mode_error_mean": -0.09507301189790565
+      },
+      {
+        "cycle_id": 14,
+        "common_mode_error_mean": -0.09477932107365505
+      },
+      {
+        "cycle_id": 15,
+        "common_mode_error_mean": -0.09449300051154733
+      },
+      {
+        "cycle_id": 16,
+        "common_mode_error_mean": -0.09420923984876262
+      },
+      {
+        "cycle_id": 17,
+        "common_mode_error_mean": -0.09391633251411434
+      },
+      {
+        "cycle_id": 18,
+        "common_mode_error_mean": -0.09362581202012209
+      },
+      {
+        "cycle_id": 19,
+        "common_mode_error_mean": -0.09334552616445939
+      },
+      {
+        "cycle_id": 20,
+        "common_mode_error_mean": -0.093056263887628
+      }
+    ],
+    "offset_to_add_mean_over_apply_samples_V": 0.08378290352186865,
+    "offset_to_add_min_over_apply_samples_V": 0.06963225829007297,
+    "offset_to_add_max_over_apply_samples_V": 0.09741839521001514
+  },
+  "metrics_global_before": {
+    "phis_c": {
+      "n": 78419,
+      "mae": 0.08211150548682444,
+      "rmse": 0.08281034049512227,
+      "max_abs_error": 0.10767102241516113,
+      "bias_mean": -0.08211150548682444,
+      "corr": 0.9995515083900719,
+      "r2": 0.920763080289758,
+      "nmae": 0.0833984002523765,
+      "std_ratio_pred_over_label": 0.978696463414436
+    },
+    "phie": {
+      "n": 78419,
+      "mae": 0.08423949079206235,
+      "rmse": 0.08480927158418411,
+      "max_abs_error": 0.10087069869041443,
+      "bias_mean": -0.08423949079130227,
+      "corr": 0.9986816424672439,
+      "r2": 0.8029018603665175,
+      "nmae": 0.21872787243905178,
+      "std_ratio_pred_over_label": 1.000799777189657
+    },
+    "cs_a": {
+      "n": 768000,
+      "mae": 0.12470630927414944,
+      "rmse": 0.14431258323535975,
+      "max_abs_error": 0.26391124725341797,
+      "bias_mean": -0.014110393320831159,
+      "corr": 0.9647743088719645,
+      "r2": 0.9294825449038622,
+      "nmae": 0.05237898442486412,
+      "std_ratio_pred_over_label": 0.9899289653322364
+    },
+    "theta_a": {
+      "n": 768000,
+      "mae": 0.02078438489472804,
+      "rmse": 0.0240520971928088,
+      "max_abs_error": 0.043985188007354736,
+      "bias_mean": -0.0023517321904655544,
+      "corr": 0.9647743088874517,
+      "r2": 0.9294825449688509,
+      "nmae": 0.052378985775749176,
+      "std_ratio_pred_over_label": 0.9899289649858312
+    },
+    "cs_c": {
+      "n": 768000,
+      "mae": 0.29308353491375844,
+      "rmse": 0.3671530069302889,
+      "max_abs_error": 1.0270404815673828,
+      "bias_mean": 0.05920371828228235,
+      "corr": 0.9980793960018577,
+      "r2": 0.9960519551563006,
+      "nmae": 0.01215429917313248,
+      "std_ratio_pred_over_label": 0.9952741854612989
+    },
+    "theta_c": {
+      "n": 768000,
+      "mae": 0.005657983205281198,
+      "rmse": 0.007087895734976469,
+      "max_abs_error": 0.019827038049697876,
+      "bias_mean": 0.0011429288462580492,
+      "corr": 0.9980793960829648,
+      "r2": 0.9960519553291285,
+      "nmae": 0.012154298676323888,
+      "std_ratio_pred_over_label": 0.9952741849713626
+    }
+  },
+  "metrics_global_after": {
+    "phis_c": {
+      "n": 78419,
+      "mae": 0.007250759817729117,
+      "rmse": 0.0076098927361097305,
+      "max_abs_error": 0.09741830825805664,
+      "bias_mean": 0.0016713984836316707,
+      "corr": 0.9999060300135294,
+      "r2": 0.9993308622770499,
+      "nmae": 0.007364397544870876,
+      "std_ratio_pred_over_label": 0.9787181159862606
+    },
+    "phie": {
+      "n": 78419,
+      "mae": 0.001505306497525767,
+      "rmse": 0.0017839152666688808,
+      "max_abs_error": 0.09741842746734619,
+      "bias_mean": -0.0004565873065367129,
+      "corr": 0.999959326030128,
+      "r2": 0.9999127944143172,
+      "nmae": 0.003908528939060448,
+      "std_ratio_pred_over_label": 0.9995764780522742
+    },
+    "cs_a": {
+      "n": 768000,
+      "mae": 0.12470630927414944,
+      "rmse": 0.14431258323535975,
+      "max_abs_error": 0.26391124725341797,
+      "bias_mean": -0.014110393320831159,
+      "corr": 0.9647743088719645,
+      "r2": 0.9294825449038622,
+      "nmae": 0.05237898442486412,
+      "std_ratio_pred_over_label": 0.9899289653322364
+    },
+    "theta_a": {
+      "n": 768000,
+      "mae": 0.02078438489472804,
+      "rmse": 0.0240520971928088,
+      "max_abs_error": 0.043985188007354736,
+      "bias_mean": -0.0023517321904655544,
+      "corr": 0.9647743088874517,
+      "r2": 0.9294825449688509,
+      "nmae": 0.052378985775749176,
+      "std_ratio_pred_over_label": 0.9899289649858312
+    },
+    "cs_c": {
+      "n": 768000,
+      "mae": 0.29308353491375844,
+      "rmse": 0.3671530069302889,
+      "max_abs_error": 1.0270404815673828,
+      "bias_mean": 0.05920371828228235,
+      "corr": 0.9980793960018577,
+      "r2": 0.9960519551563006,
+      "nmae": 0.01215429917313248,
+      "std_ratio_pred_over_label": 0.9952741854612989
+    },
+    "theta_c": {
+      "n": 768000,
+      "mae": 0.005657983205281198,
+      "rmse": 0.007087895734976469,
+      "max_abs_error": 0.019827038049697876,
+      "bias_mean": 0.0011429288462580492,
+      "corr": 0.9980793960829648,
+      "r2": 0.9960519553291285,
+      "nmae": 0.012154298676323888,
+      "std_ratio_pred_over_label": 0.9952741849713626
+    }
+  },
+  "common_mode_diagnostic": {
+    "cycle_filter": "5-100",
+    "before": {
+      "phie_error": {
+        "n": 78419,
+        "mae": 0.08423949079206235,
+        "rmse": 0.08480927158418411,
+        "bias_mean": -0.08423949079130227,
+        "std": 0.009814312908298697
+      },
+      "phis_c_error": {
+        "n": 78419,
+        "mae": 0.08211150548682444,
+        "rmse": 0.08281034049512227,
+        "bias_mean": -0.08211150548682444,
+        "std": 0.010735602433272522
+      },
+      "common_mode_error": {
+        "n": 78419,
+        "mae": 0.08317549813944339,
+        "rmse": 0.08372295060965386,
+        "bias_mean": -0.08317549813906336,
+        "std": 0.009558711634169551
+      },
+      "differential_phis_minus_phie_error": {
+        "n": 78419,
+        "mae": 0.007229672354308278,
+        "rmse": 0.007886713128408496,
+        "bias_mean": 0.002127985304477824,
+        "std": 0.007594203217832491
+      }
+    },
+    "after": {
+      "phie_error": {
+        "n": 78419,
+        "mae": 0.001505306497525767,
+        "rmse": 0.0017839152666688808,
+        "bias_mean": -0.0004565873065367129,
+        "std": 0.0017244946245679787
+      },
+      "phis_c_error": {
+        "n": 78419,
+        "mae": 0.007250759817729117,
+        "rmse": 0.0076098927361097305,
+        "bias_mean": 0.0016713984836316707,
+        "std": 0.007424075333939534
+      },
+      "common_mode_error": {
+        "n": 78419,
+        "mae": 0.0036465191336736984,
+        "rmse": 0.0038725122668865635,
+        "bias_mean": 0.0006074055885474789,
+        "std": 0.00382457967732249
+      },
+      "differential_phis_minus_phie_error": {
+        "n": 78419,
+        "mae": 0.007229672364949386,
+        "rmse": 0.007886712701674395,
+        "bias_mean": 0.0021279857901683836,
+        "std": 0.0075942026385654
+      }
+    },
+    "interpretation_hint": "Gauge correction should reduce phie/phis_c common-mode error while leaving the differential phis_c-phie error nearly unchanged."
+  },
+  "note": "This is a post-hoc potential gauge calibration. It changes only phie_pred and phis_c_pred by a shared common-mode offset; concentration/theta arrays are unchanged."
+}

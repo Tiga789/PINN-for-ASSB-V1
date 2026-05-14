@@ -4,7 +4,62 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7b854bbc-0a8a-4911-bc87-dd9f1f68d852" name="更改" comment="" />
+    <list default="true" id="7b854bbc-0a8a-4911-bc87-dd9f1f68d852" name="更改" comment="">
+      <change afterPath="$PROJECT_DIR$/README_D4_ModelFin104_radial_ablation.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_D4_ModelFin105_potentialGauge.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_D4_ModelFin106_cycle5_522_full_eval.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_D4_ModelFin106_linearCycleGauge.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_D4_ModelFin107A_csA_precision.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_D4_common_mode_gauge_correction.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_ModelFin104_input_fix.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_v2_massclosed_candidate.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apply_ModelFin106_linear_cycle_gauge.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apply_ModelFin106_linear_cycle_gauge_cycle5_522.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/audit_positive_cbar_cycle5_100.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/audit_positive_cbar_cycle5_100_v2.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build_ModelFin106_from_ModelFin105_linearCycleGauge.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build_assb_potential_gauge_data_cycle5_20_v2_massclosed.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/calibrate_apply_common_mode_potential_offset.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/diagnose_ModelFin106_csA_cbar_radial_fullcycle.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/diagnose_eval_potential_common_mode.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/evaluate_assb_pinn_cycles5_100_v2_massclosed_softlabels.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/evaluate_assb_pinn_cycles5_522_v2_massclosed_softlabels.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/evaluate_assb_radial_ablation_from_eval_npz.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fit_apply_ModelFin107A_anode_state_correction.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/input_assb_cycles5to522_v2_massclosed_ID104_radial010" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/input_assb_cycles5to522_v2_massclosed_ID105_potentialGauge" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/integration_spm/generate_assb_soft_labels_cycle5_522_v2_massclosed_candidate.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/run_eval_ModelFin103_v2_massclosed_cycle5_100.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/check_ModelFin104_config.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/check_ModelFin105_config.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/check_ModelFin106_cycle5_522_package.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/check_ModelFin106_linearGauge_config.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/check_ModelFin107A_package.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/check_input104_parser_format.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/check_input105_parser_format.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run_ablation_ModelFin103_v2_massclosed_cycle5_100.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run_all_ModelFin106_linearCycleGauge_cycle5_100.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run_all_ModelFin107A_csA_calib5_100_eval5_522.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run_all_ModelFin107A_csA_calib5_522_eval5_522.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run_apply_ModelFin106_gauge_only.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run_build_ModelFin106_linearCycleGauge.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run_common_mode_gauge_ModelFin105_cycle5_100.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run_common_mode_gauge_method_compare_ModelFin105_cycle5_100.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run_diagnose_ModelFin104_potential_bias.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run_diagnose_ModelFin106_csA_fullcycle.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run_eval_ModelFin104_v2_massclosed_cycle5_100.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run_eval_ModelFin105_v2_massclosed_cycle5_100.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run_eval_ModelFin106_v2_massclosed_cycle5_100_linearGauge.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run_eval_ModelFin106_v2_massclosed_cycle5_522_linearGauge.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run_generate_v2_massclosed_candidate.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run_train_ModelFin104_v2_massclosed_cycle5_20.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run_train_ModelFin105_v2_massclosed_potentialGauge.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run_train_ModelFin106_v2_massclosed_linearCycleGauge.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/show_ModelFin106_cycle5_522_worst_cycles.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/show_ModelFin107A_cycle5_522_worst_cycles.ps1" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -60,11 +115,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1" />
       <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\scripts" />
+      <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1" />
+      <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\integration_spm" />
       <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\util" />
       <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\tools" />
-      <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\integration_spm" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1" />
@@ -143,7 +198,8 @@
       <workItem from="1776541032895" duration="5739000" />
       <workItem from="1776793294745" duration="2000" />
       <workItem from="1776796578394" duration="75259000" />
-      <workItem from="1777704900369" duration="78174000" />
+      <workItem from="1777704900369" duration="98542000" />
+      <workItem from="1778744192031" duration="4369000" />
     </task>
     <servers />
   </component>

@@ -2,7 +2,7 @@
 
 Physics-informed neural-network surrogate workflow for an **NMC811 || Li-In/In all-solid-state battery (ASSB)** using an adapted **effective single-particle model (effective SPM)**.
 
-This repository is an active QJW-2 research workflow adapted from the PINNSTRIPES idea. It is **not yet a finalized aging-prediction model**. The best single-cycle closed-loop baseline is still **ModelFin_101 on cycle5_v4**, while the current D3 work has moved into **continuous cycle5-522 soft labels** and **ModelFin_102 / ModelFin_103 long-sequence evaluation**.
+This repository is an active QJW-2 research workflow adapted from the PINNSTRIPES idea. It is **not yet a finalized aging-prediction model**. The best single-cycle closed-loop baseline is still **ModelFin_101 on cycle5_v4**, while the current D4 continuous-cycle benchmark is **ModelFin_107A on cycle5-522 v2 mass-closed candidate soft labels**.
 
 ---
 
@@ -35,58 +35,7 @@ Target cell: ZHB all-solid-state NMC811 / Li-In cell.
 
 ---
 
-## 2. Current project status
-
-### D2 closed-loop baseline
-
-The D2-stage workflow returned to **cycle5-only** debugging and produced a strong baseline:
-
-```text
-Soft labels:  Data/assb_soft_labels_cycle5_v4
-Model:        ModelFin_101
-Evaluation:   EvalFin_101_cycle5_v4_cbarAC_potentialBaseline
-Input:        input_assb_cycle5_v4_cbarAC_potentialBaseline_ID101
-```
-
-ModelFin_101 metrics against cycle5_v4 soft labels:
-
-```text
-phis_c   MAE ≈ 0.00405 V, RMSE ≈ 0.00568 V, corr ≈ 0.999956
-phie     MAE ≈ 0.00633 V, RMSE ≈ 0.00840 V, corr ≈ 0.999114
-theta_a  MAE ≈ 0.01706,   corr ≈ 0.9834
-theta_c  MAE ≈ 0.00369,   corr ≈ 0.9996
-```
-
-### D3 continuous-cycle expansion
-
-D3 generated a continuous all-cycle soft-label dataset from cycle 5 to 522:
-
-```text
-Soft-label directory:
-C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\assb_soft_lable_cycle5-522_v1
-
-Main file:
-solution.npz
-```
-
-Integrity check result:
-
-```text
-Status: PASS
-N_time_points: 373235
-cycle_min / cycle_max / cycle_count: 5 / 522 / 518
-t_global_s range: 0.0 to 3727659.0 s
-dt min / median / max: 1.0 / 10.0 / 10.0 s
-I_profile: charge positive, discharge negative, rest zero
-flux signs: j_a opposite to I, j_c same as I
-fixed-B voltage global: MAE ≈ 0.16384 V, RMSE ≈ 0.21083 V, corr ≈ 0.93561
-```
-
-The fixed-B voltage error is expected to be larger than cycle5_v4 because no explicit SOH / aging mechanism is currently included.
-
----
-
-## 3. Core physical conventions
+## 2. Core physical conventions
 
 This repository uses fixed **positive / negative electrode identity** rather than switching material identity with charge/discharge role.
 
@@ -122,15 +71,83 @@ J_c(t) =  I(t) * R_c / (3 * eps_c * F * V_c)
 
 ---
 
-## 4. Soft-label datasets
+## 3. Current project status
 
-### cycle5_v4
+### D2 single-cycle baseline
 
-Used for ModelFin_101 single-cycle baseline.
+The D2-stage workflow returned to **cycle5-only** debugging and produced a strong baseline:
 
 ```text
-Data/assb_soft_labels_cycle5_v4
+Soft labels:  Data/assb_soft_labels_cycle5_v4
+Model:        ModelFin_101
+Evaluation:   EvalFin_101_cycle5_v4_cbarAC_potentialBaseline
+Input:        input_assb_cycle5_v4_cbarAC_potentialBaseline_ID101
 ```
+
+ModelFin_101 metrics against cycle5_v4 soft labels:
+
+```text
+phis_c   MAE ≈ 0.00405 V, RMSE ≈ 0.00568 V, corr ≈ 0.999956
+phie     MAE ≈ 0.00633 V, RMSE ≈ 0.00840 V, corr ≈ 0.999114
+theta_a  MAE ≈ 0.01706,   corr ≈ 0.9834
+theta_c  MAE ≈ 0.00369,   corr ≈ 0.9996
+```
+
+### D3 continuous-cycle expansion
+
+D3 generated a continuous all-cycle soft-label dataset from cycle 5 to 522:
+
+```text
+C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\assb_soft_lable_cycle5-522_v1
+```
+
+The v1 continuous dataset passed basic integrity checks, but ModelFin_102 / ModelFin_103 exposed a major positive-electrode state issue. ModelFin_102 full-cycle evaluation had usable potentials and negative state, but failed for positive concentration/state:
+
+```text
+theta_c MAE ≈ 0.21384, corr ≈ 0.4715, R2 ≈ -3.497
+cs_c    MAE ≈ 11.08,   corr ≈ 0.4715, R2 ≈ -3.497
+```
+
+### D4 current continuous-cycle benchmark
+
+D4 replaced the v1 continuous target with a **v2 mass-closed candidate** and built calibrated wrappers:
+
+```text
+Soft-label candidate:
+C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\assb_soft_labels_cycle5_522_v2_massclosed_candidate
+
+Current best full-cycle benchmark:
+ModelFin_107A
+
+Current best evaluation directory:
+EvalFin_107A_cycles5_522_v2_massclosed_candidate_linearGauge_csACorrected_softlabel_only
+```
+
+ModelFin_107A full-cycle corrected metrics against v2 mass-closed candidate soft labels:
+
+```text
+phis_c   MAE=0.0094586 V, RMSE=0.0111716 V, R2=0.998466, corr=0.999667
+phie     MAE=0.0061720 V, RMSE=0.0072475 V, R2=0.998558, corr=0.999441
+theta_a  MAE=0.0039149,   RMSE=0.0055552,   R2=0.995257, corr=0.997626
+theta_c  MAE=0.0075732,   RMSE=0.0104512,   R2=0.989205, corr=0.996226
+cs_a     MAE=0.0234896,   RMSE=0.0333314,   R2=0.995257, corr=0.997626
+cs_c     MAE=0.392294,    RMSE=0.541370,    R2=0.989205, corr=0.996226
+```
+
+Important: **ModelFin_107A is a full-cycle calibration benchmark, not a held-out validation result.** Its anode correction was calibrated over cycle 5-522. A stricter check using cycle 5-100 calibration and cycle 5-522 evaluation failed for `cs_a/theta_a`:
+
+```text
+cs_a MAE after ≈ 0.3613, R2 ≈ -0.3723
+theta_a MAE after ≈ 0.0602, R2 ≈ -0.3723
+```
+
+---
+
+## 4. Soft-label datasets
+
+### `Data/assb_soft_labels_cycle5_v4`
+
+Used for the ModelFin_101 single-cycle baseline.
 
 Known cycle5_v4 values:
 
@@ -149,15 +166,56 @@ cscamax = 51.8
 T = 303.15 K
 ```
 
-### cycle5-522 continuous v1
+### `assb_soft_lable_cycle5-522_v1`
 
-Used for ModelFin_102 / ModelFin_103 long-sequence expansion.
+D3 continuous all-cycle v1 soft labels.
 
 ```text
 C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\assb_soft_lable_cycle5-522_v1
 ```
 
-Important fields in `solution.npz`:
+Status:
+
+```text
+Integrity: PASS
+cycle range: 5-522
+N_time_points: 373235
+t_global_s is not reset at cycle boundaries
+I_profile contains charge / discharge / rest
+j_a has opposite sign to I; j_c has same sign as I
+```
+
+Limitation discovered in D4:
+
+```text
+positive cbar and radial state were not consistent enough with the hard I(t)-cbar output map.
+```
+
+### `assb_soft_labels_cycle5_522_v2_massclosed_candidate`
+
+D4 main continuous soft-label candidate.
+
+```text
+C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\assb_soft_labels_cycle5_522_v2_massclosed_candidate
+```
+
+The D4 v2 generator repairs the positive-electrode mean concentration by enforcing:
+
+```text
+d<c_c>/dt = -I(t) / (eps_s_c * F * V_c)
+```
+
+It preserves the positive radial shape while shifting the radial profile to match the target spherical average, then recomputes:
+
+```text
+theta_c
+Uocp_c
+eta_c
+phie
+phis_c
+```
+
+Expected solution fields include:
 
 ```text
 t_global_s
@@ -172,221 +230,289 @@ phie / phis_c
 j_a / j_c
 eta_a / eta_c
 Uocp_a / Uocp_c
+cbar_c_before_repair
+cbar_c_from_I
+cbar_c_after_repair
+cbar_c_shift_applied
 ```
-
-This is a single continuous trajectory. Do **not** reset time or concentration at cycle boundaries unless intentionally running a separate ablation.
 
 ---
 
-## 5. Model status
+## 5. Model evolution
 
-### ModelFin_101
-
-Current best single-cycle benchmark.
-
-Key design:
-
-- I(t)-cbar hard baseline.
-- Negative Li-In/In: small zero-mean radial deviation.
-- Positive NMC811: stronger zero-mean radial deviation.
-- Current-aware potential baseline for `phie` and `phis_c`.
-- Physics-only cycle5_v4 training.
-
-### ModelFin_102
-
-First full continuous cycle5-522 trial.
-
-Soft-label-only global metrics:
-
-```text
-phis_c   MAE ≈ 0.07836 V, corr ≈ 0.9720, R2 ≈ 0.8772
-phie     MAE ≈ 0.01238 V, corr ≈ 0.9977, R2 ≈ 0.9949
-theta_a  MAE ≈ 0.02159,   corr ≈ 0.9410, R2 ≈ 0.8568
-theta_c  MAE ≈ 0.21384,   corr ≈ 0.4715, R2 ≈ -3.497
-cs_c     MAE ≈ 11.08,     corr ≈ 0.4715, R2 ≈ -3.497
-```
-
-Interpretation: potential branches and negative concentration are usable, but the positive concentration/state branch is not closed. ModelFin_102 is therefore **not** the current full-state baseline.
-
-### ModelFin_103
-
-Current smoke / short-range long-sequence model.
-
-Current use:
-
-```text
-Input: input_assb_cycles5to522_v4_continuous_ID103_smoke
-Training slice: cycle 5-20
-Evaluation directory: EvalFin_103_cycles5to20_smoke
-```
-
-Observed potential per-cycle behavior:
-
-```text
-phis_c cycle5  MAE ≈ 0.01478 V, corr ≈ 0.999892, R2 ≈ 0.99675
-phis_c cycle20 MAE ≈ 0.03423 V, corr ≈ 0.999740, R2 ≈ 0.98570
-phie worst early cycles: MAE ≈ 0.0316-0.0343 V, corr ≈ 0.99998-0.999999
-```
-
-The old evaluator did not output per-cycle `theta_a`, `theta_c`, `cs_a`, or `cs_c`. Use the new cycle-range evaluator below to obtain all six variables.
+| Model | Main purpose | Status |
+|---|---|---|
+| ModelFin_101 | cycle5_v4 single-cycle baseline | Best single-cycle baseline. Do not overwrite. |
+| ModelFin_102 | first full cycle5-522 attempt on v1 | Positive concentration/state failed. Not a benchmark. |
+| ModelFin_103 | cycle5-20 smoke / cycle5-100 evaluation on v1/v2 | Useful diagnostic model; v2 improved but radial issue remained. |
+| ModelFin_104 | reduce positive radial freedom (`CBAR_BASELINE_DEVIATION_FRACTION_C=0.10`) | Positive state improved; potential common-mode bias became large. |
+| ModelFin_105 | potential-only soft-label anchor from ModelFin_104 | Concentrations stayed good; potential common-mode bias remained. |
+| ModelFin_106 | ModelFin_105 + linear-cycle common-mode gauge wrapper | Current strong potential + positive-state wrapper. |
+| ModelFin_107A | ModelFin_106 + anode cs_a/theta_a residual correction | Current best full-cycle soft-label calibration benchmark. |
 
 ---
 
-## 6. Current evaluation target
+## 6. Key D4 results
 
-Do **not** create a new training ID only to evaluate cycle 5-100. Use ModelFin_103 directly:
+### ModelFin_103 v2 massclosed cycle5-100
+
+```text
+phis_c   MAE ≈ 0.02280 V, R2 ≈ 0.99317
+theta_c  MAE ≈ 0.04050,   R2 ≈ 0.79465
+cs_c     MAE ≈ 2.098,     R2 ≈ 0.79465
+```
+
+### Positive radial ablation
+
+Using:
+
+```text
+cs_c_pred_ablation = cbar_c_pred + scale * (cs_c_pred - cbar_c_pred)
+```
+
+Best scale:
+
+```text
+scale = 0.0
+cs_c MAE ≈ 0.543
+theta_c MAE ≈ 0.0105
+```
+
+Original scale:
+
+```text
+scale = 1.0
+cs_c MAE ≈ 2.098
+theta_c MAE ≈ 0.0405
+```
+
+Conclusion: the positive radial deviation freedom was too strong.
+
+### ModelFin_104 cycle5-100
+
+```text
+phis_c   MAE ≈ 0.112 V
+phie     MAE ≈ 0.113 V
+theta_c  MAE ≈ 0.00556
+cs_c     MAE ≈ 0.288
+```
+
+Conclusion: positive concentration fixed, but potential common-mode bias became large.
+
+### ModelFin_105 raw cycle5-100
+
+```text
+phis_c   MAE ≈ 0.0821 V
+phie     MAE ≈ 0.0842 V
+theta_c  MAE ≈ 0.00566
+cs_c     MAE ≈ 0.293
+```
+
+Common-mode diagnostic:
+
+```text
+common_mode_error MAE ≈ 0.0832 V
+phis_c - phie differential MAE ≈ 0.00723 V
+```
+
+Conclusion: shape/differential potential was already good; absolute gauge was wrong.
+
+### ModelFin_106 corrected cycle5-100
+
+```text
+phis_c   MAE ≈ 0.00725 V, R2 ≈ 0.999331
+phie     MAE ≈ 0.00151 V, R2 ≈ 0.999913
+theta_c  MAE ≈ 0.00566,   R2 ≈ 0.996052
+cs_c     MAE ≈ 0.293,     R2 ≈ 0.996052
+```
+
+### ModelFin_106 corrected cycle5-522
+
+```text
+phis_c   MAE ≈ 0.00946 V, R2 ≈ 0.998466
+phie     MAE ≈ 0.00617 V, R2 ≈ 0.998558
+theta_a  MAE ≈ 0.02043,   R2 ≈ 0.907169
+theta_c  MAE ≈ 0.00757,   R2 ≈ 0.989205
+cs_a     MAE ≈ 0.12261,   R2 ≈ 0.907169
+cs_c     MAE ≈ 0.39229,   R2 ≈ 0.989205
+```
+
+Conclusion: linear-cycle gauge extrapolated well to full cycle5-522, but negative state remained the bottleneck.
+
+### ModelFin_107A corrected cycle5-522
+
+```text
+phis_c   MAE ≈ 0.00946 V, R2 ≈ 0.998466
+phie     MAE ≈ 0.00617 V, R2 ≈ 0.998558
+theta_a  MAE ≈ 0.00391,   R2 ≈ 0.995257
+theta_c  MAE ≈ 0.00757,   R2 ≈ 0.989205
+cs_a     MAE ≈ 0.02349,   R2 ≈ 0.995257
+cs_c     MAE ≈ 0.39229,   R2 ≈ 0.989205
+```
+
+Conclusion: current best full-cycle soft-label calibration benchmark.
+
+---
+
+## 7. Important caveats
+
+1. **ModelFin_107A is not held-out validation.** It uses full-cycle calibration for the anode correction.
+2. **Do not use v1 continuous soft labels as the main concentration target** unless intentionally reproducing D3 failure.
+3. **Do not confuse corrected metrics with before metrics.** The 107A evaluation directory contains both:
+
+```text
+metrics_global_before_ModelFin106.json
+metrics_global_corrected.json
+```
+
+4. **voltage_exp is ignored in the current PINN soft-label-only evaluation.** Experimental voltage can be used to judge fixed-B label quality, but should not be mixed into the current surrogate-label metric unless explicitly designing a new experiment.
+5. **No explicit SOH/aging model is implemented yet.** Cycle-dependent gauge/correction is empirical at this stage.
+
+---
+
+## 8. Reproduction commands
+
+### Evaluate ModelFin_106 full-cycle with linear-cycle gauge
 
 ```powershell
 cd C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1
-
-D:\Anaconda\envs\torchgpu\python.exe .\evaluate_assb_pinn_cycles5_100_softlabels.py `
-  --model_dir ModelFin_103 `
-  --soft_label_dir "C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\assb_soft_lable_cycle5-522_v1" `
-  --ocp_dir "C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\ocp_estimation_outputs" `
-  --cycle_from 5 `
-  --cycle_to 100 `
-  --output_dir EvalFin_103_cycles5_100_v1_softlabel_only `
-  --debug_print_first_batch
+.\scripts\check_ModelFin106_cycle5_522_package.ps1
+.\scripts\run_eval_ModelFin106_v2_massclosed_cycle5_522_linearGauge.ps1
 ```
 
-Expected outputs:
-
-```text
-EvalFin_103_cycles5_100_v1_softlabel_only/metrics_global.json
-EvalFin_103_cycles5_100_v1_softlabel_only/metrics_by_cycle.csv
-EvalFin_103_cycles5_100_v1_softlabel_only/debug_model_and_data.json
-EvalFin_103_cycles5_100_v1_softlabel_only/eval_sampled_arrays_cycles5_100_softlabel_only.npz
-EvalFin_103_cycles5_100_v1_softlabel_only/plots_softlabel_only/*.png
-```
-
-`metrics_by_cycle.csv` should contain:
-
-```text
-phis_c
-phie
-theta_a
-theta_c
-cs_a
-cs_c
-```
-
----
-
-## 7. Important diagnostics and known issues
-
-### 7.1 Stale summary environment variable
-
-Before running long-sequence training/evaluation, clear stale cycle5_v4 summary paths:
+### Diagnose ModelFin_106 negative-state error
 
 ```powershell
-Remove-Item Env:ASSB_SOFT_LABEL_SUMMARY -ErrorAction SilentlyContinue
-$env:ASSB_SOFT_LABEL_DIR="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\assb_soft_lable_cycle5-522_v1"
-$env:ASSB_OCP_DIR="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\ocp_estimation_outputs"
+.\scripts\run_diagnose_ModelFin106_csA_fullcycle.ps1
 ```
 
-### 7.2 Windows path delimiter issue
+### Build and evaluate ModelFin_107A full-cycle calibration benchmark
 
-Some input parsers split lines by `:`. Absolute paths such as `C:\...` can therefore break parsing. Prefer relative paths in input files, for example:
-
-```text
-ASSB_SOFT_LABEL_DIR : ..\assb_soft_lable_cycle5-522_v1
-ASSB_OCP_DIR : ..\ocp_estimation_outputs
+```powershell
+.\scripts\check_ModelFin107A_package.ps1
+.\scripts\run_all_ModelFin107A_csA_calib5_522_eval5_522.ps1
+.\scripts\show_ModelFin107A_cycle5_522_worst_cycles.ps1
 ```
 
-### 7.3 Positive concentration closure issue
+### Strict extrapolation check
 
-Diagnostics showed the negative-electrode cbar closure is much more consistent than the positive-electrode cbar closure in the continuous soft-label file. If `theta_c` / `cs_c` remains bad in ModelFin_103 cycle5-100 evaluation, check the positive-electrode soft-label mass closure before opening data loss.
-
-Useful scripts:
-
-```text
-diagnose_cbar_mass_weights.py
-diagnose_cbar_mass_weights_v2.py
-repair_assb_solution_mass_closure.py
+```powershell
+.\scripts\run_all_ModelFin107A_csA_calib5_100_eval5_522.ps1
 ```
 
-The repair script exists, but the repaired solution should not be promoted to the main training dataset until its OCP, voltage, theta, and mass-closure consistency are verified.
+### Read the correct 107A metrics file
 
----
-
-## 8. Main workflow files
-
-```text
-main.py
-util/spm_assb_train_discharge.py
-util/thermo_assb.py
-util/_losses.py
-util/_rescale.py
-util/init_pinn.py
-util/myNN.py
-integration_spm/spm_int_assb_cycle.py
-integration_spm/generate_assb_soft_labels_cycle5_522_v1.py
-integration_spm/generate_assb_softlabel_allcycle.py
-evaluate_assb_pinn_vs_softlabels.py
-evaluate_assb_pinn_cycles5_100_softlabels.py
-plot_cs_surface_cycle5.py
-plot_cs_surface_cycle5_plotly.py
-inspect_assb_softlabel_solution.py
-diagnose_cbar_mass_weights_v2.py
-repair_assb_solution_mass_closure.py
+```powershell
+Get-Content .\EvalFin_107A_cycles5_522_v2_massclosed_candidate_linearGauge_csACorrected_softlabel_only\metrics_global_corrected.json
 ```
 
 ---
 
-## 9. Recommended local paths
+## 9. Current key files and directories
 
 ```text
-Project root:
-C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1
+# Soft labels
+C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\assb_soft_labels_cycle5_522_v2_massclosed_candidate
 
-Experimental record CSV:
-C:\Users\Tiga_QJW\Desktop\ZHB_realDATA\record_extracted.csv
+# Current wrappers
+ModelFin_106
+ModelFin_107A
+ModelFin_107A_calib5_100
 
-OCP prior directory:
-C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\ocp_estimation_outputs
+# Current evaluations
+EvalFin_106_cycles5_522_v2_massclosed_candidate_linearCycleGauge_softlabel_only
+EvalFin_107A_cycles5_522_v2_massclosed_candidate_linearGauge_csACorrected_softlabel_only
+EvalFin_107A_calib5_100_eval5_522_v2_massclosed_candidate_linearGauge_csACorrected_softlabel_only
 
-cycle5_v4 soft labels:
-Data\assb_soft_labels_cycle5_v4
+# Key D4 scripts
+integration_spm/generate_assb_soft_labels_cycle5_522_v2_massclosed_candidate.py
+evaluate_assb_pinn_cycles5_100_v2_massclosed_softlabels.py
+evaluate_assb_pinn_cycles5_522_v2_massclosed_softlabels.py
+apply_ModelFin106_linear_cycle_gauge.py
+apply_ModelFin106_linear_cycle_gauge_cycle5_522.py
+build_ModelFin106_from_ModelFin105_linearCycleGauge.py
+diagnose_ModelFin106_csA_cbar_radial_fullcycle.py
+fit_apply_ModelFin107A_anode_state_correction.py
 
-continuous cycle5-522 soft labels:
-C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\assb_soft_lable_cycle5-522_v1
-
-Best cycle5 model:
-ModelFin_101
-
-Current long-sequence models:
-ModelFin_102 / ModelFin_103
+# Diagram
+ASSB_PINN_architecture_v3_english_with_detailed_nn.svg
 ```
 
 ---
 
-## 10. Next-step policy
+## 10. Next recommended work
 
-1. Keep ModelFin_101 as the frozen cycle5_v4 baseline.
-2. Evaluate ModelFin_103 on cycle 5-100 before creating a new training ID.
-3. Check all six variables in `metrics_by_cycle.csv`.
-4. If potential is good but `theta_c` / `cs_c` is bad, debug soft-label mass closure and positive-electrode cbar baseline first.
-5. Only after cycle5-100 is understood, expand to cycle5-200 and then cycle5-522.
-6. Add SOH / aging parameters only if per-cycle residuals show systematic drift with cycle number.
-7. Do not open formal data loss until physics/output mapping and soft-label consistency are confirmed.
+### P0: freeze D4 benchmark
 
----
-
-## 11. Repository cleanup notes
-
-Before public GitHub release:
+Back up:
 
 ```text
-- Keep ModelFin_*, LogFin_*, EvalFin_* directories out of normal Git history unless intentionally archived.
-- Keep large .npz soft-label files outside Git or use Git LFS.
-- Store project progress summaries under docs/.
-- Keep generated patch zips outside source history.
-- Add a small reproducible smoke-test example.
-- Update requirements/environment files for the CUDA PyTorch workflow.
+ModelFin_106
+ModelFin_107A
+EvalFin_106_*
+EvalFin_107A_*
+assb_soft_labels_cycle5_522_v2_massclosed_candidate
+ASSB-D4.docx
+README.md
+D4 scripts/packages
+```
+
+### P0: design ModelFin_108
+
+ModelFin_108 should convert the successful post-hoc mechanisms into a formal, testable model:
+
+```text
+1. output-map or wrapper-level common-mode gauge;
+2. anode state residual correction;
+3. train/validation cycle split;
+4. held-out cycle metrics.
+```
+
+### P1: held-out validation
+
+Use multiple splits:
+
+```text
+calib/train: cycle 5-100      eval: cycle 101-200 / 201-522
+calib/train: cycle 5-200      eval: cycle 201-522
+rolling or blocked calibration for aging-aware tests
+```
+
+### P1: audit v2 soft labels further
+
+Check:
+
+```text
+OCP consistency
+theta windows
+voltage alignment
+mass closure for both electrodes
+per-cycle fixed-B residual trend
+```
+
+### P2: introduce aging/SOH if needed
+
+If held-out residuals drift with cycle number, consider:
+
+```text
+R_ohm(k)
+Q_loss(k)
+theta window(k)
+Ds_c(k)
+i0(k)
 ```
 
 ---
 
-## 12. Acknowledgements
+## 11. New-window summary
 
-This work adapts the PINN surrogate concept and workflow style from NREL/PINNSTRIPES and the related PINN surrogate papers for Li-ion battery models. The present repository is an ASSB-specific adaptation for an NMC811 || Li-In/In all-solid-state cell and should be described separately from the upstream project.
+The project currently has a strong D4 full-cycle soft-label calibration benchmark:
+
+```text
+ModelFin_107A = ModelFin_106 + anode cs_a/theta_a correction
+ModelFin_106  = ModelFin_105 + linear-cycle common-mode gauge
+ModelFin_105  = ModelFin_104 + potential-only data anchor
+ModelFin_104  = ModelFin_103-style model with reduced positive radial freedom
+```
+
+Current best full-cycle soft-label metrics are excellent, but because 107A uses full-cycle calibration, the next scientific step is **not** to claim final predictive performance. The next step is to build **ModelFin_108** with embedded correction and held-out cycle validation.

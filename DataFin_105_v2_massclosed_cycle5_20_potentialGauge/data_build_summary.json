@@ -1,0 +1,13 @@
+{
+  "script": "build_assb_potential_gauge_data_cycle5_20_v2_massclosed.py",
+  "soft_label_dir": "C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\assb_soft_labels_cycle5_522_v2_massclosed_candidate",
+  "solution_npz": "C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\assb_soft_labels_cycle5_522_v2_massclosed_candidate\\solution.npz",
+  "output_dir": "DataFin_105_v2_massclosed_cycle5_20_potentialGauge",
+  "cycle_from": 5,
+  "cycle_to": 20,
+  "n_data_per_variable": 16384,
+  "seed": 105,
+  "deg_i0_a": 1.0,
+  "deg_ds_c": 1.0,
+  "note": "Potential data are used to anchor the phie/phis_c common-mode bias in ModelFin_105. Concentration data files are generated for loader compatibility; their weights are zero in the default ID105 input."
+}
