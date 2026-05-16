@@ -1,41 +1,80 @@
+# -*- coding: utf-8 -*-
+"""
+ASSB ModelFin_110 aging-fix1 initialization.
+
+Complete replacement file for ModelFin_110 aging-fix1. It keeps the original
+pointwise data loss closed, loads the cycle table / capacity targets, and
+registers the aging mechanism in myNN.
+"""
 from __future__ import annotations
 
 import os
-os.environ.setdefault("KMP_DUPLICATE_LIB_OK", "TRUE")
-
 import sys
 from pathlib import Path
-
-_ROOT_DIR = Path(__file__).resolve().parents[2]
-if str(_ROOT_DIR) not in sys.path:
-    sys.path.append(str(_ROOT_DIR))
 from typing import Any, Dict, Optional
+
+os.environ.setdefault("KMP_DUPLICATE_LIB_OK", "TRUE")
 
 import numpy as np
 import torch
 
-# Original project uses path-based imports. Keep that compatibility.
 _THIS_DIR = Path(__file__).resolve().parent
-if str(_THIS_DIR) not in sys.path:
-    sys.path.insert(0, str(_THIS_DIR))
+_ROOT_DIR = _THIS_DIR.parent
+for _p in (str(_ROOT_DIR), str(_THIS_DIR)):
+    if _p not in sys.path:
+        sys.path.insert(0, _p)
 
 try:
-    from . import argument
     from .myNN import myNN
-except ImportError:  # pragma: no cover
-    import argument
+    from .assb_aging_fix1_config import parse_aging_fix1_config
+except Exception:  # pragma: no cover
     from myNN import myNN
+    from assb_aging_fix1_config import parse_aging_fix1_config
 
-from prettyPlot.parser import parse_input_file
+try:
+    from prettyPlot.parser import parse_input_file as _pretty_parse_input_file
+except Exception:  # pragma: no cover
+    _pretty_parse_input_file = None
+
+
+def parse_input_file(path: str | Path) -> Dict[str, str]:
+    if _pretty_parse_input_file is not None:
+        return _pretty_parse_input_file(str(path))
+    out: Dict[str, str] = {}
+    for raw in Path(path).read_text(encoding="utf-8").splitlines():
+        line = raw.split("#", 1)[0].strip()
+        if not line:
+            continue
+        if ":" in line:
+            k, v = line.split(":", 1)
+        elif "=" in line:
+            k, v = line.split("=", 1)
+        else:
+            parts = line.split(None, 1)
+            if len(parts) != 2:
+                continue
+            k, v = parts
+        out[k.strip()] = v.strip()
+    return out
 
 
 def _normalize_path_str(path: Optional[str]) -> Optional[str]:
     if path is None:
         return None
-    val = str(path).strip()
+    val = str(path).strip().strip('"').strip("'")
     if val.upper() in {"NONE", "NULL", ""}:
         return None
     return val
+
+
+def _abs_path(path: Optional[str]) -> Optional[str]:
+    s = _normalize_path_str(path)
+    if s is None:
+        return None
+    p = Path(s)
+    if not p.is_absolute():
+        p = Path.cwd() / p
+    return str(p)
 
 
 def absolute_path_check(path: Optional[str]) -> None:
@@ -46,739 +85,474 @@ def absolute_path_check(path: Optional[str]) -> None:
         raise SystemExit(f"ERROR: {path} is not absolute")
 
 
-def safe_load(nn: myNN, weight_path: str) -> myNN:
-    """
-    Compatibility loader.
-
-    The TensorFlow project used `best.weights.h5`. This PyTorch port writes `.pt`
-    files, but we accept multiple candidate names so existing scripts stay usable.
-    """
-    candidates = []
-    weight_path = str(weight_path)
-    candidates.append(weight_path)
-    # Common translated filenames.
-    if weight_path.endswith(".weights.h5"):
-        candidates.append(weight_path.replace(".weights.h5", ".pt"))
-        candidates.append(weight_path.replace(".weights.h5", ".pth"))
-    if weight_path.endswith("best.weights.h5"):
-        candidates.append(weight_path.replace("best.weights.h5", "best.pt"))
-    if os.path.isdir(weight_path):
-        candidates.extend(
-            [
-                os.path.join(weight_path, "best.pt"),
-                os.path.join(weight_path, "last.pt"),
-                os.path.join(weight_path, "best.weights.h5"),
-            ]
-        )
-    seen = set()
-    for cand in candidates:
-        if cand in seen or cand is None:
-            continue
-        seen.add(cand)
-        if not os.path.exists(cand):
-            continue
-        try:
-            state = torch.load(cand, map_location=nn.device)
-            if isinstance(state, dict) and all(isinstance(k, str) for k in state.keys()):
-                nn.model.load_state_dict(state)
-            else:
-                # full module checkpoint fallback
-                nn.model = state.to(nn.device)
-            return nn
-        except Exception as exc:  # pragma: no cover
-            last_exc = exc
-            continue
-    raise SystemExit(f"ERROR: could not load {weight_path}")
-
-
-_DEF_BOOL_KEYS = {
-    "DYNAMIC_ATTENTION_WEIGHTS",
-    "ANNEALING_WEIGHTS",
-    "USE_LOSS_THRESHOLD",
-    "LBFGS",
-    "SGD",
-    "MERGED",
-    "LINEARIZE_J",
-    "GRADUAL_TIME_SGD",
-    "GRADUAL_TIME_LBFGS",
-}
+def _as_bool(value: Any, default: bool = False) -> bool:
+    if value is None:
+        return bool(default)
+    if isinstance(value, bool):
+        return value
+    s = str(value).strip().lower()
+    if s in {"true", "1", "yes", "y", "t", "on"}:
+        return True
+    if s in {"false", "0", "no", "n", "f", "off", "none", "null", ""}:
+        return False
+    return bool(default)
 
 
 def _get_bool(inpt: Dict[str, str], key: str, default: bool = False) -> bool:
-    if key not in inpt:
-        return bool(default)
-    return str(inpt[key]).strip().lower() == "true"
+    return _as_bool(inpt.get(key), default)
 
 
 def _get_int(inpt: Dict[str, str], key: str, default: int) -> int:
     try:
-        return int(inpt[key])
-    except KeyError:
-        return default
+        return int(float(inpt[key]))
+    except Exception:
+        return int(default)
 
 
 def _get_float(inpt: Dict[str, str], key: str, default: float) -> float:
     try:
         return float(inpt[key])
-    except KeyError:
+    except Exception:
         return float(default)
 
 
-def _get_optional_bool(inpt: Dict[str, str], key: str, default: bool = False) -> bool:
-    return _get_bool(inpt, key, default) if key in inpt else bool(default)
+def _get_str(inpt: Dict[str, str], key: str, default: str = "") -> str:
+    return str(inpt.get(key, default)).strip()
 
 
-def _get_optional_float(inpt: Dict[str, str], key: str, default: float) -> float:
-    return _get_float(inpt, key, default) if key in inpt else float(default)
-
-
-def _as_bool_config(value, default: bool = False) -> bool:
-    if value is None:
-        return bool(default)
-    if isinstance(value, str):
-        return value.strip().lower() not in {"false", "0", "no", "off", "none", ""}
-    return bool(value)
+def _parse_alpha(text: str | None) -> list[float]:
+    if text is None:
+        vals = [1.0, 1.0, 0.0, 1.0]
+    else:
+        vals = [float(x) for x in str(text).replace(",", " ").split()]
+    while len(vals) < 4:
+        vals.append(0.0)
+    vals = vals[:4]
+    vals[2] = 0.0  # old data loss is always closed in ModelFin_109.
+    if abs(vals[3]) < 1.0e-16:
+        vals[3] = 1.0
+    return vals
 
 
 def _apply_cbar_baseline_params(params: Dict[str, Any], cfg: Dict[str, Any]) -> None:
-    """Forward I(t)-integrated cbar baseline flags into params.
-
-    These flags are consumed by util/_rescale.py. They change only the NN
-    output representation, not the ASSB SPM governing equations.
-    """
-    if "USE_I_CBAR_BASELINE" in cfg:
-        params["use_i_cbar_baseline"] = _as_bool_config(cfg.get("USE_I_CBAR_BASELINE"), False)
-    if "USE_I_CBAR_BASELINE_A" in cfg:
-        params["use_i_cbar_baseline_a"] = _as_bool_config(cfg.get("USE_I_CBAR_BASELINE_A"), False)
-    if "USE_I_CBAR_BASELINE_C" in cfg:
-        params["use_i_cbar_baseline_c"] = _as_bool_config(cfg.get("USE_I_CBAR_BASELINE_C"), False)
-    if "CBAR_BASELINE_DEVIATION_FRACTION_A" in cfg:
-        params["cbar_deviation_fraction_a"] = float(cfg.get("CBAR_BASELINE_DEVIATION_FRACTION_A"))
-    if "CBAR_BASELINE_DEVIATION_FRACTION_C" in cfg:
-        params["cbar_deviation_fraction_c"] = float(cfg.get("CBAR_BASELINE_DEVIATION_FRACTION_C"))
-    if "USE_ZERO_MEAN_RADIAL_DEVIATION" in cfg:
-        params["use_zero_mean_radial_deviation"] = _as_bool_config(cfg.get("USE_ZERO_MEAN_RADIAL_DEVIATION"), False)
-    if "USE_ZERO_MEAN_RADIAL_DEVIATION_A" in cfg:
-        params["use_zero_mean_radial_deviation_a"] = _as_bool_config(cfg.get("USE_ZERO_MEAN_RADIAL_DEVIATION_A"), False)
-    if "USE_ZERO_MEAN_RADIAL_DEVIATION_C" in cfg:
-        params["use_zero_mean_radial_deviation_c"] = _as_bool_config(cfg.get("USE_ZERO_MEAN_RADIAL_DEVIATION_C"), False)
-    if "CBAR_RADIAL_BASIS_MODE" in cfg:
-        params["cbar_radial_basis_mode"] = str(cfg.get("CBAR_RADIAL_BASIS_MODE"))
-
-    # ID100 potential baseline flags. These are consumed by util/_rescale.py
-    # and do not change the concentration structure.
-    if "USE_CURRENT_POTENTIAL_BASELINE" in cfg:
-        params["use_current_potential_baseline"] = _as_bool_config(cfg.get("USE_CURRENT_POTENTIAL_BASELINE"), False)
-    if "USE_CURRENT_POTENTIAL_BASELINE_PHIE" in cfg:
-        params["use_current_potential_baseline_phie"] = _as_bool_config(cfg.get("USE_CURRENT_POTENTIAL_BASELINE_PHIE"), False)
-    if "USE_CURRENT_POTENTIAL_BASELINE_PHIS_C" in cfg:
-        params["use_current_potential_baseline_phis_c"] = _as_bool_config(cfg.get("USE_CURRENT_POTENTIAL_BASELINE_PHIS_C"), False)
-    if "POTENTIAL_BASELINE_CORRECTION_FRACTION_PHIE" in cfg:
-        params["potential_baseline_correction_fraction_phie"] = float(cfg.get("POTENTIAL_BASELINE_CORRECTION_FRACTION_PHIE"))
-    if "POTENTIAL_BASELINE_CORRECTION_FRACTION_PHIS_C" in cfg:
-        params["potential_baseline_correction_fraction_phis_c"] = float(cfg.get("POTENTIAL_BASELINE_CORRECTION_FRACTION_PHIS_C"))
-
-
-def _cbar_config_payload(params: Dict[str, Any]) -> Dict[str, Any]:
-    return {
-        "USE_I_CBAR_BASELINE": bool(params.get("use_i_cbar_baseline", False)),
-        "USE_I_CBAR_BASELINE_A": bool(params.get("use_i_cbar_baseline_a", False)),
-        "USE_I_CBAR_BASELINE_C": bool(params.get("use_i_cbar_baseline_c", False)),
-        "CBAR_BASELINE_DEVIATION_FRACTION_A": float(params.get("cbar_deviation_fraction_a", 0.25)),
-        "CBAR_BASELINE_DEVIATION_FRACTION_C": float(params.get("cbar_deviation_fraction_c", 0.25)),
-        "USE_ZERO_MEAN_RADIAL_DEVIATION": bool(params.get("use_zero_mean_radial_deviation", False)),
-        "USE_ZERO_MEAN_RADIAL_DEVIATION_A": bool(params.get("use_zero_mean_radial_deviation_a", False)),
-        "USE_ZERO_MEAN_RADIAL_DEVIATION_C": bool(params.get("use_zero_mean_radial_deviation_c", False)),
-        "CBAR_RADIAL_BASIS_MODE": str(params.get("cbar_radial_basis_mode", "s2_zero_mean")),
-        "USE_CURRENT_POTENTIAL_BASELINE": bool(params.get("use_current_potential_baseline", False)),
-        "USE_CURRENT_POTENTIAL_BASELINE_PHIE": bool(params.get("use_current_potential_baseline_phie", False)),
-        "USE_CURRENT_POTENTIAL_BASELINE_PHIS_C": bool(params.get("use_current_potential_baseline_phis_c", False)),
-        "POTENTIAL_BASELINE_CORRECTION_FRACTION_PHIE": float(params.get("potential_baseline_correction_fraction_phie", 0.25)),
-        "POTENTIAL_BASELINE_CORRECTION_FRACTION_PHIS_C": float(params.get("potential_baseline_correction_fraction_phis_c", 0.25)),
+    mapping = {
+        "USE_I_CBAR_BASELINE": ("use_i_cbar_baseline", _as_bool),
+        "USE_I_CBAR_BASELINE_A": ("use_i_cbar_baseline_a", _as_bool),
+        "USE_I_CBAR_BASELINE_C": ("use_i_cbar_baseline_c", _as_bool),
+        "CBAR_BASELINE_DEVIATION_FRACTION_A": ("cbar_deviation_fraction_a", float),
+        "CBAR_BASELINE_DEVIATION_FRACTION_C": ("cbar_deviation_fraction_c", float),
+        "USE_ZERO_MEAN_RADIAL_DEVIATION": ("use_zero_mean_radial_deviation", _as_bool),
+        "USE_ZERO_MEAN_RADIAL_DEVIATION_A": ("use_zero_mean_radial_deviation_a", _as_bool),
+        "USE_ZERO_MEAN_RADIAL_DEVIATION_C": ("use_zero_mean_radial_deviation_c", _as_bool),
+        "CBAR_RADIAL_BASIS_MODE": ("cbar_radial_basis_mode", str),
+        "USE_CURRENT_POTENTIAL_BASELINE": ("use_current_potential_baseline", _as_bool),
+        "USE_CURRENT_POTENTIAL_BASELINE_PHIE": ("use_current_potential_baseline_phie", _as_bool),
+        "USE_CURRENT_POTENTIAL_BASELINE_PHIS_C": ("use_current_potential_baseline_phis_c", _as_bool),
+        "POTENTIAL_BASELINE_CORRECTION_FRACTION_PHIE": ("potential_baseline_correction_fraction_phie", float),
+        "POTENTIAL_BASELINE_CORRECTION_FRACTION_PHIS_C": ("potential_baseline_correction_fraction_phis_c", float),
     }
+    for key, (pkey, caster) in mapping.items():
+        if key in cfg:
+            params[pkey] = caster(cfg[key]) if caster is not _as_bool else _as_bool(cfg[key])
+    if "POTENTIAL_BASELINE_CORRECTION_FRACTION" in cfg:
+        v = float(cfg["POTENTIAL_BASELINE_CORRECTION_FRACTION"])
+        params["potential_baseline_correction_fraction_phie"] = v
+        params["potential_baseline_correction_fraction_phis_c"] = v
+
+
+def _apply_aging_cfg(params: Dict[str, Any], inpt: Dict[str, str]) -> None:
+    """Forward ModelFin_110 aging-fix1 settings into params."""
+    cfg = parse_aging_fix1_config({**params, **dict(inpt)})
+    params.update(cfg.to_dict())
+    params["aging_fix1_config"] = cfg.to_dict()
+    # Keep uppercase keys visible for existing code paths and config.json.
+    params["USE_ASSB_AGING_FIX1"] = bool(cfg.use_assb_aging_fix1)
+    params["AGING_STAGE"] = str(cfg.stage)
+    params["FREEZE_107A_CORE"] = bool(cfg.freeze_107a_core)
+    params["LOAD_AGING_MODEL"] = str(cfg.load_aging_model)
+    params["AGING_CYCLE_TABLE_CSV"] = str(cfg.cycle_table_csv)
+    params["AGING_CAPACITY_TARGET_CSV"] = str(cfg.capacity_target_csv)
+    params["USE_ASSB_AGING_INJECTION_CBAR"] = bool(cfg.use_injection_cbar)
+    params["USE_ASSB_AGING_INJECTION_FLUX"] = bool(cfg.use_injection_flux)
+    params["USE_ASSB_AGING_INJECTION_THETA_WINDOW"] = bool(cfg.use_injection_theta_window)
+    params["USE_ASSB_AGING_INJECTION_ROHM"] = bool(cfg.use_injection_rohm)
+    params["LOCK_COMMON_MODE_GAUGE"] = bool(cfg.lock_common_mode_gauge)
+    # Compatibility aliases consumed by the Stage-C files.
+    params["USE_ASSB_AGING_MECHANISM"] = bool(cfg.use_assb_aging_fix1)
+    params["aging_cycle_table_csv"] = str(cfg.cycle_table_csv)
+    params["capacity_target_csv"] = str(cfg.capacity_target_csv)
+    params["CAPACITY_TARGET_CSV"] = str(cfg.capacity_target_csv)
+    params["ASSB_AGING_CYCLE_TABLE"] = str(cfg.cycle_table_csv)
+    params["DATA_LOSS"] = False
+    params["data_loss"] = False
+    params["ALPHA_DATA"] = 0.0
+    params["MAX_BATCH_SIZE_DATA"] = 0
+
+
+def _attach_soft_label_solution(params: Dict[str, Any], inpt_or_params: Dict[str, Any]) -> None:
+    soft_dir = _normalize_path_str(inpt_or_params.get("SOFT_LABEL_DIR") or inpt_or_params.get("soft_label_dir") or os.environ.get("ASSB_SOFT_LABEL_DIR"))
+    if soft_dir is None:
+        return
+    soft_path = Path(soft_dir)
+    if not soft_path.is_absolute():
+        soft_path = Path.cwd() / soft_path
+    solution = soft_path / "solution.npz"
+    if not solution.exists():
+        params["soft_label_dir_runtime"] = str(soft_path)
+        params["soft_label_solution_missing"] = str(solution)
+        return
+    try:
+        with np.load(solution, allow_pickle=True) as z:
+            names = set(z.files)
+            t_key = "t_global_s" if "t_global_s" in names else ("t" if "t" in names else "time_s")
+            i_key = "I_profile" if "I_profile" in names else ("current_A" if "current_A" in names else "I")
+            t = np.asarray(z[t_key], dtype=np.float64).reshape(-1)
+            I = np.asarray(z[i_key], dtype=np.float64).reshape(-1)
+            order = np.argsort(t)
+            t = t[order]
+            I = I[order]
+            params["current_profile"] = (t, I)
+            params["time_profile"] = t
+            params["current_profile_A"] = I
+            params["tmax"] = np.float64(float(np.nanmax(t)) if t.size else params.get("tmax", 1.0))
+            params["rescale_T"] = np.float64(params["tmax"])
+            params["soft_label_dir_runtime"] = str(soft_path)
+            params["soft_label_solution_runtime"] = str(solution)
+            if "cycle_id" in names:
+                params["cycle_id_profile"] = np.asarray(z["cycle_id"], dtype=np.int64).reshape(-1)[order]
+            for key, pkey in (("cs_a", "cs_a0"), ("cs_c", "cs_c0")):
+                if key in names:
+                    arr = np.asarray(z[key], dtype=np.float64)
+                    if arr.ndim >= 2:
+                        params[pkey] = np.float64(np.mean(arr[0]))
+                    elif arr.size:
+                        params[pkey] = np.float64(arr[0])
+            if "theta_c" in names:
+                arr = np.asarray(z["theta_c"], dtype=np.float64)
+                try:
+                    params.setdefault("theta_c0", np.float64(np.nanmean(arr[0])))
+                except Exception:
+                    pass
+            for key, pkey in (("phie", "phie0"), ("phis_c", "phis_c0")):
+                if key in names:
+                    arr = np.asarray(z[key], dtype=np.float64).reshape(-1)
+                    if arr.size:
+                        params[pkey] = np.float64(arr[0])
+    except Exception as exc:
+        params["soft_label_attach_error"] = str(exc)
+
+
+def _candidate_state_dicts(payload: Any):
+    if isinstance(payload, dict):
+        for key in ("state_dict", "model_state_dict", "model", "net"):
+            val = payload.get(key)
+            if isinstance(val, dict):
+                yield key, val
+        if all(isinstance(k, str) for k in payload.keys()):
+            yield "raw", payload
+    elif hasattr(payload, "state_dict"):
+        yield "module", payload.state_dict()
+
+
+def _strip_prefix_if_needed(state: Dict[str, Any]) -> Dict[str, Any]:
+    keys = list(state.keys())
+    for prefix in ("model.", "module."):
+        if keys and sum(k.startswith(prefix) for k in keys) > max(1, len(keys) // 2):
+            return {k[len(prefix):]: v for k, v in state.items() if k.startswith(prefix)}
+    return state
+
+
+def safe_load(nn: myNN, weight_path: str) -> myNN:
+    """Load the 107A core with an explicit key report.
+
+    The load is never silent: missing/unexpected keys are written to
+    ``Model/load_report.json`` and critical core-key misses raise immediately.
+    Extra wrapper keys are reported but do not stop the Stage-C smoke run.
+    """
+    if not weight_path:
+        return nn
+    candidates = [str(weight_path)]
+    if os.path.isdir(str(weight_path)):
+        candidates.extend([os.path.join(str(weight_path), "best.pt"), os.path.join(str(weight_path), "last.pt")])
+    if str(weight_path).endswith(".weights.h5"):
+        candidates.append(str(weight_path).replace(".weights.h5", ".pt"))
+        candidates.append(str(weight_path).replace("best.weights.h5", "best.pt"))
+    seen = set()
+    last_exc = None
+    for cand in candidates:
+        if not cand or cand in seen or not os.path.exists(cand):
+            continue
+        seen.add(cand)
+        try:
+            payload = torch.load(cand, map_location=nn.device)
+            for name, state in _candidate_state_dicts(payload):
+                state = _strip_prefix_if_needed(state)
+                result = nn.model.load_state_dict(state, strict=False)
+                missing = list(result.missing_keys)
+                unexpected = list(result.unexpected_keys)
+                critical_missing = [k for k in missing if any(s in k for s in ("base_t", "base_tr", "gp_", "out_"))]
+                report = {
+                    "source": cand,
+                    "payload_name": name,
+                    "missing_keys": missing,
+                    "unexpected_keys": unexpected,
+                    "critical_missing": critical_missing,
+                    "n_loaded_candidate_keys": len(state),
+                }
+                Path(nn.modelFolder).mkdir(parents=True, exist_ok=True)
+                (Path(nn.modelFolder) / "load_report.json").write_text(__import__("json").dumps(report, indent=2, ensure_ascii=False), encoding="utf-8")
+                print(f"[ASSB-110] loaded prior candidate {cand} ({name}); missing={len(missing)}, unexpected={len(unexpected)}")
+                if critical_missing:
+                    raise RuntimeError("Critical 107A core keys missing: " + ", ".join(critical_missing[:20]))
+                return nn
+        except Exception as exc:
+            last_exc = exc
+            print(f"[ASSB-110] skip incompatible prior weights {cand}: {exc}")
+    if last_exc is not None:
+        raise SystemExit(f"ERROR: could not load prior model {weight_path}: {last_exc}")
+    raise SystemExit(f"ERROR: prior model path not found: {weight_path}")
 
 
 def initialize_params_from_inpt(inpt: Dict[str, str]) -> Dict[str, Any]:
-    seed = _get_int(inpt, "seed", -1)
-    ID = _get_int(inpt, "ID", 0)
-    EPOCHS = int(inpt["EPOCHS"])
-    EPOCHS_LBFGS = int(inpt["EPOCHS_LBFGS"])
-    EPOCHS_START_LBFGS = _get_int(inpt, "EPOCHS_START_LBFGS", 20)
-
-    alpha = [float(entry) for entry in inpt["alpha"].split()]
-    LEARNING_RATE_WEIGHTS = float(inpt["LEARNING_RATE_WEIGHTS"])
-    LEARNING_RATE_WEIGHTS_FINAL = float(inpt["LEARNING_RATE_WEIGHTS_FINAL"])
-    LEARNING_RATE_MODEL = float(inpt["LEARNING_RATE_MODEL"])
-    LEARNING_RATE_MODEL_FINAL = float(inpt["LEARNING_RATE_MODEL_FINAL"])
-    LEARNING_RATE_LBFGS = float(inpt["LEARNING_RATE_LBFGS"])
-    GRADIENT_THRESHOLD = float(inpt["GRADIENT_THRESHOLD"]) if "GRADIENT_THRESHOLD" in inpt else None
-
-    HARD_IC_TIMESCALE = float(inpt["HARD_IC_TIMESCALE"])
-    RATIO_FIRST_TIME = float(inpt["RATIO_FIRST_TIME"])
-    RATIO_T_MIN = float(inpt["RATIO_T_MIN"])
-    EXP_LIMITER = float(inpt["EXP_LIMITER"])
-    COLLOCATION_MODE = inpt["COLLOCATION_MODE"]
-    GRADUAL_TIME_SGD = _get_bool(inpt, "GRADUAL_TIME_SGD")
-    GRADUAL_TIME_LBFGS = _get_bool(inpt, "GRADUAL_TIME_LBFGS")
-    FIRST_TIME_LBFGS = None
-    N_GRADUAL_STEPS_LBFGS = None
-    GRADUAL_TIME_MODE_LBFGS = None
-    if GRADUAL_TIME_LBFGS:
-        N_GRADUAL_STEPS_LBFGS = int(inpt["N_GRADUAL_STEPS_LBFGS"])
-        GRADUAL_TIME_MODE_LBFGS = inpt.get("GRADUAL_TIME_MODE_LBFGS", "linear")
-
-    DYNAMIC_ATTENTION_WEIGHTS = _get_bool(inpt, "DYNAMIC_ATTENTION_WEIGHTS")
-    ANNEALING_WEIGHTS = _get_bool(inpt, "ANNEALING_WEIGHTS")
-    USE_LOSS_THRESHOLD = _get_bool(inpt, "USE_LOSS_THRESHOLD")
-    LOSS_THRESHOLD = _get_float(inpt, "LOSS_THRESHOLD", 1000.0)
-    INNER_EPOCHS = _get_int(inpt, "INNER_EPOCHS", 1)
-    START_WEIGHT_TRAINING_EPOCH = _get_int(inpt, "START_WEIGHT_TRAINING_EPOCH", 1)
-
-    LOCAL_utilFolder = _normalize_path_str(inpt.get("LOCAL_utilFolder", str(_THIS_DIR)))
-    HNN_utilFolder = _normalize_path_str(inpt.get("HNN_utilFolder"))
-    HNN_modelFolder = _normalize_path_str(inpt.get("HNN_modelFolder"))
-    try:
-        HNN_params = [np.float64(entry) for entry in inpt["HNN_params"].split()]
-    except KeyError:
-        HNN_params = None
-    if (
-        HNN_utilFolder is None
-        or HNN_modelFolder is None
-        or not os.path.isdir(HNN_utilFolder)
-        or not os.path.isdir(HNN_modelFolder)
-    ):
-        HNN_utilFolder = None
-        HNN_modelFolder = None
-        HNN_params = None
-
-    HNNTIME_utilFolder = _normalize_path_str(inpt.get("HNNTIME_utilFolder"))
-    HNNTIME_modelFolder = _normalize_path_str(inpt.get("HNNTIME_modelFolder"))
-    try:
-        HNNTIME_val = np.float64(inpt.get("HNNTIME_val", inpt.get("HNNTIME_val", inpt.get("HNNTIME_val ", "None"))))
-    except Exception:
-        HNNTIME_val = None
-    if (
-        HNNTIME_utilFolder is None
-        or HNNTIME_modelFolder is None
-        or HNNTIME_val is None
-        or not os.path.isdir(HNNTIME_utilFolder)
-        or not os.path.isdir(HNNTIME_modelFolder)
-    ):
-        HNNTIME_utilFolder = None
-        HNNTIME_modelFolder = None
-        HNNTIME_val = None
-
-    if (HNN_utilFolder is not None) or (HNNTIME_utilFolder is not None):
-        if not os.path.isdir(LOCAL_utilFolder):
-            print(f"ERROR: {LOCAL_utilFolder} is not a directory")
-            sys.exit()
-    absolute_path_check(LOCAL_utilFolder)
-    absolute_path_check(HNN_utilFolder)
-    absolute_path_check(HNN_modelFolder)
-    absolute_path_check(HNNTIME_utilFolder)
-    absolute_path_check(HNNTIME_modelFolder)
-
-    ACTIVATION = inpt["ACTIVATION"]
-    LBFGS = _get_bool(inpt, "LBFGS")
-    SGD = _get_bool(inpt, "SGD")
-    MERGED = _get_bool(inpt, "MERGED")
-    LINEARIZE_J = _get_bool(inpt, "LINEARIZE_J")
-
-    try:
-        weights = {
-            "phie_int": np.float64(inpt["w_phie_int"]),
-            "phis_c_int": np.float64(inpt["w_phis_c_int"]),
-            "cs_a_int": np.float64(inpt["w_cs_a_int"]),
-            "cs_c_int": np.float64(inpt["w_cs_c_int"]),
-            "cs_a_rmin_bound": np.float64(inpt["w_cs_a_rmin_bound"]),
-            "cs_a_rmax_bound": np.float64(inpt["w_cs_a_rmax_bound"]),
-            "cs_c_rmin_bound": np.float64(inpt["w_cs_c_rmin_bound"]),
-            "cs_c_rmax_bound": np.float64(inpt["w_cs_c_rmax_bound"]),
-            "phie_dat": np.float64(inpt["w_phie_dat"]),
-            "phis_c_dat": np.float64(inpt["w_phis_c_dat"]),
-            "cs_a_dat": np.float64(inpt["w_cs_a_dat"]),
-            "cs_c_dat": np.float64(inpt["w_cs_c_dat"]),
-        }
-    except KeyError:
-        weights = None
-
-    BATCH_SIZE_INT = int(inpt["BATCH_SIZE_INT"])
-    BATCH_SIZE_BOUND = int(inpt["BATCH_SIZE_BOUND"])
-    MAX_BATCH_SIZE_DATA = int(inpt["MAX_BATCH_SIZE_DATA"])
-    BATCH_SIZE_REG = int(inpt["BATCH_SIZE_REG"])
-    BATCH_SIZE_STRUCT = _get_int(inpt, "BATCH_SIZE_STRUCT", 64)
-
-    # ASSB secondary-conservation controls. These keys are optional in the
-    # original PINNSTRIPES inputs, so read them defensively. They are forwarded
-    # into params and config.json in initialize_nn().
-    w_cs_a_mass_reg = _get_float(inpt, "w_cs_a_mass_reg", float(os.environ.get("ASSB_W_CS_A_MASS_REG", 1.0)))
-    w_cs_c_mass_reg = _get_float(inpt, "w_cs_c_mass_reg", float(os.environ.get("ASSB_W_CS_C_MASS_REG", 1.0)))
-    mass_reg_n_quad = _get_int(inpt, "mass_reg_n_quad", _get_int(inpt, "N_MASS_REG_QUAD", 8))
-    N_BATCH = int(inpt["N_BATCH"])
-    N_BATCH_LBFGS = int(inpt["N_BATCH_LBFGS"])
-    NEURONS_NUM = int(inpt["NEURONS_NUM"])
-    LAYERS_T_NUM = int(inpt["LAYERS_T_NUM"])
-    LAYERS_TR_NUM = int(inpt["LAYERS_TR_NUM"])
-    LAYERS_T_VAR_NUM = int(inpt["LAYERS_T_VAR_NUM"])
-    LAYERS_TR_VAR_NUM = int(inpt["LAYERS_TR_VAR_NUM"])
-    LAYERS_SPLIT_NUM = int(inpt["LAYERS_SPLIT_NUM"])
-    NUM_RES_BLOCKS = _get_int(inpt, "NUM_RES_BLOCKS", 0)
-    if NUM_RES_BLOCKS > 0:
-        NUM_RES_BLOCK_LAYERS = int(inpt["NUM_RES_BLOCK_LAYERS"])
-        NUM_RES_BLOCK_UNITS = int(inpt["NUM_RES_BLOCK_UNITS"])
-    else:
-        NUM_RES_BLOCK_LAYERS = 1
-        NUM_RES_BLOCK_UNITS = 1
-    try:
-        NUM_GRAD_PATH_LAYERS = int(inpt["NUM_GRAD_PATH_LAYERS"])
-    except Exception:
-        NUM_GRAD_PATH_LAYERS = None
-    if NUM_GRAD_PATH_LAYERS is not None and NUM_GRAD_PATH_LAYERS > 0:
-        NUM_GRAD_PATH_UNITS = int(inpt["NUM_GRAD_PATH_UNITS"])
-    else:
-        NUM_GRAD_PATH_UNITS = None
-
-    LOAD_MODEL = _normalize_path_str(inpt.get("LOAD_MODEL"))
-    if LOAD_MODEL is not None and not os.path.isfile(LOAD_MODEL):
-        LOAD_MODEL = None
-
-    PRIOR_MODEL = str(inpt.get("PRIOR_MODEL", "spm")).strip().lower()
-
-    USE_I_CBAR_BASELINE = _get_optional_bool(inpt, "USE_I_CBAR_BASELINE", False)
-    USE_I_CBAR_BASELINE_A = _get_optional_bool(inpt, "USE_I_CBAR_BASELINE_A", False)
-    USE_I_CBAR_BASELINE_C = _get_optional_bool(inpt, "USE_I_CBAR_BASELINE_C", False)
-    CBAR_BASELINE_DEVIATION_FRACTION_A = _get_optional_float(inpt, "CBAR_BASELINE_DEVIATION_FRACTION_A", 0.25)
-    CBAR_BASELINE_DEVIATION_FRACTION_C = _get_optional_float(inpt, "CBAR_BASELINE_DEVIATION_FRACTION_C", 0.25)
-    USE_ZERO_MEAN_RADIAL_DEVIATION = _get_optional_bool(inpt, "USE_ZERO_MEAN_RADIAL_DEVIATION", False)
-    USE_ZERO_MEAN_RADIAL_DEVIATION_A = _get_optional_bool(inpt, "USE_ZERO_MEAN_RADIAL_DEVIATION_A", False)
-    USE_ZERO_MEAN_RADIAL_DEVIATION_C = _get_optional_bool(inpt, "USE_ZERO_MEAN_RADIAL_DEVIATION_C", False)
-    CBAR_RADIAL_BASIS_MODE = str(inpt.get("CBAR_RADIAL_BASIS_MODE", "s2_zero_mean")).strip()
-    USE_CURRENT_POTENTIAL_BASELINE = _get_optional_bool(inpt, "USE_CURRENT_POTENTIAL_BASELINE", False)
-    USE_CURRENT_POTENTIAL_BASELINE_PHIE = _get_optional_bool(inpt, "USE_CURRENT_POTENTIAL_BASELINE_PHIE", False)
-    USE_CURRENT_POTENTIAL_BASELINE_PHIS_C = _get_optional_bool(inpt, "USE_CURRENT_POTENTIAL_BASELINE_PHIS_C", False)
-    POTENTIAL_BASELINE_CORRECTION_FRACTION_PHIE = _get_optional_float(inpt, "POTENTIAL_BASELINE_CORRECTION_FRACTION_PHIE", 0.25)
-    POTENTIAL_BASELINE_CORRECTION_FRACTION_PHIS_C = _get_optional_float(inpt, "POTENTIAL_BASELINE_CORRECTION_FRACTION_PHIS_C", 0.25)
-
-    return {
-        "MERGED": MERGED,
-        "NEURONS_NUM": NEURONS_NUM,
-        "LAYERS_T_NUM": LAYERS_T_NUM,
-        "LAYERS_TR_NUM": LAYERS_TR_NUM,
-        "LAYERS_T_VAR_NUM": LAYERS_T_VAR_NUM,
-        "LAYERS_TR_VAR_NUM": LAYERS_TR_VAR_NUM,
-        "LAYERS_SPLIT_NUM": LAYERS_SPLIT_NUM,
-        "seed": seed,
-        "ID": ID,
-        "EPOCHS": EPOCHS,
-        "EPOCHS_LBFGS": EPOCHS_LBFGS,
-        "EPOCHS_START_LBFGS": EPOCHS_START_LBFGS,
+    if _get_bool(inpt, "DATA_LOSS", False) or _get_float(inpt, "ALPHA_DATA", 0.0) != 0.0 or _get_int(inpt, "MAX_BATCH_SIZE_DATA", 0) != 0:
+        raise SystemExit("ERROR: ModelFin_110 aging-fix1 keeps original DATA_LOSS closed. Set DATA_LOSS=False, ALPHA_DATA=0, MAX_BATCH_SIZE_DATA=0.")
+    alpha = _parse_alpha(inpt.get("alpha"))
+    params: Dict[str, Any] = {
+        "seed": _get_int(inpt, "seed", -1),
+        "ID": _get_int(inpt, "ID", 110),
+        "EPOCHS": _get_int(inpt, "EPOCHS", 300),
+        "EPOCHS_LBFGS": _get_int(inpt, "EPOCHS_LBFGS", 0),
+        "EPOCHS_START_LBFGS": _get_int(inpt, "EPOCHS_START_LBFGS", 0),
         "alpha": alpha,
-        "LEARNING_RATE_WEIGHTS": LEARNING_RATE_WEIGHTS,
-        "LEARNING_RATE_WEIGHTS_FINAL": LEARNING_RATE_WEIGHTS_FINAL,
-        "LEARNING_RATE_MODEL": LEARNING_RATE_MODEL,
-        "LEARNING_RATE_MODEL_FINAL": LEARNING_RATE_MODEL_FINAL,
-        "LEARNING_RATE_LBFGS": LEARNING_RATE_LBFGS,
-        "GRADIENT_THRESHOLD": GRADIENT_THRESHOLD,
-        "HARD_IC_TIMESCALE": HARD_IC_TIMESCALE,
-        "RATIO_FIRST_TIME": RATIO_FIRST_TIME,
-        "RATIO_T_MIN": RATIO_T_MIN,
-        "EXP_LIMITER": EXP_LIMITER,
-        "COLLOCATION_MODE": COLLOCATION_MODE,
-        "GRADUAL_TIME_SGD": GRADUAL_TIME_SGD,
-        "GRADUAL_TIME_LBFGS": GRADUAL_TIME_LBFGS,
-        "FIRST_TIME_LBFGS": FIRST_TIME_LBFGS,
-        "N_GRADUAL_STEPS_LBFGS": N_GRADUAL_STEPS_LBFGS,
-        "GRADUAL_TIME_MODE_LBFGS": GRADUAL_TIME_MODE_LBFGS,
-        "DYNAMIC_ATTENTION_WEIGHTS": DYNAMIC_ATTENTION_WEIGHTS,
-        "ANNEALING_WEIGHTS": ANNEALING_WEIGHTS,
-        "USE_LOSS_THRESHOLD": USE_LOSS_THRESHOLD,
-        "LOSS_THRESHOLD": LOSS_THRESHOLD,
-        "INNER_EPOCHS": INNER_EPOCHS,
-        "START_WEIGHT_TRAINING_EPOCH": START_WEIGHT_TRAINING_EPOCH,
-        "HNN_utilFolder": HNN_utilFolder,
-        "HNN_modelFolder": HNN_modelFolder,
-        "HNN_params": HNN_params,
-        "HNNTIME_utilFolder": HNNTIME_utilFolder,
-        "HNNTIME_modelFolder": HNNTIME_modelFolder,
-        "HNNTIME_val": HNNTIME_val,
-        "ACTIVATION": ACTIVATION,
-        "LBFGS": LBFGS,
-        "SGD": SGD,
-        "LINEARIZE_J": LINEARIZE_J,
-        "weights": weights,
-        "BATCH_SIZE_INT": BATCH_SIZE_INT,
-        "BATCH_SIZE_BOUND": BATCH_SIZE_BOUND,
-        "MAX_BATCH_SIZE_DATA": MAX_BATCH_SIZE_DATA,
-        "BATCH_SIZE_REG": BATCH_SIZE_REG,
-        "BATCH_SIZE_STRUCT": BATCH_SIZE_STRUCT,
-        "w_cs_a_mass_reg": w_cs_a_mass_reg,
-        "w_cs_c_mass_reg": w_cs_c_mass_reg,
-        "mass_reg_n_quad": mass_reg_n_quad,
-        "N_BATCH": N_BATCH,
-        "N_BATCH_LBFGS": N_BATCH_LBFGS,
-        "NUM_RES_BLOCKS": NUM_RES_BLOCKS,
-        "NUM_RES_BLOCK_LAYERS": NUM_RES_BLOCK_LAYERS,
-        "NUM_RES_BLOCK_UNITS": NUM_RES_BLOCK_UNITS,
-        "NUM_GRAD_PATH_LAYERS": NUM_GRAD_PATH_LAYERS,
-        "NUM_GRAD_PATH_UNITS": NUM_GRAD_PATH_UNITS,
-        "LOAD_MODEL": LOAD_MODEL,
-        "LOCAL_utilFolder": LOCAL_utilFolder,
-        "PRIOR_MODEL": PRIOR_MODEL,
-        "USE_I_CBAR_BASELINE": USE_I_CBAR_BASELINE,
-        "USE_I_CBAR_BASELINE_A": USE_I_CBAR_BASELINE_A,
-        "USE_I_CBAR_BASELINE_C": USE_I_CBAR_BASELINE_C,
-        "CBAR_BASELINE_DEVIATION_FRACTION_A": CBAR_BASELINE_DEVIATION_FRACTION_A,
-        "CBAR_BASELINE_DEVIATION_FRACTION_C": CBAR_BASELINE_DEVIATION_FRACTION_C,
-        "USE_ZERO_MEAN_RADIAL_DEVIATION": USE_ZERO_MEAN_RADIAL_DEVIATION,
-        "USE_ZERO_MEAN_RADIAL_DEVIATION_A": USE_ZERO_MEAN_RADIAL_DEVIATION_A,
-        "USE_ZERO_MEAN_RADIAL_DEVIATION_C": USE_ZERO_MEAN_RADIAL_DEVIATION_C,
-        "CBAR_RADIAL_BASIS_MODE": CBAR_RADIAL_BASIS_MODE,
-        "USE_CURRENT_POTENTIAL_BASELINE": USE_CURRENT_POTENTIAL_BASELINE,
-        "USE_CURRENT_POTENTIAL_BASELINE_PHIE": USE_CURRENT_POTENTIAL_BASELINE_PHIE,
-        "USE_CURRENT_POTENTIAL_BASELINE_PHIS_C": USE_CURRENT_POTENTIAL_BASELINE_PHIS_C,
-        "POTENTIAL_BASELINE_CORRECTION_FRACTION_PHIE": POTENTIAL_BASELINE_CORRECTION_FRACTION_PHIE,
-        "POTENTIAL_BASELINE_CORRECTION_FRACTION_PHIS_C": POTENTIAL_BASELINE_CORRECTION_FRACTION_PHIS_C,
+        "LEARNING_RATE_WEIGHTS": _get_float(inpt, "LEARNING_RATE_WEIGHTS", 1.0e-2),
+        "LEARNING_RATE_WEIGHTS_FINAL": _get_float(inpt, "LEARNING_RATE_WEIGHTS_FINAL", 1.0e-3),
+        "LEARNING_RATE_MODEL": _get_float(inpt, "LEARNING_RATE_MODEL", 5.0e-4),
+        "LEARNING_RATE_MODEL_FINAL": _get_float(inpt, "LEARNING_RATE_MODEL_FINAL", 5.0e-5),
+        "LEARNING_RATE_LBFGS": _get_float(inpt, "LEARNING_RATE_LBFGS", 1.0),
+        "GRADIENT_THRESHOLD": _get_float(inpt, "GRADIENT_THRESHOLD", 10.0) if "GRADIENT_THRESHOLD" in inpt else 10.0,
+        "HARD_IC_TIMESCALE": _get_float(inpt, "HARD_IC_TIMESCALE", 1.0),
+        "RATIO_FIRST_TIME": _get_float(inpt, "RATIO_FIRST_TIME", 1.0),
+        "RATIO_T_MIN": _get_float(inpt, "RATIO_T_MIN", 0.0),
+        "EXP_LIMITER": _get_float(inpt, "EXP_LIMITER", 10.0),
+        "COLLOCATION_MODE": _get_str(inpt, "COLLOCATION_MODE", "fixed"),
+        "GRADUAL_TIME_SGD": _get_bool(inpt, "GRADUAL_TIME_SGD", False),
+        "GRADUAL_TIME_LBFGS": _get_bool(inpt, "GRADUAL_TIME_LBFGS", False),
+        "N_GRADUAL_STEPS_LBFGS": _get_int(inpt, "N_GRADUAL_STEPS_LBFGS", 10),
+        "GRADUAL_TIME_MODE_LBFGS": _get_str(inpt, "GRADUAL_TIME_MODE_LBFGS", "exponential"),
+        "DYNAMIC_ATTENTION_WEIGHTS": _get_bool(inpt, "DYNAMIC_ATTENTION_WEIGHTS", False),
+        "ANNEALING_WEIGHTS": _get_bool(inpt, "ANNEALING_WEIGHTS", False),
+        "USE_LOSS_THRESHOLD": _get_bool(inpt, "USE_LOSS_THRESHOLD", False),
+        "LOSS_THRESHOLD": _get_float(inpt, "LOSS_THRESHOLD", 2000.0),
+        "INNER_EPOCHS": _get_int(inpt, "INNER_EPOCHS", 1),
+        "START_WEIGHT_TRAINING_EPOCH": _get_int(inpt, "START_WEIGHT_TRAINING_EPOCH", 50),
+        "ACTIVATION": _get_str(inpt, "ACTIVATION", "tanh"),
+        "LBFGS": _get_bool(inpt, "LBFGS", False),
+        "SGD": _get_bool(inpt, "SGD", True),
+        "MERGED": _get_bool(inpt, "MERGED", True),
+        "LINEARIZE_J": _get_bool(inpt, "LINEARIZE_J", True),
+        "BATCH_SIZE_INT": _get_int(inpt, "BATCH_SIZE_INT", 512),
+        "BATCH_SIZE_BOUND": _get_int(inpt, "BATCH_SIZE_BOUND", 512),
+        "MAX_BATCH_SIZE_DATA": 0,
+        "BATCH_SIZE_DATA": 0,
+        "BATCH_SIZE_REG": _get_int(inpt, "BATCH_SIZE_REG", 256),
+        "BATCH_SIZE_STRUCT": _get_int(inpt, "BATCH_SIZE_STRUCT", 0),
+        "N_BATCH": _get_int(inpt, "N_BATCH", 8),
+        "N_BATCH_LBFGS": _get_int(inpt, "N_BATCH_LBFGS", 1),
+        "NEURONS_NUM": _get_int(inpt, "NEURONS_NUM", 20),
+        "LAYERS_T_NUM": _get_int(inpt, "LAYERS_T_NUM", 1),
+        "LAYERS_TR_NUM": _get_int(inpt, "LAYERS_TR_NUM", 1),
+        "NUM_GRAD_PATH_LAYERS": _get_int(inpt, "NUM_GRAD_PATH_LAYERS", 3),
+        "NUM_GRAD_PATH_UNITS": _get_int(inpt, "NUM_GRAD_PATH_UNITS", 20),
+        "NUM_RES_BLOCKS": _get_int(inpt, "NUM_RES_BLOCKS", 0),
+        "NUM_RES_BLOCK_LAYERS": _get_int(inpt, "NUM_RES_BLOCK_LAYERS", 1),
+        "NUM_RES_BLOCK_UNITS": _get_int(inpt, "NUM_RES_BLOCK_UNITS", 20),
+        "LOCAL_utilFolder": _normalize_path_str(inpt.get("LOCAL_utilFolder", str(_THIS_DIR))),
+        "HNN_utilFolder": _normalize_path_str(inpt.get("HNN_utilFolder")),
+        "HNN_modelFolder": _normalize_path_str(inpt.get("HNN_modelFolder")),
+        "HNN_params": None,
+        "HNNTIME_utilFolder": _normalize_path_str(inpt.get("HNNTIME_utilFolder")),
+        "HNNTIME_modelFolder": _normalize_path_str(inpt.get("HNNTIME_modelFolder")),
+        "HNNTIME_val": None,
+        "LOAD_MODEL": _normalize_path_str(inpt.get("LOAD_MODEL")),
+        "PRIOR_MODEL": _get_str(inpt, "PRIOR_MODEL", "assb_discharge").lower(),
+        "SOFT_LABEL_DIR": _normalize_path_str(inpt.get("SOFT_LABEL_DIR")),
+        "CAPACITY_TARGET_CSV": _normalize_path_str(inpt.get("AGING_CAPACITY_TARGET_CSV") or inpt.get("CAPACITY_TARGET_CSV")),
+        "ASSB_AGING_CYCLE_TABLE": _normalize_path_str(inpt.get("AGING_CYCLE_TABLE_CSV") or inpt.get("ASSB_AGING_CYCLE_TABLE")),
+        "DATA_LOSS": False,
+        "ALPHA_DATA": 0.0,
+        "weights": {
+            "phie_int": _get_float(inpt, "w_phie_int", 1.0),
+            "phis_c_int": _get_float(inpt, "w_phis_c_int", 1.0),
+            "cs_a_int": _get_float(inpt, "w_cs_a_int", 10.0),
+            "cs_c_int": _get_float(inpt, "w_cs_c_int", 2.0),
+            "cs_a_rmin_bound": _get_float(inpt, "w_cs_a_rmin_bound", 1.0),
+            "cs_c_rmin_bound": _get_float(inpt, "w_cs_c_rmin_bound", 1.0),
+            "cs_a_rmax_bound": _get_float(inpt, "w_cs_a_rmax_bound", 500.0),
+            "cs_c_rmax_bound": _get_float(inpt, "w_cs_c_rmax_bound", 1500.0),
+            "phie_dat": 0.0,
+            "phis_c_dat": 0.0,
+            "cs_a_dat": 0.0,
+            "cs_c_dat": 0.0,
+        },
     }
+    # Copy selected optional fields and translate booleans/numbers below.
+    for key, value in inpt.items():
+        if key not in params:
+            params[key] = value
+    _apply_cbar_baseline_params(params, inpt)
+    _apply_aging_cfg(params, inpt)
+    params["alpha"] = alpha
+    params["alpha"][2] = 0.0
+    params["DATA_LOSS"] = False
+    params["MAX_BATCH_SIZE_DATA"] = 0
+    return params
 
 
-def initialize_params(args):
+def initialize_params(args) -> Dict[str, Any]:
     inpt = parse_input_file(args.input_file)
     return initialize_params_from_inpt(inpt)
 
 
-def _choose_param_builder(args, prior_model: str = "spm"):
-    prior_model = str(prior_model or "spm").strip().lower()
+def _choose_param_builder(args, prior_model: str = "assb_discharge"):
+    prior_model = str(prior_model or "assb_discharge").strip().lower()
     if getattr(args, "simpleModel", False):
         try:
             from .spm_simpler import makeParams
-        except ImportError:  # pragma: no cover
+        except Exception:  # pragma: no cover
             from spm_simpler import makeParams
     elif prior_model in {"assb_discharge", "spm_assb_train_discharge", "assb_train_discharge"}:
         try:
             from .spm_assb_train_discharge import makeParams
-        except ImportError:  # pragma: no cover
+        except Exception:  # pragma: no cover
             from spm_assb_train_discharge import makeParams
-    elif prior_model in {"assb_v0", "assb_voltage_anchored", "spm_assb_v0"}:
-        try:
-            from .spm_assb_v0 import makeParams
-        except ImportError:  # pragma: no cover
-            from spm_assb_v0 import makeParams
     else:
         try:
             from .spm import makeParams
-        except ImportError:  # pragma: no cover
+        except Exception:  # pragma: no cover
             from spm import makeParams
     return makeParams
 
 
 def initialize_nn(args, input_params: Dict[str, Any]) -> myNN:
-    seed = input_params["seed"]
-    PRIOR_MODEL = input_params.get("PRIOR_MODEL", "spm")
-    makeParams = _choose_param_builder(args, prior_model=PRIOR_MODEL)
-    params = makeParams()
-    _apply_cbar_baseline_params(params, input_params)
-    dataFolder = args.dataFolder
-
+    # Avoid old summary env pollution, which caused long-sequence path mistakes in D3.
+    os.environ.pop("ASSB_SOFT_LABEL_SUMMARY", None)
+    seed = int(input_params.get("seed", -1))
     if seed >= 0:
         torch.manual_seed(seed)
         np.random.seed(seed)
         if torch.cuda.is_available():
             torch.cuda.manual_seed_all(seed)
 
-    NEURONS_NUM = input_params["NEURONS_NUM"]
-    LAYERS_T_NUM = input_params["LAYERS_T_NUM"]
-    LAYERS_TR_NUM = input_params["LAYERS_TR_NUM"]
-    LAYERS_T_VAR_NUM = input_params["LAYERS_T_VAR_NUM"]
-    LAYERS_TR_VAR_NUM = input_params["LAYERS_TR_VAR_NUM"]
-    LAYERS_SPLIT_NUM = input_params["LAYERS_SPLIT_NUM"]
-    alpha = input_params["alpha"]
-    N_BATCH = input_params["N_BATCH"]
-    NUM_RES_BLOCKS = input_params["NUM_RES_BLOCKS"]
-    NUM_RES_BLOCK_LAYERS = input_params["NUM_RES_BLOCK_LAYERS"]
-    NUM_RES_BLOCK_UNITS = input_params["NUM_RES_BLOCK_UNITS"]
-    NUM_GRAD_PATH_LAYERS = input_params["NUM_GRAD_PATH_LAYERS"]
-    NUM_GRAD_PATH_UNITS = input_params["NUM_GRAD_PATH_UNITS"]
-    BATCH_SIZE_INT = input_params["BATCH_SIZE_INT"]
-    BATCH_SIZE_BOUND = input_params["BATCH_SIZE_BOUND"]
-    BATCH_SIZE_REG = input_params["BATCH_SIZE_REG"]
-    BATCH_SIZE_STRUCT = input_params["BATCH_SIZE_STRUCT"]
-    w_cs_a_mass_reg = float(input_params.get("w_cs_a_mass_reg", os.environ.get("ASSB_W_CS_A_MASS_REG", 1.0)))
-    w_cs_c_mass_reg = float(input_params.get("w_cs_c_mass_reg", os.environ.get("ASSB_W_CS_C_MASS_REG", 1.0)))
-    mass_reg_n_quad = int(input_params.get("mass_reg_n_quad", 8))
-    MAX_BATCH_SIZE_DATA = input_params["MAX_BATCH_SIZE_DATA"]
-    N_BATCH_LBFGS = input_params["N_BATCH_LBFGS"]
-    HARD_IC_TIMESCALE = input_params["HARD_IC_TIMESCALE"]
-    EXP_LIMITER = input_params["EXP_LIMITER"]
-    COLLOCATION_MODE = input_params["COLLOCATION_MODE"]
-    GRADUAL_TIME_SGD = input_params["GRADUAL_TIME_SGD"]
-    GRADUAL_TIME_LBFGS = input_params["GRADUAL_TIME_LBFGS"]
-    GRADUAL_TIME_MODE_LBFGS = input_params["GRADUAL_TIME_MODE_LBFGS"]
-    RATIO_FIRST_TIME = input_params["RATIO_FIRST_TIME"]
-    N_GRADUAL_STEPS_LBFGS = input_params["N_GRADUAL_STEPS_LBFGS"]
-    RATIO_T_MIN = input_params["RATIO_T_MIN"]
-    EPOCHS = input_params["EPOCHS"]
-    EPOCHS_LBFGS = input_params["EPOCHS_LBFGS"]
-    EPOCHS_START_LBFGS = input_params["EPOCHS_START_LBFGS"]
-    LOSS_THRESHOLD = input_params["LOSS_THRESHOLD"]
-    DYNAMIC_ATTENTION_WEIGHTS = input_params["DYNAMIC_ATTENTION_WEIGHTS"]
-    ANNEALING_WEIGHTS = input_params["ANNEALING_WEIGHTS"]
-    USE_LOSS_THRESHOLD = input_params["USE_LOSS_THRESHOLD"]
-    ACTIVATION = input_params["ACTIVATION"]
-    LBFGS = input_params["LBFGS"]
-    SGD = input_params["SGD"]
-    LINEARIZE_J = input_params["LINEARIZE_J"]
-    LOAD_MODEL = input_params["LOAD_MODEL"]
-    MERGED = input_params["MERGED"]
-    ID = input_params["ID"]
-    LOCAL_utilFolder = input_params["LOCAL_utilFolder"]
-    HNN_modelFolder = input_params["HNN_modelFolder"]
-    HNN_utilFolder = input_params["HNN_utilFolder"]
-    HNN_params = input_params["HNN_params"]
-    HNNTIME_modelFolder = input_params["HNNTIME_modelFolder"]
-    HNNTIME_utilFolder = input_params["HNNTIME_utilFolder"]
-    HNNTIME_val = input_params["HNNTIME_val"]
-    weights = input_params["weights"]
+    makeParams = _choose_param_builder(args, input_params.get("PRIOR_MODEL", "assb_discharge"))
+    params = makeParams()
+    _apply_cbar_baseline_params(params, input_params)
+    _apply_aging_cfg(params, {k: str(v) for k, v in input_params.items()})
+    _attach_soft_label_solution(params, input_params)
 
-    # Forward ASSB secondary-conservation controls into the physical parameter
-    # dictionary before myNN.__init__ calls setResidualRescaling(). This avoids
-    # relying on environment variables and makes the values visible in
-    # ModelFin_*/config.json.
-    params["w_cs_a_mass_reg"] = np.float64(w_cs_a_mass_reg)
-    params["w_cs_c_mass_reg"] = np.float64(w_cs_c_mass_reg)
-    params["mass_reg_n_quad"] = int(mass_reg_n_quad)
-    os.environ["ASSB_W_CS_A_MASS_REG"] = str(w_cs_a_mass_reg)
-    os.environ["ASSB_W_CS_C_MASS_REG"] = str(w_cs_c_mass_reg)
-    os.environ["ASSB_MASS_REG_N_QUAD"] = str(mass_reg_n_quad)
+    # Forward input/config values into params for config.json visibility.
+    for key, val in input_params.items():
+        if key != "weights":
+            params[key] = val
+    params["alpha"] = list(input_params.get("alpha", [1.0, 1.0, 0.0, 1.0]))
+    params["alpha"][2] = 0.0
+    params["DATA_LOSS"] = False
+    params["MAX_BATCH_SIZE_DATA"] = 0
 
-    if MERGED:
-        hidden_units_t = [NEURONS_NUM] * LAYERS_T_NUM
-        hidden_units_t_r = [NEURONS_NUM] * LAYERS_TR_NUM
-        hidden_units_cs_a = [NEURONS_NUM] * LAYERS_TR_VAR_NUM
-        hidden_units_cs_c = [NEURONS_NUM] * LAYERS_TR_VAR_NUM
-        hidden_units_phie = [NEURONS_NUM] * LAYERS_T_VAR_NUM
-        hidden_units_phis_c = [NEURONS_NUM] * LAYERS_T_VAR_NUM
-    else:
-        hidden_units_t = None
-        hidden_units_t_r = None
-        hidden_units_cs_a = [NEURONS_NUM] * LAYERS_SPLIT_NUM
-        hidden_units_cs_c = [NEURONS_NUM] * LAYERS_SPLIT_NUM
-        hidden_units_phie = [NEURONS_NUM] * LAYERS_SPLIT_NUM
-        hidden_units_phis_c = [NEURONS_NUM] * LAYERS_SPLIT_NUM
+    # Conservative ASSB defaults if makeParams did not define every key.
+    params.setdefault("F", np.float64(96485.33212))
+    params.setdefault("rescale_T", np.float64(params.get("tmax", 1.0)))
+    params.setdefault("rescale_phie", np.float64(1.0))
+    params.setdefault("rescale_phis_c", np.float64(1.0))
+    params.setdefault("Rs_a", np.float64(50e-6))
+    params.setdefault("Rs_c", np.float64(1.8e-6))
+    params.setdefault("eps_s_a", np.float64(0.95))
+    params.setdefault("eps_s_c", np.float64(0.55))
+    params.setdefault("A_a", np.float64(np.pi * (5e-3) ** 2))
+    params.setdefault("A_c", np.float64(np.pi * (5e-3) ** 2))
+    params.setdefault("L_a", np.float64(100e-6))
+    params.setdefault("L_c", np.float64(16e-6))
+    params.setdefault("V_a", np.float64(params["A_a"] * params["L_a"]))
+    params.setdefault("V_c", np.float64(params["A_c"] * params["L_c"]))
+    params.setdefault("cs_a0", np.float64(params.get("csa0", 0.0)))
+    params.setdefault("cs_c0", np.float64(params.get("csc0", 0.0)))
+    params.setdefault("csanmax", np.float64(max(float(params.get("cs_a0", 0.0)), 6.0)))
+    params.setdefault("cscamax", np.float64(max(float(params.get("cs_c0", 0.0)), 51.8)))
+    params.setdefault("Ds_a", np.float64(1.0e-13))
+    params.setdefault("Ds_c", np.float64(1.0e-14))
+    params.setdefault("R_ohm_eff", np.float64(float(params.get("AGING_R_OHM0", 105.0))))
+    params.setdefault("theta_c_bottom", np.float64(0.834))
+    params.setdefault("theta_c_top", np.float64(0.432))
+    params.setdefault("theta_c_window_mid0", np.float64(0.5 * (float(params["theta_c_bottom"]) + float(params["theta_c_top"]))))
+    params.setdefault("deg_i0_a_min_eff", np.float64(1.0))
+    params.setdefault("deg_i0_a_max_eff", np.float64(1.0))
+    params.setdefault("deg_ds_c_min_eff", np.float64(1.0))
+    params.setdefault("deg_ds_c_max_eff", np.float64(1.0))
 
-    if dataFolder is not None and os.path.isdir(dataFolder) and alpha[2] > 0:
-        try:
-            data_phie = np.load(os.path.join(dataFolder, "data_phie_multi.npz"))
-            use_multi = True
-            print("INFO: LOADING MULTI DATASETS")
-        except Exception:
-            data_phie = np.load(os.path.join(dataFolder, "data_phie.npz"))
-            use_multi = False
-            print("INFO: LOADING SINGLE DATASETS")
-
-        def _load(name: str):
-            fname = f"{name}_multi.npz" if use_multi else f"{name}.npz"
-            return np.load(os.path.join(dataFolder, fname))
-
-        xTrain_phie = data_phie["x_train"].astype("float64")
-        yTrain_phie = data_phie["y_train"].astype("float64")
-        x_params_train_phie = data_phie["x_params_train"].astype("float64")
-
-        data_phis_c = _load("data_phis_c")
-        xTrain_phis_c = data_phis_c["x_train"].astype("float64")
-        yTrain_phis_c = data_phis_c["y_train"].astype("float64")
-        x_params_train_phis_c = data_phis_c["x_params_train"].astype("float64")
-
-        data_cs_a = _load("data_cs_a")
-        xTrain_cs_a = data_cs_a["x_train"].astype("float64")
-        yTrain_cs_a = data_cs_a["y_train"].astype("float64")
-        x_params_train_cs_a = data_cs_a["x_params_train"].astype("float64")
-
-        data_cs_c = _load("data_cs_c")
-        xTrain_cs_c = data_cs_c["x_train"].astype("float64")
-        yTrain_cs_c = data_cs_c["y_train"].astype("float64")
-        x_params_train_cs_c = data_cs_c["x_params_train"].astype("float64")
-    else:
-        nParams = 2
-        print("INFO: LOADING DUMMY DATA")
-        xTrain_phie = np.zeros((N_BATCH, 1), dtype="float64")
-        yTrain_phie = np.zeros((N_BATCH, 1), dtype="float64")
-        x_params_train_phie = np.zeros((N_BATCH, nParams), dtype="float64")
-        xTrain_phis_c = np.zeros((N_BATCH, 1), dtype="float64")
-        yTrain_phis_c = np.zeros((N_BATCH, 1), dtype="float64")
-        x_params_train_phis_c = np.zeros((N_BATCH, nParams), dtype="float64")
-        xTrain_cs_a = np.zeros((N_BATCH, 2), dtype="float64")
-        yTrain_cs_a = np.zeros((N_BATCH, 1), dtype="float64")
-        x_params_train_cs_a = np.zeros((N_BATCH, nParams), dtype="float64")
-        xTrain_cs_c = np.zeros((N_BATCH, 2), dtype="float64")
-        yTrain_cs_c = np.zeros((N_BATCH, 1), dtype="float64")
-        x_params_train_cs_c = np.zeros((N_BATCH, nParams), dtype="float64")
-
+    neurons = int(input_params.get("NEURONS_NUM", 20))
+    hidden_t = [neurons] * max(int(input_params.get("LAYERS_T_NUM", 1)), 1)
+    hidden_tr = [neurons] * max(int(input_params.get("LAYERS_TR_NUM", 1)), 1)
     nn = myNN(
-        params=params,
-        hidden_units_t=hidden_units_t,
-        hidden_units_t_r=hidden_units_t_r,
-        hidden_units_phie=hidden_units_phie,
-        hidden_units_phis_c=hidden_units_phis_c,
-        hidden_units_cs_a=hidden_units_cs_a,
-        hidden_units_cs_c=hidden_units_cs_c,
-        n_hidden_res_blocks=NUM_RES_BLOCKS,
-        n_res_block_layers=NUM_RES_BLOCK_LAYERS,
-        n_res_block_units=NUM_RES_BLOCK_UNITS,
-        n_grad_path_layers=NUM_GRAD_PATH_LAYERS,
-        n_grad_path_units=NUM_GRAD_PATH_UNITS,
-        alpha=alpha,
-        batch_size_int=BATCH_SIZE_INT,
-        batch_size_bound=BATCH_SIZE_BOUND,
-        batch_size_reg=BATCH_SIZE_REG,
-        batch_size_struct=BATCH_SIZE_STRUCT,
-        max_batch_size_data=MAX_BATCH_SIZE_DATA,
-        n_batch=N_BATCH,
-        n_batch_lbfgs=N_BATCH_LBFGS,
-        hard_IC_timescale=np.float64(HARD_IC_TIMESCALE),
-        exponentialLimiter=EXP_LIMITER,
-        collocationMode=COLLOCATION_MODE,
-        gradualTime_sgd=GRADUAL_TIME_SGD,
-        gradualTime_lbfgs=GRADUAL_TIME_LBFGS,
-        gradualTimeMode_lbfgs=GRADUAL_TIME_MODE_LBFGS,
-        firstTime=np.float64(HARD_IC_TIMESCALE * RATIO_FIRST_TIME),
-        n_gradual_steps_lbfgs=N_GRADUAL_STEPS_LBFGS,
-        tmin_int_bound=np.float64(HARD_IC_TIMESCALE * RATIO_T_MIN),
-        nEpochs=EPOCHS,
-        nEpochs_lbfgs=EPOCHS_LBFGS,
-        nEpochs_start_lbfgs=EPOCHS_START_LBFGS,
-        initialLossThreshold=np.float64(LOSS_THRESHOLD),
-        dynamicAttentionWeights=DYNAMIC_ATTENTION_WEIGHTS,
-        annealingWeights=ANNEALING_WEIGHTS,
-        useLossThreshold=USE_LOSS_THRESHOLD,
-        activation=ACTIVATION,
-        lbfgs=LBFGS,
-        sgd=SGD,
-        linearizeJ=LINEARIZE_J,
-        params_min=[params["deg_i0_a_min"], params["deg_ds_c_min"]],
-        params_max=[params["deg_i0_a_max"], params["deg_ds_c_max"]],
-        xDataList=[xTrain_phie, xTrain_phis_c, xTrain_cs_a, xTrain_cs_c],
-        x_params_dataList=[x_params_train_phie, x_params_train_phis_c, x_params_train_cs_a, x_params_train_cs_c],
-        yDataList=[yTrain_phie, yTrain_phis_c, yTrain_cs_a, yTrain_cs_c],
-        logLossFolder=f"Log_{ID}",
-        modelFolder=f"Model_{ID}",
-        local_utilFolder=LOCAL_utilFolder,
-        hnn_utilFolder=HNN_utilFolder,
-        hnn_modelFolder=HNN_modelFolder,
-        hnn_params=HNN_params,
-        hnntime_utilFolder=HNNTIME_utilFolder,
-        hnntime_modelFolder=HNNTIME_modelFolder,
-        hnntime_val=HNNTIME_val,
-        weights=weights,
-        verbose=True,
+        params,
+        hidden_units_t=hidden_t,
+        hidden_units_t_r=hidden_tr,
+        hidden_units_phie=[neurons],
+        hidden_units_phis_c=[neurons],
+        hidden_units_cs_a=[neurons],
+        hidden_units_cs_c=[neurons],
+        n_hidden_res_blocks=int(input_params.get("NUM_RES_BLOCKS", 0)),
+        n_res_block_layers=int(input_params.get("NUM_RES_BLOCK_LAYERS", 1)),
+        n_res_block_units=int(input_params.get("NUM_RES_BLOCK_UNITS", 20)),
+        n_grad_path_layers=input_params.get("NUM_GRAD_PATH_LAYERS", 3),
+        n_grad_path_units=input_params.get("NUM_GRAD_PATH_UNITS", 20),
+        alpha=params["alpha"],
+        batch_size_int=int(input_params.get("BATCH_SIZE_INT", 0)),
+        batch_size_bound=int(input_params.get("BATCH_SIZE_BOUND", 0)),
+        max_batch_size_data=0,
+        batch_size_reg=int(input_params.get("BATCH_SIZE_REG", 0)),
+        batch_size_struct=int(input_params.get("BATCH_SIZE_STRUCT", 0)),
+        n_batch=int(input_params.get("N_BATCH", 1)),
+        n_batch_lbfgs=int(input_params.get("N_BATCH_LBFGS", 1)),
+        nEpochs_start_lbfgs=int(input_params.get("EPOCHS_START_LBFGS", 0)),
+        hard_IC_timescale=np.float64(input_params.get("HARD_IC_TIMESCALE", 1.0)),
+        exponentialLimiter=np.float64(input_params.get("EXP_LIMITER", 10.0)),
+        collocationMode=input_params.get("COLLOCATION_MODE", "fixed"),
+        gradualTime_sgd=bool(input_params.get("GRADUAL_TIME_SGD", False)),
+        gradualTime_lbfgs=bool(input_params.get("GRADUAL_TIME_LBFGS", False)),
+        firstTime=np.float64(input_params.get("RATIO_FIRST_TIME", 1.0)) * np.float64(params.get("rescale_T", 1.0)),
+        n_gradual_steps_lbfgs=input_params.get("N_GRADUAL_STEPS_LBFGS"),
+        gradualTimeMode_lbfgs=input_params.get("GRADUAL_TIME_MODE_LBFGS"),
+        tmin_int_bound=np.float64(input_params.get("RATIO_T_MIN", 0.0)) * np.float64(params.get("rescale_T", 1.0)),
+        nEpochs=int(input_params.get("EPOCHS", 300)),
+        nEpochs_lbfgs=int(input_params.get("EPOCHS_LBFGS", 0)),
+        initialLossThreshold=np.float64(input_params.get("LOSS_THRESHOLD", 2000.0)),
+        dynamicAttentionWeights=bool(input_params.get("DYNAMIC_ATTENTION_WEIGHTS", False)),
+        annealingWeights=bool(input_params.get("ANNEALING_WEIGHTS", False)),
+        useLossThreshold=bool(input_params.get("USE_LOSS_THRESHOLD", False)),
+        activation=input_params.get("ACTIVATION", "tanh"),
+        linearizeJ=bool(input_params.get("LINEARIZE_J", True)),
+        lbfgs=bool(input_params.get("LBFGS", False)),
+        sgd=bool(input_params.get("SGD", True)),
+        params_max=[params.get("deg_i0_a_max_eff", 1.0), params.get("deg_ds_c_max_eff", 1.0)],
+        params_min=[params.get("deg_i0_a_min_eff", 1.0), params.get("deg_ds_c_min_eff", 1.0)],
+        xDataList=[],
+        x_params_dataList=[],
+        yDataList=[],
+        logLossFolder="Log",
+        modelFolder="Model",
+        local_utilFolder=input_params.get("LOCAL_utilFolder"),
+        hnn_utilFolder=input_params.get("HNN_utilFolder"),
+        hnn_modelFolder=input_params.get("HNN_modelFolder"),
+        hnn_params=input_params.get("HNN_params"),
+        hnntime_utilFolder=input_params.get("HNNTIME_utilFolder"),
+        hnntime_modelFolder=input_params.get("HNNTIME_modelFolder"),
+        hnntime_val=input_params.get("HNNTIME_val"),
+        verbose=False,
+        weights=input_params.get("weights"),
     )
-
-    nn.configDict["prior_model"] = str(PRIOR_MODEL)
-    # ASSB training/provenance diagnostics. These fields are intentionally
-    # duplicated in config.json so a finished ModelFin_* can prove whether
-    # regularization was active and which electrode was weighted.
-    nn.configDict["ID"] = int(ID)
-    nn.configDict["alpha"] = [float(x) for x in alpha]
-    nn.configDict["BATCH_SIZE_INT"] = int(BATCH_SIZE_INT)
-    nn.configDict["BATCH_SIZE_BOUND"] = int(BATCH_SIZE_BOUND)
-    nn.configDict["BATCH_SIZE_REG"] = int(BATCH_SIZE_REG)
-    nn.configDict["MAX_BATCH_SIZE_DATA"] = int(MAX_BATCH_SIZE_DATA)
-    nn.configDict["N_BATCH"] = int(N_BATCH)
-    nn.configDict["w_cs_a_mass_reg"] = float(w_cs_a_mass_reg)
-    nn.configDict["w_cs_c_mass_reg"] = float(w_cs_c_mass_reg)
-    nn.configDict["mass_reg_n_quad"] = int(mass_reg_n_quad)
-    nn.configDict["activeReg_runtime"] = bool(getattr(nn, "activeReg", False))
-    nn.configDict["regTerms_rescale"] = [float(x) for x in getattr(nn, "regTerms_rescale", [])]
-    nn.configDict["regTerms_rescale_unweighted"] = [float(x) for x in getattr(nn, "regTerms_rescale_unweighted", [])]
-    nn.configDict["w_cs_a_mass_reg_effective"] = float(params.get("w_cs_a_mass_reg_effective", params.get("w_cs_a_mass_reg", w_cs_a_mass_reg)))
-    nn.configDict["w_cs_c_mass_reg_effective"] = float(params.get("w_cs_c_mass_reg_effective", params.get("w_cs_c_mass_reg", w_cs_c_mass_reg)))
-    nn.configDict["ASSB_SOFT_LABEL_DIR"] = os.environ.get("ASSB_SOFT_LABEL_DIR", "")
-    nn.configDict["ASSB_SOFT_LABEL_SUMMARY"] = os.environ.get("ASSB_SOFT_LABEL_SUMMARY", "")
-    nn.configDict["ASSB_OCP_DIR"] = os.environ.get("ASSB_OCP_DIR", "")
-    if "train_summary_json" in params:
-        nn.configDict["train_summary_json"] = params["train_summary_json"]
-    nn.configDict.update(_cbar_config_payload(params))
-
-    print(
-        "INFO: ASSB reg diagnostics | "
-        f"alpha={nn.configDict['alpha']} | "
-        f"BATCH_SIZE_REG={BATCH_SIZE_REG} | "
-        f"activeReg={nn.configDict['activeReg_runtime']} | "
-        f"w_a={nn.configDict['w_cs_a_mass_reg']} | "
-        f"w_c={nn.configDict['w_cs_c_mass_reg']} | "
-        f"reg_rescale={nn.configDict['regTerms_rescale']}"
-    )
-
-    if LOAD_MODEL is not None:
-        print(f"INFO: Loading model {LOAD_MODEL}")
-        nn = safe_load(nn, LOAD_MODEL)
+    load_model = input_params.get("LOAD_MODEL")
+    if load_model:
+        nn = safe_load(nn, load_model)
     return nn
 
 
-def initialize_nn_from_params_config(params, configDict: Dict[str, Any]) -> myNN:
-    _apply_cbar_baseline_params(params, configDict)
-    hidden_units_t = configDict.get("hidden_units_t")
-    hidden_units_t_r = configDict.get("hidden_units_t_r")
-    hidden_units_phie = configDict.get("hidden_units_phie")
-    hidden_units_phis_c = configDict.get("hidden_units_phis_c")
-    hidden_units_cs_a = configDict.get("hidden_units_cs_a")
-    hidden_units_cs_c = configDict.get("hidden_units_cs_c")
-    n_hidden_res_blocks = int(configDict.get("n_hidden_res_blocks", 0) or 0)
-    if n_hidden_res_blocks > 0:
-        n_res_block_layers = int(configDict["n_res_block_layers"])
-        n_res_block_units = int(configDict["n_res_block_units"])
-    else:
-        n_res_block_layers = 1
-        n_res_block_units = 1
-    n_grad_path_layers = configDict.get("n_grad_path_layers")
-    if n_grad_path_layers is not None and int(n_grad_path_layers) > 0:
-        n_grad_path_layers = int(n_grad_path_layers)
-        n_grad_path_units = int(configDict["n_grad_path_units"])
-    else:
-        n_grad_path_layers = None
-        n_grad_path_units = None
-
-    HARD_IC_TIMESCALE = configDict["hard_IC_timescale"]
-    EXP_LIMITER = configDict["exponentialLimiter"]
-    ACTIVATION = configDict["activation"]
-    LINEARIZE_J = configDict.get("linearizeJ", True)
-    params_min = configDict.get("params_min", [params["deg_i0_a_min"], params["deg_ds_c_min"]])
-    params_max = configDict.get("params_max", [params["deg_i0_a_max"], params["deg_ds_c_max"]])
-    local_utilFolder = configDict.get("local_utilFolder")
-    hnn_utilFolder = configDict.get("hnn_utilFolder")
-    hnn_modelFolder = configDict.get("hnn_modelFolder")
-    hnn_params = configDict.get("hnn_params")
-    hnntime_utilFolder = configDict.get("hnntime_utilFolder")
-    hnntime_modelFolder = configDict.get("hnntime_modelFolder")
-    hnntime_val = configDict.get("hnntime_val")
-
-    nn = myNN(
-        params=params,
-        hidden_units_t=hidden_units_t,
-        hidden_units_t_r=hidden_units_t_r,
-        hidden_units_phie=hidden_units_phie,
-        hidden_units_phis_c=hidden_units_phis_c,
-        hidden_units_cs_a=hidden_units_cs_a,
-        hidden_units_cs_c=hidden_units_cs_c,
-        n_hidden_res_blocks=n_hidden_res_blocks,
-        n_res_block_layers=n_res_block_layers,
-        n_res_block_units=n_res_block_units,
-        n_grad_path_layers=n_grad_path_layers,
-        n_grad_path_units=n_grad_path_units,
-        hard_IC_timescale=np.float64(HARD_IC_TIMESCALE),
-        exponentialLimiter=EXP_LIMITER,
-        activation=ACTIVATION,
-        dynamicAttentionWeights=bool(configDict.get("dynamicAttentionWeights", False)),
-        annealingWeights=bool(configDict.get("annealingWeights", False)),
-        linearizeJ=LINEARIZE_J,
-        params_min=params_min,
-        params_max=params_max,
-        local_utilFolder=local_utilFolder,
-        hnn_utilFolder=hnn_utilFolder,
-        hnn_modelFolder=hnn_modelFolder,
-        hnn_params=hnn_params,
-        hnntime_utilFolder=hnntime_utilFolder,
-        hnntime_modelFolder=hnntime_modelFolder,
-        hnntime_val=hnntime_val,
-        verbose=True,
-    )
-    return nn
+__all__ = ["initialize_params", "initialize_params_from_inpt", "initialize_nn", "safe_load", "absolute_path_check"]

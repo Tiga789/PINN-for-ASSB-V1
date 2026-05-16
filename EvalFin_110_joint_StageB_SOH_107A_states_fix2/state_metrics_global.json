@@ -1,0 +1,202 @@
+{
+  "available": true,
+  "note": "For 107A sampled concentration arrays, paired internal *_true/*_pred keys are preferred and no silent flatten/truncate is allowed.",
+  "provenance": {
+    "cs_a": {
+      "alignment_mode": "paired_npz_internal",
+      "cycle_key": "cycle_id_cs",
+      "obs_shape": [
+        1280000
+      ],
+      "pred_key": "cs_a_pred",
+      "pred_shape": [
+        1280000
+      ],
+      "ref_key": "cs_a_true",
+      "sampled_radial": false,
+      "sampled_time": false,
+      "source": "state_prediction_npz_internal_true_pred",
+      "time_key": "t_cs"
+    },
+    "cs_c": {
+      "alignment_mode": "paired_npz_internal",
+      "cycle_key": "cycle_id_cs",
+      "obs_shape": [
+        1280000
+      ],
+      "pred_key": "cs_c_pred",
+      "pred_shape": [
+        1280000
+      ],
+      "ref_key": "cs_c_true",
+      "sampled_radial": false,
+      "sampled_time": false,
+      "source": "state_prediction_npz_internal_true_pred",
+      "time_key": "t_cs"
+    },
+    "phie": {
+      "alignment_mode": "paired_npz_internal",
+      "cycle_key": "cycle_id_potential",
+      "obs_shape": [
+        373235
+      ],
+      "pred_key": "phie_pred",
+      "pred_shape": [
+        373235
+      ],
+      "ref_key": "phie_true",
+      "sampled_radial": false,
+      "sampled_time": false,
+      "source": "state_prediction_npz_internal_true_pred",
+      "time_key": "t_potential"
+    },
+    "phis_c": {
+      "alignment_mode": "paired_npz_internal",
+      "cycle_key": "cycle_id_potential",
+      "obs_shape": [
+        373235
+      ],
+      "pred_key": "phis_c_pred",
+      "pred_shape": [
+        373235
+      ],
+      "ref_key": "phis_c_true",
+      "sampled_radial": false,
+      "sampled_time": false,
+      "source": "state_prediction_npz_internal_true_pred",
+      "time_key": "t_potential"
+    }
+  },
+  "reference_npz": "..\\assb_soft_labels_cycle5_522_v2_massclosed_candidate\\solution.npz",
+  "state_prediction_npz": "EvalFin_107A_cycles5_522_v2_massclosed_candidate_linearGauge_csACorrected_softlabel_only\\eval_sampled_arrays_ModelFin107A_csA_corrected.npz",
+  "states": {
+    "cs_a": {
+      "BIAS": 6.204840689897537e-05,
+      "MAE": 0.023489621430262925,
+      "MAX": 0.2364025115966797,
+      "NMAE": 0.009918420150272111,
+      "NRMSE": 0.014074076260134578,
+      "R2": 0.9952568939289888,
+      "RMSE": 0.03333138930620337,
+      "alignment_mode": "paired_npz_internal",
+      "available": true,
+      "corr": 0.9976256417427819,
+      "cycle_key": "cycle_id_cs",
+      "n": 1280000,
+      "obs_max": 5.068282604217529,
+      "obs_min": 2.700000047683716,
+      "obs_range": 2.3682825565338135,
+      "obs_shape": [
+        1280000
+      ],
+      "pred_key": "cs_a_pred",
+      "pred_max": 4.9009294509887695,
+      "pred_min": 2.7736334800720215,
+      "pred_shape": [
+        1280000
+      ],
+      "ref_key": "cs_a_true",
+      "sampled_radial": false,
+      "sampled_time": false,
+      "source": "state_prediction_npz_internal_true_pred",
+      "time_key": "t_cs",
+      "variable": "cs_a"
+    },
+    "cs_c": {
+      "BIAS": 0.2882348980754614,
+      "MAE": 0.39229374625384805,
+      "MAX": 1.7976341247558594,
+      "NMAE": 0.016299309238313922,
+      "NRMSE": 0.022493231037923143,
+      "R2": 0.9892045144087881,
+      "RMSE": 0.541369805321455,
+      "alignment_mode": "paired_npz_internal",
+      "available": true,
+      "corr": 0.99622603401736,
+      "cycle_key": "cycle_id_cs",
+      "n": 1280000,
+      "obs_max": 46.619998931884766,
+      "obs_min": 22.551877975463867,
+      "obs_range": 24.0681209564209,
+      "obs_shape": [
+        1280000
+      ],
+      "pred_key": "cs_c_pred",
+      "pred_max": 46.619998931884766,
+      "pred_min": 22.561656951904297,
+      "pred_shape": [
+        1280000
+      ],
+      "ref_key": "cs_c_true",
+      "sampled_radial": false,
+      "sampled_time": false,
+      "source": "state_prediction_npz_internal_true_pred",
+      "time_key": "t_cs",
+      "variable": "cs_c"
+    },
+    "phie": {
+      "BIAS": 0.0034405322081725183,
+      "MAE": 0.0061720498229695005,
+      "MAX": 0.09741842746734619,
+      "NMAE": 0.016025729900223374,
+      "NRMSE": 0.018818211250590532,
+      "R2": 0.998557532712045,
+      "RMSE": 0.007247528701715549,
+      "alignment_mode": "paired_npz_internal",
+      "available": true,
+      "corr": 0.9994414127281823,
+      "cycle_key": "cycle_id_potential",
+      "n": 373235,
+      "obs_max": -0.4320736825466156,
+      "obs_min": -0.8172074556350708,
+      "obs_range": 0.3851337730884552,
+      "obs_shape": [
+        373235
+      ],
+      "pred_key": "phie_pred",
+      "pred_max": -0.3346552550792694,
+      "pred_min": -0.8327587842941284,
+      "pred_shape": [
+        373235
+      ],
+      "ref_key": "phie_true",
+      "sampled_radial": false,
+      "sampled_time": false,
+      "source": "state_prediction_npz_internal_true_pred",
+      "time_key": "t_potential",
+      "variable": "phie"
+    },
+    "phis_c": {
+      "BIAS": 0.006328313099345783,
+      "MAE": 0.009458605287217078,
+      "MAX": 0.09741830825805664,
+      "NMAE": 0.009606845531521158,
+      "NRMSE": 0.01134664911673585,
+      "R2": 0.9984663416370975,
+      "RMSE": 0.011171562504634233,
+      "alignment_mode": "paired_npz_internal",
+      "available": true,
+      "corr": 0.9996665400561875,
+      "cycle_key": "cycle_id_potential",
+      "n": 373235,
+      "obs_max": 3.6569621562957764,
+      "obs_min": 2.6723928451538086,
+      "obs_range": 0.9845693111419678,
+      "obs_shape": [
+        373235
+      ],
+      "pred_key": "phis_c_pred",
+      "pred_max": 3.660158395767212,
+      "pred_min": 2.6875128746032715,
+      "pred_shape": [
+        373235
+      ],
+      "ref_key": "phis_c_true",
+      "sampled_radial": false,
+      "sampled_time": false,
+      "source": "state_prediction_npz_internal_true_pred",
+      "time_key": "t_potential",
+      "variable": "phis_c"
+    }
+  }
+}

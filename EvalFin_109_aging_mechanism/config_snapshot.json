@@ -1,0 +1,7 @@
+{
+  "model_dir": ".\\ModelFin_109",
+  "capacity_target_csv": ".\\Data\\assb_capacity_soh_targets\\capacity_soh_targets.csv",
+  "cycle_table_csv": ".\\Data\\assb_aging_ModelFin109\\cycle_table.csv",
+  "device": "cuda",
+  "fit_mechanism_standalone": false
+}

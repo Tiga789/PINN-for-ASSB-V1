@@ -1,0 +1,33 @@
+{
+  "candidates": [
+    {
+      "keys_sample": [
+        "t_potential",
+        "cycle_id_potential",
+        "phis_c_true",
+        "phis_c_pred",
+        "phie_true",
+        "phie_pred",
+        "t_cs",
+        "cycle_id_cs",
+        "r_a",
+        "r_c",
+        "cs_a_true",
+        "cs_a_pred",
+        "cs_c_true",
+        "cs_c_pred",
+        "theta_a_true",
+        "theta_a_pred",
+        "theta_c_true",
+        "theta_c_pred",
+        "potential_common_mode_offset_to_add",
+        "cs_a_pred_before_anodeCorrection",
+        "theta_a_pred_before_anodeCorrection",
+        "cs_a_anode_correction_to_add"
+      ],
+      "path": "EvalFin_107A_cycles5_522_v2_massclosed_candidate_linearGauge_csACorrected_softlabel_only\\eval_sampled_arrays_ModelFin107A_csA_corrected.npz",
+      "score": 8
+    }
+  ],
+  "state_eval_dir": "EvalFin_107A_cycles5_522_v2_massclosed_candidate_linearGauge_csACorrected_softlabel_only"
+}

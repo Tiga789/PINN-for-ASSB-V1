@@ -1,0 +1,28 @@
+{
+  "complete_only_soh_all": {
+    "BIAS": 0.000286634815205079,
+    "MAE": 0.0030744991484184135,
+    "MAX": 0.015431733469270736,
+    "NMAE": 0.011456860034200688,
+    "NRMSE": 0.014743867705253128,
+    "R2": 0.9965794438063408,
+    "RMSE": 0.00395658221963755,
+    "corr": 0.9983033042643837,
+    "n": 517,
+    "obs_max": 1.0,
+    "obs_min": 0.7316455696202531,
+    "obs_range": 0.26835443037974693,
+    "pred_max": 1.0,
+    "pred_min": 0.7340778628090169
+  },
+  "cycle_table_csv": "Data\\assb_aging_fix1\\cycle_table.csv",
+  "fix2_key_change": "cs_a/cs_c/phie/phis_c now prefer paired *_true vs *_pred arrays inside the 107A state NPZ; mismatched arrays are not silently truncated.",
+  "reference_npz": "..\\assb_soft_labels_cycle5_522_v2_massclosed_candidate\\solution.npz",
+  "scorecard_csv": "EvalFin_110_joint_StageB_SOH_107A_states_fix2\\five_state_scorecard.csv",
+  "soh_available": true,
+  "stageB_eval_dir": "EvalFin_110_stageB_aging",
+  "state_available": true,
+  "state_metrics_by_cycle_csv": "EvalFin_110_joint_StageB_SOH_107A_states_fix2\\state_metrics_by_cycle.csv",
+  "state_metrics_global_csv": "EvalFin_110_joint_StageB_SOH_107A_states_fix2\\state_metrics_global.csv",
+  "state_prediction_npz": "EvalFin_107A_cycles5_522_v2_massclosed_candidate_linearGauge_csACorrected_softlabel_only\\eval_sampled_arrays_ModelFin107A_csA_corrected.npz"
+}

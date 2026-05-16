@@ -1,0 +1,4 @@
+{
+  "available": false,
+  "reason": "Stage B trains mechanism only; four-state PINN core is not evaluated here."
+}

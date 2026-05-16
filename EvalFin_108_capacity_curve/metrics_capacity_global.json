@@ -1,0 +1,33 @@
+{
+  "q_ref_Ah": 0.000395,
+  "q_ref_mAh": 0.395,
+  "n_cycles": 518,
+  "n_train_cycles": 517,
+  "cycle_min": 5,
+  "cycle_max": 522,
+  "train_Q_MAE_mAh": 0.012738139507414491,
+  "train_Q_RMSE_mAh": 0.014039377924938444,
+  "train_Q_MAX_mAh": 0.024457373296531408,
+  "train_Q_corr": 0.9715827719338352,
+  "train_Q_R2": 0.7239689877073782,
+  "train_SOH_MAE": 0.03224845444915061,
+  "train_SOH_RMSE": 0.0355427289238948,
+  "train_SOH_corr": 0.9715827719338354,
+  "train_SOH_R2": 0.723968987707378,
+  "all_Q_MAE_mAh": 0.0128242796803099,
+  "all_Q_RMSE_mAh": 0.014250439443675295,
+  "all_Q_corr": 0.9657713351367013,
+  "all_Q_R2": 0.7251222654185443,
+  "all_SOH_MAE": 0.03246653083622759,
+  "all_SOH_RMSE": 0.03607706188272227,
+  "all_SOH_corr": 0.965771335136701,
+  "all_SOH_R2": 0.7251222654185444,
+  "feature_columns": [
+    "cycle_norm",
+    "d_tau",
+    "I_dis_abs_A_norm",
+    "discharge_step_time_s_norm",
+    "discharge_step_count_norm"
+  ],
+  "target_csv": "Data\\assb_capacity_soh_targets\\capacity_soh_targets.csv"
+}

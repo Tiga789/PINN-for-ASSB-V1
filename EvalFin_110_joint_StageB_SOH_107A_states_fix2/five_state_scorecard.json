@@ -1,0 +1,79 @@
+{
+  "rows": [
+    {
+      "MAE": 0.023489621430262925,
+      "NMAE": 0.009918420150272111,
+      "NRMSE": 0.014074076260134578,
+      "R2": 0.9952568939289888,
+      "RMSE": 0.03333138930620337,
+      "alignment_mode": "paired_npz_internal",
+      "corr": 0.9976256417427819,
+      "n": 1280000,
+      "pred_key": "cs_a_pred",
+      "reason": "",
+      "ref_key": "cs_a_true",
+      "source": "state_prediction_npz_internal_true_pred",
+      "variable": "cs_a"
+    },
+    {
+      "MAE": 0.39229374625384805,
+      "NMAE": 0.016299309238313922,
+      "NRMSE": 0.022493231037923143,
+      "R2": 0.9892045144087881,
+      "RMSE": 0.541369805321455,
+      "alignment_mode": "paired_npz_internal",
+      "corr": 0.99622603401736,
+      "n": 1280000,
+      "pred_key": "cs_c_pred",
+      "reason": "",
+      "ref_key": "cs_c_true",
+      "source": "state_prediction_npz_internal_true_pred",
+      "variable": "cs_c"
+    },
+    {
+      "MAE": 0.0061720498229695005,
+      "NMAE": 0.016025729900223374,
+      "NRMSE": 0.018818211250590532,
+      "R2": 0.998557532712045,
+      "RMSE": 0.007247528701715549,
+      "alignment_mode": "paired_npz_internal",
+      "corr": 0.9994414127281823,
+      "n": 373235,
+      "pred_key": "phie_pred",
+      "reason": "",
+      "ref_key": "phie_true",
+      "source": "state_prediction_npz_internal_true_pred",
+      "variable": "phie"
+    },
+    {
+      "MAE": 0.009458605287217078,
+      "NMAE": 0.009606845531521158,
+      "NRMSE": 0.01134664911673585,
+      "R2": 0.9984663416370975,
+      "RMSE": 0.011171562504634233,
+      "alignment_mode": "paired_npz_internal",
+      "corr": 0.9996665400561875,
+      "n": 373235,
+      "pred_key": "phis_c_pred",
+      "reason": "",
+      "ref_key": "phis_c_true",
+      "source": "state_prediction_npz_internal_true_pred",
+      "variable": "phis_c"
+    },
+    {
+      "MAE": 0.0030744991484184135,
+      "NMAE": 0.011456860034200688,
+      "NRMSE": 0.014743867705253128,
+      "R2": 0.9965794438063408,
+      "RMSE": 0.00395658221963755,
+      "alignment_mode": "cycle_id_complete_only",
+      "corr": 0.9983033042643837,
+      "n": 517,
+      "pred_key": "SOH_pred",
+      "reason": "",
+      "ref_key": "SOH_obs",
+      "source": "StageB_complete_only",
+      "variable": "SOH"
+    }
+  ]
+}

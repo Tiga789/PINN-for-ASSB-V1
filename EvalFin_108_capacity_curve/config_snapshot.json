@@ -1,0 +1,9 @@
+{
+  "model_dir": "ModelFin_108",
+  "capacity_target_csv": ".\\Data\\assb_capacity_soh_targets\\capacity_soh_targets.csv",
+  "output_dir": "EvalFin_108_capacity_curve",
+  "fit_standalone": false,
+  "device": "cuda",
+  "data_loss_used": false,
+  "note": "Capacity/SOH scalar residual only; original PINN soft-label state data loss is not used by this evaluator."
+}

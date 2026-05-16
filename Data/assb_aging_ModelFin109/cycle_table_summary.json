@@ -1,0 +1,22 @@
+{
+  "solution_npz": "..\\assb_soft_labels_cycle5_522_v2_massclosed_candidate\\solution.npz",
+  "capacity_target_csv": "Data\\assb_capacity_soh_targets\\capacity_soh_targets.csv",
+  "n_cycles": 518,
+  "cycle_min": 5,
+  "cycle_max": 522,
+  "t_start_s": 0.0,
+  "t_end_s": 3727659.0,
+  "throughput_total_C": 1210.4331721391063,
+  "q_net_total_C": 0.5879940187442116,
+  "split_counts": {
+    "train": 296,
+    "val": 120,
+    "test": 102
+  },
+  "complete_cycle_count": 518,
+  "capacity_rows_matched": 518,
+  "Q_obs_mAh_min": 0.208,
+  "Q_obs_mAh_max": 0.395,
+  "SOH_obs_min": 0.5265822784810126,
+  "SOH_obs_max": 1.0
+}

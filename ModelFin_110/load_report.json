@@ -1,0 +1,8 @@
+{
+  "source": "ModelFin_107A/best.pt",
+  "payload_name": "raw",
+  "missing_keys": [],
+  "unexpected_keys": [],
+  "critical_missing": [],
+  "n_loaded_candidate_keys": 50
+}

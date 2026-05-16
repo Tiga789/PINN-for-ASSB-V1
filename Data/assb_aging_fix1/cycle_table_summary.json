@@ -1,0 +1,29 @@
+{
+  "SOH_obs_max": 1.0,
+  "SOH_obs_min": 0.5265822784810126,
+  "capacity_target_csv": "Data\\assb_capacity_soh_targets\\capacity_soh_targets.csv",
+  "capacity_target_rows_with_Q": 518,
+  "capacity_target_rows_with_SOH": 518,
+  "complete_cycles": 517,
+  "cycle_max": 522,
+  "cycle_min": 5,
+  "feature_columns": [
+    "cycle_norm",
+    "throughput_norm",
+    "duration_norm",
+    "I_abs_mean_norm",
+    "I_abs_max_norm",
+    "q_charge_norm",
+    "q_discharge_norm",
+    "rest_fraction_norm"
+  ],
+  "n_cycles": 518,
+  "q_ref_Ah": 0.000395,
+  "q_ref_mAh": 0.395,
+  "solution_npz": "..\\assb_soft_labels_cycle5_522_v2_massclosed_candidate\\solution.npz",
+  "split_counts": {
+    "test": 102,
+    "train": 296,
+    "val": 120
+  }
+}

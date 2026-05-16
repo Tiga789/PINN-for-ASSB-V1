@@ -1,0 +1,24 @@
+{
+  "csv_path": "Data\\assb_aging_ModelFin109\\cycle_table.csv",
+  "n_cycles": 518,
+  "cycle_min": 5,
+  "cycle_max": 522,
+  "t_start_s": 0.0,
+  "t_end_s": 3727659.0,
+  "throughput_total_C": 1210.4331721391063,
+  "q_net_total_C": 0.5879940187442102,
+  "feature_columns": [
+    "cycle_norm",
+    "duration_norm",
+    "throughput_cycle_norm",
+    "throughput_cum_norm",
+    "q_net_cycle_norm",
+    "charge_fraction",
+    "rest_fraction"
+  ],
+  "split_counts": {
+    "test": 102,
+    "train": 296,
+    "val": 120
+  }
+}

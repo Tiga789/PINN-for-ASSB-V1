@@ -1,0 +1,66 @@
+{
+  "cs_a": {
+    "alignment_mode": "paired_npz_internal",
+    "cycle_key": "cycle_id_cs",
+    "obs_shape": [
+      1280000
+    ],
+    "pred_key": "cs_a_pred",
+    "pred_shape": [
+      1280000
+    ],
+    "ref_key": "cs_a_true",
+    "sampled_radial": false,
+    "sampled_time": false,
+    "source": "state_prediction_npz_internal_true_pred",
+    "time_key": "t_cs"
+  },
+  "cs_c": {
+    "alignment_mode": "paired_npz_internal",
+    "cycle_key": "cycle_id_cs",
+    "obs_shape": [
+      1280000
+    ],
+    "pred_key": "cs_c_pred",
+    "pred_shape": [
+      1280000
+    ],
+    "ref_key": "cs_c_true",
+    "sampled_radial": false,
+    "sampled_time": false,
+    "source": "state_prediction_npz_internal_true_pred",
+    "time_key": "t_cs"
+  },
+  "phie": {
+    "alignment_mode": "paired_npz_internal",
+    "cycle_key": "cycle_id_potential",
+    "obs_shape": [
+      373235
+    ],
+    "pred_key": "phie_pred",
+    "pred_shape": [
+      373235
+    ],
+    "ref_key": "phie_true",
+    "sampled_radial": false,
+    "sampled_time": false,
+    "source": "state_prediction_npz_internal_true_pred",
+    "time_key": "t_potential"
+  },
+  "phis_c": {
+    "alignment_mode": "paired_npz_internal",
+    "cycle_key": "cycle_id_potential",
+    "obs_shape": [
+      373235
+    ],
+    "pred_key": "phis_c_pred",
+    "pred_shape": [
+      373235
+    ],
+    "ref_key": "phis_c_true",
+    "sampled_radial": false,
+    "sampled_time": false,
+    "source": "state_prediction_npz_internal_true_pred",
+    "time_key": "t_potential"
+  }
+}

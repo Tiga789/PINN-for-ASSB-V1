@@ -1,0 +1,107 @@
+# ASSB ModelFin_108 capacity/SOH physics-only experiment
+# Keep original PINN soft-label data loss disabled. Capacity target is a cycle-level scalar regularization.
+
+ID : 108
+LOAD_MODEL : ModelFin_107A/best.pt
+
+# Original PINN loss switches: keep data component off.
+alpha : 1.0 1.0 0.0 0.0
+DATA_LOSS : False
+ALPHA_DATA : 0.0
+MAX_BATCH_SIZE_DATA : 0
+BATCH_SIZE_REG : 0
+BATCH_SIZE_STRUCT : 0
+
+# Existing physics-loss weights inherited from the 107A/101 line.
+w_phie_int : 1.0
+w_phis_c_int : 1.0
+w_cs_a_int : 10.0
+w_cs_c_int : 2.0
+w_cs_a_rmin_bound : 1.0
+w_cs_c_rmin_bound : 1.0
+w_cs_a_rmax_bound : 500.0
+w_cs_c_rmax_bound : 1500.0
+w_phie_dat : 0.0
+w_phis_c_dat : 0.0
+w_cs_a_dat : 0.0
+w_cs_c_dat : 0.0
+
+# Training schedule. First landing step can keep this short and verify logs/config.
+EPOCHS : 300
+INNER_EPOCHS : 1
+EPOCHS_LBFGS : 0
+EPOCHS_START_LBFGS : 0
+LBFGS : False
+SGD : True
+DYNAMIC_ATTENTION_WEIGHTS : False
+ANNEALING_WEIGHTS : False
+START_WEIGHT_TRAINING_EPOCH : 50
+USE_LOSS_THRESHOLD : False
+LOSS_THRESHOLD : 2000.0
+LEARNING_RATE_WEIGHTS : 1e-2
+LEARNING_RATE_WEIGHTS_FINAL : 1e-3
+LEARNING_RATE_MODEL : 5e-4
+LEARNING_RATE_MODEL_FINAL : 5e-5
+LEARNING_RATE_LBFGS : 1
+BATCH_SIZE_INT : 512
+BATCH_SIZE_BOUND : 512
+N_BATCH : 8
+N_BATCH_LBFGS : 1
+HARD_IC_TIMESCALE : 1
+RATIO_T_MIN : 0
+EXP_LIMITER : 10.0
+LINEARIZE_J : True
+COLLOCATION_MODE : fixed
+GRADUAL_TIME_SGD : False
+GRADUAL_TIME_LBFGS : False
+N_GRADUAL_STEPS_LBFGS : 10
+RATIO_FIRST_TIME : 1
+GRADUAL_TIME_MODE_LBFGS : exponential
+ACTIVATION : tanh
+MERGED : True
+NEURONS_NUM : 20
+LAYERS_T_NUM : 1
+LAYERS_TR_NUM : 1
+LAYERS_T_VAR_NUM : 0
+LAYERS_TR_VAR_NUM : 0
+LAYERS_SPLIT_NUM : 7
+NUM_GRAD_PATH_LAYERS : 3
+NUM_GRAD_PATH_UNITS : 20
+NUM_RES_BLOCKS : 0
+NUM_RES_BLOCK_LAYERS : 1
+NUM_RES_BLOCK_UNITS : 20
+HNN_utilFolder : NONE
+HNN_modelFolder : NONE
+HNNTIME_utilFolder : NONE
+HNNTIME_modelFolder : NONE
+HNNTIME_val : NONE
+seed : 42
+PRIOR_MODEL : assb_discharge
+
+# Keep 107A/ID101-style hard output maps. Do not remove these in capacity-only step.
+USE_I_CBAR_BASELINE_A : True
+USE_I_CBAR_BASELINE_C : True
+CBAR_BASELINE_DEVIATION_FRACTION_A : 0.15
+CBAR_BASELINE_DEVIATION_FRACTION_C : 0.10
+USE_ZERO_MEAN_RADIAL_DEVIATION_A : True
+USE_ZERO_MEAN_RADIAL_DEVIATION_C : True
+CBAR_RADIAL_BASIS_MODE : s2_zero_mean
+USE_CURRENT_POTENTIAL_BASELINE : True
+USE_CURRENT_POTENTIAL_BASELINE_PHIE : True
+USE_CURRENT_POTENTIAL_BASELINE_PHIS_C : True
+POTENTIAL_BASELINE_CORRECTION_FRACTION_PHIE : 0.20
+POTENTIAL_BASELINE_CORRECTION_FRACTION_PHIS_C : 0.20
+
+# New ModelFin_108 capacity/SOH branch. These keys are inert until init_pinn/_losses/myNN are patched.
+ASSB_USE_CAPACITY_AGING : True
+USE_ASSB_CAPACITY_AGING : True
+CAPACITY_TARGET_CSV : Data/assb_capacity_soh_targets/capacity_soh_targets.csv
+CAPACITY_CYCLE_FROM : 5
+CAPACITY_CYCLE_TO : 522
+CAPACITY_Q_REF_MODE : max_cycle5_20_complete
+CAPACITY_LOSS_WEIGHT : 1.0
+CAPACITY_MONOTONE_WEIGHT : 0.1
+CAPACITY_SMOOTH_WEIGHT : 0.05
+CAPACITY_PRIOR_WEIGHT : 0.01
+CAPACITY_SOH_MIN : 0.45
+CAPACITY_HEAD_HIDDEN : 32

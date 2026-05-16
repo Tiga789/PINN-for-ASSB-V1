@@ -1,0 +1,8 @@
+{
+  "n_features": 5,
+  "hidden": 32,
+  "soh_min": 0.45,
+  "soh_max": 1.02,
+  "initial_rate_bias": -6.0,
+  "smooth_eps": 1e-08
+}
