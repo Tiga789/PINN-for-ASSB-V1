@@ -1,0 +1,65 @@
+# ASSB-111 seed42-locked + train/val-only small optimization
+# Purpose:
+#   Engineering candidate based on ASSB-111 saturating_v2 seed42.
+#   It keeps frozen ModelFin_107A state outputs and optimizes only the strict30 SOH head.
+#
+# Important boundary:
+#   This file defines a seed42-locked engineering benchmark, not a multi-seed robust model.
+#   Candidate/checkpoint selection must use only train/val visible metrics.
+
+MODEL_ID = 111
+MODEL_ALIAS = ModelFin_111_seed42_locked
+PROTOCOL = ASSB111_seed42_locked_trainval_only_small_optimization
+SOH_MODEL_VARIANT = saturating_v2
+SEED = 42
+DTYPE = float64
+DEVICE_DEFAULT = cuda
+
+# strict30 split, unchanged from ASSB-111.
+TRAIN_CYCLE_FROM = 5
+TRAIN_CYCLE_TO = 139
+VAL_CYCLE_FROM = 140
+VAL_CYCLE_TO = 159
+TEST_CYCLE_FROM = 160
+TEST_CYCLE_TO = 521
+PARTIAL_CYCLES = 522
+FIT_SPLITS = train
+EARLY_STOP_SPLITS = val
+FORBIDDEN_FIT_SPLITS = test,partial
+
+# Keep the original saturating_v2 shape. Do not switch to v3/floorfix/v2stable here.
+SOH_FLOOR_PRIOR = 0.72
+SOH_NUMERIC_MIN = 0.60
+FLOOR_MIN = 0.65
+FLOOR_MAX = 0.85
+DAMAGE_RATE_SCALE = 5.0e-4
+DROPOUT = 0.05
+ACTIVATION = silu
+
+# Small optimization range. The runner uses this as documentation and candidate metadata.
+# The actual run-time candidate grid is encoded in scripts/run_ModelFin111_saturating_v2_seed42locked.ps1.
+CANDIDATE_LR = 5e-4,3e-4,2e-4
+CANDIDATE_WEIGHT_DECAY = 1e-5,5e-6
+CANDIDATE_EPOCHS = 5000,7000
+CANDIDATE_USE_EMA = false,true
+CANDIDATE_TOPK_CHECKPOINT_AVG = false,true
+
+# Visible-only score; lower is better.
+VISIBLE_SCORE_FORMULA = val_mae + 0.15 * train_mae + 0.02 * visible_monotonic_penalty
+
+# Guards used by candidate selection. Test metrics must not be used here.
+GUARD_TRAIN_R2_MIN = 0.990
+GUARD_TRAIN_MAE_MAX = 0.0030
+GUARD_VAL_MAE_MAX = 0.00150
+GUARD_LEAKAGE_OK = true
+GUARD_NO_TEST_METRICS_IN_TRAINING_HISTORY = true
+
+# Expected output directories for the locked final candidate.
+WORK_DIR = Data/assb111_seed42_locked
+MODEL_DIR = ModelFin_111_seed42_locked
+EVAL_DIR = EvalFin_111_seed42_locked_strict30_test70
+SELECTION_DIR = EvalFin_111_seed42_locked_selection
+
+# Reporting boundary.
+FINAL_RESULT_LABEL = ASSB-111 seed42-locked strict30 engineering benchmark
+DO_NOT_DESCRIBE_AS = multi-seed robust predictor; StageB-equivalent full-cycle calibration; test-selected model

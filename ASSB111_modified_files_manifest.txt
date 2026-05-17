@@ -1,0 +1,20 @@
+ASSB111 modified-files package v1
+
+Files included:
+- README.md
+  Updated project status to include D5 StageB limitation and ASSB-111 strict30 protocol.
+- evaluate_assb_joint_states_soh.py
+  Complete replacement that preserves StageB/107A hybrid evaluation behavior and adds --mode assb111 delegation to scripts/evaluate_assb111_five_state.py.
+- scripts/check_ModelFin107A_package.ps1
+  Preserves original 107A support-file checks and adds optional -CheckModelFin111 / -Strict111 package checks.
+
+Important non-modified / locked 107A core files:
+- util/_rescale.py
+- util/init_pinn.py
+- util/thermo_assb.py
+- util/_losses.py
+- integration_spm/generate_assb_soft_labels_cycle5_522_v2_massclosed_candidate.py
+- apply_ModelFin106_linear_cycle_gauge*.py
+- fit_apply_ModelFin107A_anode_state_correction.py
+
+Install by copying these files to the repository root while preserving paths.

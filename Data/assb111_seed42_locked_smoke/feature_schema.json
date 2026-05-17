@@ -1,0 +1,282 @@
+{
+  "allow_upper_bound": false,
+  "capacity_equivalent_tokens": [
+    "q_discharge",
+    "q_dis_",
+    "q_obs",
+    "q_target",
+    "capacity",
+    "discharge_capacity",
+    "full_discharge_duration",
+    "cutoff_time"
+  ],
+  "feature_columns": [
+    "cycle_norm",
+    "throughput_before_norm",
+    "throughput_end_norm",
+    "I_abs_mean_norm",
+    "I_abs_max_norm",
+    "charge_current_level_norm",
+    "discharge_current_level_norm",
+    "rest_fraction",
+    "theta_a_mean_start",
+    "theta_a_mean_end",
+    "theta_a_mean_window",
+    "theta_c_mean_start",
+    "theta_c_mean_end",
+    "theta_c_mean_window",
+    "theta_a_surface_start",
+    "theta_a_surface_end",
+    "theta_c_surface_start",
+    "theta_c_surface_end",
+    "cs_a_radial_energy_mean",
+    "cs_c_radial_energy_mean",
+    "cs_a_surface_minus_mean_abs",
+    "cs_c_surface_minus_mean_abs",
+    "polarization_mean",
+    "polarization_abs_mean",
+    "polarization_std",
+    "current_norm_polarization_abs_mean",
+    "phie_mean",
+    "phis_c_mean",
+    "rest_phis_relax_slope",
+    "rest_phie_relax_slope"
+  ],
+  "feature_mode": "p1_107a_strict",
+  "features": [
+    {
+      "description": "normalized cycle index",
+      "group": "history",
+      "name": "cycle_norm",
+      "provenance": "cycle_id",
+      "strict_allowed": true
+    },
+    {
+      "description": "cumulative absolute throughput before this cycle",
+      "group": "history",
+      "name": "throughput_before_norm",
+      "provenance": "I_profile",
+      "strict_allowed": true
+    },
+    {
+      "description": "cumulative absolute throughput through this cycle",
+      "group": "history",
+      "name": "throughput_end_norm",
+      "provenance": "I_profile",
+      "strict_allowed": true
+    },
+    {
+      "description": "mean absolute current in this cycle",
+      "group": "history",
+      "name": "I_abs_mean_norm",
+      "provenance": "I_profile",
+      "strict_allowed": true
+    },
+    {
+      "description": "max absolute current in this cycle",
+      "group": "history",
+      "name": "I_abs_max_norm",
+      "provenance": "I_profile",
+      "strict_allowed": true
+    },
+    {
+      "description": "mean positive current level",
+      "group": "history",
+      "name": "charge_current_level_norm",
+      "provenance": "I_profile",
+      "strict_allowed": true
+    },
+    {
+      "description": "mean negative-current magnitude",
+      "group": "history",
+      "name": "discharge_current_level_norm",
+      "provenance": "I_profile",
+      "strict_allowed": true
+    },
+    {
+      "description": "fraction of points with zero current",
+      "group": "history",
+      "name": "rest_fraction",
+      "provenance": "I_profile",
+      "strict_allowed": true
+    },
+    {
+      "description": "negative mean stoichiometry at cycle start",
+      "group": "107A_state",
+      "name": "theta_a_mean_start",
+      "provenance": "107A_pred",
+      "strict_allowed": true
+    },
+    {
+      "description": "negative mean stoichiometry at cycle end",
+      "group": "107A_state",
+      "name": "theta_a_mean_end",
+      "provenance": "107A_pred",
+      "strict_allowed": true
+    },
+    {
+      "description": "negative mean stoichiometry range",
+      "group": "107A_state",
+      "name": "theta_a_mean_window",
+      "provenance": "107A_pred",
+      "strict_allowed": true
+    },
+    {
+      "description": "positive mean stoichiometry at cycle start",
+      "group": "107A_state",
+      "name": "theta_c_mean_start",
+      "provenance": "107A_pred",
+      "strict_allowed": true
+    },
+    {
+      "description": "positive mean stoichiometry at cycle end",
+      "group": "107A_state",
+      "name": "theta_c_mean_end",
+      "provenance": "107A_pred",
+      "strict_allowed": true
+    },
+    {
+      "description": "positive mean stoichiometry range",
+      "group": "107A_state",
+      "name": "theta_c_mean_window",
+      "provenance": "107A_pred",
+      "strict_allowed": true
+    },
+    {
+      "description": "negative surface stoichiometry at cycle start",
+      "group": "107A_state",
+      "name": "theta_a_surface_start",
+      "provenance": "107A_pred",
+      "strict_allowed": true
+    },
+    {
+      "description": "negative surface stoichiometry at cycle end",
+      "group": "107A_state",
+      "name": "theta_a_surface_end",
+      "provenance": "107A_pred",
+      "strict_allowed": true
+    },
+    {
+      "description": "positive surface stoichiometry at cycle start",
+      "group": "107A_state",
+      "name": "theta_c_surface_start",
+      "provenance": "107A_pred",
+      "strict_allowed": true
+    },
+    {
+      "description": "positive surface stoichiometry at cycle end",
+      "group": "107A_state",
+      "name": "theta_c_surface_end",
+      "provenance": "107A_pred",
+      "strict_allowed": true
+    },
+    {
+      "description": "negative radial deviation energy",
+      "group": "107A_state",
+      "name": "cs_a_radial_energy_mean",
+      "provenance": "107A_pred",
+      "strict_allowed": true
+    },
+    {
+      "description": "positive radial deviation energy",
+      "group": "107A_state",
+      "name": "cs_c_radial_energy_mean",
+      "provenance": "107A_pred",
+      "strict_allowed": true
+    },
+    {
+      "description": "negative surface minus mean absolute average",
+      "group": "107A_state",
+      "name": "cs_a_surface_minus_mean_abs",
+      "provenance": "107A_pred",
+      "strict_allowed": true
+    },
+    {
+      "description": "positive surface minus mean absolute average",
+      "group": "107A_state",
+      "name": "cs_c_surface_minus_mean_abs",
+      "provenance": "107A_pred",
+      "strict_allowed": true
+    },
+    {
+      "description": "mean phis_c - phie",
+      "group": "107A_potential",
+      "name": "polarization_mean",
+      "provenance": "107A_pred",
+      "strict_allowed": true
+    },
+    {
+      "description": "mean absolute phis_c - phie",
+      "group": "107A_potential",
+      "name": "polarization_abs_mean",
+      "provenance": "107A_pred",
+      "strict_allowed": true
+    },
+    {
+      "description": "std of phis_c - phie",
+      "group": "107A_potential",
+      "name": "polarization_std",
+      "provenance": "107A_pred",
+      "strict_allowed": true
+    },
+    {
+      "description": "|phis_c-phie| normalized by |I|",
+      "group": "107A_potential",
+      "name": "current_norm_polarization_abs_mean",
+      "provenance": "107A_pred+I_profile",
+      "strict_allowed": true
+    },
+    {
+      "description": "mean effective ionic potential",
+      "group": "107A_potential",
+      "name": "phie_mean",
+      "provenance": "107A_pred",
+      "strict_allowed": true
+    },
+    {
+      "description": "mean positive solid potential",
+      "group": "107A_potential",
+      "name": "phis_c_mean",
+      "provenance": "107A_pred",
+      "strict_allowed": true
+    },
+    {
+      "description": "rest-segment phis_c slope proxy",
+      "group": "107A_potential",
+      "name": "rest_phis_relax_slope",
+      "provenance": "107A_pred+I_profile",
+      "strict_allowed": true
+    },
+    {
+      "description": "rest-segment phie slope proxy",
+      "group": "107A_potential",
+      "name": "rest_phie_relax_slope",
+      "provenance": "107A_pred+I_profile",
+      "strict_allowed": true
+    }
+  ],
+  "forbidden_column_tokens": [
+    "soh_obs",
+    "soh_true",
+    "soh_label",
+    "soh_target",
+    "target_soh",
+    "q_obs",
+    "q_true",
+    "q_label",
+    "q_target",
+    "q_ref",
+    "capacity",
+    "放电容量",
+    "容量",
+    "q_discharge",
+    "q_dis_",
+    "discharge_capacity",
+    "label",
+    "target",
+    "y_true",
+    "ground_truth"
+  ],
+  "n_features": 30,
+  "strict_note": "P1 strict features must not include observed SOH/capacity labels or current-cycle discharge-capacity equivalents."
+}

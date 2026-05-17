@@ -1,0 +1,13 @@
+ASSB-111 saturating_v2_stable new files only
+
+Files:
+- input_assb111_strict30_saturating_v2stable
+- scripts/fit_assb111_saturating_v2stable_initializer.py
+- scripts/diagnose_assb111_v2stable_stability.py
+- scripts/run_ModelFin111_saturating_v2stable_multiseed.ps1
+
+Purpose:
+- Keep the useful saturating_v2 remaining-capacity-gated degradation shape.
+- Add a train-only deterministic initializer for floor/soh0/k.
+- Add post-evaluation multi-seed stability aggregation.
+- Keep held-out cycles 160-521 out of SOH training and checkpoint selection.

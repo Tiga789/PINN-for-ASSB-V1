@@ -1,0 +1,73 @@
+{
+  "best_epoch": 319,
+  "best_selection_status": "guarded",
+  "best_val_mae": 0.0013973464078051,
+  "feature_mode": "p1_107a_strict",
+  "final_visible_metrics": {
+    "train_mae": 0.001847287477400697,
+    "train_r2": 0.9949525259766231,
+    "val_mae": 0.0013973464078051,
+    "val_r2": 0.8211407553169165
+  },
+  "initializer_applied": {
+    "floor": 0.72,
+    "floor_prior": 0.72,
+    "floor_selection_mode": "fixed_prior",
+    "freeze_soh0": false,
+    "freeze_soh_floor": true,
+    "init_json": "Data\\assb111_saturating_v3_floorfix_smoke\\saturating_v3_initializer.json",
+    "k_per_cycle": 0.005146028327328748,
+    "rate_head_bias_lam_window": 5.140188826719112,
+    "soh0": 0.9949367088607596
+  },
+  "leakage_failures": [],
+  "leakage_ok": true,
+  "metrics_by_split_visible_only": {
+    "all": {
+      "NMAE": 0.012185277125033644,
+      "NRMSE": 0.01668786593827635,
+      "SOH_BIAS": -0.0002461987297248382,
+      "SOH_MAE": 0.0017892305651948136,
+      "SOH_R2": 0.9959079902187694,
+      "SOH_RMSE": 0.0024503701884051347,
+      "SOH_corr": 0.9979759540703612,
+      "SOH_obs_max": 1.0,
+      "SOH_obs_min": 0.8531645569620253,
+      "SOH_pred_max": 0.990670754801672,
+      "SOH_pred_min": 0.8541645990754299,
+      "n": 155
+    },
+    "train": {
+      "NMAE": 0.013767519878741051,
+      "NRMSE": 0.01898406267515395,
+      "SOH_BIAS": -0.00011122716667302164,
+      "SOH_MAE": 0.001847287477400697,
+      "SOH_R2": 0.9949525259766231,
+      "SOH_RMSE": 0.0025472286627421744,
+      "SOH_corr": 0.9974804377336929,
+      "SOH_obs_max": 1.0,
+      "SOH_obs_min": 0.8658227848101266,
+      "SOH_pred_max": 0.990670754801672,
+      "SOH_pred_min": 0.8644301194320637,
+      "n": 135
+    },
+    "val": {
+      "NMAE": 0.11039036621660232,
+      "NRMSE": 0.130694521182927,
+      "SOH_BIAS": -0.0011572567803246002,
+      "SOH_MAE": 0.0013973464078051,
+      "SOH_R2": 0.8211407553169165,
+      "SOH_RMSE": 0.0016543610276319961,
+      "SOH_corr": 0.9787489091185699,
+      "SOH_obs_max": 0.8658227848101266,
+      "SOH_obs_min": 0.8531645569620253,
+      "SOH_pred_max": 0.8639920089854061,
+      "SOH_pred_min": 0.8541645990754299,
+      "n": 20
+    }
+  },
+  "model_variant": "saturating_v3",
+  "n_features": 30,
+  "no_test_metrics_in_training_history": true,
+  "output_model_dir": "ModelFin_111_saturating_v3_floorfix_smoke"
+}

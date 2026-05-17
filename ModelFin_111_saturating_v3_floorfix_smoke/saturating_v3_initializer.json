@@ -1,0 +1,115 @@
+{
+  "best": {
+    "c0": 5.0,
+    "floor": 0.72,
+    "floor_prior": 0.72,
+    "floor_prior_penalty": 0.0,
+    "k_per_cycle": 0.005146028327328748,
+    "score_prior_penalized": 0.009364429402185504,
+    "soh0": 0.9949367088607596,
+    "train_mae": 0.005036192284105598,
+    "train_r2": 0.969617659138984,
+    "train_rmse": 0.006249445753161579,
+    "val_mae": 0.009364429402185504,
+    "val_r2": -4.772711125999478,
+    "val_rmse": 0.009398629011327911
+  },
+  "candidate_count": 1,
+  "candidate_table_top10": [
+    {
+      "c0": 5.0,
+      "floor": 0.72,
+      "floor_prior": 0.72,
+      "floor_prior_penalty": 0.0,
+      "k_per_cycle": 0.005146028327328748,
+      "score_prior_penalized": 0.009364429402185504,
+      "soh0": 0.9949367088607596,
+      "train_mae": 0.005036192284105598,
+      "train_r2": 0.969617659138984,
+      "train_rmse": 0.006249445753161579,
+      "val_mae": 0.009364429402185504,
+      "val_r2": -4.772711125999478,
+      "val_rmse": 0.009398629011327911
+    }
+  ],
+  "dataset_csv": "Data\\assb111_saturating_v3_floorfix_smoke\\dataset_strict30.csv",
+  "fit_splits": [
+    "train"
+  ],
+  "fixed_floor": 0.72,
+  "floor_prior": 0.72,
+  "floor_prior_weight": 0.0,
+  "floor_selection_mode": "fixed_prior",
+  "forbidden_splits": [
+    "test",
+    "partial"
+  ],
+  "initializer": {
+    "cycle0": 5.0,
+    "damage_rate_scale_init": 0.005146028327328748,
+    "fixed_floor": 0.72,
+    "floor_prior": 0.72,
+    "floor_regularization_weight_recommended": 1.0,
+    "floor_selection_mode": "fixed_prior",
+    "freeze_floor_recommended": true,
+    "k_per_cycle": 0.005146028327328748,
+    "model_variant": "saturating_v3",
+    "residual_bound_recommended": 0.004,
+    "soh0": 0.9949367088607596,
+    "soh_floor": 0.72
+  },
+  "leakage_statement": "Only fit_splits rows were used to fit floor/soh0/k. Forbidden splits were not used for fitting or selection.",
+  "metrics_by_split": {
+    "test": {
+      "SOH_pred_max": 0.8438296128607081,
+      "SOH_pred_min": 0.7393209558979351,
+      "hidden_forbidden_split": true,
+      "n": 362
+    },
+    "train": {
+      "BIAS": 0.003104748384566308,
+      "MAE": 0.005036192284105598,
+      "R2": 0.969617659138984,
+      "RMSE": 0.006249445753161579,
+      "SOH_obs_max": 1.0,
+      "SOH_obs_min": 0.8658227848101266,
+      "SOH_pred_max": 0.9949367088607596,
+      "SOH_pred_min": 0.8579612882282304,
+      "corr": 0.9948311180276824,
+      "n": 135
+    },
+    "val": {
+      "BIAS": -0.009364429402185504,
+      "MAE": 0.009364429402185504,
+      "R2": -4.772711125999478,
+      "RMSE": 0.009398629011327911,
+      "SOH_obs_max": 0.8658227848101266,
+      "SOH_obs_min": 0.8531645569620253,
+      "SOH_pred_max": 0.8572531591198577,
+      "SOH_pred_min": 0.8444684859759609,
+      "corr": 0.9788934652963076,
+      "n": 20
+    },
+    "visible": {
+      "BIAS": 0.0014958222185338162,
+      "MAE": 0.005594674492890102,
+      "R2": 0.9690497575991944,
+      "RMSE": 0.006738999062166834,
+      "SOH_obs_max": 1.0,
+      "SOH_obs_min": 0.8531645569620253,
+      "SOH_pred_max": 0.9949367088607596,
+      "SOH_pred_min": 0.8444684859759609,
+      "corr": 0.9951505821034824,
+      "n": 155
+    }
+  },
+  "n_fit_rows": 135,
+  "n_forbidden_rows": 362,
+  "n_select_rows": 20,
+  "protocol": "ASSB111_saturating_v3_initializer_train_only",
+  "select_splits": [
+    "val"
+  ],
+  "selected_by": "fixed_floor_train_only_k_soh0",
+  "split_manifest_json": "Data\\assb111_saturating_v3_floorfix_smoke\\split_manifest.json"
+}

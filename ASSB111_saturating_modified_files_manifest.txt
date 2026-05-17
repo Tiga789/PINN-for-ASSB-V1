@@ -1,0 +1,44 @@
+ASSB111_saturating_modified_files_v1.zip
+Generated: 2026-05-16
+Purpose: Modified files for ASSB-111 SOH over-decay Fix1 / saturating_v2.
+
+Package type: MODIFIED FILES ONLY.
+This package does not include the previously delivered new files:
+  input_assb111_strict30_saturating
+  scripts/diagnose_assb111_soh_overdecay.py
+  scripts/fit_assb111_soh_baselines.py
+  scripts/plot_assb111_soh_prediction.py
+
+Files in this package:
+  util/assb111_soh_model.py
+    Adds/keeps saturating_v2 SOH recurrence with remaining-degradable-capacity gating,
+    visible-only loss regularizers, and output diagnostics. Legacy cumulative model remains available.
+
+  util/assb111_leakage_guard.py
+    Strengthens strict30 checks so training history cannot contain held-out/test metric columns.
+
+  scripts/train_assb111_soh_head.py
+    Adds saturating_v2 CLI parameters, train-only supervised loss, visible-only training summaries,
+    and no test metrics in train history.
+
+  scripts/evaluate_assb111_five_state.py
+    Keeps frozen ModelFin_107A state guard. Adds SOH overdecay diagnostics and extra SOH scorecard fields.
+
+  scripts/run_ModelFin111_strict30.ps1
+    Keeps the robust Invoke-Step implementation and passes saturating_v2 parameters to training.
+    Optional -RunOverdecayDiagnostics calls the new diagnostic script if already installed.
+
+  scripts/show_ModelFin111_metrics.ps1
+    Prints scorecard, SOH split metrics, overdecay diagnostics, worst test cycles and tail cycles.
+
+  scripts/build_ModelFin111_package.py
+    Records SOH mechanism variant and saturating_v2 parameters in ModelFin_111 package manifest.
+
+  README.md
+    Adds ASSB-111 strict30 saturating_v2 notes and recommended smoke command.
+
+Suggested overwrite order:
+  1) Apply ASSB111_saturating_soh_newfiles_only_v1.zip if not already applied.
+  2) Apply this modified-files zip.
+  3) Run py_compile.
+  4) Run a smoke experiment before formal 5000-epoch training.

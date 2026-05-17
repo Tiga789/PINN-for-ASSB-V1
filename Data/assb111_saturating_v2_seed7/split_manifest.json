@@ -1,0 +1,50 @@
+{
+  "capacity_target_csv": "Data\\assb_capacity_soh_targets\\capacity_soh_targets.csv",
+  "capacity_target_sha256": "e877a64f415b7dbd5f268067c04e6b13624efcaf55252366db6fe5df44f26eab",
+  "complete_cycle_max": 521,
+  "complete_cycle_min": 5,
+  "early_stop_splits": [
+    "val"
+  ],
+  "fit_splits": [
+    "train"
+  ],
+  "forbidden_fit_splits": [
+    "test",
+    "partial"
+  ],
+  "manifest_sha256_without_self": "8b187c65dce1bc419103bc70543dfffbb4b2153d1fdf17cde83cbd0efc65240a",
+  "model_id": 111,
+  "notes": [
+    "Only train split may contribute to supervised SOH loss.",
+    "Validation split is inside the visible 30% and may be used for early stopping only.",
+    "Test split is held out and must not enter loss, scaler fitting, or model selection.",
+    "Cycle 522 is partial/report-only for the main complete-cycle metrics."
+  ],
+  "partial_cycles": [
+    522
+  ],
+  "protocol": "ASSB111_strict30_visible_test70_heldout",
+  "split_counts": {
+    "partial": 1,
+    "test": 362,
+    "train": 135,
+    "val": 20
+  },
+  "test_cycles": [
+    160,
+    521
+  ],
+  "train_cycles": [
+    5,
+    139
+  ],
+  "val_cycles": [
+    140,
+    159
+  ],
+  "visible_label_cycles": [
+    5,
+    159
+  ]
+}

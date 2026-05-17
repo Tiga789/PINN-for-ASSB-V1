@@ -1,0 +1,110 @@
+{
+  "best": {
+    "floor": 0.72,
+    "k_per_cycle": 0.006715063764225401,
+    "soh0": 0.9949367088607596,
+    "train_bias": 0.00045740484146592896,
+    "train_corr": 0.9974474519329113,
+    "train_mae": 0.002120449259993392,
+    "train_n": 135,
+    "train_obs_max": 1.0,
+    "train_obs_min": 0.8658227848101266,
+    "train_pred_max": 0.9949367088607596,
+    "train_pred_min": 0.864552841084858,
+    "train_r2": 0.9936749195477302,
+    "train_rmse": 0.0028514378732999437
+  },
+  "candidate_count": 1,
+  "candidate_table_top10": [
+    {
+      "floor": 0.72,
+      "k_per_cycle": 0.006715063764225401,
+      "soh0": 0.9949367088607596,
+      "train_bias": 0.00045740484146592896,
+      "train_corr": 0.9974474519329113,
+      "train_mae": 0.002120449259993392,
+      "train_n": 135,
+      "train_obs_max": 1.0,
+      "train_obs_min": 0.8658227848101266,
+      "train_pred_max": 0.9949367088607596,
+      "train_pred_min": 0.864552841084858,
+      "train_r2": 0.9936749195477302,
+      "train_rmse": 0.0028514378732999437
+    }
+  ],
+  "dataset_csv": "Data\\assb111_saturating_v2stable_smoke\\dataset_strict30.csv",
+  "fit_splits": [
+    "train"
+  ],
+  "fixed_floor": 0.72,
+  "floor_prior": 0.72,
+  "floor_selection_mode": "fixed_prior",
+  "forbidden_splits": [
+    "partial",
+    "test"
+  ],
+  "initializer": {
+    "cycle0": 5.0,
+    "damage_rate_scale_init": 0.006715063764225401,
+    "fixed_floor": 0.72,
+    "floor_prior": 0.72,
+    "floor_selection_mode": "fixed_prior",
+    "freeze_floor_recommended": true,
+    "freeze_soh0_recommended": false,
+    "gate_gamma": 1.0,
+    "k_per_cycle": 0.006715063764225401,
+    "model_variant": "saturating_v2_stable",
+    "rate_correction_bound_recommended": 3.0,
+    "residual_bound_recommended": 0.006,
+    "soh0": 0.9949367088607596,
+    "soh_floor": 0.72
+  },
+  "leakage_statement": "Only fit_splits rows were used to fit floor/soh0/k. Test/partial metrics are range-only diagnostics and must not be used by training or checkpoint selection.",
+  "metrics_by_split": {
+    "test": {
+      "bias": 0.024847030198958515,
+      "corr": 0.9923614840765845,
+      "hidden_forbidden_split": true,
+      "mae": 0.02535672527617764,
+      "n": 362,
+      "obs_max": 0.8556962025316455,
+      "obs_min": 0.7316455696202531,
+      "pred_max": 0.8545593289770408,
+      "pred_min": 0.7815070071754087,
+      "r2": 0.31753898826187943,
+      "rmse": 0.029273037306559238
+    },
+    "train": {
+      "bias": 0.00045740484146592896,
+      "corr": 0.9974474519329113,
+      "mae": 0.002120449259993392,
+      "n": 135,
+      "obs_max": 1.0,
+      "obs_min": 0.8658227848101266,
+      "pred_max": 0.9949367088607596,
+      "pred_min": 0.864552841084858,
+      "r2": 0.9936749195477302,
+      "rmse": 0.0028514378732999437
+    },
+    "val": {
+      "bias": -0.0006955868096150952,
+      "corr": 0.9787281507286296,
+      "mae": 0.0012788286993099696,
+      "n": 20,
+      "obs_max": 0.8658227848101266,
+      "obs_min": 0.8531645569620253,
+      "pred_max": 0.8640433879389013,
+      "pred_min": 0.8550037486300095,
+      "r2": 0.8492573739953336,
+      "rmse": 0.0015187721779807968
+    }
+  },
+  "n_fit_rows": 135,
+  "n_forbidden_rows": 362,
+  "protocol": "ASSB111_saturating_v2stable_initializer_train_only",
+  "select_splits": [
+    "val"
+  ],
+  "selected_by": "fixed_floor_train_only_k",
+  "split_manifest_json": "Data\\assb111_saturating_v2stable_smoke\\split_manifest.json"
+}

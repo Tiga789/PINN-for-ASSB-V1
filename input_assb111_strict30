@@ -1,0 +1,91 @@
+# ASSB ModelFin_111 strict-30 SOH prediction input
+# Purpose: protect ModelFin_107A four-state outputs while training a separate SOH head
+# on only the first 30% complete-cycle SOH labels. Test cycles 160-521 are forbidden
+# in training loss, scaler fitting, and model selection.
+
+ID : 111
+MODEL_ID : 111
+SEED : 42
+DEVICE : cuda
+ALLOW_CPU : True
+
+# 107A state engine: frozen reference for cs_a, cs_c, phie, phis_c.
+STATE_MODEL_DIR : ModelFin_107A
+STATE_EVAL_DIR : EvalFin_107A_cycles5_522_v2_massclosed_candidate_linearGauge_csACorrected_softlabel_only
+STATE_ENGINE_MODE : frozen_107A_ref
+STATE_GUARD_REQUIRED : True
+STATE_GUARD_POTENTIAL_TOL : 1e-8
+STATE_GUARD_CS_TOL : 1e-7
+
+# Data sources.
+SOFT_LABEL_DIR : ..\assb_soft_labels_cycle5_522_v2_massclosed_candidate
+SOLUTION_NPZ : ..\assb_soft_labels_cycle5_522_v2_massclosed_candidate\solution.npz
+CAPACITY_TARGET_CSV : Data\assb_capacity_soh_targets\capacity_soh_targets.csv
+CYCLE_TABLE_CSV : Data\assb_aging_fix1\cycle_table.csv
+
+# Strict 30/70 split. Complete-cycle main range is 5-521; cycle 522 is partial/report-only.
+SPLIT_MANIFEST_JSON : Data\assb111\split_manifest.json
+COMPLETE_CYCLE_MIN : 5
+COMPLETE_CYCLE_MAX : 521
+VISIBLE_LABEL_CYCLE_MIN : 5
+VISIBLE_LABEL_CYCLE_MAX : 159
+TRAIN_CYCLE_MIN : 5
+TRAIN_CYCLE_MAX : 139
+VAL_CYCLE_MIN : 140
+VAL_CYCLE_MAX : 159
+TEST_CYCLE_MIN : 160
+TEST_CYCLE_MAX : 521
+PARTIAL_CYCLES : 522
+FIT_SPLITS : train
+EARLY_STOP_SPLITS : val
+FORBIDDEN_FIT_SPLITS : test,partial
+
+# Feature extraction and leakage controls.
+FEATURE_MODE : p1_107a_strict
+FEATURE_OUTPUT_CSV : Data\assb111\features_107A_cycle.csv
+DATASET_OUTPUT_CSV : Data\assb111\dataset_strict30.csv
+FEATURE_SCHEMA_JSON : ModelFin_111\feature_schema.json
+FEATURE_SCALER_JSON : ModelFin_111\feature_scaler.json
+SCALER_FIT_SCOPE : train
+FORBID_CAPACITY_EQUIVALENT_FEATURES : True
+FORBID_TEST_LABELS_IN_LOSS : True
+ALLOW_UPPER_BOUND_FEATURES : False
+LEAKAGE_AUDIT_JSON : ModelFin_111\leakage_audit.json
+
+# SOH head model. Keep small because only ~30% labels are visible.
+SOH_HEAD_TYPE : Assb111SOHHead
+HIDDEN_DIM : 32
+HIDDEN_LAYERS : 2
+DROPOUT : 0.05
+ACTIVATION : silu
+RATE_SCALE : 1.0e-3
+RESIDUAL_BOUND : 0.015
+LAM_MAX : 0.60
+WINDOW_LOSS_MAX : 0.45
+R_OHM_DELTA_MAX : 250.0
+SOH_MIN : 0.40
+SOH_MAX : 1.05
+
+# Training hyperparameters for scripts/train_assb111_soh_head.py.
+EPOCHS : 5000
+LR : 2.0e-3
+WEIGHT_DECAY : 1.0e-6
+PATIENCE : 600
+PRINT_EVERY : 250
+GRAD_CLIP_NORM : 10.0
+HUBER_DELTA : 0.02
+W_SOH : 1.0
+W_Q : 0.0
+W_SMOOTH : 0.05
+W_RATE : 0.01
+W_MONOTONIC : 0.20
+W_RESIDUAL : 0.10
+W_BOUNDS : 0.20
+
+# Output package and evaluation.
+OUTPUT_MODEL_DIR : ModelFin_111
+OUTPUT_EVAL_DIR : EvalFin_111_strict30_test70
+SOH_TEST_R2_MIN : 0.98
+MAIN_TEST_SPLIT : test
+MAIN_TEST_CYCLES : 160-521
+COMPLETE_ONLY_METRICS : True

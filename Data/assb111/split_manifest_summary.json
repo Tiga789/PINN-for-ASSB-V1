@@ -1,0 +1,12 @@
+{
+  "capacity_target_csv": "Data\\assb_capacity_soh_targets\\capacity_soh_targets.csv",
+  "n_rows_csv": 518,
+  "output_csv": "Data\\assb111_seed42locked_repro_c00\\split_manifest.csv",
+  "output_json": "Data\\assb111_seed42locked_repro_c00\\split_manifest.json",
+  "split_counts": {
+    "partial": 1,
+    "test": 362,
+    "train": 135,
+    "val": 20
+  }
+}

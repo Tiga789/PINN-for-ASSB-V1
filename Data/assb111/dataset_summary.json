@@ -1,0 +1,53 @@
+{
+  "audit_json": "Data\\assb111_seed42locked_repro_c00\\leakage_audit_pretrain.json",
+  "audit_ok": true,
+  "audit_warnings": [
+    "SOH_obs is present for held-out cycles; training script must mask it from loss",
+    "Q_obs_Ah is present for held-out cycles; training script must mask it from loss",
+    "Q_obs_mAh is present for held-out cycles; training script must mask it from loss"
+  ],
+  "dataset_csv": "Data\\assb111_seed42locked_repro_c00\\dataset_strict30.csv",
+  "feature_columns": [
+    "cycle_norm",
+    "throughput_before_norm",
+    "throughput_end_norm",
+    "I_abs_mean_norm",
+    "I_abs_max_norm",
+    "charge_current_level_norm",
+    "discharge_current_level_norm",
+    "rest_fraction",
+    "theta_a_mean_start",
+    "theta_a_mean_end",
+    "theta_a_mean_window",
+    "theta_c_mean_start",
+    "theta_c_mean_end",
+    "theta_c_mean_window",
+    "theta_a_surface_start",
+    "theta_a_surface_end",
+    "theta_c_surface_start",
+    "theta_c_surface_end",
+    "cs_a_radial_energy_mean",
+    "cs_c_radial_energy_mean",
+    "cs_a_surface_minus_mean_abs",
+    "cs_c_surface_minus_mean_abs",
+    "polarization_mean",
+    "polarization_abs_mean",
+    "polarization_std",
+    "current_norm_polarization_abs_mean",
+    "phie_mean",
+    "phis_c_mean",
+    "rest_phis_relax_slope",
+    "rest_phie_relax_slope"
+  ],
+  "feature_mode": "p1_107a_strict",
+  "masked_train_dataset_csv": "Data\\assb111_seed42locked_repro_c00\\masked_train_dataset.csv",
+  "n_features": 30,
+  "n_rows": 517,
+  "scaler_json": "Data\\assb111_seed42locked_repro_c00\\feature_scaler.json",
+  "schema_json": "Data\\assb111_seed42locked_repro_c00\\feature_schema.json",
+  "split_counts": {
+    "test": 362,
+    "train": 135,
+    "val": 20
+  }
+}

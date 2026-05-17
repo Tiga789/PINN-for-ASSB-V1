@@ -1,0 +1,13 @@
+ASSB111 saturating_v3 floorfix - 覆盖文件目录
+
+scripts/fit_assb111_saturating_v3_initializer.py
+scripts/run_ModelFin111_strict30.ps1
+util/assb111_soh_model.py
+README.md
+ASSB111_saturating_v3_floorfix_modified_files_manifest.txt
+
+覆盖说明：
+1. initializer 增加 --floor_selection_mode fixed_prior/fixed_floor/prior_fixed/prior_penalized。
+2. run_ModelFin111_strict30.ps1 默认切到 input_assb111_strict30_saturating_v3_floorfix，并向 initializer 传入 fixed_prior floor=0.72。
+3. assb111_soh_model.py 增加 initializer floor mode 记录，并增强窄 floor range 的鲁棒性。
+4. README 顶部加入本轮修复说明。

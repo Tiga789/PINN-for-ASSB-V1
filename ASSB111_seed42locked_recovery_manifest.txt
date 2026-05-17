@@ -1,0 +1,25 @@
+ASSB111 seed42-locked recovery package v1
+
+Purpose:
+1. Refuse to package/evaluate unguarded checkpoints. The previous seed42-locked smoke selected epoch 1 fallback with invalid train/val metrics.
+2. Make build_ModelFin111_package.py skip optional JSON path "." and require guarded train_summary/selected_checkpoint_audit.
+3. Restore a candidate script whose first candidate reproduces original saturating_v2 seed42 behavior before small optimization.
+
+Files:
+- scripts/train_assb111_soh_head.py
+- scripts/build_ModelFin111_package.py
+- scripts/run_ModelFin111_strict30.ps1
+- scripts/run_ModelFin111_saturating_v2_seed42locked.ps1
+- scripts/compare_assb111_seed42locked_candidates.py
+- scripts/diagnose_assb111_seed42locked_selection_audit.py
+- scripts/show_ModelFin111_seed42locked_metrics.ps1
+- input_assb111_strict30_saturating_v2_seed42locked
+- util/assb111_soh_model.py
+- util/assb111_leakage_guard.py
+- scripts/evaluate_assb111_five_state.py
+- scripts/show_ModelFin111_metrics.ps1
+
+Notes:
+- This package does not change ModelFin_107A or the frozen four-state path.
+- The SOH model variant remains saturating_v2.
+- If no checkpoint satisfies visible train/val guards, training now fails hard and no selected_model.pt is written.

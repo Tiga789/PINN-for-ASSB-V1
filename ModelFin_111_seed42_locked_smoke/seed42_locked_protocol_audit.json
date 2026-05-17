@@ -1,0 +1,16 @@
+{
+  "details": {
+    "fit_splits": [
+      "train"
+    ],
+    "protocol": "ASSB111_seed42_locked_trainval_only_small_optimization",
+    "required_seed": 42,
+    "seed": 42,
+    "select_splits": [
+      "val"
+    ]
+  },
+  "failures": [],
+  "ok": true,
+  "warnings": []
+}

@@ -1,0 +1,28 @@
+{
+  "note": "ModelFin_111 does not retrain or overwrite ModelFin_107A. Four states are evaluated from the frozen 107A reference outputs.",
+  "state_engine_mode": "frozen_ModelFin_107A_reference",
+  "state_eval_dir": "EvalFin_107A_cycles5_522_v2_massclosed_candidate_linearGauge_csACorrected_softlabel_only",
+  "state_eval_hashes": {
+    "anode_correction_config.json": "e8460f3895e62b6257a09f708ebe2c1f2f7edf02342c1a55e875fd955fa767a1",
+    "eval_sampled_arrays_ModelFin107A_csA_corrected.npz": "49385f4cb6e5e9d0da19872cf614748cd145dfc2258f6a48401de8b838a6265f",
+    "metrics_by_cycle_before_ModelFin106.csv": "1ab6404fd92ed14a5f49628ab64b69c148608b559906b792243ebc79c318ded2",
+    "metrics_by_cycle_corrected.csv": "16e2a40c633434768370cfde6d613b13fd1ba238bef25137b3a17dfa348642f6",
+    "metrics_global_before_ModelFin106.json": "b7a2c8e3936fe67316fe8c505bf5c42be96545cffc060c95caadfea1bce6b485",
+    "metrics_global_corrected.json": "e0ff7a2d8f000e2fd21c66c4645e49a69d12c2b147012e22ba9c92b7df78b0ad",
+    "plots_csA_corrected/per_cycle_mae_cs_a_106_vs_107A.png": "b37c6601bcc48230822c8c8a4fb0743098ce56c84133aa7e57db486282af6e32",
+    "plots_csA_corrected/per_cycle_mae_cs_c_106_vs_107A.png": "6c52bf82e74c4ad4185b3f6ad2579cb72fb1927dd7bd650b23ad990064645531",
+    "plots_csA_corrected/per_cycle_mae_phie_106_vs_107A.png": "d5e3e6f448567d9ef5428f868475d381180fc9ae8bb38e3bb969c57d1471db36",
+    "plots_csA_corrected/per_cycle_mae_phis_c_106_vs_107A.png": "b204a3be61e7f22501bdb433d99ca6f7db77b538604c0c2b61ab0397e6975655",
+    "plots_csA_corrected/per_cycle_mae_theta_a_106_vs_107A.png": "ac2e0d25852e904df6e38fceb3d63c02404c8ffc47e028d2598b6bc978a8a028",
+    "plots_csA_corrected/per_cycle_mae_theta_c_106_vs_107A.png": "d696b9dc62ce896596499abc0b7bc95cb54d06c16905c354d99ea96c4b629c28",
+    "potential_common_mode_diagnostic_before_after.json": "f6448d58f49bfa118f903290add8bd30fe74db4c0254cdd7eb6b352af8d52cf2"
+  },
+  "state_model_dir": "ModelFin_107A",
+  "state_model_hashes": {
+    "MODEL_CARD_ModelFin107A_csA_correction.md": "167123cf4b568d7d5dec3c350986dc4326ec10e497b17ba2c35cb7ec0ffd58de",
+    "anode_correction_config.json": "e8460f3895e62b6257a09f708ebe2c1f2f7edf02342c1a55e875fd955fa767a1",
+    "best.pt": "a564b67cf24164c32cd482f8322b818a298d42c554d779622cbb97d413abd210",
+    "config.json": "b4a763e72fda144244cca11de5d90af0aeb03091d29e2fc502759b4544a2ce60",
+    "gauge_config.json": "8f7073abe64010429ea898de846f03958307e6fa317c4a1c58e9d776c10c525d"
+  }
+}

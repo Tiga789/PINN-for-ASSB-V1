@@ -1,0 +1,2979 @@
+﻿ASSB-111 saturating_v2 seed diagnostics
+Generated at: 05/17/2026 07:39:15
+ProjectRoot: C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1
+
+============================================================
+PART 1: Eval overdecay diagnostics
+============================================================
+
+
+-------------------- EVAL DIR --------------------
+.\EvalFin_111_saturating_v2_strict30_test70
+
+[five_state_scorecard.csv - SOH row]
+
+
+variable  : SOH
+source    : ModelFin_111_saturating_v2_strict30_test_cycles_160_521
+n         : 362
+MAE       : 0.004140634877213699
+RMSE      : 0.005093140100630468
+NMAE      : 0.03337858727549819
+NRMSE     : 0.041056945709163975
+R2        : 0.9793407991082377
+corr      : 0.9917343725135065
+available : True
+
+
+
+
+
+[soh_overdecay_diagnostic.json]
+{
+  "active_clamp_count_all": 0,
+  "active_clamp_fraction_all": 0.0,
+  "clamp_detection": {
+    "explicit_col": "active_clamp_mask",
+    "method": "explicit column active_clamp_mask"
+  },
+  "columns": [
+    "cycle_id",
+    "n_points",
+    "t_start_s",
+    "t_end_s",
+    "duration_s",
+    "q_charge_cycle_C",
+    "q_discharge_cycle_C",
+    "q_net_cycle_C",
+    "throughput_cycle_C",
+    "throughput_before_C",
+    "throughput_end_C",
+    "q_net_before_C",
+    "q_net_end_C",
+    "I_abs_mean_A",
+    "I_abs_max_A",
+    "charge_current_level_A",
+    "discharge_current_level_A",
+    "rest_fraction",
+    "theta_a_mean_start",
+    "theta_a_mean_end",
+    "theta_a_mean_window",
+    "theta_a_surface_start",
+    "theta_a_surface_end",
+    "cs_a_radial_energy_mean",
+    "cs_a_surface_minus_mean_abs",
+    "theta_c_mean_start",
+    "theta_c_mean_end",
+    "theta_c_mean_window",
+    "theta_c_surface_start",
+    "theta_c_surface_end",
+    "cs_c_radial_energy_mean",
+    "cs_c_surface_minus_mean_abs",
+    "phie_mean",
+    "phie_std",
+    "phis_c_mean",
+    "phis_c_std",
+    "polarization_mean",
+    "polarization_abs_mean",
+    "polarization_std",
+    "current_norm_polarization_abs_mean",
+    "rest_phis_relax_slope",
+    "rest_phie_relax_slope",
+    "complete_cycle_from_solution",
+    "voltage_mean",
+    "voltage_min",
+    "voltage_max",
+    "complete_cycle_x",
+    "cycle_norm",
+    "throughput_before_norm",
+    "throughput_end_norm",
+    "I_abs_mean_norm",
+    "I_abs_max_norm",
+    "charge_current_level_norm",
+    "discharge_current_level_norm",
+    "q_charge_norm",
+    "q_discharge_norm",
+    "duration_norm",
+    "split",
+    "Q_obs_Ah",
+    "Q_obs_mAh",
+    "SOH_obs",
+    "complete_cycle_y",
+    "q_ref_Ah",
+    "q_ref_mAh",
+    "is_train",
+    "is_val",
+    "is_test",
+    "is_partial",
+    "label_visible",
+    "SOH_pred",
+    "SOH_struct",
+    "SOH_base",
+    "SOH_pred_unclipped",
+    "soh_floor",
+    "soh0",
+    "soh_residual",
+    "f_LAM_c",
+    "theta_window_scale_c",
+    "R_ohm_eff",
+    "lam_rate",
+    "window_rate",
+    "r_rate",
+    "damage_rate_base",
+    "damage_rate_gated",
+    "remaining_degradable",
+    "active_clamp_mask",
+    "lam_damage",
+    "window_damage",
+    "r_ohm_growth"
+  ],
+  "n_rows": 517,
+  "pass_flags": {
+    "no_active_clamp_all": true,
+    "no_active_clamp_test": true
+  },
+  "pred_csv": "EvalFin_111_saturating_v2_strict30_test70\\soh_pred_by_cycle.csv",
+  "segments": [
+    {
+      "SOH_pred_max": 0.8547119206560901,
+      "SOH_pred_min": 0.814181730524803,
+      "SOH_pred_slope_per_cycle": -0.0004458793570587952,
+      "active_clamp_count": 0,
+      "cycle_max": 250,
+      "cycle_min": 160,
+      "metric_BIAS": -0.001235262752025941,
+      "metric_MAE": 0.002838881679193982,
+      "metric_MAX_ABS": 0.010812199770303677,
+      "metric_NMAE": 0.06229768129342377,
+      "metric_NRMSE": 0.08008130520702965,
+      "metric_R2": 0.9192513698317909,
+      "metric_RMSE": 0.0036492746676620945,
+      "metric_corr": 0.965034856872539,
+      "metric_n": 91,
+      "n": 91,
+      "segment": "160-250"
+    },
+    {
+      "SOH_pred_max": 0.8137436892722336,
+      "SOH_pred_min": 0.7616933543367504,
+      "SOH_pred_slope_per_cycle": -0.000350354261954197,
+      "active_clamp_count": 0,
+      "cycle_max": 400,
+      "cycle_min": 251,
+      "metric_BIAS": 0.0037065296441978653,
+      "metric_MAE": 0.003842898211624251,
+      "metric_MAX_ABS": 0.009485700180680845,
+      "metric_NMAE": 0.07228308540912273,
+      "metric_NRMSE": 0.08341017986439338,
+      "metric_R2": 0.8986882905873144,
+      "metric_RMSE": 0.004434465258613324,
+      "metric_corr": 0.989885534198016,
+      "metric_n": 150,
+      "n": 150,
+      "segment": "251-400"
+    },
+    {
+      "SOH_pred_max": 0.7614752205404629,
+      "SOH_pred_min": 0.7409860175579988,
+      "SOH_pred_slope_per_cycle": -0.0001691095354456061,
+      "active_clamp_count": 0,
+      "cycle_max": 521,
+      "cycle_min": 401,
+      "metric_BIAS": 0.0021043830924668302,
+      "metric_MAE": 0.005488734388438588,
+      "metric_MAX_ABS": 0.014256122134454485,
+      "metric_NMAE": 0.1355031302145773,
+      "metric_NRMSE": 0.1622871662623699,
+      "metric_R2": 0.648981692876864,
+      "metric_RMSE": 0.006573657367589683,
+      "metric_corr": 0.9085495635515236,
+      "metric_n": 121,
+      "n": 121,
+      "segment": "401-521"
+    }
+  ],
+  "segments_csv": "EvalFin_111_saturating_v2_strict30_test70\\soh_overdecay_diagnostic_segments.csv",
+  "split_summary": {
+    "test": {
+      "SOH_obs_max": 0.8556962025316455,
+      "SOH_obs_min": 0.7316455696202531,
+      "SOH_pred_linear_slope_per_cycle": -0.00031945227190789926,
+      "SOH_pred_max": 0.8547119206560901,
+      "SOH_pred_min": 0.7409860175579988,
+      "SOH_pred_step_max": -0.00011468973631945101,
+      "SOH_pred_step_median": -0.00030525722384366905,
+      "SOH_pred_step_min": -0.000750779546820346,
+      "active_clamp_count": 0,
+      "active_clamp_fraction": 0.0,
+      "cycle_max": 521,
+      "cycle_min": 160,
+      "metrics": {
+        "BIAS": 0.0019287317413917283,
+        "MAE": 0.004140634877213699,
+        "MAX_ABS": 0.014256122134454485,
+        "NMAE": 0.03337858727549819,
+        "NRMSE": 0.041056945709163975,
+        "R2": 0.9793407991082377,
+        "RMSE": 0.005093140100630468,
+        "corr": 0.9917343725135065,
+        "n": 362
+      },
+      "n": 362
+    },
+    "train": {
+      "SOH_obs_max": 1.0,
+      "SOH_obs_min": 0.8658227848101266,
+      "SOH_pred_linear_slope_per_cycle": -0.0008967927539572113,
+      "SOH_pred_max": 1.001365177217144,
+      "SOH_pred_min": 0.8657443977155385,
+      "SOH_pred_step_max": 0.002198838526089708,
+      "SOH_pred_step_median": -0.0010067433974483286,
+      "SOH_pred_step_min": -0.003920846380584653,
+      "active_clamp_count": 0,
+      "active_clamp_fraction": 0.0,
+      "cycle_max": 139,
+      "cycle_min": 5,
+      "metrics": {
+        "BIAS": 0.001260078848652322,
+        "MAE": 0.0018744586253354862,
+        "MAX_ABS": 0.0064284683563843315,
+        "NMAE": 0.013970021830330517,
+        "NRMSE": 0.01745570748957222,
+        "R2": 0.99573252794459,
+        "RMSE": 0.002342158220119816,
+        "corr": 0.99851788965973,
+        "n": 135
+      },
+      "n": 135
+    },
+    "val": {
+      "SOH_obs_max": 0.8658227848101266,
+      "SOH_obs_min": 0.8531645569620253,
+      "SOH_pred_linear_slope_per_cycle": -0.0005117690151374416,
+      "SOH_pred_max": 0.8649373542314596,
+      "SOH_pred_min": 0.85539847900747,
+      "SOH_pred_step_max": -0.00028657536832288333,
+      "SOH_pred_step_median": -0.00030849846912917034,
+      "SOH_pred_step_min": -0.0007570737023893104,
+      "active_clamp_count": 0,
+      "active_clamp_fraction": 0.0,
+      "cycle_max": 159,
+      "cycle_min": 140,
+      "metrics": {
+        "BIAS": 7.2327219407586355e-06,
+        "MAE": 0.000983921218671785,
+        "MAX_ABS": 0.002233922045444703,
+        "NMAE": 0.07772977627507059,
+        "NRMSE": 0.09437391859760755,
+        "R2": 0.9067388846966721,
+        "RMSE": 0.0011946065645266843,
+        "corr": 0.978021838146723,
+        "n": 20
+      },
+      "n": 20
+    }
+  },
+  "test_tail_n": 20,
+  "test_tail_rows": [
+    {
+      "SOH_base": 0.7515313073987572,
+      "SOH_obs": 0.7367088607594937,
+      "SOH_pred": 0.7435313073987572,
+      "SOH_pred_unclipped": 0.7435313073987572,
+      "SOH_struct": 0.7515313073987572,
+      "cycle_id": 502,
+      "damage_rate_gated": 0.004895194496737,
+      "remaining_degradable": 0.1134519054055061,
+      "split": "test"
+    },
+    {
+      "SOH_base": 0.751404409730768,
+      "SOH_obs": 0.7341772151898734,
+      "SOH_pred": 0.743404409730768,
+      "SOH_pred_unclipped": 0.743404409730768,
+      "SOH_struct": 0.751404409730768,
+      "cycle_id": 503,
+      "damage_rate_gated": 0.0040370827997935,
+      "remaining_degradable": 0.1128978933671736,
+      "split": "test"
+    },
+    {
+      "SOH_base": 0.7512492774564409,
+      "SOH_obs": 0.7341772151898734,
+      "SOH_pred": 0.7432492774564409,
+      "SOH_pred_unclipped": 0.7432492774564409,
+      "SOH_struct": 0.7512492774564409,
+      "cycle_id": 504,
+      "damage_rate_gated": 0.004957573826509,
+      "remaining_degradable": 0.1124430339939799,
+      "split": "test"
+    },
+    {
+      "SOH_base": 0.7511235089199869,
+      "SOH_obs": 0.7316455696202531,
+      "SOH_pred": 0.7431235089199869,
+      "SOH_pred_unclipped": 0.7431235089199869,
+      "SOH_struct": 0.7511235089199869,
+      "cycle_id": 505,
+      "damage_rate_gated": 0.0040373128356132,
+      "remaining_degradable": 0.1118869688575535,
+      "split": "test"
+    },
+    {
+      "SOH_base": 0.7509645175125976,
+      "SOH_obs": 0.7392405063291139,
+      "SOH_pred": 0.7429645175125976,
+      "SOH_pred_unclipped": 0.7429645175125976,
+      "SOH_struct": 0.7509645175125976,
+      "cycle_id": 506,
+      "damage_rate_gated": 0.0051272433020121,
+      "remaining_degradable": 0.1114361568090308,
+      "split": "test"
+    },
+    {
+      "SOH_base": 0.7508436775021011,
+      "SOH_obs": 0.7417721518987342,
+      "SOH_pred": 0.7428436775021011,
+      "SOH_pred_unclipped": 0.7428436775021011,
+      "SOH_struct": 0.7508436775021011,
+      "cycle_id": 507,
+      "damage_rate_gated": 0.0039145751185107,
+      "remaining_degradable": 0.1108662587718622,
+      "split": "test"
+    },
+    {
+      "SOH_base": 0.7506923409979068,
+      "SOH_obs": 0.7341772151898734,
+      "SOH_pred": 0.7426923409979068,
+      "SOH_pred_unclipped": 0.7426923409979068,
+      "SOH_struct": 0.7506923409979068,
+      "cycle_id": 508,
+      "damage_rate_gated": 0.0049242118790363,
+      "remaining_degradable": 0.1104331128181015,
+      "split": "test"
+    },
+    {
+      "SOH_base": 0.7505725484831335,
+      "SOH_obs": 0.7392405063291139,
+      "SOH_pred": 0.7425725484831335,
+      "SOH_pred_unclipped": 0.7425725484831335,
+      "SOH_struct": 0.7505725484831335,
+      "cycle_id": 509,
+      "damage_rate_gated": 0.0039150950325261,
+      "remaining_degradable": 0.1098906534606527,
+      "split": "test"
+    },
+    {
+      "SOH_base": 0.7504241832028318,
+      "SOH_obs": 0.7341772151898734,
+      "SOH_pred": 0.7424241832028318,
+      "SOH_pred_unclipped": 0.7424241832028318,
+      "SOH_struct": 0.7504241832028318,
+      "cycle_id": 510,
+      "damage_rate_gated": 0.0048702636500705,
+      "remaining_degradable": 0.1094612622114158,
+      "split": "test"
+    },
+    {
+      "SOH_base": 0.7503042009815266,
+      "SOH_obs": 0.7316455696202531,
+      "SOH_pred": 0.7423042009815266,
+      "SOH_pred_unclipped": 0.7423042009815266,
+      "SOH_struct": 0.7503042009815266,
+      "cycle_id": 511,
+      "damage_rate_gated": 0.0039559776456238,
+      "remaining_degradable": 0.1089294530814992,
+      "split": "test"
+    },
+    {
+      "SOH_base": 0.7501575356620495,
+      "SOH_obs": 0.7316455696202531,
+      "SOH_pred": 0.7421575356620495,
+      "SOH_pred_unclipped": 0.7421575356620495,
+      "SOH_struct": 0.7501575356620495,
+      "cycle_id": 512,
+      "damage_rate_gated": 0.0048571102039114,
+      "remaining_degradable": 0.1084993818371488,
+      "split": "test"
+    },
+    {
+      "SOH_base": 0.7500305546437117,
+      "SOH_obs": 0.7316455696202531,
+      "SOH_pred": 0.7420305546437117,
+      "SOH_pred_unclipped": 0.7420305546437117,
+      "SOH_struct": 0.7500305546437117,
+      "cycle_id": 513,
+      "damage_rate_gated": 0.0042243651555706,
+      "remaining_degradable": 0.1079736661455701,
+      "split": "test"
+    },
+    {
+      "SOH_base": 0.7498847036967854,
+      "SOH_obs": 0.7316455696202531,
+      "SOH_pred": 0.7418847036967854,
+      "SOH_pred_unclipped": 0.7418847036967854,
+      "SOH_struct": 0.7498847036967854,
+      "cycle_id": 514,
+      "damage_rate_gated": 0.0048742469735314,
+      "remaining_degradable": 0.1075185080065447,
+      "split": "test"
+    },
+    {
+      "SOH_base": 0.7497673926467842,
+      "SOH_obs": 0.7316455696202531,
+      "SOH_pred": 0.7417673926467842,
+      "SOH_pred_unclipped": 0.7417673926467842,
+      "SOH_struct": 0.7497673926467842,
+      "cycle_id": 515,
+      "damage_rate_gated": 0.0039377746163695,
+      "remaining_degradable": 0.1069957113992477,
+      "split": "test"
+    },
+    {
+      "SOH_base": 0.7496246188725798,
+      "SOH_obs": 0.7341772151898734,
+      "SOH_pred": 0.7416246188725798,
+      "SOH_pred_unclipped": 0.7416246188725798,
+      "SOH_struct": 0.7496246188725798,
+      "cycle_id": 516,
+      "damage_rate_gated": 0.0048134952626518,
+      "remaining_degradable": 0.1065752148564994,
+      "split": "test"
+    },
+    {
+      "SOH_base": 0.7495009835032758,
+      "SOH_obs": 0.7341772151898734,
+      "SOH_pred": 0.7415009835032758,
+      "SOH_pred_unclipped": 0.7415009835032758,
+      "SOH_struct": 0.7495009835032758,
+      "cycle_id": 517,
+      "damage_rate_gated": 0.0041870619557184,
+      "remaining_degradable": 0.1060634482458738,
+      "split": "test"
+    },
+    {
+      "SOH_base": 0.7493584523708806,
+      "SOH_obs": 0.7316455696202531,
+      "SOH_pred": 0.7413584523708806,
+      "SOH_pred_unclipped": 0.7413584523708806,
+      "SOH_struct": 0.7493584523708806,
+      "cycle_id": 518,
+      "damage_rate_gated": 0.0048488461735502,
+      "remaining_degradable": 0.1056202824456085,
+      "split": "test"
+    },
+    {
+      "SOH_base": 0.7492435393992121,
+      "SOH_obs": 0.7316455696202531,
+      "SOH_pred": 0.7412435393992121,
+      "SOH_pred_unclipped": 0.7412435393992121,
+      "SOH_struct": 0.7492435393992121,
+      "cycle_id": 519,
+      "damage_rate_gated": 0.0039264801942477,
+      "remaining_degradable": 0.1051093855743799,
+      "split": "test"
+    },
+    {
+      "SOH_base": 0.7491007072943182,
+      "SOH_obs": 0.7316455696202531,
+      "SOH_pred": 0.7411007072943182,
+      "SOH_pred_unclipped": 0.7411007072943182,
+      "SOH_struct": 0.7491007072943182,
+      "cycle_id": 520,
+      "damage_rate_gated": 0.0049020431006573,
+      "remaining_degradable": 0.1046974848429224,
+      "split": "test"
+    },
+    {
+      "SOH_base": 0.7489860175579988,
+      "SOH_obs": 0.7341772151898734,
+      "SOH_pred": 0.7409860175579988,
+      "SOH_pred_unclipped": 0.7409860175579988,
+      "SOH_struct": 0.7489860175579988,
+      "cycle_id": 521,
+      "damage_rate_gated": 0.0039536569707401,
+      "remaining_degradable": 0.1041855091483847,
+      "split": "test"
+    }
+  ]
+}
+
+[SOH pred range by split]
+split=train; n=135; SOH_obs_min=0.86582278; SOH_obs_max=1; SOH_pred_min=0.8657444; SOH_pred_max=1.00136518
+split=val; n=20; SOH_obs_min=0.85316456; SOH_obs_max=0.86582278; SOH_pred_min=0.85539848; SOH_pred_max=0.86493735
+split=test; n=362; SOH_obs_min=0.73164557; SOH_obs_max=0.8556962; SOH_pred_min=0.74098602; SOH_pred_max=0.85471192
+
+[last 20 SOH predictions]
+
+cycle_id split SOH_obs            SOH_pred           SOH_error
+-------- ----- -------            --------           ---------
+502      test  0.7367088607594937 0.7435313073987572          
+503      test  0.7341772151898734 0.743404409730768           
+504      test  0.7341772151898734 0.7432492774564409          
+505      test  0.7316455696202531 0.7431235089199869          
+506      test  0.7392405063291139 0.7429645175125976          
+507      test  0.7417721518987342 0.7428436775021011          
+508      test  0.7341772151898734 0.7426923409979068          
+509      test  0.7392405063291139 0.7425725484831335          
+510      test  0.7341772151898734 0.7424241832028318          
+511      test  0.7316455696202531 0.7423042009815266          
+512      test  0.7316455696202531 0.7421575356620495          
+513      test  0.7316455696202531 0.7420305546437117          
+514      test  0.7316455696202531 0.7418847036967854          
+515      test  0.7316455696202531 0.7417673926467842          
+516      test  0.7341772151898734 0.7416246188725798          
+517      test  0.7341772151898734 0.7415009835032758          
+518      test  0.7316455696202531 0.7413584523708806          
+519      test  0.7316455696202531 0.7412435393992121          
+520      test  0.7316455696202531 0.7411007072943182          
+521      test  0.7341772151898734 0.7409860175579988          
+
+
+
+
+-------------------- EVAL DIR --------------------
+.\EvalFin_111_saturating_v2_seed7_strict30_test70
+
+[five_state_scorecard.csv - SOH row]
+
+
+variable  : SOH
+source    : ModelFin_111_saturating_v2_strict30_test_cycles_160_521
+n         : 362
+MAE       : 0.010798104390133473
+RMSE      : 0.011905872274714195
+NMAE      : 0.08704594355311678
+NRMSE     : 0.09597590915330831
+R2        : 0.8871075985320309
+corr      : 0.9862654148211133
+available : True
+
+
+
+
+
+[soh_overdecay_diagnostic.json]
+{
+  "active_clamp_count_all": 0,
+  "active_clamp_fraction_all": 0.0,
+  "clamp_detection": {
+    "explicit_col": "active_clamp_mask",
+    "method": "explicit column active_clamp_mask"
+  },
+  "columns": [
+    "cycle_id",
+    "n_points",
+    "t_start_s",
+    "t_end_s",
+    "duration_s",
+    "q_charge_cycle_C",
+    "q_discharge_cycle_C",
+    "q_net_cycle_C",
+    "throughput_cycle_C",
+    "throughput_before_C",
+    "throughput_end_C",
+    "q_net_before_C",
+    "q_net_end_C",
+    "I_abs_mean_A",
+    "I_abs_max_A",
+    "charge_current_level_A",
+    "discharge_current_level_A",
+    "rest_fraction",
+    "theta_a_mean_start",
+    "theta_a_mean_end",
+    "theta_a_mean_window",
+    "theta_a_surface_start",
+    "theta_a_surface_end",
+    "cs_a_radial_energy_mean",
+    "cs_a_surface_minus_mean_abs",
+    "theta_c_mean_start",
+    "theta_c_mean_end",
+    "theta_c_mean_window",
+    "theta_c_surface_start",
+    "theta_c_surface_end",
+    "cs_c_radial_energy_mean",
+    "cs_c_surface_minus_mean_abs",
+    "phie_mean",
+    "phie_std",
+    "phis_c_mean",
+    "phis_c_std",
+    "polarization_mean",
+    "polarization_abs_mean",
+    "polarization_std",
+    "current_norm_polarization_abs_mean",
+    "rest_phis_relax_slope",
+    "rest_phie_relax_slope",
+    "complete_cycle_from_solution",
+    "voltage_mean",
+    "voltage_min",
+    "voltage_max",
+    "complete_cycle_x",
+    "cycle_norm",
+    "throughput_before_norm",
+    "throughput_end_norm",
+    "I_abs_mean_norm",
+    "I_abs_max_norm",
+    "charge_current_level_norm",
+    "discharge_current_level_norm",
+    "q_charge_norm",
+    "q_discharge_norm",
+    "duration_norm",
+    "split",
+    "Q_obs_Ah",
+    "Q_obs_mAh",
+    "SOH_obs",
+    "complete_cycle_y",
+    "q_ref_Ah",
+    "q_ref_mAh",
+    "is_train",
+    "is_val",
+    "is_test",
+    "is_partial",
+    "label_visible",
+    "SOH_pred",
+    "SOH_struct",
+    "SOH_base",
+    "SOH_pred_unclipped",
+    "soh_floor",
+    "soh0",
+    "soh_residual",
+    "f_LAM_c",
+    "theta_window_scale_c",
+    "R_ohm_eff",
+    "lam_rate",
+    "window_rate",
+    "r_rate",
+    "damage_rate_base",
+    "damage_rate_gated",
+    "remaining_degradable",
+    "active_clamp_mask",
+    "lam_damage",
+    "window_damage",
+    "r_ohm_growth"
+  ],
+  "n_rows": 517,
+  "pass_flags": {
+    "no_active_clamp_all": true,
+    "no_active_clamp_test": true
+  },
+  "pred_csv": "EvalFin_111_saturating_v2_seed7_strict30_test70\\soh_pred_by_cycle.csv",
+  "segments": [
+    {
+      "SOH_pred_max": 0.8522170860531114,
+      "SOH_pred_min": 0.7961675548232244,
+      "SOH_pred_slope_per_cycle": -0.0006177514386458096,
+      "active_clamp_count": 0,
+      "cycle_max": 250,
+      "cycle_min": 160,
+      "metric_BIAS": -0.013450540293759777,
+      "metric_MAE": 0.013450540293759777,
+      "metric_MAX_ABS": 0.01900240353998195,
+      "metric_NMAE": 0.2951646342241742,
+      "metric_NRMSE": 0.31853190966525036,
+      "metric_R2": -0.2775525361535158,
+      "metric_RMSE": 0.014515378161960711,
+      "metric_corr": 0.9566849562291664,
+      "metric_n": 91,
+      "n": 91,
+      "segment": "160-250"
+    },
+    {
+      "SOH_pred_max": 0.7957236952584157,
+      "SOH_pred_min": 0.7511394099292465,
+      "SOH_pred_slope_per_cycle": -0.0002925722873656568,
+      "active_clamp_count": 0,
+      "cycle_max": 400,
+      "cycle_min": 251,
+      "metric_BIAS": -0.011887577331899726,
+      "metric_MAE": 0.011887577331899726,
+      "metric_MAX_ABS": 0.019027393752145128,
+      "metric_NMAE": 0.22359966886192317,
+      "metric_NRMSE": 0.228220681264222,
+      "metric_R2": 0.24154202414321124,
+      "metric_RMSE": 0.012133251408983968,
+      "metric_corr": 0.9871316326088213,
+      "metric_n": 150,
+      "n": 150,
+      "segment": "251-400"
+    },
+    {
+      "SOH_pred_max": 0.750967109883848,
+      "SOH_pred_min": 0.7365633910030108,
+      "SOH_pred_slope_per_cycle": -0.00011864426123432512,
+      "active_clamp_count": 0,
+      "cycle_max": 521,
+      "cycle_min": 401,
+      "metric_BIAS": -0.005140084151643688,
+      "metric_MAE": 0.007452710931497676,
+      "metric_MAX_ABS": 0.023035226539766862,
+      "metric_NMAE": 0.1839888011213484,
+      "metric_NRMSE": 0.22507840287789485,
+      "metric_R2": 0.32480524027120417,
+      "metric_RMSE": 0.009117099863408423,
+      "metric_corr": 0.9072894899750832,
+      "metric_n": 121,
+      "n": 121,
+      "segment": "401-521"
+    }
+  ],
+  "segments_csv": "EvalFin_111_saturating_v2_seed7_strict30_test70\\soh_overdecay_diagnostic_segments.csv",
+  "split_summary": {
+    "test": {
+      "SOH_obs_max": 0.8556962025316455,
+      "SOH_obs_min": 0.7316455696202531,
+      "SOH_pred_linear_slope_per_cycle": -0.0002959297599072506,
+      "SOH_pred_max": 0.8522170860531114,
+      "SOH_pred_min": 0.7365633910030108,
+      "SOH_pred_step_max": -8.490669426997055e-05,
+      "SOH_pred_step_median": -0.00025265978472654993,
+      "SOH_pred_step_min": -0.0008162407757021928,
+      "active_clamp_count": 0,
+      "active_clamp_fraction": 0.0,
+      "cycle_max": 521,
+      "cycle_min": 160,
+      "metrics": {
+        "BIAS": -0.010025099306259626,
+        "MAE": 0.010798104390133473,
+        "MAX_ABS": 0.023035226539766862,
+        "NMAE": 0.08704594355311678,
+        "NRMSE": 0.09597590915330831,
+        "R2": 0.8871075985320309,
+        "RMSE": 0.011905872274714195,
+        "corr": 0.9862654148211133,
+        "n": 362
+      },
+      "n": 362
+    },
+    "train": {
+      "SOH_obs_max": 1.0,
+      "SOH_obs_min": 0.8658227848101266,
+      "SOH_pred_linear_slope_per_cycle": -0.0007179325272030749,
+      "SOH_pred_max": 0.9996660420147186,
+      "SOH_pred_min": 0.869317138271475,
+      "SOH_pred_step_max": 0.006693367641998016,
+      "SOH_pred_step_median": -0.0007915500226878813,
+      "SOH_pred_step_min": -0.010008791483308355,
+      "active_clamp_count": 0,
+      "active_clamp_fraction": 0.0,
+      "cycle_max": 139,
+      "cycle_min": 5,
+      "metrics": {
+        "BIAS": 0.0004532395039453319,
+        "MAE": 0.007585890009396021,
+        "MAX_ABS": 0.017350581201016402,
+        "NMAE": 0.056536350070026976,
+        "NRMSE": 0.06483358000006546,
+        "R2": 0.9411297634280903,
+        "RMSE": 0.008699189215198654,
+        "corr": 0.9858494350969267,
+        "n": 135
+      },
+      "n": 135
+    },
+    "val": {
+      "SOH_obs_max": 0.8658227848101266,
+      "SOH_obs_min": 0.8531645569620253,
+      "SOH_pred_linear_slope_per_cycle": -0.0008136893815700185,
+      "SOH_pred_max": 0.8684756314011731,
+      "SOH_pred_min": 0.8530437075780322,
+      "SOH_pred_step_max": -0.0007831002822259459,
+      "SOH_pred_step_median": -0.0008031153524910017,
+      "SOH_pred_step_min": -0.0008508617633866677,
+      "active_clamp_count": 0,
+      "active_clamp_fraction": 0.0,
+      "cycle_max": 159,
+      "cycle_min": 140,
+      "metrics": {
+        "BIAS": 0.0006220257315792121,
+        "MAE": 0.0010759090629088863,
+        "MAX_ABS": 0.0027724783765462613,
+        "NMAE": 0.08499681596980156,
+        "NRMSE": 0.10481273928782309,
+        "R2": 0.884966384115004,
+        "RMSE": 0.001326743535288907,
+        "corr": 0.9791702015038679,
+        "n": 20
+      },
+      "n": 20
+    }
+  },
+  "test_tail_n": 20,
+  "test_tail_rows": [
+    {
+      "SOH_base": 0.7463048372869145,
+      "SOH_obs": 0.7367088607594937,
+      "SOH_pred": 0.7383048372869145,
+      "SOH_pred_unclipped": 0.7383048372869145,
+      "SOH_struct": 0.7463048372869145,
+      "cycle_id": 502,
+      "damage_rate_gated": 0.0033739211091623,
+      "remaining_degradable": 0.1035334540657671,
+      "split": "test"
+    },
+    {
+      "SOH_base": 0.746207827590947,
+      "SOH_obs": 0.7341772151898734,
+      "SOH_pred": 0.7382078275909469,
+      "SOH_pred_unclipped": 0.7382078275909469,
+      "SOH_struct": 0.746207827590947,
+      "cycle_id": 503,
+      "damage_rate_gated": 0.0033451089026679,
+      "remaining_degradable": 0.1031847289758659,
+      "split": "test"
+    },
+    {
+      "SOH_base": 0.7461100715545921,
+      "SOH_obs": 0.7341772151898734,
+      "SOH_pred": 0.7381100715545921,
+      "SOH_pred_unclipped": 0.7381100715545921,
+      "SOH_struct": 0.7461100715545921,
+      "cycle_id": 504,
+      "damage_rate_gated": 0.0033822017842015,
+      "remaining_degradable": 0.1028401414830152,
+      "split": "test"
+    },
+    {
+      "SOH_base": 0.7460138063598808,
+      "SOH_obs": 0.7316455696202531,
+      "SOH_pred": 0.7380138063598808,
+      "SOH_pred_unclipped": 0.7380138063598808,
+      "SOH_struct": 0.7460138063598808,
+      "cycle_id": 505,
+      "damage_rate_gated": 0.0033418375545223,
+      "remaining_degradable": 0.1024929029194618,
+      "split": "test"
+    },
+    {
+      "SOH_base": 0.7459237580532275,
+      "SOH_obs": 0.7392405063291139,
+      "SOH_pred": 0.7379237580532275,
+      "SOH_pred_unclipped": 0.7379237580532275,
+      "SOH_struct": 0.7459237580532275,
+      "cycle_id": 506,
+      "damage_rate_gated": 0.0031361606078472,
+      "remaining_degradable": 0.1021509599645491,
+      "split": "test"
+    },
+    {
+      "SOH_base": 0.7458324849051255,
+      "SOH_obs": 0.7417721518987342,
+      "SOH_pred": 0.7378324849051255,
+      "SOH_pred_unclipped": 0.7378324849051255,
+      "SOH_struct": 0.7458324849051255,
+      "cycle_id": 507,
+      "damage_rate_gated": 0.0031888877774816,
+      "remaining_degradable": 0.1018310999761675,
+      "split": "test"
+    },
+    {
+      "SOH_base": 0.7457373932304349,
+      "SOH_obs": 0.7341772151898734,
+      "SOH_pred": 0.7377373932304349,
+      "SOH_pred_unclipped": 0.7377373932304349,
+      "SOH_struct": 0.7457373932304349,
+      "cycle_id": 508,
+      "damage_rate_gated": 0.0033331505298157,
+      "remaining_degradable": 0.10150688923666,
+      "split": "test"
+    },
+    {
+      "SOH_base": 0.7456468118080227,
+      "SOH_obs": 0.7392405063291139,
+      "SOH_pred": 0.7376468118080227,
+      "SOH_pred_unclipped": 0.7376468118080227,
+      "SOH_struct": 0.7456468118080227,
+      "cycle_id": 509,
+      "damage_rate_gated": 0.0031854227344007,
+      "remaining_degradable": 0.1011691147343712,
+      "split": "test"
+    },
+    {
+      "SOH_base": 0.7455527853352101,
+      "SOH_obs": 0.7341772151898734,
+      "SOH_pred": 0.7375527853352101,
+      "SOH_pred_unclipped": 0.7375527853352101,
+      "SOH_struct": 0.7455527853352101,
+      "cycle_id": 510,
+      "damage_rate_gated": 0.0033173410713769,
+      "remaining_degradable": 0.1008473610690647,
+      "split": "test"
+    },
+    {
+      "SOH_base": 0.7454602396125833,
+      "SOH_obs": 0.7316455696202531,
+      "SOH_pred": 0.7374602396125833,
+      "SOH_pred_unclipped": 0.7374602396125833,
+      "SOH_struct": 0.7454602396125833,
+      "cycle_id": 511,
+      "damage_rate_gated": 0.0032758803916232,
+      "remaining_degradable": 0.1005133702632495,
+      "split": "test"
+    },
+    {
+      "SOH_base": 0.7453666091254006,
+      "SOH_obs": 0.7316455696202531,
+      "SOH_pred": 0.7373666091254006,
+      "SOH_pred_unclipped": 0.7373666091254006,
+      "SOH_struct": 0.7453666091254006,
+      "cycle_id": 512,
+      "damage_rate_gated": 0.0033252352591396,
+      "remaining_degradable": 0.1001846392202757,
+      "split": "test"
+    },
+    {
+      "SOH_base": 0.7452789228278096,
+      "SOH_obs": 0.7316455696202531,
+      "SOH_pred": 0.7372789228278096,
+      "SOH_pred_unclipped": 0.7372789228278096,
+      "SOH_struct": 0.7452789228278096,
+      "cycle_id": 513,
+      "damage_rate_gated": 0.00312418918776,
+      "remaining_degradable": 0.0998520549923708,
+      "split": "test"
+    },
+    {
+      "SOH_base": 0.7451862021544995,
+      "SOH_obs": 0.7316455696202531,
+      "SOH_pred": 0.7371862021544995,
+      "SOH_pred_unclipped": 0.7371862021544995,
+      "SOH_struct": 0.7451862021544995,
+      "cycle_id": 514,
+      "damage_rate_gated": 0.0033142115573458,
+      "remaining_degradable": 0.0995405850805967,
+      "split": "test"
+    },
+    {
+      "SOH_base": 0.7450957894686927,
+      "SOH_obs": 0.7316455696202531,
+      "SOH_pred": 0.7370957894686927,
+      "SOH_pred_unclipped": 0.7370957894686927,
+      "SOH_struct": 0.7450957894686927,
+      "cycle_id": 515,
+      "damage_rate_gated": 0.0032423266361584,
+      "remaining_degradable": 0.0992112325964694,
+      "split": "test"
+    },
+    {
+      "SOH_base": 0.7450052062713312,
+      "SOH_obs": 0.7341772151898734,
+      "SOH_pred": 0.7370052062713311,
+      "SOH_pred_unclipped": 0.7370052062713311,
+      "SOH_struct": 0.7450052062713312,
+      "cycle_id": 516,
+      "damage_rate_gated": 0.0032590182071344,
+      "remaining_degradable": 0.0988900782993313,
+      "split": "test"
+    },
+    {
+      "SOH_base": 0.7449202995770612,
+      "SOH_obs": 0.7341772151898734,
+      "SOH_pred": 0.7369202995770612,
+      "SOH_pred_unclipped": 0.7369202995770612,
+      "SOH_struct": 0.7449202995770612,
+      "cycle_id": 517,
+      "damage_rate_gated": 0.0030644618678848,
+      "remaining_degradable": 0.0985683183292388,
+      "split": "test"
+    },
+    {
+      "SOH_base": 0.7448297809176774,
+      "SOH_obs": 0.7316455696202531,
+      "SOH_pred": 0.7368297809176774,
+      "SOH_pred_unclipped": 0.7368297809176774,
+      "SOH_struct": 0.7448297809176774,
+      "cycle_id": 518,
+      "damage_rate_gated": 0.0032773852328781,
+      "remaining_degradable": 0.0982667218278489,
+      "split": "test"
+    },
+    {
+      "SOH_base": 0.7447412989622986,
+      "SOH_obs": 0.7316455696202531,
+      "SOH_pred": 0.7367412989622986,
+      "SOH_pred_unclipped": 0.7367412989622986,
+      "SOH_struct": 0.7447412989622986,
+      "cycle_id": 519,
+      "damage_rate_gated": 0.003214057908671,
+      "remaining_degradable": 0.0979451911026759,
+      "split": "test"
+    },
+    {
+      "SOH_base": 0.7446510578622677,
+      "SOH_obs": 0.7316455696202531,
+      "SOH_pred": 0.7366510578622677,
+      "SOH_pred_unclipped": 0.7366510578622677,
+      "SOH_struct": 0.7446510578622677,
+      "cycle_id": 520,
+      "damage_rate_gated": 0.0032886329132199,
+      "remaining_degradable": 0.0976308949401903,
+      "split": "test"
+    },
+    {
+      "SOH_base": 0.7445633910030108,
+      "SOH_obs": 0.7341772151898734,
+      "SOH_pred": 0.7365633910030108,
+      "SOH_pred_unclipped": 0.7365633910030108,
+      "SOH_struct": 0.7445633910030108,
+      "cycle_id": 521,
+      "damage_rate_gated": 0.0032052107907954,
+      "remaining_degradable": 0.0973103501317403,
+      "split": "test"
+    }
+  ]
+}
+
+[SOH pred range by split]
+split=train; n=135; SOH_obs_min=0.86582278; SOH_obs_max=1; SOH_pred_min=0.86931714; SOH_pred_max=0.99966604
+split=val; n=20; SOH_obs_min=0.85316456; SOH_obs_max=0.86582278; SOH_pred_min=0.85304371; SOH_pred_max=0.86847563
+split=test; n=362; SOH_obs_min=0.73164557; SOH_obs_max=0.8556962; SOH_pred_min=0.73656339; SOH_pred_max=0.85221709
+
+[last 20 SOH predictions]
+
+cycle_id split SOH_obs            SOH_pred           SOH_error
+-------- ----- -------            --------           ---------
+502      test  0.7367088607594937 0.7383048372869145          
+503      test  0.7341772151898734 0.7382078275909469          
+504      test  0.7341772151898734 0.7381100715545921          
+505      test  0.7316455696202531 0.7380138063598808          
+506      test  0.7392405063291139 0.7379237580532275          
+507      test  0.7417721518987342 0.7378324849051255          
+508      test  0.7341772151898734 0.7377373932304349          
+509      test  0.7392405063291139 0.7376468118080227          
+510      test  0.7341772151898734 0.7375527853352101          
+511      test  0.7316455696202531 0.7374602396125833          
+512      test  0.7316455696202531 0.7373666091254006          
+513      test  0.7316455696202531 0.7372789228278096          
+514      test  0.7316455696202531 0.7371862021544995          
+515      test  0.7316455696202531 0.7370957894686927          
+516      test  0.7341772151898734 0.7370052062713311          
+517      test  0.7341772151898734 0.7369202995770612          
+518      test  0.7316455696202531 0.7368297809176774          
+519      test  0.7316455696202531 0.7367412989622986          
+520      test  0.7316455696202531 0.7366510578622677          
+521      test  0.7341772151898734 0.7365633910030108          
+
+
+
+
+-------------------- EVAL DIR --------------------
+.\EvalFin_111_saturating_v2_seed2026_strict30_test70
+
+[five_state_scorecard.csv - SOH row]
+
+
+variable  : SOH
+source    : ModelFin_111_saturating_v2_strict30_test_cycles_160_521
+n         : 362
+MAE       : 0.01233837059559037
+RMSE      : 0.013584586371436502
+NMAE      : 0.09946237520935095
+NRMSE     : 0.1095084003411718
+R2        : 0.8530278281243608
+corr      : 0.9847728461462424
+available : True
+
+
+
+
+
+[soh_overdecay_diagnostic.json]
+{
+  "active_clamp_count_all": 0,
+  "active_clamp_fraction_all": 0.0,
+  "clamp_detection": {
+    "explicit_col": "active_clamp_mask",
+    "method": "explicit column active_clamp_mask"
+  },
+  "columns": [
+    "cycle_id",
+    "n_points",
+    "t_start_s",
+    "t_end_s",
+    "duration_s",
+    "q_charge_cycle_C",
+    "q_discharge_cycle_C",
+    "q_net_cycle_C",
+    "throughput_cycle_C",
+    "throughput_before_C",
+    "throughput_end_C",
+    "q_net_before_C",
+    "q_net_end_C",
+    "I_abs_mean_A",
+    "I_abs_max_A",
+    "charge_current_level_A",
+    "discharge_current_level_A",
+    "rest_fraction",
+    "theta_a_mean_start",
+    "theta_a_mean_end",
+    "theta_a_mean_window",
+    "theta_a_surface_start",
+    "theta_a_surface_end",
+    "cs_a_radial_energy_mean",
+    "cs_a_surface_minus_mean_abs",
+    "theta_c_mean_start",
+    "theta_c_mean_end",
+    "theta_c_mean_window",
+    "theta_c_surface_start",
+    "theta_c_surface_end",
+    "cs_c_radial_energy_mean",
+    "cs_c_surface_minus_mean_abs",
+    "phie_mean",
+    "phie_std",
+    "phis_c_mean",
+    "phis_c_std",
+    "polarization_mean",
+    "polarization_abs_mean",
+    "polarization_std",
+    "current_norm_polarization_abs_mean",
+    "rest_phis_relax_slope",
+    "rest_phie_relax_slope",
+    "complete_cycle_from_solution",
+    "voltage_mean",
+    "voltage_min",
+    "voltage_max",
+    "complete_cycle_x",
+    "cycle_norm",
+    "throughput_before_norm",
+    "throughput_end_norm",
+    "I_abs_mean_norm",
+    "I_abs_max_norm",
+    "charge_current_level_norm",
+    "discharge_current_level_norm",
+    "q_charge_norm",
+    "q_discharge_norm",
+    "duration_norm",
+    "split",
+    "Q_obs_Ah",
+    "Q_obs_mAh",
+    "SOH_obs",
+    "complete_cycle_y",
+    "q_ref_Ah",
+    "q_ref_mAh",
+    "is_train",
+    "is_val",
+    "is_test",
+    "is_partial",
+    "label_visible",
+    "SOH_pred",
+    "SOH_struct",
+    "SOH_base",
+    "SOH_pred_unclipped",
+    "soh_floor",
+    "soh0",
+    "soh_residual",
+    "f_LAM_c",
+    "theta_window_scale_c",
+    "R_ohm_eff",
+    "lam_rate",
+    "window_rate",
+    "r_rate",
+    "damage_rate_base",
+    "damage_rate_gated",
+    "remaining_degradable",
+    "active_clamp_mask",
+    "lam_damage",
+    "window_damage",
+    "r_ohm_growth"
+  ],
+  "n_rows": 517,
+  "pass_flags": {
+    "no_active_clamp_all": true,
+    "no_active_clamp_test": true
+  },
+  "pred_csv": "EvalFin_111_saturating_v2_seed2026_strict30_test70\\soh_pred_by_cycle.csv",
+  "segments": [
+    {
+      "SOH_pred_max": 0.8508238387442082,
+      "SOH_pred_min": 0.7938626352484887,
+      "SOH_pred_slope_per_cycle": -0.0006289364218818997,
+      "active_clamp_count": 0,
+      "cycle_max": 250,
+      "cycle_min": 160,
+      "metric_BIAS": -0.015328329772330099,
+      "metric_MAE": 0.015328329772330099,
+      "metric_MAX_ABS": 0.020965543296556644,
+      "metric_NMAE": 0.3363716811150231,
+      "metric_NRMSE": 0.3586661130614705,
+      "metric_R2": -0.6197708180163553,
+      "metric_RMSE": 0.016344278569889722,
+      "metric_corr": 0.9567499576506326,
+      "metric_n": 91,
+      "n": 91,
+      "segment": "160-250"
+    },
+    {
+      "SOH_pred_max": 0.7934027341384539,
+      "SOH_pred_min": 0.7494888802605242,
+      "SOH_pred_slope_per_cycle": -0.0002878180726086204,
+      "active_clamp_count": 0,
+      "cycle_max": 400,
+      "cycle_min": 251,
+      "metric_BIAS": -0.013994759561397924,
+      "metric_MAE": 0.013994759561397924,
+      "metric_MAX_ABS": 0.021104125609142765,
+      "metric_NMAE": 0.26323476317867495,
+      "metric_NRMSE": 0.2675725454282968,
+      "metric_R2": -0.0425685694839566,
+      "metric_RMSE": 0.014225375832896807,
+      "metric_corr": 0.9865855523953008,
+      "metric_n": 150,
+      "n": 150,
+      "segment": "251-400"
+    },
+    {
+      "SOH_pred_max": 0.7493243738886846,
+      "SOH_pred_min": 0.735757383354432,
+      "SOH_pred_slope_per_cycle": -0.00011167492744893995,
+      "active_clamp_count": 0,
+      "cycle_max": 521,
+      "cycle_min": 401,
+      "metric_BIAS": -0.006373017925313485,
+      "metric_MAE": 0.008036348860429643,
+      "metric_MAX_ABS": 0.024483465381862635,
+      "metric_NMAE": 0.1983973624918563,
+      "metric_NRMSE": 0.2472859231372067,
+      "metric_R2": 0.18499513211010588,
+      "metric_RMSE": 0.010016644987836247,
+      "metric_corr": 0.9061972136224575,
+      "metric_n": 121,
+      "n": 121,
+      "segment": "401-521"
+    }
+  ],
+  "segments_csv": "EvalFin_111_saturating_v2_seed2026_strict30_test70\\soh_overdecay_diagnostic_segments.csv",
+  "split_summary": {
+    "test": {
+      "SOH_obs_max": 0.8556962025316455,
+      "SOH_obs_min": 0.7316455696202531,
+      "SOH_pred_linear_slope_per_cycle": -0.0002929999239902156,
+      "SOH_pred_max": 0.8508238387442082,
+      "SOH_pred_min": 0.735757383354432,
+      "SOH_pred_step_max": -7.846226289620617e-05,
+      "SOH_pred_step_median": -0.0002456072623540084,
+      "SOH_pred_step_min": -0.0008169821720394044,
+      "active_clamp_count": 0,
+      "active_clamp_fraction": 0.0,
+      "cycle_max": 521,
+      "cycle_min": 160,
+      "metrics": {
+        "BIAS": -0.011782395338272536,
+        "MAE": 0.01233837059559037,
+        "MAX_ABS": 0.024483465381862635,
+        "NMAE": 0.09946237520935095,
+        "NRMSE": 0.1095084003411718,
+        "R2": 0.8530278281243608,
+        "RMSE": 0.013584586371436502,
+        "corr": 0.9847728461462424,
+        "n": 362
+      },
+      "n": 362
+    },
+    "train": {
+      "SOH_obs_max": 1.0,
+      "SOH_obs_min": 0.8658227848101266,
+      "SOH_pred_linear_slope_per_cycle": -0.0007667286596500297,
+      "SOH_pred_max": 1.0006832287406071,
+      "SOH_pred_min": 0.8679448088405763,
+      "SOH_pred_step_max": 0.0028181371366727825,
+      "SOH_pred_step_median": -0.0007767938368806737,
+      "SOH_pred_step_min": -0.006730522557748753,
+      "active_clamp_count": 0,
+      "active_clamp_fraction": 0.0,
+      "cycle_max": 139,
+      "cycle_min": 5,
+      "metrics": {
+        "BIAS": 0.0004565325856651189,
+        "MAE": 0.005932761094407386,
+        "MAX_ABS": 0.014519033509610368,
+        "NMAE": 0.04421586098662111,
+        "NRMSE": 0.05184396007740325,
+        "R2": 0.962356316826479,
+        "RMSE": 0.00695627818760094,
+        "corr": 0.9891883106728437,
+        "n": 135
+      },
+      "n": 135
+    },
+    "val": {
+      "SOH_obs_max": 0.8658227848101266,
+      "SOH_obs_min": 0.8531645569620253,
+      "SOH_pred_linear_slope_per_cycle": -0.0008153537348942823,
+      "SOH_pred_max": 0.8671195376829393,
+      "SOH_pred_min": 0.8516496471805088,
+      "SOH_pred_step_max": -0.0007906531442437581,
+      "SOH_pred_step_median": -0.0008089234713466453,
+      "SOH_pred_step_min": -0.0008408848287142501,
+      "active_clamp_count": 0,
+      "active_clamp_fraction": 0.0,
+      "cycle_max": 159,
+      "cycle_min": 140,
+      "metrics": {
+        "BIAS": -0.000739520405235311,
+        "MAE": 0.0011187040574744123,
+        "MAX_ABS": 0.0032450698597651373,
+        "NMAE": 0.0883776205404781,
+        "NRMSE": 0.109907043915326,
+        "R2": 0.8735124785109387,
+        "RMSE": 0.001391228403991476,
+        "corr": 0.9792061319852369,
+        "n": 20
+      },
+      "n": 20
+    }
+  },
+  "test_tail_n": 20,
+  "test_tail_rows": [
+    {
+      "SOH_base": 0.745361543826448,
+      "SOH_obs": 0.7367088607594937,
+      "SOH_pred": 0.737361543826448,
+      "SOH_pred_unclipped": 0.737361543826448,
+      "SOH_struct": 0.745361543826448,
+      "cycle_id": 502,
+      "damage_rate_gated": 0.0031374059787375,
+      "remaining_degradable": 0.1025656046444092,
+      "split": "test"
+    },
+    {
+      "SOH_base": 0.7452721382856065,
+      "SOH_obs": 0.7341772151898734,
+      "SOH_pred": 0.7372721382856064,
+      "SOH_pred_unclipped": 0.7372721382856064,
+      "SOH_struct": 0.7452721382856065,
+      "cycle_id": 503,
+      "damage_rate_gated": 0.0031013946314835,
+      "remaining_degradable": 0.1022443189685284,
+      "split": "test"
+    },
+    {
+      "SOH_base": 0.7451819681914366,
+      "SOH_obs": 0.7341772151898734,
+      "SOH_pred": 0.7371819681914366,
+      "SOH_pred_unclipped": 0.7371819681914366,
+      "SOH_struct": 0.7451819681914366,
+      "cycle_id": 504,
+      "damage_rate_gated": 0.0031376891434907,
+      "remaining_degradable": 0.1019277102047188,
+      "split": "test"
+    },
+    {
+      "SOH_base": 0.7450932989626725,
+      "SOH_obs": 0.7316455696202531,
+      "SOH_pred": 0.7370932989626725,
+      "SOH_pred_unclipped": 0.7370932989626725,
+      "SOH_struct": 0.7450932989626725,
+      "cycle_id": 505,
+      "damage_rate_gated": 0.0030950934000812,
+      "remaining_degradable": 0.1016083939545291,
+      "split": "test"
+    },
+    {
+      "SOH_base": 0.7450097060444395,
+      "SOH_obs": 0.7392405063291139,
+      "SOH_pred": 0.7370097060444395,
+      "SOH_pred_unclipped": 0.7370097060444395,
+      "SOH_struct": 0.7450097060444395,
+      "cycle_id": 506,
+      "damage_rate_gated": 0.0029266982553864,
+      "remaining_degradable": 0.1012943926673306,
+      "split": "test"
+    },
+    {
+      "SOH_base": 0.7449257753866391,
+      "SOH_obs": 0.7417721518987342,
+      "SOH_pred": 0.7369257753866391,
+      "SOH_pred_unclipped": 0.7369257753866391,
+      "SOH_struct": 0.7449257753866391,
+      "cycle_id": 507,
+      "damage_rate_gated": 0.0029471658760208,
+      "remaining_degradable": 0.1009983679438531,
+      "split": "test"
+    },
+    {
+      "SOH_base": 0.7448382521746912,
+      "SOH_obs": 0.7341772151898734,
+      "SOH_pred": 0.7368382521746912,
+      "SOH_pred_unclipped": 0.7368382521746912,
+      "SOH_struct": 0.7448382521746912,
+      "cycle_id": 508,
+      "damage_rate_gated": 0.0030825954393161,
+      "remaining_degradable": 0.1007011471948728,
+      "split": "test"
+    },
+    {
+      "SOH_base": 0.7447549900905842,
+      "SOH_obs": 0.7392405063291139,
+      "SOH_pred": 0.7367549900905842,
+      "SOH_pred_unclipped": 0.7367549900905842,
+      "SOH_struct": 0.7447549900905842,
+      "cycle_id": 509,
+      "damage_rate_gated": 0.0029413632584073,
+      "remaining_degradable": 0.1003912042575716,
+      "split": "test"
+    },
+    {
+      "SOH_base": 0.74466834229753,
+      "SOH_obs": 0.7341772151898734,
+      "SOH_pred": 0.73666834229753,
+      "SOH_pred_unclipped": 0.73666834229753,
+      "SOH_struct": 0.74466834229753,
+      "cycle_id": 510,
+      "damage_rate_gated": 0.003070183038584,
+      "remaining_degradable": 0.1000963511055948,
+      "split": "test"
+    },
+    {
+      "SOH_base": 0.7445831237342767,
+      "SOH_obs": 0.7316455696202531,
+      "SOH_pred": 0.7365831237342767,
+      "SOH_pred_unclipped": 0.7365831237342767,
+      "SOH_struct": 0.7445831237342767,
+      "cycle_id": 511,
+      "damage_rate_gated": 0.0030287633706707,
+      "remaining_degradable": 0.0997895082590833,
+      "split": "test"
+    },
+    {
+      "SOH_base": 0.7444967415053865,
+      "SOH_obs": 0.7316455696202531,
+      "SOH_pred": 0.7364967415053865,
+      "SOH_pred_unclipped": 0.7364967415053865,
+      "SOH_struct": 0.7444967415053865,
+      "cycle_id": 512,
+      "damage_rate_gated": 0.0030795122204275,
+      "remaining_degradable": 0.0994877266948618,
+      "split": "test"
+    },
+    {
+      "SOH_base": 0.7444154983042903,
+      "SOH_obs": 0.7316455696202531,
+      "SOH_pred": 0.7364154983042903,
+      "SOH_pred_unclipped": 0.7364154983042903,
+      "SOH_struct": 0.7444154983042903,
+      "cycle_id": 513,
+      "damage_rate_gated": 0.0029049863038554,
+      "remaining_degradable": 0.0991818242815817,
+      "split": "test"
+    },
+    {
+      "SOH_base": 0.7443300881448235,
+      "SOH_obs": 0.7316455696202531,
+      "SOH_pred": 0.7363300881448235,
+      "SOH_pred_unclipped": 0.7363300881448235,
+      "SOH_struct": 0.7443300881448235,
+      "cycle_id": 514,
+      "damage_rate_gated": 0.0030631095793191,
+      "remaining_degradable": 0.098894120530507,
+      "split": "test"
+    },
+    {
+      "SOH_base": 0.7442469554512624,
+      "SOH_obs": 0.7316455696202531,
+      "SOH_pred": 0.7362469554512624,
+      "SOH_pred_unclipped": 0.7362469554512624,
+      "SOH_struct": 0.7442469554512624,
+      "cycle_id": 515,
+      "damage_rate_gated": 0.0029904695105656,
+      "remaining_degradable": 0.0985916604732105,
+      "split": "test"
+    },
+    {
+      "SOH_base": 0.7441635301069883,
+      "SOH_obs": 0.7341772151898734,
+      "SOH_pred": 0.7361635301069883,
+      "SOH_pred_unclipped": 0.7361635301069883,
+      "SOH_struct": 0.7441635301069883,
+      "cycle_id": 516,
+      "damage_rate_gated": 0.0030100140347986,
+      "remaining_degradable": 0.0982972655275194,
+      "split": "test"
+    },
+    {
+      "SOH_base": 0.7440850678440921,
+      "SOH_obs": 0.7341772151898734,
+      "SOH_pred": 0.7360850678440921,
+      "SOH_pred_unclipped": 0.7360850678440921,
+      "SOH_struct": 0.7440850678440921,
+      "cycle_id": 517,
+      "damage_rate_gated": 0.0028392361040689,
+      "remaining_degradable": 0.0980018342279336,
+      "split": "test"
+    },
+    {
+      "SOH_base": 0.7440017711380016,
+      "SOH_obs": 0.7316455696202531,
+      "SOH_pred": 0.7360017711380016,
+      "SOH_pred_unclipped": 0.7360017711380016,
+      "SOH_struct": 0.7440017711380016,
+      "cycle_id": 518,
+      "damage_rate_gated": 0.0030230230696397,
+      "remaining_degradable": 0.0977239785175668,
+      "split": "test"
+    },
+    {
+      "SOH_base": 0.7439205822159087,
+      "SOH_obs": 0.7316455696202531,
+      "SOH_pred": 0.7359205822159087,
+      "SOH_pred_unclipped": 0.7359205822159087,
+      "SOH_struct": 0.7439205822159087,
+      "cycle_id": 519,
+      "damage_rate_gated": 0.0029553478339153,
+      "remaining_degradable": 0.0974290027599517,
+      "split": "test"
+    },
+    {
+      "SOH_base": 0.7438376874634184,
+      "SOH_obs": 0.7316455696202531,
+      "SOH_pred": 0.7358376874634184,
+      "SOH_pred_unclipped": 0.7358376874634184,
+      "SOH_struct": 0.7438376874634184,
+      "cycle_id": 520,
+      "damage_rate_gated": 0.0030264799175855,
+      "remaining_degradable": 0.0971414912252427,
+      "split": "test"
+    },
+    {
+      "SOH_base": 0.743757383354432,
+      "SOH_obs": 0.7341772151898734,
+      "SOH_pred": 0.735757383354432,
+      "SOH_pred_unclipped": 0.735757383354432,
+      "SOH_struct": 0.743757383354432,
+      "cycle_id": 521,
+      "damage_rate_gated": 0.0029406563934659,
+      "remaining_degradable": 0.0968479388920738,
+      "split": "test"
+    }
+  ]
+}
+
+[SOH pred range by split]
+split=train; n=135; SOH_obs_min=0.86582278; SOH_obs_max=1; SOH_pred_min=0.86794481; SOH_pred_max=1.00068323
+split=val; n=20; SOH_obs_min=0.85316456; SOH_obs_max=0.86582278; SOH_pred_min=0.85164965; SOH_pred_max=0.86711954
+split=test; n=362; SOH_obs_min=0.73164557; SOH_obs_max=0.8556962; SOH_pred_min=0.73575738; SOH_pred_max=0.85082384
+
+[last 20 SOH predictions]
+
+cycle_id split SOH_obs            SOH_pred           SOH_error
+-------- ----- -------            --------           ---------
+502      test  0.7367088607594937 0.737361543826448           
+503      test  0.7341772151898734 0.7372721382856064          
+504      test  0.7341772151898734 0.7371819681914366          
+505      test  0.7316455696202531 0.7370932989626725          
+506      test  0.7392405063291139 0.7370097060444395          
+507      test  0.7417721518987342 0.7369257753866391          
+508      test  0.7341772151898734 0.7368382521746912          
+509      test  0.7392405063291139 0.7367549900905842          
+510      test  0.7341772151898734 0.73666834229753            
+511      test  0.7316455696202531 0.7365831237342767          
+512      test  0.7316455696202531 0.7364967415053865          
+513      test  0.7316455696202531 0.7364154983042903          
+514      test  0.7316455696202531 0.7363300881448235          
+515      test  0.7316455696202531 0.7362469554512624          
+516      test  0.7341772151898734 0.7361635301069883          
+517      test  0.7341772151898734 0.7360850678440921          
+518      test  0.7316455696202531 0.7360017711380016          
+519      test  0.7316455696202531 0.7359205822159087          
+520      test  0.7316455696202531 0.7358376874634184          
+521      test  0.7341772151898734 0.735757383354432           
+
+
+
+
+============================================================
+PART 2: Model training summaries and configs
+============================================================
+
+
+-------------------- MODEL DIR --------------------
+.\ModelFin_111_saturating_v2
+
+[training_summary.json]
+MISSING: .\ModelFin_111_saturating_v2\training_summary.json
+
+[soh_head_config.json]
+{
+  "config": {
+    "activation": "silu",
+    "damage_rate_scale": 0.0005,
+    "dropout": 0.05,
+    "dtype": "float64",
+    "floor_max": 0.85,
+    "floor_min": 0.65,
+    "gate_gamma": 1.0,
+    "hidden_dim": 32,
+    "hidden_layers": 2,
+    "huber_delta": 0.02,
+    "lam_max": 0.6,
+    "model_variant": "saturating_v2",
+    "n_features": 30,
+    "r_ohm_base": 105.0,
+    "r_ohm_delta_max": 250.0,
+    "rate_scale": 0.001,
+    "residual_bound": 0.008,
+    "soh0_max": 1.03,
+    "soh0_min": 0.94,
+    "soh_floor_prior": 0.72,
+    "soh_max": 1.05,
+    "soh_min": 0.4,
+    "soh_numeric_min": 0.6,
+    "tail_slope_guard": 0.002,
+    "w_bounds": 0.2,
+    "w_floor_prior": 0.02,
+    "w_monotonic": 0.2,
+    "w_q": 0.0,
+    "w_rate": 0.01,
+    "w_residual": 0.1,
+    "w_smooth": 0.05,
+    "w_soh": 1.0,
+    "w_tail_guard": 0.05,
+    "window_loss_max": 0.45
+  },
+  "extra": {
+    "best_epoch": 720,
+    "best_val_mae": 0.000983921262546178,
+    "dataset_csv": "Data\\assb111_saturating_v2\\dataset_strict30.csv",
+    "feature_mode": "p1_107a_strict",
+    "scaler_json": "Data\\assb111_saturating_v2\\feature_scaler.json",
+    "seed": 42,
+    "split_manifest_json": "Data\\assb111_saturating_v2\\split_manifest.json"
+  },
+  "feature_columns": [
+    "cycle_norm",
+    "throughput_before_norm",
+    "throughput_end_norm",
+    "I_abs_mean_norm",
+    "I_abs_max_norm",
+    "charge_current_level_norm",
+    "discharge_current_level_norm",
+    "rest_fraction",
+    "theta_a_mean_start",
+    "theta_a_mean_end",
+    "theta_a_mean_window",
+    "theta_c_mean_start",
+    "theta_c_mean_end",
+    "theta_c_mean_window",
+    "theta_a_surface_start",
+    "theta_a_surface_end",
+    "theta_c_surface_start",
+    "theta_c_surface_end",
+    "cs_a_radial_energy_mean",
+    "cs_c_radial_energy_mean",
+    "cs_a_surface_minus_mean_abs",
+    "cs_c_surface_minus_mean_abs",
+    "polarization_mean",
+    "polarization_abs_mean",
+    "polarization_std",
+    "current_norm_polarization_abs_mean",
+    "phie_mean",
+    "phis_c_mean",
+    "rest_phis_relax_slope",
+    "rest_phie_relax_slope"
+  ],
+  "scaler": {
+    "feature_columns": [
+      "cycle_norm",
+      "throughput_before_norm",
+      "throughput_end_norm",
+      "I_abs_mean_norm",
+      "I_abs_max_norm",
+      "charge_current_level_norm",
+      "discharge_current_level_norm",
+      "rest_fraction",
+      "theta_a_mean_start",
+      "theta_a_mean_end",
+      "theta_a_mean_window",
+      "theta_c_mean_start",
+      "theta_c_mean_end",
+      "theta_c_mean_window",
+      "theta_a_surface_start",
+      "theta_a_surface_end",
+      "theta_c_surface_start",
+      "theta_c_surface_end",
+      "cs_a_radial_energy_mean",
+      "cs_c_radial_energy_mean",
+      "cs_a_surface_minus_mean_abs",
+      "cs_c_surface_minus_mean_abs",
+      "polarization_mean",
+      "polarization_abs_mean",
+      "polarization_std",
+      "current_norm_polarization_abs_mean",
+      "phie_mean",
+      "phis_c_mean",
+      "rest_phis_relax_slope",
+      "rest_phie_relax_slope"
+    ],
+    "fit_cycles": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55,
+      56,
+      57,
+      58,
+      59,
+      60,
+      61,
+      62,
+      63,
+      64,
+      65,
+      66,
+      67,
+      68,
+      69,
+      70,
+      71,
+      72,
+      73,
+      74,
+      75,
+      76,
+      77,
+      78,
+      79,
+      80,
+      81,
+      82,
+      83,
+      84,
+      85,
+      86,
+      87,
+      88,
+      89,
+      90,
+      91,
+      92,
+      93,
+      94,
+      95,
+      96,
+      97,
+      98,
+      99,
+      100,
+      101,
+      102,
+      103,
+      104,
+      105,
+      106,
+      107,
+      108,
+      109,
+      110,
+      111,
+      112,
+      113,
+      114,
+      115,
+      116,
+      117,
+      118,
+      119,
+      120,
+      121,
+      122,
+      123,
+      124,
+      125,
+      126,
+      127,
+      128,
+      129,
+      130,
+      131,
+      132,
+      133,
+      134,
+      135,
+      136,
+      137,
+      138,
+      139
+    ],
+    "fit_n_rows": 135,
+    "mean": [
+      0.12984496124031003,
+      0.1481330629279383,
+      0.14791269060564494,
+      0.6395550837796417,
+      0.0,
+      0.5617698595825374,
+      0.5399830236872203,
+      0.012479836067834739,
+      0.5131539819325194,
+      0.5138103204882807,
+      0.27674445361358885,
+      0.8353097113727007,
+      0.8347411285854113,
+      0.37302184005194805,
+      0.49297375325803405,
+      0.48830926300566857,
+      0.8375181887907719,
+      0.8402351587776393,
+      0.011892582506994003,
+      0.062118563785481064,
+      0.2349675054721135,
+      0.5196652448649256,
+      3.779557133047587,
+      3.779557133047587,
+      0.15452796396808172,
+      11510.009722090817,
+      -0.6236842846356124,
+      3.155872848411974,
+      -0.00011532553121609852,
+      4.4451762250860815e-08
+    ],
+    "median_impute": [
+      0.1298449612403101,
+      0.1496702443920264,
+      0.1494367515653957,
+      0.6379330301509422,
+      0.0,
+      0.8575000322396356,
+      0.5224424609196286,
+      0.0125470514429109,
+      0.5143822810302178,
+      0.5146325019498666,
+      0.2742818755408128,
+      0.8337708812883002,
+      0.8337421916626596,
+      0.370026080649792,
+      0.4932740132013957,
+      0.4883610804875691,
+      0.8363932900447183,
+      0.8390557719933941,
+      0.0118846834862813,
+      0.0612761546972812,
+      0.234866573873114,
+      0.516964119979399,
+      3.778566783104303,
+      3.778566783104303,
+      0.1539863852713956,
+      11508.23886978328,
+      -0.6238237417249608,
+      3.1548836676957768,
+      -0.0001162749761415,
+      4.46226170420439e-08
+    ],
+    "std": [
+      0.07552339920245728,
+      0.08400985885130646,
+      0.08398867227093884,
+      0.12259463772393532,
+      1.0,
+      0.3225689400576397,
+      0.10157933866193682,
+      0.0004894180182589084,
+      0.0061533163365879474,
+      0.0028601466486282206,
+      0.013660635844671955,
+      0.0064611188095710335,
+      0.0032405271518320014,
+      0.016127114594034316,
+      0.005487980970724013,
+      0.0035723582593283967,
+      0.006811131268247307,
+      0.004026834912820441,
+      7.207871814910519e-05,
+      0.008171071302517168,
+      0.000927434368082688,
+      0.031224985602423407,
+      0.007413786464323329,
+      0.007413786464323329,
+      0.004916009803682619,
+      24.426239617574566,
+      0.0024826232138612666,
+      0.005138856992379946,
+      2.8937398179443933e-06,
+      2.0733398673286262e-09
+    ],
+    "type": "standard"
+  },
+  "split_manifest": {
+    "capacity_target_csv": "Data\\assb_capacity_soh_targets\\capacity_soh_targets.csv",
+    "capacity_target_sha256": "e877a64f415b7dbd5f268067c04e6b13624efcaf55252366db6fe5df44f26eab",
+    "complete_cycle_max": 521,
+    "complete_cycle_min": 5,
+    "early_stop_splits": [
+      "val"
+    ],
+    "fit_splits": [
+      "train"
+    ],
+    "forbidden_fit_splits": [
+      "test",
+      "partial"
+    ],
+    "manifest_sha256_without_self": "8b187c65dce1bc419103bc70543dfffbb4b2153d1fdf17cde83cbd0efc65240a",
+    "model_id": 111,
+    "notes": [
+      "Only train split may contribute to supervised SOH loss.",
+      "Validation split is inside the visible 30% and may be used for early stopping only.",
+      "Test split is held out and must not enter loss, scaler fitting, or model selection.",
+      "Cycle 522 is partial/report-only for the main complete-cycle metrics."
+    ],
+    "partial_cycles": [
+      522
+    ],
+    "protocol": "ASSB111_strict30_visible_test70_heldout",
+    "split_counts": {
+      "partial": 1,
+      "test": 362,
+      "train": 135,
+      "val": 20
+    },
+    "test_cycles": [
+      160,
+      521
+    ],
+    "train_cycles": [
+      5,
+      139
+    ],
+    "val_cycles": [
+      140,
+      159
+    ],
+    "visible_label_cycles": [
+      5,
+      159
+    ]
+  }
+}
+
+[leakage_audit.json]
+{
+  "details": {
+    "feature_columns": [
+      "cycle_norm",
+      "throughput_before_norm",
+      "throughput_end_norm",
+      "I_abs_mean_norm",
+      "I_abs_max_norm",
+      "charge_current_level_norm",
+      "discharge_current_level_norm",
+      "rest_fraction",
+      "theta_a_mean_start",
+      "theta_a_mean_end",
+      "theta_a_mean_window",
+      "theta_c_mean_start",
+      "theta_c_mean_end",
+      "theta_c_mean_window",
+      "theta_a_surface_start",
+      "theta_a_surface_end",
+      "theta_c_surface_start",
+      "theta_c_surface_end",
+      "cs_a_radial_energy_mean",
+      "cs_c_radial_energy_mean",
+      "cs_a_surface_minus_mean_abs",
+      "cs_c_surface_minus_mean_abs",
+      "polarization_mean",
+      "polarization_abs_mean",
+      "polarization_std",
+      "current_norm_polarization_abs_mean",
+      "phie_mean",
+      "phis_c_mean",
+      "rest_phis_relax_slope",
+      "rest_phie_relax_slope"
+    ],
+    "label_columns_present": [
+      "SOH_obs",
+      "Q_obs_Ah",
+      "Q_obs_mAh"
+    ],
+    "n_fit_rows": 135,
+    "n_partial_rows": 0,
+    "n_test_rows": 362,
+    "split_counts_in_frame": {
+      "test": 362,
+      "train": 135,
+      "val": 20
+    }
+  },
+  "failures": [],
+  "ok": true,
+  "warnings": [
+    "SOH_obs is present for held-out cycles; training script must mask it from loss",
+    "Q_obs_Ah is present for held-out cycles; training script must mask it from loss",
+    "Q_obs_mAh is present for held-out cycles; training script must mask it from loss"
+  ]
+}
+
+-------------------- MODEL DIR --------------------
+.\ModelFin_111_saturating_v2_seed7
+
+[training_summary.json]
+MISSING: .\ModelFin_111_saturating_v2_seed7\training_summary.json
+
+[soh_head_config.json]
+{
+  "config": {
+    "activation": "silu",
+    "damage_rate_scale": 0.0005,
+    "dropout": 0.05,
+    "dtype": "float64",
+    "floor_max": 0.85,
+    "floor_min": 0.65,
+    "gate_gamma": 1.0,
+    "hidden_dim": 32,
+    "hidden_layers": 2,
+    "huber_delta": 0.02,
+    "lam_max": 0.6,
+    "model_variant": "saturating_v2",
+    "n_features": 30,
+    "r_ohm_base": 105.0,
+    "r_ohm_delta_max": 250.0,
+    "rate_scale": 0.001,
+    "residual_bound": 0.008,
+    "soh0_max": 1.03,
+    "soh0_min": 0.94,
+    "soh_floor_prior": 0.72,
+    "soh_max": 1.05,
+    "soh_min": 0.4,
+    "soh_numeric_min": 0.6,
+    "tail_slope_guard": 0.002,
+    "w_bounds": 0.2,
+    "w_floor_prior": 0.02,
+    "w_monotonic": 0.2,
+    "w_q": 0.0,
+    "w_rate": 0.01,
+    "w_residual": 0.1,
+    "w_smooth": 0.05,
+    "w_soh": 1.0,
+    "w_tail_guard": 0.05,
+    "window_loss_max": 0.45
+  },
+  "extra": {
+    "best_epoch": 95,
+    "best_val_mae": 0.0010759091908484064,
+    "dataset_csv": "Data\\assb111_saturating_v2_seed7\\dataset_strict30.csv",
+    "feature_mode": "p1_107a_strict",
+    "scaler_json": "Data\\assb111_saturating_v2_seed7\\feature_scaler.json",
+    "seed": 7,
+    "split_manifest_json": "Data\\assb111_saturating_v2_seed7\\split_manifest.json"
+  },
+  "feature_columns": [
+    "cycle_norm",
+    "throughput_before_norm",
+    "throughput_end_norm",
+    "I_abs_mean_norm",
+    "I_abs_max_norm",
+    "charge_current_level_norm",
+    "discharge_current_level_norm",
+    "rest_fraction",
+    "theta_a_mean_start",
+    "theta_a_mean_end",
+    "theta_a_mean_window",
+    "theta_c_mean_start",
+    "theta_c_mean_end",
+    "theta_c_mean_window",
+    "theta_a_surface_start",
+    "theta_a_surface_end",
+    "theta_c_surface_start",
+    "theta_c_surface_end",
+    "cs_a_radial_energy_mean",
+    "cs_c_radial_energy_mean",
+    "cs_a_surface_minus_mean_abs",
+    "cs_c_surface_minus_mean_abs",
+    "polarization_mean",
+    "polarization_abs_mean",
+    "polarization_std",
+    "current_norm_polarization_abs_mean",
+    "phie_mean",
+    "phis_c_mean",
+    "rest_phis_relax_slope",
+    "rest_phie_relax_slope"
+  ],
+  "scaler": {
+    "feature_columns": [
+      "cycle_norm",
+      "throughput_before_norm",
+      "throughput_end_norm",
+      "I_abs_mean_norm",
+      "I_abs_max_norm",
+      "charge_current_level_norm",
+      "discharge_current_level_norm",
+      "rest_fraction",
+      "theta_a_mean_start",
+      "theta_a_mean_end",
+      "theta_a_mean_window",
+      "theta_c_mean_start",
+      "theta_c_mean_end",
+      "theta_c_mean_window",
+      "theta_a_surface_start",
+      "theta_a_surface_end",
+      "theta_c_surface_start",
+      "theta_c_surface_end",
+      "cs_a_radial_energy_mean",
+      "cs_c_radial_energy_mean",
+      "cs_a_surface_minus_mean_abs",
+      "cs_c_surface_minus_mean_abs",
+      "polarization_mean",
+      "polarization_abs_mean",
+      "polarization_std",
+      "current_norm_polarization_abs_mean",
+      "phie_mean",
+      "phis_c_mean",
+      "rest_phis_relax_slope",
+      "rest_phie_relax_slope"
+    ],
+    "fit_cycles": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55,
+      56,
+      57,
+      58,
+      59,
+      60,
+      61,
+      62,
+      63,
+      64,
+      65,
+      66,
+      67,
+      68,
+      69,
+      70,
+      71,
+      72,
+      73,
+      74,
+      75,
+      76,
+      77,
+      78,
+      79,
+      80,
+      81,
+      82,
+      83,
+      84,
+      85,
+      86,
+      87,
+      88,
+      89,
+      90,
+      91,
+      92,
+      93,
+      94,
+      95,
+      96,
+      97,
+      98,
+      99,
+      100,
+      101,
+      102,
+      103,
+      104,
+      105,
+      106,
+      107,
+      108,
+      109,
+      110,
+      111,
+      112,
+      113,
+      114,
+      115,
+      116,
+      117,
+      118,
+      119,
+      120,
+      121,
+      122,
+      123,
+      124,
+      125,
+      126,
+      127,
+      128,
+      129,
+      130,
+      131,
+      132,
+      133,
+      134,
+      135,
+      136,
+      137,
+      138,
+      139
+    ],
+    "fit_n_rows": 135,
+    "mean": [
+      0.12984496124031003,
+      0.1481330629279383,
+      0.14791269060564494,
+      0.6395550837796417,
+      0.0,
+      0.5617698595825374,
+      0.5399830236872203,
+      0.012479836067834739,
+      0.5131539819325194,
+      0.5138103204882807,
+      0.27674445361358885,
+      0.8353097113727007,
+      0.8347411285854113,
+      0.37302184005194805,
+      0.49297375325803405,
+      0.48830926300566857,
+      0.8375181887907719,
+      0.8402351587776393,
+      0.011892582506994003,
+      0.062118563785481064,
+      0.2349675054721135,
+      0.5196652448649256,
+      3.779557133047587,
+      3.779557133047587,
+      0.15452796396808172,
+      11510.009722090817,
+      -0.6236842846356124,
+      3.155872848411974,
+      -0.00011532553121609852,
+      4.4451762250860815e-08
+    ],
+    "median_impute": [
+      0.1298449612403101,
+      0.1496702443920264,
+      0.1494367515653957,
+      0.6379330301509422,
+      0.0,
+      0.8575000322396356,
+      0.5224424609196286,
+      0.0125470514429109,
+      0.5143822810302178,
+      0.5146325019498666,
+      0.2742818755408128,
+      0.8337708812883002,
+      0.8337421916626596,
+      0.370026080649792,
+      0.4932740132013957,
+      0.4883610804875691,
+      0.8363932900447183,
+      0.8390557719933941,
+      0.0118846834862813,
+      0.0612761546972812,
+      0.234866573873114,
+      0.516964119979399,
+      3.778566783104303,
+      3.778566783104303,
+      0.1539863852713956,
+      11508.23886978328,
+      -0.6238237417249608,
+      3.1548836676957768,
+      -0.0001162749761415,
+      4.46226170420439e-08
+    ],
+    "std": [
+      0.07552339920245728,
+      0.08400985885130646,
+      0.08398867227093884,
+      0.12259463772393532,
+      1.0,
+      0.3225689400576397,
+      0.10157933866193682,
+      0.0004894180182589084,
+      0.0061533163365879474,
+      0.0028601466486282206,
+      0.013660635844671955,
+      0.0064611188095710335,
+      0.0032405271518320014,
+      0.016127114594034316,
+      0.005487980970724013,
+      0.0035723582593283967,
+      0.006811131268247307,
+      0.004026834912820441,
+      7.207871814910519e-05,
+      0.008171071302517168,
+      0.000927434368082688,
+      0.031224985602423407,
+      0.007413786464323329,
+      0.007413786464323329,
+      0.004916009803682619,
+      24.426239617574566,
+      0.0024826232138612666,
+      0.005138856992379946,
+      2.8937398179443933e-06,
+      2.0733398673286262e-09
+    ],
+    "type": "standard"
+  },
+  "split_manifest": {
+    "capacity_target_csv": "Data\\assb_capacity_soh_targets\\capacity_soh_targets.csv",
+    "capacity_target_sha256": "e877a64f415b7dbd5f268067c04e6b13624efcaf55252366db6fe5df44f26eab",
+    "complete_cycle_max": 521,
+    "complete_cycle_min": 5,
+    "early_stop_splits": [
+      "val"
+    ],
+    "fit_splits": [
+      "train"
+    ],
+    "forbidden_fit_splits": [
+      "test",
+      "partial"
+    ],
+    "manifest_sha256_without_self": "8b187c65dce1bc419103bc70543dfffbb4b2153d1fdf17cde83cbd0efc65240a",
+    "model_id": 111,
+    "notes": [
+      "Only train split may contribute to supervised SOH loss.",
+      "Validation split is inside the visible 30% and may be used for early stopping only.",
+      "Test split is held out and must not enter loss, scaler fitting, or model selection.",
+      "Cycle 522 is partial/report-only for the main complete-cycle metrics."
+    ],
+    "partial_cycles": [
+      522
+    ],
+    "protocol": "ASSB111_strict30_visible_test70_heldout",
+    "split_counts": {
+      "partial": 1,
+      "test": 362,
+      "train": 135,
+      "val": 20
+    },
+    "test_cycles": [
+      160,
+      521
+    ],
+    "train_cycles": [
+      5,
+      139
+    ],
+    "val_cycles": [
+      140,
+      159
+    ],
+    "visible_label_cycles": [
+      5,
+      159
+    ]
+  }
+}
+
+[leakage_audit.json]
+{
+  "details": {
+    "feature_columns": [
+      "cycle_norm",
+      "throughput_before_norm",
+      "throughput_end_norm",
+      "I_abs_mean_norm",
+      "I_abs_max_norm",
+      "charge_current_level_norm",
+      "discharge_current_level_norm",
+      "rest_fraction",
+      "theta_a_mean_start",
+      "theta_a_mean_end",
+      "theta_a_mean_window",
+      "theta_c_mean_start",
+      "theta_c_mean_end",
+      "theta_c_mean_window",
+      "theta_a_surface_start",
+      "theta_a_surface_end",
+      "theta_c_surface_start",
+      "theta_c_surface_end",
+      "cs_a_radial_energy_mean",
+      "cs_c_radial_energy_mean",
+      "cs_a_surface_minus_mean_abs",
+      "cs_c_surface_minus_mean_abs",
+      "polarization_mean",
+      "polarization_abs_mean",
+      "polarization_std",
+      "current_norm_polarization_abs_mean",
+      "phie_mean",
+      "phis_c_mean",
+      "rest_phis_relax_slope",
+      "rest_phie_relax_slope"
+    ],
+    "label_columns_present": [
+      "SOH_obs",
+      "Q_obs_Ah",
+      "Q_obs_mAh"
+    ],
+    "n_fit_rows": 135,
+    "n_partial_rows": 0,
+    "n_test_rows": 362,
+    "split_counts_in_frame": {
+      "test": 362,
+      "train": 135,
+      "val": 20
+    }
+  },
+  "failures": [],
+  "ok": true,
+  "warnings": [
+    "SOH_obs is present for held-out cycles; training script must mask it from loss",
+    "Q_obs_Ah is present for held-out cycles; training script must mask it from loss",
+    "Q_obs_mAh is present for held-out cycles; training script must mask it from loss"
+  ]
+}
+
+-------------------- MODEL DIR --------------------
+.\ModelFin_111_saturating_v2_seed2026
+
+[training_summary.json]
+MISSING: .\ModelFin_111_saturating_v2_seed2026\training_summary.json
+
+[soh_head_config.json]
+{
+  "config": {
+    "activation": "silu",
+    "damage_rate_scale": 0.0005,
+    "dropout": 0.05,
+    "dtype": "float64",
+    "floor_max": 0.85,
+    "floor_min": 0.65,
+    "gate_gamma": 1.0,
+    "hidden_dim": 32,
+    "hidden_layers": 2,
+    "huber_delta": 0.02,
+    "lam_max": 0.6,
+    "model_variant": "saturating_v2",
+    "n_features": 30,
+    "r_ohm_base": 105.0,
+    "r_ohm_delta_max": 250.0,
+    "rate_scale": 0.001,
+    "residual_bound": 0.008,
+    "soh0_max": 1.03,
+    "soh0_min": 0.94,
+    "soh_floor_prior": 0.72,
+    "soh_max": 1.05,
+    "soh_min": 0.4,
+    "soh_numeric_min": 0.6,
+    "tail_slope_guard": 0.002,
+    "w_bounds": 0.2,
+    "w_floor_prior": 0.02,
+    "w_monotonic": 0.2,
+    "w_q": 0.0,
+    "w_rate": 0.01,
+    "w_residual": 0.1,
+    "w_smooth": 0.05,
+    "w_soh": 1.0,
+    "w_tail_guard": 0.05,
+    "window_loss_max": 0.45
+  },
+  "extra": {
+    "best_epoch": 134,
+    "best_val_mae": 0.0011187042586252582,
+    "dataset_csv": "Data\\assb111_saturating_v2_seed2026\\dataset_strict30.csv",
+    "feature_mode": "p1_107a_strict",
+    "scaler_json": "Data\\assb111_saturating_v2_seed2026\\feature_scaler.json",
+    "seed": 2026,
+    "split_manifest_json": "Data\\assb111_saturating_v2_seed2026\\split_manifest.json"
+  },
+  "feature_columns": [
+    "cycle_norm",
+    "throughput_before_norm",
+    "throughput_end_norm",
+    "I_abs_mean_norm",
+    "I_abs_max_norm",
+    "charge_current_level_norm",
+    "discharge_current_level_norm",
+    "rest_fraction",
+    "theta_a_mean_start",
+    "theta_a_mean_end",
+    "theta_a_mean_window",
+    "theta_c_mean_start",
+    "theta_c_mean_end",
+    "theta_c_mean_window",
+    "theta_a_surface_start",
+    "theta_a_surface_end",
+    "theta_c_surface_start",
+    "theta_c_surface_end",
+    "cs_a_radial_energy_mean",
+    "cs_c_radial_energy_mean",
+    "cs_a_surface_minus_mean_abs",
+    "cs_c_surface_minus_mean_abs",
+    "polarization_mean",
+    "polarization_abs_mean",
+    "polarization_std",
+    "current_norm_polarization_abs_mean",
+    "phie_mean",
+    "phis_c_mean",
+    "rest_phis_relax_slope",
+    "rest_phie_relax_slope"
+  ],
+  "scaler": {
+    "feature_columns": [
+      "cycle_norm",
+      "throughput_before_norm",
+      "throughput_end_norm",
+      "I_abs_mean_norm",
+      "I_abs_max_norm",
+      "charge_current_level_norm",
+      "discharge_current_level_norm",
+      "rest_fraction",
+      "theta_a_mean_start",
+      "theta_a_mean_end",
+      "theta_a_mean_window",
+      "theta_c_mean_start",
+      "theta_c_mean_end",
+      "theta_c_mean_window",
+      "theta_a_surface_start",
+      "theta_a_surface_end",
+      "theta_c_surface_start",
+      "theta_c_surface_end",
+      "cs_a_radial_energy_mean",
+      "cs_c_radial_energy_mean",
+      "cs_a_surface_minus_mean_abs",
+      "cs_c_surface_minus_mean_abs",
+      "polarization_mean",
+      "polarization_abs_mean",
+      "polarization_std",
+      "current_norm_polarization_abs_mean",
+      "phie_mean",
+      "phis_c_mean",
+      "rest_phis_relax_slope",
+      "rest_phie_relax_slope"
+    ],
+    "fit_cycles": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55,
+      56,
+      57,
+      58,
+      59,
+      60,
+      61,
+      62,
+      63,
+      64,
+      65,
+      66,
+      67,
+      68,
+      69,
+      70,
+      71,
+      72,
+      73,
+      74,
+      75,
+      76,
+      77,
+      78,
+      79,
+      80,
+      81,
+      82,
+      83,
+      84,
+      85,
+      86,
+      87,
+      88,
+      89,
+      90,
+      91,
+      92,
+      93,
+      94,
+      95,
+      96,
+      97,
+      98,
+      99,
+      100,
+      101,
+      102,
+      103,
+      104,
+      105,
+      106,
+      107,
+      108,
+      109,
+      110,
+      111,
+      112,
+      113,
+      114,
+      115,
+      116,
+      117,
+      118,
+      119,
+      120,
+      121,
+      122,
+      123,
+      124,
+      125,
+      126,
+      127,
+      128,
+      129,
+      130,
+      131,
+      132,
+      133,
+      134,
+      135,
+      136,
+      137,
+      138,
+      139
+    ],
+    "fit_n_rows": 135,
+    "mean": [
+      0.12984496124031003,
+      0.1481330629279383,
+      0.14791269060564494,
+      0.6395550837796417,
+      0.0,
+      0.5617698595825374,
+      0.5399830236872203,
+      0.012479836067834739,
+      0.5131539819325194,
+      0.5138103204882807,
+      0.27674445361358885,
+      0.8353097113727007,
+      0.8347411285854113,
+      0.37302184005194805,
+      0.49297375325803405,
+      0.48830926300566857,
+      0.8375181887907719,
+      0.8402351587776393,
+      0.011892582506994003,
+      0.062118563785481064,
+      0.2349675054721135,
+      0.5196652448649256,
+      3.779557133047587,
+      3.779557133047587,
+      0.15452796396808172,
+      11510.009722090817,
+      -0.6236842846356124,
+      3.155872848411974,
+      -0.00011532553121609852,
+      4.4451762250860815e-08
+    ],
+    "median_impute": [
+      0.1298449612403101,
+      0.1496702443920264,
+      0.1494367515653957,
+      0.6379330301509422,
+      0.0,
+      0.8575000322396356,
+      0.5224424609196286,
+      0.0125470514429109,
+      0.5143822810302178,
+      0.5146325019498666,
+      0.2742818755408128,
+      0.8337708812883002,
+      0.8337421916626596,
+      0.370026080649792,
+      0.4932740132013957,
+      0.4883610804875691,
+      0.8363932900447183,
+      0.8390557719933941,
+      0.0118846834862813,
+      0.0612761546972812,
+      0.234866573873114,
+      0.516964119979399,
+      3.778566783104303,
+      3.778566783104303,
+      0.1539863852713956,
+      11508.23886978328,
+      -0.6238237417249608,
+      3.1548836676957768,
+      -0.0001162749761415,
+      4.46226170420439e-08
+    ],
+    "std": [
+      0.07552339920245728,
+      0.08400985885130646,
+      0.08398867227093884,
+      0.12259463772393532,
+      1.0,
+      0.3225689400576397,
+      0.10157933866193682,
+      0.0004894180182589084,
+      0.0061533163365879474,
+      0.0028601466486282206,
+      0.013660635844671955,
+      0.0064611188095710335,
+      0.0032405271518320014,
+      0.016127114594034316,
+      0.005487980970724013,
+      0.0035723582593283967,
+      0.006811131268247307,
+      0.004026834912820441,
+      7.207871814910519e-05,
+      0.008171071302517168,
+      0.000927434368082688,
+      0.031224985602423407,
+      0.007413786464323329,
+      0.007413786464323329,
+      0.004916009803682619,
+      24.426239617574566,
+      0.0024826232138612666,
+      0.005138856992379946,
+      2.8937398179443933e-06,
+      2.0733398673286262e-09
+    ],
+    "type": "standard"
+  },
+  "split_manifest": {
+    "capacity_target_csv": "Data\\assb_capacity_soh_targets\\capacity_soh_targets.csv",
+    "capacity_target_sha256": "e877a64f415b7dbd5f268067c04e6b13624efcaf55252366db6fe5df44f26eab",
+    "complete_cycle_max": 521,
+    "complete_cycle_min": 5,
+    "early_stop_splits": [
+      "val"
+    ],
+    "fit_splits": [
+      "train"
+    ],
+    "forbidden_fit_splits": [
+      "test",
+      "partial"
+    ],
+    "manifest_sha256_without_self": "8b187c65dce1bc419103bc70543dfffbb4b2153d1fdf17cde83cbd0efc65240a",
+    "model_id": 111,
+    "notes": [
+      "Only train split may contribute to supervised SOH loss.",
+      "Validation split is inside the visible 30% and may be used for early stopping only.",
+      "Test split is held out and must not enter loss, scaler fitting, or model selection.",
+      "Cycle 522 is partial/report-only for the main complete-cycle metrics."
+    ],
+    "partial_cycles": [
+      522
+    ],
+    "protocol": "ASSB111_strict30_visible_test70_heldout",
+    "split_counts": {
+      "partial": 1,
+      "test": 362,
+      "train": 135,
+      "val": 20
+    },
+    "test_cycles": [
+      160,
+      521
+    ],
+    "train_cycles": [
+      5,
+      139
+    ],
+    "val_cycles": [
+      140,
+      159
+    ],
+    "visible_label_cycles": [
+      5,
+      159
+    ]
+  }
+}
+
+[leakage_audit.json]
+{
+  "details": {
+    "feature_columns": [
+      "cycle_norm",
+      "throughput_before_norm",
+      "throughput_end_norm",
+      "I_abs_mean_norm",
+      "I_abs_max_norm",
+      "charge_current_level_norm",
+      "discharge_current_level_norm",
+      "rest_fraction",
+      "theta_a_mean_start",
+      "theta_a_mean_end",
+      "theta_a_mean_window",
+      "theta_c_mean_start",
+      "theta_c_mean_end",
+      "theta_c_mean_window",
+      "theta_a_surface_start",
+      "theta_a_surface_end",
+      "theta_c_surface_start",
+      "theta_c_surface_end",
+      "cs_a_radial_energy_mean",
+      "cs_c_radial_energy_mean",
+      "cs_a_surface_minus_mean_abs",
+      "cs_c_surface_minus_mean_abs",
+      "polarization_mean",
+      "polarization_abs_mean",
+      "polarization_std",
+      "current_norm_polarization_abs_mean",
+      "phie_mean",
+      "phis_c_mean",
+      "rest_phis_relax_slope",
+      "rest_phie_relax_slope"
+    ],
+    "label_columns_present": [
+      "SOH_obs",
+      "Q_obs_Ah",
+      "Q_obs_mAh"
+    ],
+    "n_fit_rows": 135,
+    "n_partial_rows": 0,
+    "n_test_rows": 362,
+    "split_counts_in_frame": {
+      "test": 362,
+      "train": 135,
+      "val": 20
+    }
+  },
+  "failures": [],
+  "ok": true,
+  "warnings": [
+    "SOH_obs is present for held-out cycles; training script must mask it from loss",
+    "Q_obs_Ah is present for held-out cycles; training script must mask it from loss",
+    "Q_obs_mAh is present for held-out cycles; training script must mask it from loss"
+  ]
+}
+
+DONE. Report saved to: .\ASSB111_saturating_v2_seed_diagnostics.txt

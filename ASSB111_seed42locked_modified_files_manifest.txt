@@ -1,0 +1,16 @@
+ASSB111 seed42-locked modified files package v1
+
+Modified / overwrite files included:
+- util/assb111_soh_model.py
+- util/assb111_leakage_guard.py
+- scripts/train_assb111_soh_head.py
+- scripts/run_ModelFin111_strict30.ps1
+- scripts/build_ModelFin111_package.py
+- scripts/evaluate_assb111_five_state.py
+- scripts/show_ModelFin111_metrics.ps1
+- README.md
+
+Purpose:
+- Restore the original saturating_v2 SOH head route for the seed42-locked engineering candidate.
+- Add train/val-only visible checkpoint metadata, EMA/top-k support, and seed/protocol audit.
+- Do not alter frozen ModelFin_107A state source or feature extractor.

@@ -1,0 +1,162 @@
+# ASSB ModelFin_111 strict30 saturating_v3 SOH prediction input
+# Purpose: keep frozen ModelFin_107A four-state outputs, and stabilize the
+# strict30 SOH predictor after saturating_v2 showed seed-sensitive behavior.
+#
+# Protocol discipline:
+# - SOH supervised loss may use train cycles only.
+# - val cycles are inside visible 30% and may be used for early stopping/selection.
+# - test cycles 160-521 are held out for final evaluation only.
+# - cs_a/cs_c/phie/phis_c continue to come from frozen ModelFin_107A state eval npz.
+# - deterministic saturating initializer must be fit from train split only;
+#   val is allowed only for model selection diagnostics, never for gradient loss.
+
+ID : 111
+MODEL_ID : 111
+EXPERIMENT_NAME : ModelFin_111_saturating_v3_strict30_stabilized
+SEED : 42
+DEVICE : cuda
+ALLOW_CPU : True
+
+# Frozen 107A state engine.
+STATE_MODEL_DIR : ModelFin_107A
+STATE_EVAL_DIR : EvalFin_107A_cycles5_522_v2_massclosed_candidate_linearGauge_csACorrected_softlabel_only
+STATE_ENGINE_MODE : frozen_107A_ref
+STATE_GUARD_REQUIRED : True
+STATE_GUARD_POTENTIAL_TOL : 1e-8
+STATE_GUARD_CS_TOL : 1e-7
+
+# Data sources.
+SOFT_LABEL_DIR : ..\assb_soft_labels_cycle5_522_v2_massclosed_candidate
+SOLUTION_NPZ : ..\assb_soft_labels_cycle5_522_v2_massclosed_candidate\solution.npz
+CAPACITY_TARGET_CSV : Data\assb_capacity_soh_targets\capacity_soh_targets.csv
+CYCLE_TABLE_CSV : Data\assb_aging_fix1\cycle_table.csv
+
+# Strict 30/70 split. Complete-cycle main range is 5-521; cycle 522 is partial/report-only.
+SPLIT_MANIFEST_JSON : Data\assb111_saturating_v3\split_manifest.json
+COMPLETE_CYCLE_MIN : 5
+COMPLETE_CYCLE_MAX : 521
+VISIBLE_LABEL_CYCLE_MIN : 5
+VISIBLE_LABEL_CYCLE_MAX : 159
+TRAIN_CYCLE_MIN : 5
+TRAIN_CYCLE_MAX : 139
+VAL_CYCLE_MIN : 140
+VAL_CYCLE_MAX : 159
+TEST_CYCLE_MIN : 160
+TEST_CYCLE_MAX : 521
+PARTIAL_CYCLES : 522
+FIT_SPLITS : train
+EARLY_STOP_SPLITS : val
+FORBIDDEN_FIT_SPLITS : test,partial
+
+# Feature extraction and leakage controls.
+FEATURE_MODE : p1_107a_strict
+FEATURE_OUTPUT_CSV : Data\assb111_saturating_v3\features_107A_cycle.csv
+DATASET_OUTPUT_CSV : Data\assb111_saturating_v3\dataset_strict30.csv
+FEATURE_SCHEMA_JSON : ModelFin_111_saturating_v3\feature_schema.json
+FEATURE_SCALER_JSON : ModelFin_111_saturating_v3\feature_scaler.json
+SCALER_FIT_SCOPE : train
+FORBID_CAPACITY_EQUIVALENT_FEATURES : True
+FORBID_TEST_LABELS_IN_LOSS : True
+ALLOW_UPPER_BOUND_FEATURES : False
+LEAKAGE_AUDIT_JSON : ModelFin_111_saturating_v3\leakage_audit.json
+
+# Deterministic initializer. This is the key v3 addition.
+SOH_INIT_STRATEGY : deterministic_saturating_train_only
+SOH_INIT_JSON : Data\assb111_saturating_v3\saturating_v3_initializer.json
+SOH_INIT_BASELINE_CSV : Data\assb111_saturating_v3\saturating_v3_initializer_visible_prediction.csv
+SOH_INIT_FIT_SPLITS : train
+SOH_INIT_SELECT_SPLITS : val
+SOH_INIT_FORBIDDEN_SPLITS : test,partial
+SOH_INIT_FLOOR_MIN : 0.68
+SOH_INIT_FLOOR_MAX : 0.78
+SOH_INIT_FLOOR_STEP : 0.001
+SOH_INIT_SOH0_MODE : first_train
+SOH_INIT_USE_VAL_FOR_SELECTION : True
+
+# SOH head model.
+SOH_HEAD_TYPE : Assb111SOHHead
+SOH_MODEL_VARIANT : saturating_v3
+MODEL_VARIANT : saturating_v3
+HIDDEN_DIM : 32
+HIDDEN_LAYERS : 2
+DROPOUT : 0.02
+ACTIVATION : silu
+
+# Stabilized saturating degradation recurrence.
+# v3 should initialize floor/soh0/damage slope from SOH_INIT_JSON. The modified
+# train script will pass --init_json and optionally freeze or heavily regularize floor.
+FLOOR_MIN : 0.68
+FLOOR_MAX : 0.78
+SOH_FLOOR_PRIOR : 0.735
+FREEZE_SOH_FLOOR : True
+FREEZE_SOH0 : False
+DAMAGE_RATE_SCALE : 5.0e-4
+GATE_GAMMA : 1.0
+SOH_NUMERIC_MIN : 0.60
+SOH_MIN : 0.60
+SOH_MAX : 1.05
+RESIDUAL_BOUND : 0.004
+
+# Legacy fields retained for compatibility/A-B logging.
+RATE_SCALE : 1.0e-3
+LAM_MAX : 0.60
+WINDOW_LOSS_MAX : 0.45
+R_OHM_DELTA_MAX : 250.0
+
+# Training hyperparameters for scripts/train_assb111_soh_head.py.
+EPOCHS : 5000
+SMOKE_EPOCHS : 1000
+LR : 5.0e-4
+WEIGHT_DECAY : 1.0e-5
+PATIENCE : 900
+PRINT_EVERY : 250
+GRAD_CLIP_NORM : 3.0
+HUBER_DELTA : 0.015
+W_SOH : 1.0
+W_Q : 0.0
+W_SMOOTH : 0.10
+W_RATE : 0.05
+W_MONOTONIC : 0.35
+W_RESIDUAL : 0.20
+W_BOUNDS : 0.20
+W_FLOOR_PRIOR : 0.50
+W_TAIL_GUARD : 0.10
+
+# v3 checkpoint guards. These are visible-only guards, not test selection.
+MIN_TRAIN_R2_FOR_BEST : 0.985
+MAX_TRAIN_MAE_FOR_BEST : 0.004
+MAX_VAL_MAE_FOR_BEST : 0.0025
+VAL_TRAIN_SLOPE_RATIO_MIN : 0.55
+VAL_TRAIN_SLOPE_RATIO_MAX : 1.35
+BEST_SELECTION_MODE : val_mae_with_train_guard
+WRITE_TRAINING_SUMMARY : True
+
+# Diagnostics and outputs.
+OUTPUT_MODEL_DIR : ModelFin_111_saturating_v3
+OUTPUT_EVAL_DIR : EvalFin_111_saturating_v3_strict30_test70
+RUN_OVERDECAY_DIAGNOSTICS : True
+OVERDECAY_DIAGNOSTIC_JSON : EvalFin_111_saturating_v3_strict30_test70\soh_overdecay_diagnostic.json
+OVERDECAY_DIAGNOSTIC_CSV : EvalFin_111_saturating_v3_strict30_test70\soh_overdecay_diagnostic_segments.csv
+SOH_PLOT_PNG : EvalFin_111_saturating_v3_strict30_test70\soh_prediction.png
+SOH_PLOT_HTML : EvalFin_111_saturating_v3_strict30_test70\soh_prediction.html
+SEED_STABILITY_SUMMARY_JSON : EvalFin_111_saturating_v3_seed_stability\seed_stability_summary.json
+SEED_STABILITY_SUMMARY_CSV : EvalFin_111_saturating_v3_seed_stability\seed_stability_summary.csv
+SOH_TEST_R2_MIN : 0.98
+MAIN_TEST_SPLIT : test
+MAIN_TEST_CYCLES : 160-521
+COMPLETE_ONLY_METRICS : True
+
+# Suggested smoke command after modified files are covered:
+# .\scripts\run_ModelFin111_strict30.ps1 `
+#   -PythonExe "D:\Anaconda\envs\torchgpu\python.exe" `
+#   -ProjectRoot "." `
+#   -InputFile "input_assb111_strict30_saturating_v3" `
+#   -WorkDir "Data\assb111_saturating_v3_smoke" `
+#   -ModelDir "ModelFin_111_saturating_v3_smoke" `
+#   -EvalDir "EvalFin_111_saturating_v3_smoke" `
+#   -Epochs 1000 `
+#   -Device "cuda" `
+#   -Seed 42 `
+#   -SOHModelVariant "saturating_v3" `
+#   -RunOverdecayDiagnostics `
+#   -SoftFailEval

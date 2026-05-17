@@ -1,0 +1,15 @@
+ASSB-111 saturating_v2_stable modified files only
+
+Files:
+- util/assb111_soh_model.py
+- scripts/train_assb111_soh_head.py
+- scripts/run_ModelFin111_strict30.ps1
+- scripts/build_ModelFin111_package.py
+- README.md
+
+Main changes:
+- Add Assb111SOHHeadConfig fields stable_base_k_per_cycle and rate_correction_bound.
+- Add model variant saturating_v2_stable / v2stable.
+- Add deterministic train-only initializer application for v2stable.
+- Run pipeline now defaults to input_assb111_strict30_saturating_v2stable and supports the v2stable initializer.
+- Packaging now copies a generic saturating_initializer.json instead of v3-only naming.

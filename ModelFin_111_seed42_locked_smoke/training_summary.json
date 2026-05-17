@@ -1,0 +1,90 @@
+{
+  "best_epoch": 1,
+  "best_selection_status": "fallback_val_mae_no_guard",
+  "best_val_mae": 0.1377476980304832,
+  "best_visible_score": 1.4142137501087477,
+  "candidate_tag": "smoke_seed42locked_c00",
+  "feature_mode": "p1_107a_strict",
+  "final_visible_metrics": {
+    "train_mae": 0.08202672903250392,
+    "train_r2": -5.296275011948305,
+    "val_mae": 0.1377476980304832,
+    "val_r2": -1239.996169163642
+  },
+  "leakage_failures": [],
+  "leakage_ok": true,
+  "metrics_by_split_visible_only": {
+    "all": {
+      "NMAE": 0.6075953437262612,
+      "NRMSE": 0.6637769401558994,
+      "SOH_BIAS": 0.08904351618279423,
+      "SOH_MAE": 0.08921653148385608,
+      "SOH_R2": -5.474099657608465,
+      "SOH_RMSE": 0.0974659810861827,
+      "SOH_corr": -0.7067243146276208,
+      "SOH_obs_max": 1.0,
+      "SOH_obs_min": 0.8531645569620253,
+      "SOH_pred_max": 1.0003314418712586,
+      "SOH_pred_min": 0.9915514822980066,
+      "n": 155
+    },
+    "train": {
+      "NMAE": 0.6113312824120578,
+      "NRMSE": 0.6704925509763103,
+      "SOH_BIAS": 0.08182808183498846,
+      "SOH_MAE": 0.08202672903250392,
+      "SOH_R2": -5.296275011948305,
+      "SOH_RMSE": 0.08996482329555552,
+      "SOH_corr": -0.8023791204452388,
+      "SOH_obs_max": 1.0,
+      "SOH_obs_min": 0.8658227848101266,
+      "SOH_pred_max": 1.0003314418712586,
+      "SOH_pred_min": 0.9915514822980066,
+      "n": 135
+    },
+    "val": {
+      "NMAE": 10.882068144408114,
+      "NRMSE": 10.886465641112746,
+      "SOH_BIAS": 0.1377476980304832,
+      "SOH_MAE": 0.1377476980304832,
+      "SOH_R2": -1239.996169163642,
+      "SOH_RMSE": 0.1378033625457317,
+      "SOH_corr": 0.18607360155012265,
+      "SOH_obs_max": 0.8658227848101266,
+      "SOH_obs_min": 0.8531645569620253,
+      "SOH_pred_max": 0.9996482586657581,
+      "SOH_pred_min": 0.9961863835353996,
+      "n": 20
+    }
+  },
+  "model_variant": "saturating_v2",
+  "n_features": 30,
+  "no_test_metrics_in_training_history": true,
+  "output_model_dir": "ModelFin_111_seed42_locked_smoke",
+  "protocol_audit_failures": [],
+  "protocol_audit_ok": true,
+  "protocol_tag": "seed42_locked_trainval_only_smoke",
+  "seed": 42,
+  "seed_locked": true,
+  "test_metrics_used_for_selection": false,
+  "topk_average": {
+    "enabled": false,
+    "selected": false
+  },
+  "training_history_columns": [
+    "epoch",
+    "candidate_tag",
+    "seed",
+    "loss_total",
+    "loss_soh",
+    "train_mae",
+    "train_r2",
+    "val_mae",
+    "val_r2",
+    "visible_score",
+    "visible_monotonic_penalty",
+    "guard_ok",
+    "guard_reasons",
+    "active_clamp_count"
+  ]
+}

@@ -1,0 +1,8 @@
+ASSB111 saturating_v3 floorfix - 新增文件目录
+
+input_assb111_strict30_saturating_v3_floorfix
+scripts/diagnose_assb111_v3_floorfix.py
+scripts/run_ModelFin111_saturating_v3_floorfix_multiseed.ps1
+ASSB111_saturating_v3_floorfix_newfiles_manifest.txt
+
+核心目的：固定/先验约束 SOH floor=0.72，避免 saturating_v3 initializer 因 visible val/train MAE 误选 floor=0.78。

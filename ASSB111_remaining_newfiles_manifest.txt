@@ -1,0 +1,26 @@
+ASSB111 remaining new files package
+
+This package contains the remaining new files from the ASSB-111 landing plan.
+The input_assb111_strict30 file and util/assb111_* files were delivered in the previous package.
+
+Included files:
+- scripts/make_assb111_split_manifest.py
+- scripts/extract_assb111_107A_features.py
+- scripts/build_assb111_dataset.py
+- scripts/train_assb111_soh_head.py
+- scripts/evaluate_assb111_five_state.py
+- scripts/audit_assb111_leakage.py
+- scripts/build_ModelFin111_package.py
+- scripts/run_ModelFin111_strict30.ps1
+- scripts/show_ModelFin111_metrics.ps1
+
+Design notes:
+- Strict 30/70 split: supervised SOH loss uses train cycles only.
+- Validation is inside the visible 30% and is used for early stopping only.
+- Held-out cycles 160-521 and partial/report-only cycle 522 are forbidden from loss and scaler fitting.
+- Four electrochemical state outputs are protected by reading the frozen ModelFin_107A corrected state artifacts.
+- These scripts do not modify util/_rescale.py, util/_losses.py, util/init_pinn.py, util/thermo_assb.py, or ModelFin_107A core files.
+
+Validation performed before packaging:
+- Python syntax compilation passed for all Python scripts.
+- A synthetic smoke run passed split -> dataset -> train -> evaluate using the delivered scripts and the previously delivered util modules.

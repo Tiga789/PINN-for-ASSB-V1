@@ -1,0 +1,51 @@
+ASSB111_saturating_v3_modified_files_v1.zip
+Generated: 2026-05-17
+Purpose: Modified files for ASSB-111 saturating_v3 strict30 SOH stabilization.
+
+Package type: MODIFIED FILES ONLY.
+This package does not include the previously delivered new files:
+  input_assb111_strict30_saturating_v3
+  scripts/fit_assb111_saturating_v3_initializer.py
+  scripts/compare_assb111_saturating_v3_seeds.py
+  scripts/diagnose_assb111_saturating_v3_stability.py
+  scripts/run_ModelFin111_saturating_v3_multiseed.ps1
+
+Files in this package:
+  util/assb111_soh_model.py
+    Adds saturating_v3 support. Uses the v2 floor-aware SOH recurrence but makes
+    the deterministic initializer exact for v3 by using an exponential-to-floor
+    baseline; adds apply_saturating_initializer(), freeze_soh_floor/freeze_soh0,
+    init_k_per_cycle/init_cycle0 provenance, and v3-compatible loss bounds.
+
+  util/assb111_leakage_guard.py
+    Adds check_saturating_initializer_payload() so initializer provenance can be
+    audited for train-only fitting discipline.
+
+  scripts/train_assb111_soh_head.py
+    Adds --init_json, --freeze_soh_floor, visible-only checkpoint guards,
+    initializer epoch-0 checkpointing, no-test training history, and writes both
+    train_summary.json and training_summary.json.
+
+  scripts/run_ModelFin111_strict30.ps1
+    Defaults to saturating_v3 directories/input, runs the deterministic
+    initializer before SOH training, passes v3 guard/freeze parameters, and keeps
+    the existing split -> feature -> dataset -> audit -> train -> package -> eval flow.
+
+  scripts/build_ModelFin111_package.py
+    Records initializer JSON, training summary and v3 stabilization parameters
+    in ModelFin_111 model_manifest/model111_manifest.
+
+  scripts/evaluate_assb111_five_state.py
+    Keeps frozen ModelFin_107A state guard and adds v3 initializer/training
+    summary provenance to debug_model111_provenance.json.
+
+  scripts/show_ModelFin111_metrics.ps1
+    Prints scorecard, SOH metrics, diagnostics, leakage audit and v3 provenance.
+
+  README.md
+    Adds ASSB-111 saturating_v3 notes, smoke command and multiseed command.
+
+Checks performed:
+  1. Python files passed py_compile.
+  2. Synthetic strict30 train-only initializer + short CPU SOH training ran successfully.
+  3. Zip excludes __pycache__ and .pyc.
