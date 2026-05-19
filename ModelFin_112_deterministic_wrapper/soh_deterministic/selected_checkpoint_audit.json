@@ -1,0 +1,34 @@
+{
+  "best_selection_status": "top3_visible_score_coef_average",
+  "hard_visible_guard_ok_for_audit": true,
+  "no_test_metrics_in_training_history": true,
+  "ok": true,
+  "selected_alpha": [
+    0.3,
+    1.0,
+    0.1
+  ],
+  "selected_model_json": "deterministic_soh_model.json",
+  "test_metrics_used_for_selection": false,
+  "visible_guard_audit": {
+    "final_visible_metrics": {
+      "selection_score": 0.0005834089491670402,
+      "train_mae": 0.0006661523048786911,
+      "train_r2": 0.9995391922636945,
+      "val_bias_abs": 3.583202222845472e-05,
+      "val_corr": 0.9911586050253129,
+      "val_mae": 0.00045162608751384556,
+      "val_r2": 0.9811068587073593,
+      "val_range_ratio": 0.9823957849137425,
+      "val_slope_mae": 0.0006082830577328204,
+      "val_tail_bias_abs": 9.686815009684047e-05
+    },
+    "guard_reasons": [],
+    "max_train_mae_for_audit": 0.003,
+    "max_val_bias_for_audit": 0.0025,
+    "max_val_mae_for_audit": 0.0015,
+    "min_train_r2_for_audit": 0.99,
+    "min_val_corr_for_audit": 0.95,
+    "min_val_r2_for_audit": 0.85
+  }
+}

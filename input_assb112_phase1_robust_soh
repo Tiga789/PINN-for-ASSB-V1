@@ -1,0 +1,72 @@
+# ASSB-112 phase 1: robust SOH multi-seed sweep
+# Purpose:
+#   Improve ModelFin_111 SOH branch multi-seed stability under strict30/test70.
+#   This is not a cross-cell generalization experiment.
+
+MODEL_ID = 112
+MODEL_ALIAS = ModelFin_112_robustSOH
+PROTOCOL = ASSB112_robustSOH_strict30_trainval_only
+
+# Data paths
+PROJECT_ROOT = C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1
+BASE_DATASET_CSV = Data\assb111_seed42locked_repro_c00\dataset.csv
+FEATURE_DATASET_CSV = Data\assb112_feature_audit_v1\dataset_with_voltage_features.csv
+SPLIT_MANIFEST_JSON = Data\assb111_seed42locked_repro_c00\split_manifest.json
+CAPACITY_SOH_CSV = Data\assb_capacity_soh_targets\capacity_soh_targets.csv
+STATE_EVAL_DIR = EvalFin_107A_cycles5_522_v2_massclosed_candidate_linearGauge_csACorrected_softlabel_only
+
+# Strict30 split
+TRAIN_CYCLE_FROM = 5
+TRAIN_CYCLE_TO = 139
+VAL_CYCLE_FROM = 140
+VAL_CYCLE_TO = 159
+TEST_CYCLE_FROM = 160
+TEST_CYCLE_TO = 521
+PARTIAL_CYCLES = 522
+FIT_SPLITS = train
+EARLY_STOP_SPLITS = val
+FORBIDDEN_FIT_SPLITS = test,partial
+
+# Feature audit / SOH head settings
+FEATURE_MODE = g4_all_strict
+SOH_MODEL_VARIANT = robust_saturating
+SEEDS = 7,42,2026,3407,7890
+DEVICE_DEFAULT = cuda
+DType = float64
+
+# Robust saturating defaults
+SOH_FLOOR_PRIOR = 0.72
+SOH_NUMERIC_MIN = 0.60
+FLOOR_MIN = 0.65
+FLOOR_MAX = 0.85
+DAMAGE_RATE_SCALE = 5.0e-4
+GATE_GAMMA = 1.0
+DROPOUT = 0.05
+FEATURE_DROPOUT = 0.05
+HIDDEN_DIM = 48
+HIDDEN_LAYERS = 2
+ACTIVATION = silu
+
+# Candidate/training defaults
+EPOCHS = 7000
+LR = 2e-3
+WEIGHT_DECAY = 1e-5
+PATIENCE = 800
+GRAD_CLIP_NORM = 5.0
+ENABLE_EMA = false
+ENABLE_SWA_TOPK = false
+
+# Visible-only selection guards. Test metrics must not enter training history or checkpoint selection.
+GUARD_TRAIN_R2_MIN = 0.990
+GUARD_TRAIN_MAE_MAX = 0.0030
+GUARD_VAL_MAE_MAX = 0.00150
+GUARD_LEAKAGE_OK = true
+GUARD_NO_TEST_METRICS_IN_TRAINING_HISTORY = true
+
+# Output roots
+FEATURE_AUDIT_DIR = EvalFin_112_feature_audit_v1
+SWEEP_MODEL_PREFIX = ModelFin_112_robustSOH_seed
+SWEEP_EVAL_DIR = EvalFin_112_robust_soh_sweep_v1
+
+FINAL_RESULT_LABEL = ASSB-112 robust SOH strict30 multi-seed candidate
+DO_NOT_DESCRIBE_AS = cross-cell generalized model; StageB full-cycle calibration; test-selected model

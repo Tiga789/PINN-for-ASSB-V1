@@ -1,0 +1,45 @@
+{
+  "base_dataset_csv": ".\\Data\\assb111_seed42locked_repro_c00\\dataset_strict30.csv",
+  "cycle_from": 5,
+  "cycle_to": 522,
+  "feature_audit": {
+    "failures": [],
+    "group_counts": {
+      "G2_voltage_health": 15,
+      "G3_switch_polarization": 7
+    },
+    "n_features": 22,
+    "nonfinite_counts": {},
+    "ok": true,
+    "warnings": []
+  },
+  "feature_columns_added": [
+    "voltage_start",
+    "voltage_end",
+    "voltage_mean",
+    "voltage_std",
+    "voltage_min",
+    "voltage_max",
+    "charge_voltage_mean",
+    "discharge_voltage_mean",
+    "charge_voltage_slope",
+    "discharge_voltage_slope",
+    "v_at_tfrac_010",
+    "v_at_tfrac_025",
+    "v_at_tfrac_050",
+    "v_at_tfrac_075",
+    "v_at_tfrac_090",
+    "step_voltage_jump_abs_mean",
+    "step_voltage_jump_signed_mean",
+    "r_step_proxy_abs_mean",
+    "rest_voltage_recovery_mean",
+    "rest_voltage_recovery_abs_mean",
+    "charge_discharge_voltage_gap",
+    "voltage_efficiency_proxy"
+  ],
+  "n_cycles": 518,
+  "ok": true,
+  "output_csv": "Data\\assb112_feature_audit_v1\\dataset_with_voltage_features.csv",
+  "record_csv": "C:\\Users\\Tiga_QJW\\Desktop\\ZHB_realDATA\\record_extracted.csv",
+  "strict_note": "No SOH/capacity labels are used in extracted G2/G3 features."
+}

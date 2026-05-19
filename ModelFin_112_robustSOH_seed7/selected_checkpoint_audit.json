@@ -1,0 +1,23 @@
+{
+  "best_epoch": 789,
+  "best_selection_status": "visible_guarded",
+  "candidate_tag": "robustSOH_seed7",
+  "no_test_metrics_in_training_history": true,
+  "ok": true,
+  "protocol_tag": "ASSB112_robustSOH_strict30_trainval_only",
+  "seed": 7,
+  "selected_model_pt": "selected_model.pt",
+  "test_metrics_used_for_selection": false,
+  "visible_guard": {
+    "final_visible_metrics": {
+      "train_mae": 0.0022444599543140374,
+      "train_r2": 0.9943207955802728,
+      "val_mae": 0.0007453857443547873,
+      "val_r2": 0.945241567440693
+    },
+    "guard_reasons": [],
+    "max_train_mae_for_best": 0.003,
+    "max_val_mae_for_best": 0.0015,
+    "min_train_r2_for_best": 0.99
+  }
+}

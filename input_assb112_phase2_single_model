@@ -1,0 +1,26 @@
+# ASSB-112 phase 2: L1 unified five-target model packaging
+# Purpose:
+#   Build a single model directory / single selected checkpoint / single evaluator interface
+#   for cs_a, cs_c, phie, phis_c and SOH.
+
+MODEL_ID = 112A
+MODEL_ALIAS = ModelFin_112A_unified5_frozen107A_robustSOH
+PROTOCOL = ASSB112A_L1_engineering_single_model_interface
+
+PROJECT_ROOT = C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1
+STATE_CORE_DIR = ModelFin_107A
+STATE_EVAL_NPZ = EvalFin_107A_cycles5_522_v2_massclosed_candidate_linearGauge_csACorrected_softlabel_only\evaluation_paired.npz
+SOH_HEAD_DIR = ModelFin_112_robustSOH_seed42
+FEATURE_DATASET_CSV = Data\assb112_feature_audit_v1\dataset_with_voltage_features.csv
+SPLIT_MANIFEST_JSON = Data\assb111_seed42locked_repro_c00\split_manifest.json
+
+OUTPUT_MODEL_DIR = ModelFin_112A_unified5_frozen107A_robustSOH
+OUTPUT_EVAL_DIR = EvalFin_112A_unified5_strict30_test70
+COPY_STATE_EVAL_NPZ = false
+COPY_STATE_CORE_CONFIG = true
+
+# Gate D pass standards
+STATE_GUARD = keep_ModelFin107A_range
+SOH_SOURCE = robust_strict30_head
+EVALUATOR_RULE = one_model_forward_only
+DO_NOT_DESCRIBE_AS = fully end-to-end coupled aging-aware eSPM; cross-cell generalized model

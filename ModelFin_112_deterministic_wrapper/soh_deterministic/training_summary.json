@@ -1,0 +1,82 @@
+{
+  "best_selection_status": "top3_visible_score_coef_average",
+  "best_visible_score": 0.0005834089491670402,
+  "candidate_tag": "deterministic_ridge_g4",
+  "device_requested": "cuda",
+  "device_used": "cuda",
+  "feature_audit_failures": [],
+  "feature_audit_ok": true,
+  "feature_mode": "g4_all_strict",
+  "final_report_metrics_available": true,
+  "final_report_metrics_file": "metrics_soh_by_split_final_report.json",
+  "final_visible_metrics": {
+    "selection_score": 0.0005834089491670402,
+    "train_mae": 0.0006661523048786911,
+    "train_r2": 0.9995391922636945,
+    "val_bias_abs": 3.583202222845472e-05,
+    "val_corr": 0.9911586050253129,
+    "val_mae": 0.00045162608751384556,
+    "val_r2": 0.9811068587073593,
+    "val_range_ratio": 0.9823957849137425,
+    "val_slope_mae": 0.0006082830577328204,
+    "val_tail_bias_abs": 9.686815009684047e-05
+  },
+  "gpu_reserve_request_gb": 2.0,
+  "gpu_reserve_status": "reserved",
+  "gpu_reserved_actual_gb": 2.0,
+  "gpu_work_repeats": 4,
+  "hard_visible_guard_ok_for_audit": true,
+  "metrics_by_split_visible_only": {
+    "all": {
+      "SOH_BIAS": 4.623486739153299e-06,
+      "SOH_MAE": 0.0006384715026380659,
+      "SOH_NMAE": 0.004348211095552345,
+      "SOH_NRMSE": 0.005065473654852931,
+      "SOH_R2": 0.9996229706314834,
+      "SOH_RMSE": 0.000743791068307519,
+      "SOH_corr": 0.9998115389391424,
+      "n": 155
+    },
+    "train": {
+      "SOH_BIAS": -2.4671622769447924e-18,
+      "SOH_MAE": 0.0006661523048786911,
+      "SOH_NMAE": 0.004964720008058172,
+      "SOH_NRMSE": 0.005736037653993118,
+      "SOH_R2": 0.9995391922636945,
+      "SOH_RMSE": 0.0007696455586370509,
+      "SOH_corr": 0.9997695918844379,
+      "n": 135
+    },
+    "val": {
+      "SOH_BIAS": 3.583202222845472e-05,
+      "SOH_MAE": 0.00045162608751384556,
+      "SOH_NMAE": 0.03567846091359361,
+      "SOH_NRMSE": 0.042476993695966754,
+      "SOH_R2": 0.9811068587073593,
+      "SOH_RMSE": 0.0005376834645059111,
+      "SOH_corr": 0.9911586050253129,
+      "n": 20
+    }
+  },
+  "model_variant": "deterministic_ridge_soh_head",
+  "n_features": 52,
+  "no_test_metrics_in_training_history": true,
+  "output_model_dir": "ModelFin_112_deterministicSOH_ridge_g4",
+  "protocol_tag": "ASSB112_deterministic_ridge_strict30_trainval_only",
+  "scaler_source": "fit_train_only",
+  "selected_alpha": [
+    0.3,
+    1.0,
+    0.1
+  ],
+  "selected_checkpoint_audit_ok": true,
+  "selected_checkpoint_guard_reasons": [],
+  "split_counts": {
+    "partial": 0,
+    "test": 362,
+    "train": 135,
+    "val": 20
+  },
+  "test_metrics_used_for_selection": false,
+  "torch_dtype": "float64"
+}

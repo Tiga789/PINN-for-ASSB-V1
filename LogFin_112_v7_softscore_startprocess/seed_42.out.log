@@ -1,0 +1,164 @@
+[START] seed=42 variant=robust_saturating device=cuda dtype=float32 epochs=2500 eval_every=10 print_every=100 min_epochs_before_patience=1200 selection_strategy=softscore require_hard_guard=False n_features=52
+epoch=1 loss=1.441469e-03 train_mae=0.0807396 train_r2=-4.79176 val_mae=0.126981 val_r2=-1053.57 val_corr=0.91927 score=85.6589 soft_best=85.6589@1 guarded_best=85.6589 status=visible_softscore_guard_audit patience=800 guard=train_r2<0.99;train_mae>0.003;val_mae>0.003;val_r2<0.8;val_corr<0.95;val_bias_abs>0.003;val_rmse>0.0022;val_tail_bias_abs>0.004;val_range_ratio<0.4;visible_monotonic_penalty>5e-05
+epoch=100 loss=2.003992e-05 train_mae=0.004365 train_r2=0.980376 val_mae=0.0128186 val_r2=-9.9486 val_corr=0.979075 score=0.876675 soft_best=0.249404@40 guarded_best=0.249404 status=visible_softscore_guard_audit patience=800 guard=train_r2<0.99;train_mae>0.003;val_mae>0.003;val_r2<0.8;val_bias_abs>0.003;val_rmse>0.0022;val_tail_bias_abs>0.004;visible_monotonic_penalty>5e-05
+epoch=200 loss=1.573250e-05 train_mae=0.0037387 train_r2=0.985233 val_mae=0.0104488 val_r2=-6.29699 val_corr=0.978784 score=0.580857 soft_best=0.249404@40 guarded_best=0.249404 status=visible_softscore_guard_audit patience=800 guard=train_r2<0.99;train_mae>0.003;val_mae>0.003;val_r2<0.8;val_bias_abs>0.003;val_rmse>0.0022;val_tail_bias_abs>0.004;visible_monotonic_penalty>5e-05
+epoch=300 loss=1.244341e-05 train_mae=0.00261052 train_r2=0.992356 val_mae=0.00960326 val_r2=-5.12008 val_corr=0.978269 score=0.48462 soft_best=0.249404@40 guarded_best=0.249404 status=visible_softscore_guard_audit patience=800 guard=val_mae>0.003;val_r2<0.8;val_bias_abs>0.003;val_rmse>0.0022;val_tail_bias_abs>0.004;visible_monotonic_penalty>5e-05
+epoch=400 loss=9.902954e-06 train_mae=0.00202395 train_r2=0.994974 val_mae=0.00741015 val_r2=-2.64363 val_corr=0.977263 score=0.283971 soft_best=0.148055@390 guarded_best=0.148055 status=visible_softscore_guard_audit patience=800 guard=val_mae>0.003;val_r2<0.8;val_bias_abs>0.003;val_rmse>0.0022;val_tail_bias_abs>0.004;visible_monotonic_penalty>5e-05
+epoch=500 loss=8.915437e-06 train_mae=0.0025298 train_r2=0.99326 val_mae=0.00118364 val_r2=0.876738 val_corr=0.975601 score=0.00165273 soft_best=0.00165273@500 guarded_best=0.00165273 status=visible_softscore_guard_audit patience=800 guard=visible_monotonic_penalty>5e-05
+epoch=600 loss=8.043115e-06 train_mae=0.00149935 train_r2=0.996977 val_mae=0.00400369 val_r2=-0.105456 val_corr=0.974571 score=0.0770394 soft_best=0.00165273@500 guarded_best=0.00165273 status=visible_softscore_guard_audit patience=800 guard=val_mae>0.003;val_r2<0.8;val_bias_abs>0.003;val_rmse>0.0022;visible_monotonic_penalty>5e-05
+epoch=700 loss=1.112061e-05 train_mae=0.00238766 train_r2=0.99361 val_mae=0.00537245 val_r2=-0.958089 val_corr=0.972741 score=0.146876 soft_best=0.00124111@690 guarded_best=0.00124111 status=visible_softscore_guard_audit patience=800 guard=val_mae>0.003;val_r2<0.8;val_bias_abs>0.003;val_rmse>0.0022;val_tail_bias_abs>0.004;visible_monotonic_penalty>5e-05
+epoch=800 loss=7.512439e-06 train_mae=0.00148005 train_r2=0.997054 val_mae=0.00277456 val_r2=0.373901 val_corr=0.920344 score=0.038177 soft_best=0.00124111@690 guarded_best=0.00124111 status=visible_softscore_guard_audit patience=800 guard=val_r2<0.8;val_corr<0.95;val_rmse>0.0022;visible_monotonic_penalty>5e-05
+epoch=900 loss=6.355600e-06 train_mae=0.00143404 train_r2=0.997241 val_mae=0.00324538 val_r2=0.206097 val_corr=0.95377 score=0.0512285 soft_best=0.00124111@690 guarded_best=0.00124111 status=visible_softscore_guard_audit patience=800 guard=val_mae>0.003;val_r2<0.8;val_bias_abs>0.003;val_rmse>0.0022;visible_monotonic_penalty>5e-05
+epoch=1000 loss=6.918317e-06 train_mae=0.00199067 train_r2=0.995419 val_mae=0.00231497 val_r2=0.518949 val_corr=0.970321 score=0.0254078 soft_best=0.00124111@690 guarded_best=0.00124111 status=visible_softscore_guard_audit patience=800 guard=val_r2<0.8;val_rmse>0.0022;visible_monotonic_penalty>5e-05
+epoch=1100 loss=5.213759e-06 train_mae=0.00140907 train_r2=0.997217 val_mae=0.0023482 val_r2=0.53337 val_corr=0.967815 score=0.0240327 soft_best=0.00124111@690 guarded_best=0.00124111 status=visible_softscore_guard_audit patience=800 guard=val_r2<0.8;val_rmse>0.0022;visible_monotonic_penalty>5e-05
+epoch=1200 loss=4.628730e-06 train_mae=0.00141782 train_r2=0.997381 val_mae=0.00162964 val_r2=0.721555 val_corr=0.972157 score=0.00834112 soft_best=0.00124111@690 guarded_best=0.00124111 status=visible_softscore_guard_audit patience=790 guard=val_r2<0.8;visible_monotonic_penalty>5e-05
+epoch=1300 loss=3.775705e-06 train_mae=0.0012379 train_r2=0.997854 val_mae=0.00129394 val_r2=0.838666 val_corr=0.969708 score=0.0015978 soft_best=0.00124111@690 guarded_best=0.00124111 status=visible_softscore_guard_audit patience=690 guard=OK
+epoch=1400 loss=6.262429e-06 train_mae=0.00119625 train_r2=0.998026 val_mae=0.00136821 val_r2=0.825954 val_corr=0.965719 score=0.00163856 soft_best=0.00124111@690 guarded_best=0.00124111 status=visible_softscore_guard_audit patience=590 guard=visible_monotonic_penalty>5e-05
+epoch=1500 loss=2.871794e-06 train_mae=0.00171282 train_r2=0.996766 val_mae=0.00208054 val_r2=0.5756 val_corr=0.963031 score=0.0205787 soft_best=0.00124111@690 guarded_best=0.00124111 status=visible_softscore_guard_audit patience=490 guard=val_r2<0.8;val_rmse>0.0022;visible_monotonic_penalty>5e-05
+epoch=1600 loss=3.678867e-06 train_mae=0.00121352 train_r2=0.998245 val_mae=0.00168626 val_r2=0.71412 val_corr=0.968199 score=0.00895972 soft_best=0.00124111@690 guarded_best=0.00124111 status=visible_softscore_guard_audit patience=390 guard=val_r2<0.8;visible_monotonic_penalty>5e-05
+epoch=1700 loss=6.018040e-06 train_mae=0.00154093 train_r2=0.997335 val_mae=0.0021714 val_r2=0.530396 val_corr=0.968045 score=0.0242785 soft_best=0.00124111@690 guarded_best=0.00124111 status=visible_softscore_guard_audit patience=290 guard=val_r2<0.8;val_rmse>0.0022;val_tail_bias_abs>0.004;visible_monotonic_penalty>5e-05
+epoch=1800 loss=2.323389e-06 train_mae=0.00121261 train_r2=0.998024 val_mae=0.00226124 val_r2=0.477959 val_corr=0.969874 score=0.0285329 soft_best=0.00124111@690 guarded_best=0.00124111 status=visible_softscore_guard_audit patience=190 guard=val_r2<0.8;val_rmse>0.0022;val_tail_bias_abs>0.004;visible_monotonic_penalty>5e-05
+epoch=1900 loss=3.238780e-06 train_mae=0.00127197 train_r2=0.997911 val_mae=0.00157313 val_r2=0.792682 val_corr=0.970801 score=0.00245695 soft_best=0.00124111@690 guarded_best=0.00124111 status=visible_softscore_guard_audit patience=90 guard=val_r2<0.8;visible_monotonic_penalty>5e-05
+Early stopping at epoch=1990; best_epoch=690; best_status=visible_softscore_guard_audit; best_soft_epoch=690; best_soft_score=0.00124111
+{
+  "allow_patience_before_first_guard": false,
+  "best_epoch": 690,
+  "best_selection_status": "visible_softscore_guard_audit",
+  "best_soft_epoch": 690,
+  "best_soft_score": 0.0012411131199034466,
+  "best_soft_vals": {
+    "active_clamp_fraction": 0.0,
+    "train_mae": 0.0018855528433558688,
+    "train_r2": 0.9958339425860836,
+    "val_bias_abs": 4.068265987350328e-05,
+    "val_corr": 0.9724255430302503,
+    "val_mae": 0.0009026681924168334,
+    "val_r2": 0.9173372006780052,
+    "val_range_ratio": 0.7729158401489217,
+    "val_rmse": 0.001124681751724252,
+    "val_slope_corr": -0.40313639232654264,
+    "val_slope_mae": 0.0010355705423882487,
+    "val_tail_bias_abs": 0.0010263307486909179,
+    "visible_monotonic_penalty": 0.00011306652775058499,
+    "visible_score": 0.0012411131199034466
+  },
+  "best_val_mae": 0.0009026681924168334,
+  "best_visible_score": 0.0012411131199034466,
+  "candidate_tag": "v7_softscore_seed42",
+  "dtype": "float32",
+  "eval_every": 10,
+  "feature_audit_failures": [],
+  "feature_audit_ok": true,
+  "feature_mode": "g4_all_strict",
+  "final_report_metrics_available": true,
+  "final_report_metrics_file": "metrics_soh_by_split_final_report.json",
+  "final_visible_metrics": {
+    "train_mae": 0.0018855528433558688,
+    "train_r2": 0.9958339425860836,
+    "val_bias": 4.068265987350328e-05,
+    "val_bias_abs": 4.068265987350328e-05,
+    "val_corr": 0.9724255430302503,
+    "val_mae": 0.0009026681924168334,
+    "val_r2": 0.9173372006780052,
+    "val_range_ratio": 0.7729158401489217,
+    "val_rmse": 0.001124681751724252,
+    "val_slope_corr": -0.40313639232654264,
+    "val_slope_mae": 0.0010355705423882487,
+    "val_tail_bias_abs": 0.0010263307486909179,
+    "visible_monotonic_penalty": 0.00011306652775058499
+  },
+  "guard_thresholds": {
+    "max_active_clamp_fraction_for_best": 0.05,
+    "max_train_mae_for_best": 0.003,
+    "max_val_bias_for_best": 0.003,
+    "max_val_mae_for_best": 0.003,
+    "max_val_range_ratio_for_best": 1.8,
+    "max_val_rmse_for_best": 0.0022,
+    "max_val_slope_mae_for_best": 0.002,
+    "max_val_tail_bias_for_best": 0.004,
+    "max_visible_monotonic_penalty_for_best": 5e-05,
+    "min_train_r2_for_best": 0.99,
+    "min_val_corr_for_best": 0.95,
+    "min_val_r2_for_best": 0.8,
+    "min_val_range_ratio_for_best": 0.4,
+    "min_val_slope_corr_for_best": -1.0
+  },
+  "hard_guard_required": false,
+  "hard_visible_guard_ok": false,
+  "metrics_by_split_visible_only": {
+    "all": {
+      "SOH_BIAS": 0.0010776659389961734,
+      "SOH_MAE": 0.0017587290174282514,
+      "SOH_NMAE": 0.011977551066968264,
+      "SOH_NRMSE": 0.014963463938080915,
+      "SOH_R2": 0.9967099739140074,
+      "SOH_RMSE": 0.0021971668567308685,
+      "SOH_corr": 0.9987549645147806,
+      "n": 155
+    },
+    "train": {
+      "SOH_BIAS": 0.0012312930914587911,
+      "SOH_MAE": 0.0018855528433558688,
+      "SOH_NMAE": 0.014052705153312615,
+      "SOH_NRMSE": 0.017247046654174224,
+      "SOH_R2": 0.9958339425860836,
+      "SOH_RMSE": 0.00231416069030692,
+      "SOH_corr": 0.9985639142740743,
+      "n": 135
+    },
+    "val": {
+      "SOH_BIAS": 4.068265987350328e-05,
+      "SOH_MAE": 0.0009026681924168334,
+      "SOH_NMAE": 0.07131078720092945,
+      "SOH_NRMSE": 0.08884985838621544,
+      "SOH_R2": 0.9173372006780052,
+      "SOH_RMSE": 0.001124681751724252,
+      "SOH_corr": 0.9724255430302503,
+      "n": 20
+    }
+  },
+  "min_epochs_before_patience": 1200,
+  "model_variant": "robust_saturating",
+  "n_features": 52,
+  "no_test_metrics_in_training_history": true,
+  "output_model_dir": "C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\PINN-for-ASSB-V1\\ModelFin_112_v7_softscore_seed42",
+  "protocol_tag": "ASSB112_v7_softscore_trainval_only",
+  "require_hard_guard": false,
+  "seed": 42,
+  "selected_checkpoint_audit_ok": true,
+  "selected_checkpoint_guard_reasons": [
+    "visible_monotonic_penalty>5e-05"
+  ],
+  "selection_strategy": "softscore",
+  "test_metrics_used_for_selection": false,
+  "topk_average": {
+    "enabled": false,
+    "selected": false
+  },
+  "training_history_columns": [
+    "epoch",
+    "candidate_tag",
+    "seed",
+    "loss_total",
+    "loss_soh",
+    "loss_rate_tv",
+    "train_mae",
+    "train_r2",
+    "val_mae",
+    "val_rmse",
+    "val_r2",
+    "val_corr",
+    "val_bias_abs",
+    "val_tail_bias_abs",
+    "val_slope_mae",
+    "val_slope_corr",
+    "val_range_ratio",
+    "visible_score",
+    "visible_monotonic_penalty",
+    "active_clamp_fraction",
+    "guard_ok",
+    "guard_reasons",
+    "active_clamp_count"
+  ]
+}
+[OK] seed=42 selected_epoch=690 status=visible_softscore_guard_audit final_report=C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\ModelFin_112_v7_softscore_seed42\metrics_soh_by_split_final_report.json

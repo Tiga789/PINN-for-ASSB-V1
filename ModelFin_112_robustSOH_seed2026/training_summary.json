@@ -1,0 +1,80 @@
+{
+  "best_epoch": 751,
+  "best_selection_status": "visible_guarded",
+  "best_val_mae": 0.0009926223725530813,
+  "best_visible_score": 0.001310676213154572,
+  "candidate_tag": "robustSOH_seed2026",
+  "feature_audit_failures": [],
+  "feature_audit_ok": true,
+  "feature_mode": "g4_all_strict",
+  "final_report_metrics_available": true,
+  "final_report_metrics_file": "metrics_soh_by_split_final_report.json",
+  "final_visible_metrics": {
+    "train_mae": 0.002072983775560189,
+    "train_r2": 0.9952888137756507,
+    "val_mae": 0.0009926223725530813,
+    "val_r2": 0.8893022083508568
+  },
+  "metrics_by_split_visible_only": {
+    "all": {
+      "SOH_BIAS": 0.001337384226999933,
+      "SOH_MAE": 0.0019335823042044332,
+      "SOH_NMAE": 0.013168362244150881,
+      "SOH_NRMSE": 0.015961832212109263,
+      "SOH_R2": 0.996256304294074,
+      "SOH_RMSE": 0.002343762704562879,
+      "SOH_corr": 0.9987430545458166,
+      "n": 155
+    },
+    "train": {
+      "SOH_BIAS": 0.0015221636862761904,
+      "SOH_MAE": 0.002072983775560189,
+      "SOH_NMAE": 0.015449596063137266,
+      "SOH_NRMSE": 0.01834075664522474,
+      "SOH_R2": 0.9952888137756507,
+      "SOH_RMSE": 0.0024609116511314197,
+      "SOH_corr": 0.9986251423152437,
+      "n": 135
+    },
+    "val": {
+      "SOH_BIAS": 9.012287688519582e-05,
+      "SOH_MAE": 0.0009926223725530813,
+      "SOH_NMAE": 0.07841716743169301,
+      "SOH_NRMSE": 0.10281847646455973,
+      "SOH_R2": 0.8893022083508568,
+      "SOH_RMSE": 0.0013014997020830415,
+      "SOH_corr": 0.9646108099974631,
+      "n": 20
+    }
+  },
+  "model_variant": "robust_saturating",
+  "n_features": 52,
+  "no_test_metrics_in_training_history": true,
+  "output_model_dir": "ModelFin_112_robustSOH_seed2026",
+  "protocol_tag": "ASSB112_robustSOH_strict30_trainval_only",
+  "seed": 2026,
+  "selected_checkpoint_audit_ok": true,
+  "selected_checkpoint_guard_reasons": [],
+  "test_metrics_used_for_selection": false,
+  "topk_average": {
+    "enabled": false,
+    "selected": false
+  },
+  "training_history_columns": [
+    "epoch",
+    "candidate_tag",
+    "seed",
+    "loss_total",
+    "loss_soh",
+    "loss_rate_tv",
+    "train_mae",
+    "train_r2",
+    "val_mae",
+    "val_r2",
+    "visible_score",
+    "visible_monotonic_penalty",
+    "guard_ok",
+    "guard_reasons",
+    "active_clamp_count"
+  ]
+}

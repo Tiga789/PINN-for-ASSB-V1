@@ -1,0 +1,80 @@
+{
+  "best_epoch": 1245,
+  "best_selection_status": "visible_guarded",
+  "best_val_mae": 0.0011502136393577167,
+  "best_visible_score": 0.0013455669474650707,
+  "candidate_tag": "robustSOH_seed3407",
+  "feature_audit_failures": [],
+  "feature_audit_ok": true,
+  "feature_mode": "g4_all_strict",
+  "final_report_metrics_available": true,
+  "final_report_metrics_file": "metrics_soh_by_split_final_report.json",
+  "final_visible_metrics": {
+    "train_mae": 0.0012816053190035188,
+    "train_r2": 0.9980790900072003,
+    "val_mae": 0.0011502136393577167,
+    "val_r2": 0.8634477968454717
+  },
+  "metrics_by_split_visible_only": {
+    "all": {
+      "SOH_BIAS": 0.000474937428921739,
+      "SOH_MAE": 0.0012646515538879313,
+      "SOH_NMAE": 0.008612713168719532,
+      "SOH_NRMSE": 0.010595005342122852,
+      "SOH_R2": 0.9983505565950521,
+      "SOH_RMSE": 0.0015557223034003175,
+      "SOH_corr": 0.9992554007489681,
+      "n": 155
+    },
+    "train": {
+      "SOH_BIAS": 0.0005497426935042129,
+      "SOH_MAE": 0.0012816053190035188,
+      "SOH_NMAE": 0.009551586811441325,
+      "SOH_NRMSE": 0.011711313874609778,
+      "SOH_R2": 0.9980790900072003,
+      "SOH_RMSE": 0.0015713914819096657,
+      "SOH_corr": 0.9991775052195105,
+      "n": 135
+    },
+    "val": {
+      "SOH_BIAS": -2.999810700995975e-05,
+      "SOH_MAE": 0.0011502136393577167,
+      "SOH_NMAE": 0.09086687750925913,
+      "SOH_NRMSE": 0.11419603934137781,
+      "SOH_R2": 0.8634477968454717,
+      "SOH_RMSE": 0.001445519485333904,
+      "SOH_corr": 0.9703589473132073,
+      "n": 20
+    }
+  },
+  "model_variant": "robust_saturating",
+  "n_features": 52,
+  "no_test_metrics_in_training_history": true,
+  "output_model_dir": "ModelFin_112_robustSOH_seed3407",
+  "protocol_tag": "ASSB112_robustSOH_strict30_trainval_only",
+  "seed": 3407,
+  "selected_checkpoint_audit_ok": true,
+  "selected_checkpoint_guard_reasons": [],
+  "test_metrics_used_for_selection": false,
+  "topk_average": {
+    "enabled": false,
+    "selected": false
+  },
+  "training_history_columns": [
+    "epoch",
+    "candidate_tag",
+    "seed",
+    "loss_total",
+    "loss_soh",
+    "loss_rate_tv",
+    "train_mae",
+    "train_r2",
+    "val_mae",
+    "val_r2",
+    "visible_score",
+    "visible_monotonic_penalty",
+    "guard_ok",
+    "guard_reasons",
+    "active_clamp_count"
+  ]
+}

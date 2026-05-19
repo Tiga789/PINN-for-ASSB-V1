@@ -1,0 +1,48 @@
+{
+  "best_epoch": 550,
+  "best_selection_status": "visible_softscore_guard_audit",
+  "candidate_tag": "v7_softscore_seed7890",
+  "hard_guard_required": false,
+  "hard_visible_guard_ok": false,
+  "no_test_metrics_in_training_history": true,
+  "ok": true,
+  "protocol_tag": "ASSB112_v7_softscore_trainval_only",
+  "seed": 7890,
+  "selected_model_pt": "selected_model.pt",
+  "selection_strategy": "softscore",
+  "test_metrics_used_for_selection": false,
+  "visible_guard": {
+    "final_visible_metrics": {
+      "train_mae": 0.0020008174913677245,
+      "train_r2": 0.9953532733238148,
+      "val_bias": -3.358472751663344e-05,
+      "val_bias_abs": 3.358472751663344e-05,
+      "val_corr": 0.9771267605058408,
+      "val_mae": 0.0008870399752749836,
+      "val_r2": 0.9229726387340513,
+      "val_range_ratio": 0.7901405096054035,
+      "val_rmse": 0.001085668168769985,
+      "val_slope_corr": -0.42225403757934,
+      "val_slope_mae": 0.0009807217208486207,
+      "val_tail_bias_abs": 0.0008924825583833007,
+      "visible_monotonic_penalty": 8.340741132760977e-05
+    },
+    "guard_reasons": [
+      "visible_monotonic_penalty>5e-05"
+    ],
+    "max_active_clamp_fraction_for_best": 0.05,
+    "max_train_mae_for_best": 0.003,
+    "max_val_bias_for_best": 0.003,
+    "max_val_mae_for_best": 0.003,
+    "max_val_range_ratio_for_best": 1.8,
+    "max_val_rmse_for_best": 0.0022,
+    "max_val_slope_mae_for_best": 0.002,
+    "max_val_tail_bias_for_best": 0.004,
+    "max_visible_monotonic_penalty_for_best": 5e-05,
+    "min_train_r2_for_best": 0.99,
+    "min_val_corr_for_best": 0.95,
+    "min_val_r2_for_best": 0.8,
+    "min_val_range_ratio_for_best": 0.4,
+    "min_val_slope_corr_for_best": -1.0
+  }
+}

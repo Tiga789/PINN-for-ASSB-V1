@@ -1,0 +1,25 @@
+{
+  "best_guarded_epoch": 690,
+  "best_guarded_score": 0.0012411131199034466,
+  "best_soft_epoch": 690,
+  "best_soft_score": 0.0012411131199034466,
+  "best_status": "visible_softscore_guard_audit",
+  "epoch": 1990,
+  "guard_ok": false,
+  "guard_reasons": [
+    "val_r2<0.8",
+    "val_rmse>0.0022",
+    "val_tail_bias_abs>0.004",
+    "visible_monotonic_penalty>5e-05"
+  ],
+  "loss_total": 1.96623477677349e-06,
+  "patience_left": 0,
+  "seed": 42,
+  "train_mae": 0.0011508130613649855,
+  "train_r2": 0.9984486731229515,
+  "val_corr": 0.9707941757195345,
+  "val_mae": 0.0021986484678485963,
+  "val_r2": 0.5056170991248916,
+  "val_rmse": 0.002750466218322611,
+  "visible_score": 0.02623794992211301
+}

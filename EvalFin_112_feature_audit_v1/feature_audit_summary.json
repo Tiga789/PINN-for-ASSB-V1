@@ -1,0 +1,607 @@
+{
+  "dataset_csv": ".\\Data\\assb112_feature_audit_v1\\dataset_with_voltage_features.csv",
+  "failures": [],
+  "fit_splits": [
+    "train"
+  ],
+  "group_summaries": {
+    "G0": {
+      "feature_audit": {
+        "failures": [],
+        "group_counts": {
+          "G0_history": 8
+        },
+        "n_features": 8,
+        "nonfinite_counts": {},
+        "ok": true,
+        "warnings": []
+      },
+      "features": [
+        "cycle_norm",
+        "throughput_before_norm",
+        "throughput_end_norm",
+        "I_abs_mean_norm",
+        "I_abs_max_norm",
+        "charge_current_level_norm",
+        "discharge_current_level_norm",
+        "rest_fraction"
+      ],
+      "n_features": 8,
+      "selected_by_seed": [
+        {
+          "best_alpha": 0.001,
+          "seed": "7",
+          "visible_score": 0.0009095746467204402
+        },
+        {
+          "best_alpha": 0.001,
+          "seed": "42",
+          "visible_score": 0.0009095746467204402
+        },
+        {
+          "best_alpha": 0.001,
+          "seed": "2026",
+          "visible_score": 0.0009095746467204402
+        },
+        {
+          "best_alpha": 0.001,
+          "seed": "3407",
+          "visible_score": 0.0009095746467204402
+        },
+        {
+          "best_alpha": 0.001,
+          "seed": "7890",
+          "visible_score": 0.0009095746467204402
+        }
+      ],
+      "selection_uses_test": false
+    },
+    "G1": {
+      "feature_audit": {
+        "failures": [],
+        "group_counts": {
+          "G1_107A_potential": 8,
+          "G1_107A_state": 14
+        },
+        "n_features": 22,
+        "nonfinite_counts": {},
+        "ok": true,
+        "warnings": []
+      },
+      "features": [
+        "theta_a_mean_start",
+        "theta_a_mean_end",
+        "theta_a_mean_window",
+        "theta_c_mean_start",
+        "theta_c_mean_end",
+        "theta_c_mean_window",
+        "theta_a_surface_start",
+        "theta_a_surface_end",
+        "theta_c_surface_start",
+        "theta_c_surface_end",
+        "cs_a_radial_energy_mean",
+        "cs_c_radial_energy_mean",
+        "cs_a_surface_minus_mean_abs",
+        "cs_c_surface_minus_mean_abs",
+        "polarization_mean",
+        "polarization_abs_mean",
+        "polarization_std",
+        "current_norm_polarization_abs_mean",
+        "phie_mean",
+        "phis_c_mean",
+        "rest_phis_relax_slope",
+        "rest_phie_relax_slope"
+      ],
+      "n_features": 22,
+      "selected_by_seed": [
+        {
+          "best_alpha": 0.1,
+          "seed": "7",
+          "visible_score": 0.0006566149697617762
+        },
+        {
+          "best_alpha": 0.1,
+          "seed": "42",
+          "visible_score": 0.0006566149697617762
+        },
+        {
+          "best_alpha": 0.1,
+          "seed": "2026",
+          "visible_score": 0.0006566149697617762
+        },
+        {
+          "best_alpha": 0.1,
+          "seed": "3407",
+          "visible_score": 0.0006566149697617762
+        },
+        {
+          "best_alpha": 0.1,
+          "seed": "7890",
+          "visible_score": 0.0006566149697617762
+        }
+      ],
+      "selection_uses_test": false
+    },
+    "G2": {
+      "feature_audit": {
+        "failures": [],
+        "group_counts": {
+          "G2_voltage_health": 15
+        },
+        "n_features": 15,
+        "nonfinite_counts": {},
+        "ok": true,
+        "warnings": []
+      },
+      "features": [
+        "voltage_start",
+        "voltage_end",
+        "voltage_mean",
+        "voltage_std",
+        "voltage_min",
+        "voltage_max",
+        "charge_voltage_mean",
+        "discharge_voltage_mean",
+        "charge_voltage_slope",
+        "discharge_voltage_slope",
+        "v_at_tfrac_010",
+        "v_at_tfrac_025",
+        "v_at_tfrac_050",
+        "v_at_tfrac_075",
+        "v_at_tfrac_090"
+      ],
+      "n_features": 15,
+      "selected_by_seed": [
+        {
+          "best_alpha": 0.1,
+          "seed": "7",
+          "visible_score": 0.00037930696462012416
+        },
+        {
+          "best_alpha": 0.1,
+          "seed": "42",
+          "visible_score": 0.00037930696462012416
+        },
+        {
+          "best_alpha": 0.1,
+          "seed": "2026",
+          "visible_score": 0.00037930696462012416
+        },
+        {
+          "best_alpha": 0.1,
+          "seed": "3407",
+          "visible_score": 0.00037930696462012416
+        },
+        {
+          "best_alpha": 0.1,
+          "seed": "7890",
+          "visible_score": 0.00037930696462012416
+        }
+      ],
+      "selection_uses_test": false
+    },
+    "G3": {
+      "feature_audit": {
+        "failures": [],
+        "group_counts": {
+          "G3_switch_polarization": 7
+        },
+        "n_features": 7,
+        "nonfinite_counts": {},
+        "ok": true,
+        "warnings": []
+      },
+      "features": [
+        "step_voltage_jump_abs_mean",
+        "step_voltage_jump_signed_mean",
+        "r_step_proxy_abs_mean",
+        "rest_voltage_recovery_mean",
+        "rest_voltage_recovery_abs_mean",
+        "charge_discharge_voltage_gap",
+        "voltage_efficiency_proxy"
+      ],
+      "n_features": 7,
+      "selected_by_seed": [
+        {
+          "best_alpha": 1e-06,
+          "seed": "7",
+          "visible_score": 0.0009532874908243227
+        },
+        {
+          "best_alpha": 1e-06,
+          "seed": "42",
+          "visible_score": 0.0009532874908243227
+        },
+        {
+          "best_alpha": 1e-06,
+          "seed": "2026",
+          "visible_score": 0.0009532874908243227
+        },
+        {
+          "best_alpha": 1e-06,
+          "seed": "3407",
+          "visible_score": 0.0009532874908243227
+        },
+        {
+          "best_alpha": 1e-06,
+          "seed": "7890",
+          "visible_score": 0.0009532874908243227
+        }
+      ],
+      "selection_uses_test": false
+    },
+    "G4": {
+      "feature_audit": {
+        "failures": [],
+        "group_counts": {
+          "G0_history": 8,
+          "G1_107A_potential": 8,
+          "G1_107A_state": 14,
+          "G2_voltage_health": 15,
+          "G3_switch_polarization": 7
+        },
+        "n_features": 52,
+        "nonfinite_counts": {},
+        "ok": true,
+        "warnings": []
+      },
+      "features": [
+        "cycle_norm",
+        "throughput_before_norm",
+        "throughput_end_norm",
+        "I_abs_mean_norm",
+        "I_abs_max_norm",
+        "charge_current_level_norm",
+        "discharge_current_level_norm",
+        "rest_fraction",
+        "theta_a_mean_start",
+        "theta_a_mean_end",
+        "theta_a_mean_window",
+        "theta_c_mean_start",
+        "theta_c_mean_end",
+        "theta_c_mean_window",
+        "theta_a_surface_start",
+        "theta_a_surface_end",
+        "theta_c_surface_start",
+        "theta_c_surface_end",
+        "cs_a_radial_energy_mean",
+        "cs_c_radial_energy_mean",
+        "cs_a_surface_minus_mean_abs",
+        "cs_c_surface_minus_mean_abs",
+        "polarization_mean",
+        "polarization_abs_mean",
+        "polarization_std",
+        "current_norm_polarization_abs_mean",
+        "phie_mean",
+        "phis_c_mean",
+        "rest_phis_relax_slope",
+        "rest_phie_relax_slope",
+        "voltage_start",
+        "voltage_end",
+        "voltage_mean",
+        "voltage_std",
+        "voltage_min",
+        "voltage_max",
+        "charge_voltage_mean",
+        "discharge_voltage_mean",
+        "charge_voltage_slope",
+        "discharge_voltage_slope",
+        "v_at_tfrac_010",
+        "v_at_tfrac_025",
+        "v_at_tfrac_050",
+        "v_at_tfrac_075",
+        "v_at_tfrac_090",
+        "step_voltage_jump_abs_mean",
+        "step_voltage_jump_signed_mean",
+        "r_step_proxy_abs_mean",
+        "rest_voltage_recovery_mean",
+        "rest_voltage_recovery_abs_mean",
+        "charge_discharge_voltage_gap",
+        "voltage_efficiency_proxy"
+      ],
+      "n_features": 52,
+      "selected_by_seed": [
+        {
+          "best_alpha": 1.0,
+          "seed": "7",
+          "visible_score": 0.0004478619168228282
+        },
+        {
+          "best_alpha": 1.0,
+          "seed": "42",
+          "visible_score": 0.0004478619168228282
+        },
+        {
+          "best_alpha": 1.0,
+          "seed": "2026",
+          "visible_score": 0.0004478619168228282
+        },
+        {
+          "best_alpha": 1.0,
+          "seed": "3407",
+          "visible_score": 0.0004478619168228282
+        },
+        {
+          "best_alpha": 1.0,
+          "seed": "7890",
+          "visible_score": 0.0004478619168228282
+        }
+      ],
+      "selection_uses_test": false
+    }
+  },
+  "groups": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4"
+  ],
+  "importance_dominance": {
+    "G0": {
+      "top10_G0_count": 8,
+      "top10_features": [
+        {
+          "feature": "I_abs_mean_norm",
+          "feature_group": "G0_history",
+          "importance_abs_beta": 0.21805276165270726
+        },
+        {
+          "feature": "cycle_norm",
+          "feature_group": "G0_history",
+          "importance_abs_beta": 0.1678364972539157
+        },
+        {
+          "feature": "charge_current_level_norm",
+          "feature_group": "G0_history",
+          "importance_abs_beta": 0.16092343900704265
+        },
+        {
+          "feature": "rest_fraction",
+          "feature_group": "G0_history",
+          "importance_abs_beta": 0.14186226846805994
+        },
+        {
+          "feature": "throughput_end_norm",
+          "feature_group": "G0_history",
+          "importance_abs_beta": 0.09354770268075185
+        },
+        {
+          "feature": "throughput_before_norm",
+          "feature_group": "G0_history",
+          "importance_abs_beta": 0.09278220844272766
+        },
+        {
+          "feature": "discharge_current_level_norm",
+          "feature_group": "G0_history",
+          "importance_abs_beta": 0.01562282500434442
+        },
+        {
+          "feature": "I_abs_max_norm",
+          "feature_group": "G0_history",
+          "importance_abs_beta": 2.1773391532422792e-16
+        }
+      ]
+    },
+    "G1": {
+      "top10_G0_count": 0,
+      "top10_features": [
+        {
+          "feature": "polarization_std",
+          "feature_group": "G1_107A_potential",
+          "importance_abs_beta": 0.006929327068853297
+        },
+        {
+          "feature": "theta_c_mean_window",
+          "feature_group": "G1_107A_state",
+          "importance_abs_beta": 0.0058156305416687815
+        },
+        {
+          "feature": "theta_a_mean_window",
+          "feature_group": "G1_107A_state",
+          "importance_abs_beta": 0.0051016604502507334
+        },
+        {
+          "feature": "theta_a_mean_end",
+          "feature_group": "G1_107A_state",
+          "importance_abs_beta": 0.004974976048870872
+        },
+        {
+          "feature": "phie_mean",
+          "feature_group": "G1_107A_potential",
+          "importance_abs_beta": 0.004450935843658854
+        },
+        {
+          "feature": "polarization_mean",
+          "feature_group": "G1_107A_potential",
+          "importance_abs_beta": 0.00372459984374629
+        },
+        {
+          "feature": "polarization_abs_mean",
+          "feature_group": "G1_107A_potential",
+          "importance_abs_beta": 0.003724599843724974
+        },
+        {
+          "feature": "theta_c_mean_end",
+          "feature_group": "G1_107A_state",
+          "importance_abs_beta": 0.0036189955446737088
+        },
+        {
+          "feature": "phis_c_mean",
+          "feature_group": "G1_107A_potential",
+          "importance_abs_beta": 0.0032231664127762016
+        },
+        {
+          "feature": "cs_c_radial_energy_mean",
+          "feature_group": "G1_107A_state",
+          "importance_abs_beta": 0.0020728983164772785
+        }
+      ]
+    },
+    "G2": {
+      "top10_G0_count": 0,
+      "top10_features": [
+        {
+          "feature": "discharge_voltage_slope",
+          "feature_group": "G2_voltage_health",
+          "importance_abs_beta": 0.012841039057867931
+        },
+        {
+          "feature": "voltage_end",
+          "feature_group": "G2_voltage_health",
+          "importance_abs_beta": 0.01027000695529301
+        },
+        {
+          "feature": "v_at_tfrac_090",
+          "feature_group": "G2_voltage_health",
+          "importance_abs_beta": 0.008493702807374603
+        },
+        {
+          "feature": "discharge_voltage_mean",
+          "feature_group": "G2_voltage_health",
+          "importance_abs_beta": 0.006488601718373843
+        },
+        {
+          "feature": "v_at_tfrac_075",
+          "feature_group": "G2_voltage_health",
+          "importance_abs_beta": 0.006279197461585007
+        },
+        {
+          "feature": "v_at_tfrac_025",
+          "feature_group": "G2_voltage_health",
+          "importance_abs_beta": 0.004976286080104586
+        },
+        {
+          "feature": "voltage_mean",
+          "feature_group": "G2_voltage_health",
+          "importance_abs_beta": 0.004528036957630377
+        },
+        {
+          "feature": "voltage_std",
+          "feature_group": "G2_voltage_health",
+          "importance_abs_beta": 0.004212253471884253
+        },
+        {
+          "feature": "v_at_tfrac_010",
+          "feature_group": "G2_voltage_health",
+          "importance_abs_beta": 0.003166588511000157
+        },
+        {
+          "feature": "charge_voltage_slope",
+          "feature_group": "G2_voltage_health",
+          "importance_abs_beta": 0.0023325484480754
+        }
+      ]
+    },
+    "G3": {
+      "top10_G0_count": 0,
+      "top10_features": [
+        {
+          "feature": "voltage_efficiency_proxy",
+          "feature_group": "G3_switch_polarization",
+          "importance_abs_beta": 0.09248974522350828
+        },
+        {
+          "feature": "charge_discharge_voltage_gap",
+          "feature_group": "G3_switch_polarization",
+          "importance_abs_beta": 0.05648481156789398
+        },
+        {
+          "feature": "r_step_proxy_abs_mean",
+          "feature_group": "G3_switch_polarization",
+          "importance_abs_beta": 0.0005745555990978868
+        },
+        {
+          "feature": "step_voltage_jump_abs_mean",
+          "feature_group": "G3_switch_polarization",
+          "importance_abs_beta": 0.0004525068757956774
+        },
+        {
+          "feature": "step_voltage_jump_signed_mean",
+          "feature_group": "G3_switch_polarization",
+          "importance_abs_beta": 0.0002887959992887712
+        },
+        {
+          "feature": "rest_voltage_recovery_abs_mean",
+          "feature_group": "G3_switch_polarization",
+          "importance_abs_beta": 0.00011762528532613392
+        },
+        {
+          "feature": "rest_voltage_recovery_mean",
+          "feature_group": "G3_switch_polarization",
+          "importance_abs_beta": 7.621511707407713e-05
+        }
+      ]
+    },
+    "G4": {
+      "top10_G0_count": 1,
+      "top10_features": [
+        {
+          "feature": "polarization_std",
+          "feature_group": "G1_107A_potential",
+          "importance_abs_beta": 0.0025012196785918483
+        },
+        {
+          "feature": "theta_c_mean_end",
+          "feature_group": "G1_107A_state",
+          "importance_abs_beta": 0.0020939269434547825
+        },
+        {
+          "feature": "discharge_voltage_slope",
+          "feature_group": "G2_voltage_health",
+          "importance_abs_beta": 0.0020889815798996736
+        },
+        {
+          "feature": "rest_fraction",
+          "feature_group": "G0_history",
+          "importance_abs_beta": 0.001995772532182638
+        },
+        {
+          "feature": "theta_a_mean_end",
+          "feature_group": "G1_107A_state",
+          "importance_abs_beta": 0.001984626355123531
+        },
+        {
+          "feature": "phie_mean",
+          "feature_group": "G1_107A_potential",
+          "importance_abs_beta": 0.001761146115280332
+        },
+        {
+          "feature": "charge_voltage_slope",
+          "feature_group": "G2_voltage_health",
+          "importance_abs_beta": 0.0015567312397202215
+        },
+        {
+          "feature": "polarization_mean",
+          "feature_group": "G1_107A_potential",
+          "importance_abs_beta": 0.0015499759899584298
+        },
+        {
+          "feature": "polarization_abs_mean",
+          "feature_group": "G1_107A_potential",
+          "importance_abs_beta": 0.0015499759899577636
+        },
+        {
+          "feature": "voltage_end",
+          "feature_group": "G2_voltage_health",
+          "importance_abs_beta": 0.0014890143585009064
+        }
+      ]
+    }
+  },
+  "ok": true,
+  "seeds": [
+    7,
+    42,
+    2026,
+    3407,
+    7890
+  ],
+  "selection_splits": [
+    "val"
+  ],
+  "split_manifest_json": ".\\Data\\assb111_seed42locked_repro_c00\\split_manifest.json",
+  "strict_note": "Ridge models are fit on train only; alpha is selected by val only; test metrics are reported after selection.",
+  "test_metrics_used_for_selection": false,
+  "warnings": []
+}

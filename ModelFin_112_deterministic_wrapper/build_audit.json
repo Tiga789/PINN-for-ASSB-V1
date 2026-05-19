@@ -1,0 +1,18 @@
+{
+  "model_name": "ModelFin_112_deterministic_wrapper",
+  "ok": true,
+  "output_model_dir": "ModelFin_112_deterministic_wrapper",
+  "soh_model_dir": "ModelFin_112_deterministicSOH_ridge_g4",
+  "soh_model_variant": "deterministic_ridge_soh_head",
+  "soh_no_test_metrics_in_training_history": true,
+  "soh_selected_alpha": [
+    0.3,
+    1.0,
+    0.1
+  ],
+  "soh_test_metrics_used_for_selection": false,
+  "state_core_dir": ".\\ModelFin_107A",
+  "state_eval_npz": "C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\PINN-for-ASSB-V1\\EvalFin_107A_cycles5_522_v2_massclosed_candidate_linearGauge_csACorrected_softlabel_only\\eval_sampled_arrays_ModelFin107A_csA_corrected.npz",
+  "state_scorecard_csv": "C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\PINN-for-ASSB-V1\\EvalFin_111_seed42locked_repro_c00\\five_state_scorecard.csv",
+  "warning_if_state_source_empty": "Evaluator can still run SOH if state_scorecard_csv/state_eval_npz is empty, but five-target scorecard requires one of them."
+}

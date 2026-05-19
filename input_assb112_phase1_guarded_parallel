@@ -1,0 +1,75 @@
+# ASSB-112 phase 1B: guarded robust SOH multi-seed sweep
+# Purpose:
+#   Fix the v1 selection/guard weakness exposed by seed3407:
+#   val_MAE was small but val_R2 was only ~0.863 and test SOH had +0.015 bias.
+#   This protocol selects checkpoints using train/val only, but adds validation
+#   shape, bias, slope, and range guards.
+
+MODEL_ID = 112
+MODEL_ALIAS = ModelFin_112_guardedSOH
+PROTOCOL = ASSB112_guardedSOH_strict30_trainval_only
+
+PROJECT_ROOT = C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1
+FEATURE_DATASET_CSV = Data\assb112_feature_audit_v1\dataset_with_voltage_features.csv
+SPLIT_MANIFEST_JSON = Data\assb111_seed42locked_repro_c00\split_manifest.json
+FEATURE_MODE = g4_all_strict
+SOH_MODEL_VARIANT = robust_saturating
+
+# Strict30 split. Do not change unless rerunning the whole protocol.
+TRAIN_CYCLE_FROM = 5
+TRAIN_CYCLE_TO = 139
+VAL_CYCLE_FROM = 140
+VAL_CYCLE_TO = 159
+TEST_CYCLE_FROM = 160
+TEST_CYCLE_TO = 521
+PARTIAL_CYCLES = 522
+FIT_SPLITS = train
+EARLY_STOP_SPLITS = val
+FORBIDDEN_FIT_SPLITS = test,partial
+
+# Seeds and parallel execution.
+SEEDS = 7,42,2026,3407,7890
+MAX_PARALLEL = 4
+DEVICE_DEFAULT = cuda
+DTYPE_DEFAULT = float64
+DTYPE_FAST_OPTION = float32
+
+# Robust saturating settings.
+SOH_FLOOR_PRIOR = 0.72
+SOH_NUMERIC_MIN = 0.60
+FLOOR_MIN = 0.65
+FLOOR_MAX = 0.85
+DAMAGE_RATE_SCALE = 5.0e-4
+GATE_GAMMA = 1.0
+DROPOUT = 0.05
+FEATURE_DROPOUT = 0.05
+HIDDEN_DIM = 48
+HIDDEN_LAYERS = 2
+ACTIVATION = silu
+EPOCHS = 7000
+LR = 2e-3
+WEIGHT_DECAY = 1e-5
+PATIENCE = 1000
+GRAD_CLIP_NORM = 5.0
+
+# Visible-only checkpoint guards. Test metrics must never enter selection.
+GUARD_TRAIN_R2_MIN = 0.990
+GUARD_TRAIN_MAE_MAX = 0.0030
+GUARD_VAL_MAE_MAX = 0.00150
+GUARD_VAL_R2_MIN = 0.90
+GUARD_VAL_CORR_MIN = 0.95
+GUARD_VAL_BIAS_ABS_MAX = 0.00150
+GUARD_VAL_TAIL_BIAS_ABS_MAX = 0.00200
+GUARD_VAL_SLOPE_MAE_MAX = 0.00100
+GUARD_VAL_RANGE_RATIO_MIN = 0.70
+GUARD_VAL_RANGE_RATIO_MAX = 1.35
+GUARD_VISIBLE_MONOTONIC_PENALTY_MAX = 2.0e-5
+GUARD_NO_TEST_METRICS_IN_TRAINING_HISTORY = true
+GUARD_TEST_METRICS_USED_FOR_SELECTION = false
+
+SWEEP_MODEL_PREFIX = ModelFin_112_guardedSOH_seed
+SWEEP_EVAL_DIR = EvalFin_112_guarded_soh_sweep_v2
+LOG_DIR = LogFin_112_guardedSOH_parallel
+
+FINAL_RESULT_LABEL = ASSB-112 guarded SOH strict30 multi-seed candidate
+DO_NOT_DESCRIBE_AS = test-selected model; StageB full-cycle calibration; cross-cell generalized model; fully end-to-end unified core

@@ -1,0 +1,9 @@
+ASSB-112 deterministic SOH baseline summary
+model_dir = ModelFin_112_deterministicSOH_ridge_g4
+model_variant = deterministic_ridge_soh_head
+feature_mode = g4_all_strict
+selected_alpha = [0.3, 1.0, 0.1]
+device_used = cuda; gpu_reserved_actual_gb = 2.0
+no_test_metrics_in_training_history = True
+test_metrics_used_for_selection = False
+TEST: R2=0.9903415089016048 MAE=0.0029611590158690726 RMSE=0.0034824388996077794 BIAS=-0.0028126474124020766 corr=0.9995154183233169

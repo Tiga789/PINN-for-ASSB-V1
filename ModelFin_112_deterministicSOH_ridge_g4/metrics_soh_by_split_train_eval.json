@@ -1,0 +1,35 @@
+{
+  "metrics_by_split_visible_only": {
+    "all": {
+      "SOH_BIAS": 4.623486739153299e-06,
+      "SOH_MAE": 0.0006384715026380659,
+      "SOH_NMAE": 0.004348211095552345,
+      "SOH_NRMSE": 0.005065473654852931,
+      "SOH_R2": 0.9996229706314834,
+      "SOH_RMSE": 0.000743791068307519,
+      "SOH_corr": 0.9998115389391424,
+      "n": 155
+    },
+    "train": {
+      "SOH_BIAS": -2.4671622769447924e-18,
+      "SOH_MAE": 0.0006661523048786911,
+      "SOH_NMAE": 0.004964720008058172,
+      "SOH_NRMSE": 0.005736037653993118,
+      "SOH_R2": 0.9995391922636945,
+      "SOH_RMSE": 0.0007696455586370509,
+      "SOH_corr": 0.9997695918844379,
+      "n": 135
+    },
+    "val": {
+      "SOH_BIAS": 3.583202222845472e-05,
+      "SOH_MAE": 0.00045162608751384556,
+      "SOH_NMAE": 0.03567846091359361,
+      "SOH_NRMSE": 0.042476993695966754,
+      "SOH_R2": 0.9811068587073593,
+      "SOH_RMSE": 0.0005376834645059111,
+      "SOH_corr": 0.9911586050253129,
+      "n": 20
+    }
+  },
+  "note": "No held-out test metrics were used for scaler fitting, alpha selection, coefficient averaging, or checkpoint/model selection."
+}

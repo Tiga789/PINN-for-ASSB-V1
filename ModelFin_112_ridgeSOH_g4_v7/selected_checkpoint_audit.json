@@ -1,0 +1,30 @@
+{
+  "best_selection_status": "visible_score_selected",
+  "hard_visible_guard_ok": true,
+  "no_test_metrics_in_training_history": true,
+  "ok": true,
+  "selected_alpha": 0.3,
+  "selected_model_json": "ridge_model.json",
+  "test_metrics_used_for_selection": false,
+  "visible_guard": {
+    "final_visible_metrics": {
+      "train_mae": 0.0006641657340709802,
+      "train_r2": 0.9995434434727862,
+      "val_bias_abs": 4.673555959894271e-06,
+      "val_corr": 0.9911207946473245,
+      "val_mae": 0.00044214010987068676,
+      "val_r2": 0.98149317910291,
+      "val_range_ratio": 0.989935251031486,
+      "val_slope_mae": 0.0006122010667965208,
+      "val_tail_bias_abs": 3.193055353438723e-05,
+      "visible_score": 0.0006644388611386327
+    },
+    "guard_reasons": [],
+    "max_train_mae_for_best": 0.003,
+    "max_val_bias_for_best": 0.0025,
+    "max_val_mae_for_best": 0.0015,
+    "min_train_r2_for_best": 0.99,
+    "min_val_corr_for_best": 0.95,
+    "min_val_r2_for_best": 0.85
+  }
+}

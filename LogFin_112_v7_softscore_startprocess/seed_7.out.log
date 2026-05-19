@@ -1,0 +1,162 @@
+[START] seed=7 variant=robust_saturating device=cuda dtype=float32 epochs=2500 eval_every=10 print_every=100 min_epochs_before_patience=1200 selection_strategy=softscore require_hard_guard=False n_features=52
+epoch=1 loss=1.406269e-03 train_mae=0.0787018 train_r2=-4.66762 val_mae=0.12724 val_r2=-1057.92 val_corr=0.697292 score=85.9888 soft_best=85.9888@1 guarded_best=85.9888 status=visible_softscore_guard_audit patience=800 guard=train_r2<0.99;train_mae>0.003;val_mae>0.003;val_r2<0.8;val_corr<0.95;val_bias_abs>0.003;val_rmse>0.0022;val_tail_bias_abs>0.004;val_range_ratio<0.4;visible_monotonic_penalty>5e-05
+epoch=100 loss=1.295019e-04 train_mae=0.0132046 train_r2=0.799691 val_mae=0.0393265 val_r2=-101.07 val_corr=nan score=8.23312 soft_best=3.44127@30 guarded_best=3.44127 status=visible_softscore_guard_audit patience=800 guard=train_r2<0.99;train_mae>0.003;val_mae>0.003;val_r2<0.8;val_corr<0.95;val_bias_abs>0.003;val_rmse>0.0022;val_tail_bias_abs>0.004;val_range_ratio<0.4;visible_monotonic_penalty>5e-05
+epoch=200 loss=5.288566e-05 train_mae=0.00746053 train_r2=0.934799 val_mae=0.0183324 val_r2=-21.2241 val_corr=0.9797 score=1.79437 soft_best=1.79437@200 guarded_best=1.79437 status=visible_softscore_guard_audit patience=800 guard=train_r2<0.99;train_mae>0.003;val_mae>0.003;val_r2<0.8;val_bias_abs>0.003;val_rmse>0.0022;val_tail_bias_abs>0.004;visible_monotonic_penalty>5e-05
+epoch=300 loss=1.226115e-05 train_mae=0.00317144 train_r2=0.989831 val_mae=0.00553668 val_r2=-1.08543 val_corr=0.979481 score=0.15749 soft_best=0.00378838@210 guarded_best=0.00378838 status=visible_softscore_guard_audit patience=800 guard=train_r2<0.99;train_mae>0.003;val_mae>0.003;val_r2<0.8;val_bias_abs>0.003;val_rmse>0.0022;val_tail_bias_abs>0.004;visible_monotonic_penalty>5e-05
+epoch=400 loss=1.012285e-05 train_mae=0.00214565 train_r2=0.99433 val_mae=0.00691029 val_r2=-2.17074 val_corr=0.979441 score=0.245611 soft_best=0.00378838@210 guarded_best=0.00378838 status=visible_softscore_guard_audit patience=800 guard=val_mae>0.003;val_r2<0.8;val_bias_abs>0.003;val_rmse>0.0022;val_tail_bias_abs>0.004;visible_monotonic_penalty>5e-05
+epoch=500 loss=1.064832e-05 train_mae=0.00177789 train_r2=0.996162 val_mae=0.0039764 val_r2=-0.0740412 val_corr=0.979423 score=0.0745673 soft_best=0.00378838@210 guarded_best=0.00378838 status=visible_softscore_guard_audit patience=800 guard=val_mae>0.003;val_r2<0.8;val_bias_abs>0.003;val_rmse>0.0022;val_tail_bias_abs>0.004
+epoch=600 loss=1.045913e-05 train_mae=0.00199564 train_r2=0.995687 val_mae=0.00205355 val_r2=0.679582 val_corr=0.979585 score=0.012178 soft_best=0.00192747@550 guarded_best=0.00192747 status=visible_softscore_guard_audit patience=800 guard=val_r2<0.8;val_rmse>0.0022
+epoch=700 loss=8.230666e-06 train_mae=0.00177898 train_r2=0.996382 val_mae=0.00317783 val_r2=0.298773 val_corr=0.979441 score=0.0438566 soft_best=0.00192747@550 guarded_best=0.00192747 status=visible_softscore_guard_audit patience=800 guard=val_mae>0.003;val_r2<0.8;val_bias_abs>0.003;val_rmse>0.0022
+epoch=800 loss=6.747220e-06 train_mae=0.00165634 train_r2=0.996633 val_mae=0.00393761 val_r2=-0.0566879 val_corr=0.978277 score=0.0731221 soft_best=0.00192747@550 guarded_best=0.00192747 status=visible_softscore_guard_audit patience=800 guard=val_mae>0.003;val_r2<0.8;val_bias_abs>0.003;val_rmse>0.0022;val_tail_bias_abs>0.004
+epoch=900 loss=6.308644e-06 train_mae=0.00249496 train_r2=0.993569 val_mae=0.00251863 val_r2=0.542547 val_corr=0.979652 score=0.0237292 soft_best=0.00101324@810 guarded_best=0.00101324 status=visible_softscore_guard_audit patience=800 guard=val_r2<0.8;val_rmse>0.0022
+epoch=1000 loss=5.457111e-06 train_mae=0.00160162 train_r2=0.996531 val_mae=0.00512793 val_r2=-0.769706 val_corr=0.977593 score=0.131436 soft_best=0.00101324@810 guarded_best=0.00101324 status=visible_softscore_guard_audit patience=800 guard=val_mae>0.003;val_r2<0.8;val_bias_abs>0.003;val_rmse>0.0022;val_tail_bias_abs>0.004
+epoch=1100 loss=5.439122e-06 train_mae=0.00178982 train_r2=0.995992 val_mae=0.00458629 val_r2=-0.441557 val_corr=0.977776 score=0.1046 soft_best=0.00101324@810 guarded_best=0.00101324 status=visible_softscore_guard_audit patience=800 guard=val_mae>0.003;val_r2<0.8;val_bias_abs>0.003;val_rmse>0.0022;visible_monotonic_penalty>5e-05
+epoch=1200 loss=3.820930e-06 train_mae=0.00135259 train_r2=0.997532 val_mae=0.00173479 val_r2=0.727194 val_corr=0.977143 score=0.00786659 soft_best=0.00101324@810 guarded_best=0.00101324 status=visible_softscore_guard_audit patience=790 guard=val_r2<0.8
+epoch=1300 loss=3.337005e-06 train_mae=0.00131828 train_r2=0.997748 val_mae=0.00174173 val_r2=0.725171 val_corr=0.976675 score=0.00801351 soft_best=0.00101324@810 guarded_best=0.00101324 status=visible_softscore_guard_audit patience=690 guard=val_r2<0.8
+epoch=1400 loss=3.023656e-06 train_mae=0.00135795 train_r2=0.997682 val_mae=0.00148536 val_r2=0.803191 val_corr=0.975773 score=0.00183049 soft_best=0.00101324@810 guarded_best=0.00101324 status=visible_softscore_guard_audit patience=590 guard=OK
+epoch=1500 loss=2.990443e-06 train_mae=0.00128835 train_r2=0.99776 val_mae=0.00164773 val_r2=0.741004 val_corr=0.975016 score=0.00675031 soft_best=0.00101324@810 guarded_best=0.00101324 status=visible_softscore_guard_audit patience=490 guard=val_r2<0.8
+epoch=1600 loss=6.413114e-06 train_mae=0.00132905 train_r2=0.997583 val_mae=0.00168703 val_r2=0.748877 val_corr=0.97433 score=0.00608649 soft_best=0.00101324@810 guarded_best=0.00101324 status=visible_softscore_guard_audit patience=390 guard=val_r2<0.8
+epoch=1700 loss=2.074566e-06 train_mae=0.00108966 train_r2=0.998367 val_mae=0.00222782 val_r2=0.498913 val_corr=0.973382 score=0.0267888 soft_best=0.00101324@810 guarded_best=0.00101324 status=visible_softscore_guard_audit patience=290 guard=val_r2<0.8;val_rmse>0.0022;val_tail_bias_abs>0.004
+epoch=1800 loss=2.870430e-06 train_mae=0.00151607 train_r2=0.997462 val_mae=0.00310491 val_r2=0.0661091 val_corr=0.973879 score=0.0624867 soft_best=0.00101324@810 guarded_best=0.00101324 status=visible_softscore_guard_audit patience=190 guard=val_mae>0.003;val_r2<0.8;val_bias_abs>0.003;val_rmse>0.0022;val_tail_bias_abs>0.004;visible_monotonic_penalty>5e-05
+epoch=1900 loss=1.801065e-06 train_mae=0.0011255 train_r2=0.998396 val_mae=0.00255002 val_r2=0.319307 val_corr=0.97379 score=0.0415471 soft_best=0.00101324@810 guarded_best=0.00101324 status=visible_softscore_guard_audit patience=90 guard=val_r2<0.8;val_rmse>0.0022;val_tail_bias_abs>0.004;visible_monotonic_penalty>5e-05
+Early stopping at epoch=1990; best_epoch=810; best_status=visible_softscore_guard_audit; best_soft_epoch=810; best_soft_score=0.00101324
+{
+  "allow_patience_before_first_guard": false,
+  "best_epoch": 810,
+  "best_selection_status": "visible_softscore_guard_audit",
+  "best_soft_epoch": 810,
+  "best_soft_score": 0.0010132448054501872,
+  "best_soft_vals": {
+    "active_clamp_fraction": 0.0,
+    "train_mae": 0.0023666828124667347,
+    "train_r2": 0.9936687814091971,
+    "val_bias_abs": 0.00012716401981399672,
+    "val_corr": 0.9798221308635576,
+    "val_mae": 0.0006488129760645611,
+    "val_r2": 0.9572188259798642,
+    "val_range_ratio": 0.9524658322334238,
+    "val_rmse": 0.0008090976574032054,
+    "val_slope_corr": 0.25125704682480027,
+    "val_slope_mae": 0.000903063142879421,
+    "val_tail_bias_abs": 4.881457437451164e-05,
+    "visible_monotonic_penalty": 3.152389030951958e-05,
+    "visible_score": 0.0010132448054501872
+  },
+  "best_val_mae": 0.0006488129760645611,
+  "best_visible_score": 0.0010132448054501872,
+  "candidate_tag": "v7_softscore_seed7",
+  "dtype": "float32",
+  "eval_every": 10,
+  "feature_audit_failures": [],
+  "feature_audit_ok": true,
+  "feature_mode": "g4_all_strict",
+  "final_report_metrics_available": true,
+  "final_report_metrics_file": "metrics_soh_by_split_final_report.json",
+  "final_visible_metrics": {
+    "train_mae": 0.0023666828124667347,
+    "train_r2": 0.9936687814091971,
+    "val_bias": -0.00012716401981399672,
+    "val_bias_abs": 0.00012716401981399672,
+    "val_corr": 0.9798221308635576,
+    "val_mae": 0.0006488129760645611,
+    "val_r2": 0.9572188259798642,
+    "val_range_ratio": 0.9524658322334238,
+    "val_rmse": 0.0008090976574032054,
+    "val_slope_corr": 0.25125704682480027,
+    "val_slope_mae": 0.000903063142879421,
+    "val_tail_bias_abs": 4.881457437451164e-05,
+    "visible_monotonic_penalty": 3.152389030951958e-05
+  },
+  "guard_thresholds": {
+    "max_active_clamp_fraction_for_best": 0.05,
+    "max_train_mae_for_best": 0.003,
+    "max_val_bias_for_best": 0.003,
+    "max_val_mae_for_best": 0.003,
+    "max_val_range_ratio_for_best": 1.8,
+    "max_val_rmse_for_best": 0.0022,
+    "max_val_slope_mae_for_best": 0.002,
+    "max_val_tail_bias_for_best": 0.004,
+    "max_visible_monotonic_penalty_for_best": 5e-05,
+    "min_train_r2_for_best": 0.99,
+    "min_val_corr_for_best": 0.95,
+    "min_val_r2_for_best": 0.8,
+    "min_val_range_ratio_for_best": 0.4,
+    "min_val_slope_corr_for_best": -1.0
+  },
+  "hard_guard_required": false,
+  "hard_visible_guard_ok": true,
+  "metrics_by_split_visible_only": {
+    "all": {
+      "SOH_BIAS": 0.0016095439489153707,
+      "SOH_MAE": 0.0021450221884148414,
+      "SOH_NMAE": 0.01460834076592866,
+      "SOH_NRMSE": 0.01823967176362773,
+      "SOH_R2": 0.9951115734297037,
+      "SOH_RMSE": 0.0026782302842795146,
+      "SOH_corr": 0.9984490325663964,
+      "n": 155
+    },
+    "train": {
+      "SOH_BIAS": 0.0018668340183567583,
+      "SOH_MAE": 0.0023666828124667347,
+      "SOH_NMAE": 0.01763848511178039,
+      "SOH_NRMSE": 0.02126159135608826,
+      "SOH_R2": 0.9936687814091971,
+      "SOH_RMSE": 0.0028528211186650055,
+      "SOH_corr": 0.9983520501844567,
+      "n": 135
+    },
+    "val": {
+      "SOH_BIAS": -0.00012716401981399672,
+      "SOH_MAE": 0.0006488129760645611,
+      "SOH_NMAE": 0.05125622510910006,
+      "SOH_NRMSE": 0.06391871493485289,
+      "SOH_R2": 0.9572188259798642,
+      "SOH_RMSE": 0.0008090976574032054,
+      "SOH_corr": 0.9798221308635576,
+      "n": 20
+    }
+  },
+  "min_epochs_before_patience": 1200,
+  "model_variant": "robust_saturating",
+  "n_features": 52,
+  "no_test_metrics_in_training_history": true,
+  "output_model_dir": "C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\PINN-for-ASSB-V1\\ModelFin_112_v7_softscore_seed7",
+  "protocol_tag": "ASSB112_v7_softscore_trainval_only",
+  "require_hard_guard": false,
+  "seed": 7,
+  "selected_checkpoint_audit_ok": true,
+  "selected_checkpoint_guard_reasons": [],
+  "selection_strategy": "softscore",
+  "test_metrics_used_for_selection": false,
+  "topk_average": {
+    "enabled": false,
+    "selected": false
+  },
+  "training_history_columns": [
+    "epoch",
+    "candidate_tag",
+    "seed",
+    "loss_total",
+    "loss_soh",
+    "loss_rate_tv",
+    "train_mae",
+    "train_r2",
+    "val_mae",
+    "val_rmse",
+    "val_r2",
+    "val_corr",
+    "val_bias_abs",
+    "val_tail_bias_abs",
+    "val_slope_mae",
+    "val_slope_corr",
+    "val_range_ratio",
+    "visible_score",
+    "visible_monotonic_penalty",
+    "active_clamp_fraction",
+    "guard_ok",
+    "guard_reasons",
+    "active_clamp_count"
+  ]
+}
+[OK] seed=7 selected_epoch=810 status=visible_softscore_guard_audit final_report=C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\ModelFin_112_v7_softscore_seed7\metrics_soh_by_split_final_report.json

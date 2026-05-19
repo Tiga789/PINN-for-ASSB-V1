@@ -1,0 +1,37 @@
+{
+  "boundary_note": "This is one auditable wrapper directory: frozen 107A state source + deterministic ridge SOH. It is not an end-to-end jointly trained single neural network.",
+  "compact_summary_csv": "five_target_compact_summary.csv",
+  "dataset_csv": "Data\\assb112_feature_audit_v1\\dataset_with_voltage_features.csv",
+  "model_dir": "ModelFin_112_deterministic_wrapper",
+  "model_level": "L1_engineering_single_directory_wrapper",
+  "note": "This evaluator reports a deterministic engineering wrapper: frozen 107A states + deterministic ridge SOH. It does not claim end-to-end jointly trained coupling.",
+  "ok": true,
+  "output_dir": "EvalFin_112_deterministic_wrapper",
+  "scorecard_csv": "five_state_scorecard.csv",
+  "soh_model_type": "deterministic_ridge_soh_head",
+  "soh_no_test_selection": true,
+  "state_audit": {
+    "missing": [],
+    "state_eval_npz": "C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\PINN-for-ASSB-V1\\EvalFin_107A_cycles5_522_v2_massclosed_candidate_linearGauge_csACorrected_softlabel_only\\eval_sampled_arrays_ModelFin107A_csA_corrected.npz",
+    "state_source_kind": "npz",
+    "used_keys": {
+      "cs_a": {
+        "pred": "cs_a_pred",
+        "true": "cs_a_true"
+      },
+      "cs_c": {
+        "pred": "cs_c_pred",
+        "true": "cs_c_true"
+      },
+      "phie": {
+        "pred": "phie_pred",
+        "true": "phie_true"
+      },
+      "phis_c": {
+        "pred": "phis_c_pred",
+        "true": "phis_c_true"
+      }
+    }
+  },
+  "test_metrics_used_for_selection": false
+}

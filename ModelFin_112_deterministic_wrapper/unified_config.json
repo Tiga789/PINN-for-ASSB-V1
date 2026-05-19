@@ -1,0 +1,18 @@
+{
+  "boundary_note": "This is one auditable wrapper directory: frozen 107A state source + deterministic ridge SOH. It is not an end-to-end jointly trained single neural network.",
+  "dataset_csv": ".\\Data\\assb112_feature_audit_v1\\dataset_with_voltage_features.csv",
+  "deterministic_soh_model_json": "soh_deterministic/deterministic_soh_model.json",
+  "feature_scaler_json": "soh_deterministic/feature_scaler.json",
+  "feature_schema_json": "soh_deterministic/feature_schema.json",
+  "model_level": "L1_engineering_single_directory_wrapper",
+  "model_name": "ModelFin_112_deterministic_wrapper",
+  "no_test_metrics_in_training_history": true,
+  "soh_model_dir": "soh_deterministic",
+  "soh_model_type": "deterministic_ridge_soh_head",
+  "split_manifest_json": "split_manifest.json",
+  "state_core_dir": ".\\ModelFin_107A",
+  "state_core_type": "frozen_ModelFin_107A_state_source",
+  "state_eval_npz": "C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\PINN-for-ASSB-V1\\EvalFin_107A_cycles5_522_v2_massclosed_candidate_linearGauge_csACorrected_softlabel_only\\eval_sampled_arrays_ModelFin107A_csA_corrected.npz",
+  "state_scorecard_csv": "C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\PINN-for-ASSB-V1\\EvalFin_111_seed42locked_repro_c00\\five_state_scorecard.csv",
+  "test_metrics_used_for_selection": false
+}

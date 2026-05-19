@@ -1,0 +1,101 @@
+{
+  "allow_upper_bound": false,
+  "capacity_equivalent_tokens": [
+    "q_discharge",
+    "q_dis_",
+    "q_obs",
+    "q_target",
+    "capacity",
+    "full_discharge_duration",
+    "cutoff_time",
+    "discharge_duration_full"
+  ],
+  "feature_columns": [
+    "step_voltage_jump_abs_mean",
+    "step_voltage_jump_signed_mean",
+    "r_step_proxy_abs_mean",
+    "rest_voltage_recovery_mean",
+    "rest_voltage_recovery_abs_mean",
+    "charge_discharge_voltage_gap",
+    "voltage_efficiency_proxy"
+  ],
+  "feature_group": "G3",
+  "features": [
+    {
+      "description": "mean abs voltage jump at current transitions",
+      "group": "G3_switch_polarization",
+      "name": "step_voltage_jump_abs_mean",
+      "provenance": "record_I+V",
+      "strict_allowed": true
+    },
+    {
+      "description": "mean signed voltage jump at current transitions",
+      "group": "G3_switch_polarization",
+      "name": "step_voltage_jump_signed_mean",
+      "provenance": "record_I+V",
+      "strict_allowed": true
+    },
+    {
+      "description": "mean |dV/dI| at transitions",
+      "group": "G3_switch_polarization",
+      "name": "r_step_proxy_abs_mean",
+      "provenance": "record_I+V",
+      "strict_allowed": true
+    },
+    {
+      "description": "mean rest voltage recovery",
+      "group": "G3_switch_polarization",
+      "name": "rest_voltage_recovery_mean",
+      "provenance": "record_rest",
+      "strict_allowed": true
+    },
+    {
+      "description": "mean abs rest voltage recovery",
+      "group": "G3_switch_polarization",
+      "name": "rest_voltage_recovery_abs_mean",
+      "provenance": "record_rest",
+      "strict_allowed": true
+    },
+    {
+      "description": "charge mean voltage minus discharge mean voltage",
+      "group": "G3_switch_polarization",
+      "name": "charge_discharge_voltage_gap",
+      "provenance": "record_voltage",
+      "strict_allowed": true
+    },
+    {
+      "description": "discharge mean / charge mean",
+      "group": "G3_switch_polarization",
+      "name": "voltage_efficiency_proxy",
+      "provenance": "record_voltage",
+      "strict_allowed": true
+    }
+  ],
+  "forbidden_column_tokens": [
+    "soh_obs",
+    "soh_true",
+    "soh_label",
+    "soh_target",
+    "target_soh",
+    "q_obs",
+    "q_true",
+    "q_label",
+    "q_target",
+    "q_ref",
+    "capacity",
+    "cap_ah",
+    "cap_mah",
+    "放电容量",
+    "充电容量",
+    "容量",
+    "q_discharge",
+    "q_dis_",
+    "discharge_capacity",
+    "label",
+    "target",
+    "y_true",
+    "ground_truth"
+  ],
+  "n_features": 7,
+  "strict_note": "G4 strict features are intended for online SOH estimation. They must not include observed SOH/capacity labels or full-discharge capacity equivalents."
+}

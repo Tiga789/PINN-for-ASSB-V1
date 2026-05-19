@@ -1,0 +1,29 @@
+{
+  "best_guarded_epoch": 210,
+  "best_guarded_score": 0.0037883819623784395,
+  "best_soft_epoch": 210,
+  "best_soft_score": 0.0037883819623784395,
+  "best_status": "visible_softscore_guard_audit",
+  "epoch": 300,
+  "guard_ok": false,
+  "guard_reasons": [
+    "train_r2<0.99",
+    "train_mae>0.003",
+    "val_mae>0.003",
+    "val_r2<0.8",
+    "val_bias_abs>0.003",
+    "val_rmse>0.0022",
+    "val_tail_bias_abs>0.004",
+    "visible_monotonic_penalty>5e-05"
+  ],
+  "loss_total": 1.2261150004633237e-05,
+  "patience_left": 795,
+  "seed": 7,
+  "train_mae": 0.0031714381704406464,
+  "train_r2": 0.9898310379019539,
+  "val_corr": 0.9794810420475613,
+  "val_mae": 0.005536681904068452,
+  "val_r2": -1.0854296723247838,
+  "val_rmse": 0.00564901032842016,
+  "visible_score": 0.1574899872155759
+}

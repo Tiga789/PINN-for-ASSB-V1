@@ -1,0 +1,14 @@
+{
+  "failures": [],
+  "group_counts": {
+    "G0_history": 8,
+    "G1_107A_potential": 8,
+    "G1_107A_state": 14,
+    "G2_voltage_health": 15,
+    "G3_switch_polarization": 7
+  },
+  "n_features": 52,
+  "nonfinite_counts": {},
+  "ok": true,
+  "warnings": []
+}
