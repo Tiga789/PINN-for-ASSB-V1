@@ -1,0 +1,20 @@
+schema_version: gv1.0
+kind: dataset_index_manifest
+name: gv1_xjtu_batch134_index
+
+dataset_id: XJTU
+dataset_adapter: xjtu
+dataset_root: E:/XJTU battery dataset
+include_batches:
+  - Batch-1
+  - Batch-3
+  - Batch-4
+file_patterns:
+  - "*.mat"
+recursive: true
+
+default_temperature_C: 25.0
+current_input_mode: measured_current_profile
+current_sign_convention: positive_is_charge
+
+output_dir: manifests/xjtu_batch134_index

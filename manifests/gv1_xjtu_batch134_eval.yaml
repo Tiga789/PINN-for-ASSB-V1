@@ -1,0 +1,30 @@
+schema_version: gv1.0
+kind: evaluation_manifest
+name: gv1_xjtu_batch134_eval
+
+model_dir: ModelGV1_XJTU_BATCH134_CONDITIONED_V1
+dataset_index: manifests/xjtu_batch134_index/dataset_index.csv
+cell_spec: cell_specs/xjtu_ncm523_graphite_assumed.yaml
+experiment_specs:
+  - experiment_specs/xjtu_batch1_measured_replay.yaml
+  - experiment_specs/xjtu_batch3_measured_replay.yaml
+  - experiment_specs/xjtu_batch4_measured_replay.yaml
+
+metrics:
+  by_cell: true
+  by_batch: true
+  by_protocol: true
+  by_cycle: true
+  variables:
+    - cs_a
+    - cs_c
+    - phie
+    - phis_c
+    - SOH
+
+soh:
+  label_source: measured_discharge_capacity
+  batch4_use_capacity_test_cycles_only: true
+  q_ref_strategy: first_low_rate_capacity_or_early_stable_mean
+
+output_dir: EvalGV1_XJTU_BATCH134_CONDITIONED_V1

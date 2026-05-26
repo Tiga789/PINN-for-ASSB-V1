@@ -5,38 +5,53 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7b854bbc-0a8a-4911-bc87-dd9f1f68d852" name="更改" comment="">
-      <change afterPath="$PROJECT_DIR$/ASSB_ModelFin112_deterministic_ridge_baseline_v8_README.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASSB_ModelFin112_deterministic_wrapper_v1_README.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASSB_ModelFin112_guard_v5_README.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASSB_ModelFin112_guard_v7_README.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASSB_ModelFin112_selection_guard_v2_README.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/evaluate_ModelFin112_deterministic_5targets.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/evaluate_ModelFin112_unified_5targets.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/input_assb112_phase1_guarded_parallel" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/input_assb112_phase1_robust_soh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/input_assb112_phase2_single_model" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/audit_assb111_feature_groups.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/build_ModelFin112_deterministic_wrapper.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/build_ModelFin112_single_model.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/extract_assb_voltage_health_features.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/run_ModelFin112_deterministic_wrapper_eval.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/run_assb112_deterministic_ridge_baseline.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/run_assb112_deterministic_ridge_cpu_fallback.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/run_assb112_guarded_quick_smoke.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/run_assb112_guarded_seed_sweep_parallel.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/run_assb112_guarded_seed_sweep_startprocess.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/run_assb112_guarded_single_seed.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/run_assb112_ridge_soh_baseline.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/summarize_assb112_deterministic_baseline.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/summarize_assb112_guarded_seed_sweep.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/train_assb112_deterministic_soh_baseline.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/train_assb112_ridge_soh_head.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/util/assb112_deterministic_wrapper.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/util/assb112_unified_model.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/util/assb_soh_feature_schema.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_GV1_DISCOVERY.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_GV1_IO.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_GV1_MEASURED_REPLAY.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_GV1_SPECS_MANIFESTS.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_GV1_XJTU_ADAPTER.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cell_specs/templates/effective_spm_li_ion_default.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cell_specs/xjtu_ncm523_graphite_assumed.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment_specs/xjtu_batch1_measured_replay.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment_specs/xjtu_batch3_measured_replay.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment_specs/xjtu_batch4_measured_replay.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/adapters/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/adapters/xjtu_adapter.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/adapters/xjtu_cell_spec_defaults.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/adapters/xjtu_protocols.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/adapters/xjtu_soh_targets.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/cell_id_parser.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/data_discovery.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/dataset_index.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/io/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/io/auto_reader.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/io/cache_writer.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/io/csv_reader.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/io/field_mapper.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/io/mat_reader.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/io/parquet_reader.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/io/reader_base.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/io/unit_normalizer.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/measured_replay/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/measured_replay/capacity_integrator.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/measured_replay/current_interpolator.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/measured_replay/profile_builder.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/measured_replay/replay_audit.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/measured_replay/step_classifier.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/protocol_parser.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/standard_table.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manifests/gv1_xjtu_batch134_eval.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manifests/gv1_xjtu_batch134_index.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manifests/gv1_xjtu_batch134_smoke.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manifests/gv1_xjtu_batch134_train.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/requirements-gv1-io.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/gv1_build_dataset_index.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/gv1_inspect_data_file.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/test_gv1_dataset_discovery.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/test_gv1_io_csv_sample.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/test_gv1_measured_replay_sample.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/test_xjtu_adapter_metadata.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/train_assb111_soh_head.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/train_assb111_soh_head.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/util/assb111_soh_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/util/assb111_soh_model.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,14 +109,14 @@
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1" />
-      <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\util" />
+      <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\gv1" />
+      <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\tests" />
       <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\scripts" />
-      <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\integration_spm" />
-      <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\tools" />
+      <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\util" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\util" />
       <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1" />
+      <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\util" />
     </key>
   </component>
   <component name="RunManager" selected="Python.smoke_assb_params">
@@ -178,7 +193,7 @@
       <workItem from="1776793294745" duration="2000" />
       <workItem from="1776796578394" duration="75259000" />
       <workItem from="1777704900369" duration="98542000" />
-      <workItem from="1778744192031" duration="87538000" />
+      <workItem from="1778744192031" duration="99084000" />
     </task>
     <servers />
   </component>

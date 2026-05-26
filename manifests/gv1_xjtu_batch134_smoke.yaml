@@ -1,0 +1,27 @@
+schema_version: gv1.0
+kind: training_manifest
+name: gv1_xjtu_batch134_smoke
+mode: smoke
+
+dataset_index: manifests/xjtu_batch134_index/dataset_index.csv
+cell_spec: cell_specs/xjtu_ncm523_graphite_assumed.yaml
+experiment_specs:
+  - experiment_specs/xjtu_batch1_measured_replay.yaml
+  - experiment_specs/xjtu_batch3_measured_replay.yaml
+  - experiment_specs/xjtu_batch4_measured_replay.yaml
+
+selection:
+  max_files_per_batch: 1
+  max_cycles_per_file: 2
+  include_batches: [Batch-1, Batch-3, Batch-4]
+
+training:
+  model_id: GV1_XJTU_BATCH134_SMOKE
+  measured_current_replay: true
+  epochs: 5
+  batch_time_points: 512
+  batch_radial_points: 32
+  output_dir: ModelGV1_XJTU_BATCH134_SMOKE
+
+evaluation:
+  output_dir: EvalGV1_XJTU_BATCH134_SMOKE

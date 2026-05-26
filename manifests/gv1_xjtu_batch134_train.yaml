@@ -1,0 +1,38 @@
+schema_version: gv1.0
+kind: training_manifest
+name: gv1_xjtu_batch134_train
+mode: train
+
+dataset_index: manifests/xjtu_batch134_index/dataset_index.csv
+cell_spec: cell_specs/xjtu_ncm523_graphite_assumed.yaml
+experiment_specs:
+  - experiment_specs/xjtu_batch1_measured_replay.yaml
+  - experiment_specs/xjtu_batch3_measured_replay.yaml
+  - experiment_specs/xjtu_batch4_measured_replay.yaml
+
+split_protocol:
+  split_level: cell_id
+  no_test_selection: true
+  train_batches: [Batch-1, Batch-3, Batch-4]
+  heldout_cells_per_batch: 1
+  validation_fraction_by_cell: 0.15
+  test_fraction_by_cell: 0.15
+
+training:
+  model_id: GV1_XJTU_BATCH134_CONDITIONED_V1
+  measured_current_replay: true
+  condition_on_cell_spec: true
+  adaptive_current_sampling: true
+  epochs: 5000
+  optimizer: adam_then_lbfgs_optional
+  batch_cells: 4
+  batch_time_points: 2048
+  batch_radial_points: 64
+  output_dir: ModelGV1_XJTU_BATCH134_CONDITIONED_V1
+
+loss_weights:
+  physics: 1.0
+  boundary_flux: 5.0
+  soft_state: 1.0
+  voltage: 1.0
+  soh: 1.0

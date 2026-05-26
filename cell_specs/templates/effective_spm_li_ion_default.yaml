@@ -1,0 +1,43 @@
+schema_version: gv1.0
+kind: cell_spec_template
+name: effective_spm_li_ion_default
+
+cell:
+  model_family: effective_spm
+  current_input_mode_supported: measured_current_profile
+  electrolyte_system: liquid_lumped_effective_spm
+  temperature_mode: constant_or_measured_profile
+
+chemistry:
+  positive_electrode_material: null
+  negative_electrode_material: null
+  ocp_configuration_mode: library_or_low_rate_ocv_fit
+  positive_ocp_source: null
+  negative_ocp_source: null
+
+capacity_anchor:
+  mode: auto_integrate_discharge_or_nominal_capacity
+  q_nominal_Ah: null
+  q_ref_strategy: first_low_rate_capacity_or_early_stable_mean
+
+geometry_anchor:
+  mode: capacity_normalized_effective_spm
+  active_area_m2: null
+  positive_thickness_m: null
+  negative_thickness_m: null
+  positive_active_mass_kg: null
+  negative_active_mass_kg: null
+  notes: >-
+    If detailed electrode geometry is unavailable, GV1 should use capacity-normalized
+    effective SPM parameters and mark geometry-dependent quantities as effective.
+
+physics_assumptions:
+  solid_diffusion_model: spherical_fickian_single_particle
+  electrolyte_concentration: lumped_effective_or_constant
+  electrolyte_potential: lumped_effective
+  current_boundary: measured_current_replay
+  positive_negative_identity_fixed: true
+  switch_material_by_current_sign: false
+  validity_warning: >-
+    If through-plane electrolyte/electrode gradients are significant, do not claim
+    effective SPM validity; consider P2D.

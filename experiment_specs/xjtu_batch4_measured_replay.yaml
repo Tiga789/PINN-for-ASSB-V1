@@ -1,0 +1,57 @@
+schema_version: gv1.0
+kind: experiment_spec
+dataset:
+  dataset_id: XJTU
+  dataset_adapter: xjtu
+  dataset_root: E:/XJTU battery dataset
+  file_pattern: "*.mat"
+
+cell_spec: cell_specs/xjtu_ncm523_graphite_assumed.yaml
+
+record:
+  file_type: mat
+  sample_frequency_hz: 1.0
+  default_temperature_C: 25.0
+  current_sign_convention: positive_is_charge
+  current_input_mode: measured_current_profile
+  column_map:
+    relative_time_min: time_s
+    voltage_V: voltage_V
+    current_A: current_A
+    capacity_Ah: capacity_Ah
+    power_Wh: energy_Wh
+    temperature_C: temperature_C
+    description: step_type
+  unit_map:
+    relative_time_min: min
+    current_A: A
+    voltage_V: V
+    capacity_Ah: Ah
+    power_Wh: Wh
+    temperature_C: C
+
+measured_replay:
+  use_recorded_current: true
+  solve_controller_current: false
+  include_rest: true
+  rest_current_threshold_A: 1.0e-9
+  cache_standard_table: true
+  cache_format: parquet
+
+experiment:
+  experiment_id: xjtu_batch4_measured_replay
+  include_batches: [Batch-4]
+  observed_control_mode: cccv_record_variable_partial_discharge
+  protocol_id: xjtu_batch4_variable_discharge_partial_with_capacity_tests
+  description: Partial-discharge operating cycles to 3.0V plus periodic capacity-test cycles to 2.5V.
+
+selection:
+  include_batteries: all
+  include_cycles: all
+  full_discharge_voltage_V: 2.5
+  partial_discharge_voltage_V: 3.0
+  use_only_capacity_test_cycles_for_soh: true
+  high_rate_audit_required: true
+
+output:
+  output_dir: DataGV1/xjtu_batch4_measured_replay
