@@ -1,0 +1,410 @@
+{
+  "source_path": "E:\\XJTU battery dataset\\Batch-3\\R2.5_battery-1.mat",
+  "source_format": "mat",
+  "n_rows": 3708331,
+  "columns": [
+    "dataset_id",
+    "batch_id",
+    "battery_id",
+    "cycle_id",
+    "step_id",
+    "step_type",
+    "time_s",
+    "current_A",
+    "voltage_V",
+    "temperature_C",
+    "capacity_Ah",
+    "energy_Wh",
+    "source_file",
+    "source_format",
+    "raw__system_time",
+    "raw__relative_time_min",
+    "raw__power_Wh",
+    "raw__mat_subrecord_index"
+  ],
+  "warnings": [
+    "time_s rebuilt as monotonic global time from raw__mat_subrecord_index + local elapsed time (GV1 time fix v3)"
+  ],
+  "metadata": {
+    "reader": "mat",
+    "backend": "scipy.io.loadmat",
+    "chosen_table_path": "root.data[*]",
+    "chosen_score": 19,
+    "raw_shape": [
+      3708331,
+      8
+    ],
+    "raw_columns": [
+      "system_time",
+      "relative_time_min",
+      "voltage_V",
+      "current_A",
+      "capacity_Ah",
+      "power_Wh",
+      "temperature_C",
+      "mat_subrecord_index"
+    ],
+    "candidate_tables": [
+      {
+        "path": "root.data[*]",
+        "shape": [
+          3708331,
+          8
+        ],
+        "score": 19,
+        "columns": [
+          "system_time",
+          "relative_time_min",
+          "voltage_V",
+          "current_A",
+          "capacity_Ah",
+          "power_Wh",
+          "temperature_C",
+          "mat_subrecord_index"
+        ]
+      },
+      {
+        "path": "root.data[0]",
+        "shape": [
+          24350,
+          8
+        ],
+        "score": 19,
+        "columns": [
+          "system_time",
+          "relative_time_min",
+          "voltage_V",
+          "current_A",
+          "capacity_Ah",
+          "power_Wh",
+          "temperature_C",
+          "mat_subrecord_index"
+        ]
+      },
+      {
+        "path": "root.data[296]",
+        "shape": [
+          10524,
+          8
+        ],
+        "score": 19,
+        "columns": [
+          "system_time",
+          "relative_time_min",
+          "voltage_V",
+          "current_A",
+          "capacity_Ah",
+          "power_Wh",
+          "temperature_C",
+          "mat_subrecord_index"
+        ]
+      },
+      {
+        "path": "root.data[301]",
+        "shape": [
+          10519,
+          8
+        ],
+        "score": 19,
+        "columns": [
+          "system_time",
+          "relative_time_min",
+          "voltage_V",
+          "current_A",
+          "capacity_Ah",
+          "power_Wh",
+          "temperature_C",
+          "mat_subrecord_index"
+        ]
+      },
+      {
+        "path": "root.data[316]",
+        "shape": [
+          10510,
+          8
+        ],
+        "score": 19,
+        "columns": [
+          "system_time",
+          "relative_time_min",
+          "voltage_V",
+          "current_A",
+          "capacity_Ah",
+          "power_Wh",
+          "temperature_C",
+          "mat_subrecord_index"
+        ]
+      },
+      {
+        "path": "root.data[306]",
+        "shape": [
+          10505,
+          8
+        ],
+        "score": 19,
+        "columns": [
+          "system_time",
+          "relative_time_min",
+          "voltage_V",
+          "current_A",
+          "capacity_Ah",
+          "power_Wh",
+          "temperature_C",
+          "mat_subrecord_index"
+        ]
+      },
+      {
+        "path": "root.data[311]",
+        "shape": [
+          10503,
+          8
+        ],
+        "score": 19,
+        "columns": [
+          "system_time",
+          "relative_time_min",
+          "voltage_V",
+          "current_A",
+          "capacity_Ah",
+          "power_Wh",
+          "temperature_C",
+          "mat_subrecord_index"
+        ]
+      },
+      {
+        "path": "root.data[321]",
+        "shape": [
+          10496,
+          8
+        ],
+        "score": 19,
+        "columns": [
+          "system_time",
+          "relative_time_min",
+          "voltage_V",
+          "current_A",
+          "capacity_Ah",
+          "power_Wh",
+          "temperature_C",
+          "mat_subrecord_index"
+        ]
+      },
+      {
+        "path": "root.data[331]",
+        "shape": [
+          10490,
+          8
+        ],
+        "score": 19,
+        "columns": [
+          "system_time",
+          "relative_time_min",
+          "voltage_V",
+          "current_A",
+          "capacity_Ah",
+          "power_Wh",
+          "temperature_C",
+          "mat_subrecord_index"
+        ]
+      },
+      {
+        "path": "root.data[61]",
+        "shape": [
+          10484,
+          8
+        ],
+        "score": 19,
+        "columns": [
+          "system_time",
+          "relative_time_min",
+          "voltage_V",
+          "current_A",
+          "capacity_Ah",
+          "power_Wh",
+          "temperature_C",
+          "mat_subrecord_index"
+        ]
+      },
+      {
+        "path": "root.data[326]",
+        "shape": [
+          10481,
+          8
+        ],
+        "score": 19,
+        "columns": [
+          "system_time",
+          "relative_time_min",
+          "voltage_V",
+          "current_A",
+          "capacity_Ah",
+          "power_Wh",
+          "temperature_C",
+          "mat_subrecord_index"
+        ]
+      },
+      {
+        "path": "root.data[66]",
+        "shape": [
+          10474,
+          8
+        ],
+        "score": 19,
+        "columns": [
+          "system_time",
+          "relative_time_min",
+          "voltage_V",
+          "current_A",
+          "capacity_Ah",
+          "power_Wh",
+          "temperature_C",
+          "mat_subrecord_index"
+        ]
+      },
+      {
+        "path": "root.data[51]",
+        "shape": [
+          10469,
+          8
+        ],
+        "score": 19,
+        "columns": [
+          "system_time",
+          "relative_time_min",
+          "voltage_V",
+          "current_A",
+          "capacity_Ah",
+          "power_Wh",
+          "temperature_C",
+          "mat_subrecord_index"
+        ]
+      },
+      {
+        "path": "root.data[71]",
+        "shape": [
+          10466,
+          8
+        ],
+        "score": 19,
+        "columns": [
+          "system_time",
+          "relative_time_min",
+          "voltage_V",
+          "current_A",
+          "capacity_Ah",
+          "power_Wh",
+          "temperature_C",
+          "mat_subrecord_index"
+        ]
+      },
+      {
+        "path": "root.data[341]",
+        "shape": [
+          10464,
+          8
+        ],
+        "score": 19,
+        "columns": [
+          "system_time",
+          "relative_time_min",
+          "voltage_V",
+          "current_A",
+          "capacity_Ah",
+          "power_Wh",
+          "temperature_C",
+          "mat_subrecord_index"
+        ]
+      },
+      {
+        "path": "root.data[346]",
+        "shape": [
+          10462,
+          8
+        ],
+        "score": 19,
+        "columns": [
+          "system_time",
+          "relative_time_min",
+          "voltage_V",
+          "current_A",
+          "capacity_Ah",
+          "power_Wh",
+          "temperature_C",
+          "mat_subrecord_index"
+        ]
+      },
+      {
+        "path": "root.data[76]",
+        "shape": [
+          10460,
+          8
+        ],
+        "score": 19,
+        "columns": [
+          "system_time",
+          "relative_time_min",
+          "voltage_V",
+          "current_A",
+          "capacity_Ah",
+          "power_Wh",
+          "temperature_C",
+          "mat_subrecord_index"
+        ]
+      },
+      {
+        "path": "root.data[56]",
+        "shape": [
+          10459,
+          8
+        ],
+        "score": 19,
+        "columns": [
+          "system_time",
+          "relative_time_min",
+          "voltage_V",
+          "current_A",
+          "capacity_Ah",
+          "power_Wh",
+          "temperature_C",
+          "mat_subrecord_index"
+        ]
+      },
+      {
+        "path": "root.data[351]",
+        "shape": [
+          10453,
+          8
+        ],
+        "score": 19,
+        "columns": [
+          "system_time",
+          "relative_time_min",
+          "voltage_V",
+          "current_A",
+          "capacity_Ah",
+          "power_Wh",
+          "temperature_C",
+          "mat_subrecord_index"
+        ]
+      },
+      {
+        "path": "root.data[46]",
+        "shape": [
+          10451,
+          8
+        ],
+        "score": 19,
+        "columns": [
+          "system_time",
+          "relative_time_min",
+          "voltage_V",
+          "current_A",
+          "capacity_Ah",
+          "power_Wh",
+          "temperature_C",
+          "mat_subrecord_index"
+        ]
+      }
+    ]
+  }
+}

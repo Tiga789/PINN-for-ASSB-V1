@@ -32,7 +32,7 @@ def _clean_name(name: Any) -> str:
 ALIASES: dict[str, list[str]] = {
     "time_s": [
         "time", "time_s", "times", "test_time", "relative_time", "relative_time_s",
-        "relative_time_min", "time_min", "t", "t_s", "sec", "seconds", "date_time", "system_time",
+        "relative_time_min", "time_min", "t", "t_s", "sec", "seconds", "date_time",
     ],
     "current_A": ["current", "current_a", "i", "i_a", "curr", "current_ma", "charge_current", "discharge_current"],
     "voltage_V": ["voltage", "voltage_v", "v", "u", "terminal_voltage", "voltage_mv"],
@@ -53,6 +53,11 @@ _ALIAS_LOOKUP = {alias: std for std, aliases in ALIASES.items() for alias in ali
 def infer_standard_column(raw_name: str, explicit_map: Mapping[str, str] | None = None) -> Optional[str]:
     cleaned = _clean_name(raw_name)
     low = cleaned.lower()
+    # For XJTU/MATLAB battery files, system_time can jump backwards across subrecords
+    # after the public data have been stitched. Keep it only as raw__system_time;
+    # prefer relative_time_min plus raw__mat_subrecord_index for global time reconstruction.
+    if low in {"system_time", "timestamp", "date_time"}:
+        return None
     if explicit_map:
         for k, v in explicit_map.items():
             if _clean_name(k).lower() == low:
@@ -118,6 +123,127 @@ def _classify_step_type(current: pd.Series, threshold_A: float = 1e-9) -> pd.Ser
     out[cur.abs() <= threshold_A] = "rest"
     return pd.Series(out, index=current.index, dtype="string")
 
+
+
+def _is_monotonic_non_decreasing(series: pd.Series) -> bool:
+    t = pd.to_numeric(series, errors="coerce")
+    if t.notna().sum() <= 1:
+        return True
+    dt = t.dropna().diff().dropna()
+    return not bool((dt < 0).any())
+
+
+def _positive_dt_guess(*series_list: pd.Series) -> float:
+    """Return a conservative positive sampling interval guess in seconds."""
+    candidates: list[float] = []
+    for series in series_list:
+        vals = pd.to_numeric(series, errors="coerce").dropna().to_numpy(dtype=float)
+        if len(vals) <= 2:
+            continue
+        diffs = np.diff(vals)
+        diffs = diffs[np.isfinite(diffs) & (diffs > 0)]
+        if len(diffs):
+            # Use the median but clamp absurdly small values.
+            candidates.append(float(np.nanmedian(diffs)))
+    for c in candidates:
+        if np.isfinite(c) and c > 0:
+            return max(c, 1e-6)
+    return 1.0
+
+
+def _local_monotonic_elapsed_seconds(values: pd.Series) -> pd.Series | None:
+    """Convert a local time-like series to elapsed seconds if it is usable."""
+    vals = pd.to_numeric(values, errors="coerce")
+    if vals.notna().sum() <= 1:
+        return None
+    # Work with the valid values only for monotonicity, then subtract the first valid value.
+    valid = vals.dropna()
+    diffs = valid.diff().dropna()
+    if (diffs < 0).any():
+        return None
+    first = valid.iloc[0]
+    elapsed = vals - first
+    return elapsed.astype(float)
+
+
+def _repair_nonmonotonic_time_axis(out: pd.DataFrame, warnings: list[str]) -> pd.DataFrame:
+    """Repair non-monotonic ``time_s`` for concatenated MATLAB/XJTU-style records.
+
+    Some public battery datasets store one .mat file as a list of subrecords/cycles.
+    When we concatenate all subrecords, timestamp-like columns such as ``system_time``
+    may jump backwards due to acquisition pauses or stitching, while the row order still
+    represents the experimental sequence. For measured-current replay, we need a single
+    monotonically increasing ``t_global_s``. This helper rebuilds ``time_s`` by preserving
+    subrecord order and using local elapsed time within each contiguous subrecord.
+    """
+    if "time_s" not in out.columns or _is_monotonic_non_decreasing(out["time_s"]):
+        return out
+
+    # Case 1: .mat reader provided subrecord IDs. Rebuild a global axis by contiguous
+    # subrecord segments, using local system_time if valid, otherwise relative_time_min,
+    # otherwise row index with a 1 s fallback.
+    if "raw__mat_subrecord_index" in out.columns:
+        idx = pd.Series(out["raw__mat_subrecord_index"]).reset_index(drop=True)
+        segment_id = idx.ne(idx.shift()).cumsum()
+        repaired = np.full(len(out), np.nan, dtype=float)
+        offset = 0.0
+        global_dt_guess = _positive_dt_guess(pd.to_numeric(out.get("time_s"), errors="coerce"))
+
+        rel_raw = out.get("raw__relative_time_min")
+        rel_sec_all = None
+        if rel_raw is not None:
+            # The XJTU .mat files label this field in minutes.
+            rel_sec_all = pd.to_numeric(rel_raw, errors="coerce") * 60.0
+            global_dt_guess = _positive_dt_guess(rel_sec_all, pd.to_numeric(out.get("time_s"), errors="coerce"))
+
+        for _, loc in segment_id.groupby(segment_id).groups.items():
+            loc = list(loc)
+            if not loc:
+                continue
+            orig_local = _local_monotonic_elapsed_seconds(pd.Series(out["time_s"].iloc[loc]).reset_index(drop=True))
+            rel_local = None
+            if rel_sec_all is not None:
+                rel_local = _local_monotonic_elapsed_seconds(pd.Series(rel_sec_all.iloc[loc]).reset_index(drop=True))
+
+            if orig_local is not None and orig_local.notna().sum() > 1:
+                local = orig_local
+            elif rel_local is not None and rel_local.notna().sum() > 1:
+                local = rel_local
+            else:
+                local_dt = global_dt_guess if np.isfinite(global_dt_guess) and global_dt_guess > 0 else 1.0
+                local = pd.Series(np.arange(len(loc), dtype=float) * local_dt)
+
+            local_vals = pd.to_numeric(local, errors="coerce").to_numpy(dtype=float)
+            if len(local_vals) and not np.isfinite(local_vals[0]):
+                # Fill sparse NaNs by row index if the first value is missing.
+                local_dt = global_dt_guess if np.isfinite(global_dt_guess) and global_dt_guess > 0 else 1.0
+                local_vals = np.arange(len(loc), dtype=float) * local_dt
+            # Forward fill any internal NaNs and enforce non-negative elapsed time.
+            local_series = pd.Series(local_vals).ffill().bfill().fillna(0.0)
+            local_vals = local_series.to_numpy(dtype=float)
+            local_vals = local_vals - float(local_vals[0])
+            local_vals = np.maximum.accumulate(local_vals)
+            repaired[loc] = offset + local_vals
+
+            positive = np.diff(local_vals)
+            positive = positive[np.isfinite(positive) & (positive > 0)]
+            step = float(np.nanmedian(positive)) if len(positive) else global_dt_guess
+            if not np.isfinite(step) or step <= 0:
+                step = 1.0
+            offset = float(repaired[loc[-1]]) + step
+
+        if np.isfinite(repaired).all():
+            out = out.copy()
+            out["time_s"] = repaired
+            warnings.append(
+                "time_s rebuilt as monotonic global time from raw__mat_subrecord_index + local elapsed time (GV1 time fix v3)"
+            )
+            return out
+
+    # Case 2: no subrecord IDs. As a last resort, rebuild from row index only when the
+    # caller explicitly enabled row-index inference.
+    # We do not access ReadOptions here, so this is intentionally not applied by default.
+    return out
 
 def standardize_dataframe(
     df: pd.DataFrame,
@@ -225,6 +351,9 @@ def standardize_dataframe(
             raw_col = f"raw__{col}"
             if raw_col not in out.columns and col not in out.columns:
                 out[raw_col] = raw[col]
+
+    # Repair XJTU/MATLAB-style concatenated records whose system_time jumps backwards.
+    out = _repair_nonmonotonic_time_axis(out, warnings)
 
     # Stable column order: standard columns first, then raw/debug columns.
     first = [c for c in STANDARD_COLUMNS if c in out.columns]
