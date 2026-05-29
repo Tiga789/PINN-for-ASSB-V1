@@ -1,0 +1,32 @@
+ASSB-D9 / GV1 D9.5.1 trend-first warmup rare-regime correction record
+
+User workflow rule:
+The user manually decompresses ZIP packages and adds/overwrites files in the project. Do not give decompression commands unless explicitly requested. Provide only post-overwrite checks and run commands.
+
+Context:
+- D9.2 strongly improved global MAE and removed 4.27 V high-voltage saturation, but low-voltage tails remained weak.
+- D9.3 improved B3/R2.5 and B4/R3 high-rate/event profiles and passed 500 ks, but B1/2C was not as strong as D9.2.
+- D9.4 and D9.4.1 tried profile-adaptive or smooth low-rate routing. B3/B4 remained good, but B1/2C trend correlation stayed too low around 0.82-0.84 at 200 ks.
+- D9.5 attempted trend-preserving rare-regime correction, but 40 ks diagnostics showed B3/B4 were weaker than D9.3 and the rare-regime objectives were still too aggressive.
+
+D9.5.1 decision:
+- Return to D9.3 as the trend-first baseline.
+- Keep D9.3 event-aware voltage channels for all profiles.
+- Reduce rare-regime loss weights.
+- Reduce event/tail sample weights.
+- Add trainer-level warmup scales:
+  - rare_sample_weight_scale: controls how strongly sample/event/tail weights affect the robust voltage data term.
+  - rare_loss_scale: controls explicit rare tail/event/coverage losses.
+- Keep voltage_corr, voltage_data, voltage_bias and voltage_range active from epoch 1.
+- Warm rare losses from about 30% to 85% of total epochs.
+
+Expected behavior:
+- First recover D9.3-like global V(t) shape and correlation.
+- Later nudge low-voltage, high-voltage, high-current/current-step and temperature-event regimes.
+- Do not force low-voltage coverage at the cost of global trend.
+
+Validation order:
+1. Run 40ks_d951.
+2. If 40ks passes, run 200ks_d951.
+3. Only if 200ks passes, run 500ks_d951.
+4. Do not run 24-profile training at this stage.

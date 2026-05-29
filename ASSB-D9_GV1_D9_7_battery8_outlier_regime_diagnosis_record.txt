@@ -1,0 +1,15 @@
+QJW-2 / PINN-for-ASSB-V1 | ASSB-D9 / GV1 D9.7
+
+Stage: battery-8 outlier / regime diagnosis.
+
+D9.7 is diagnostic-only. It exists because D9.6.1 and D9.6.2 repaired the wrong failure modes, while D9.6.3 did not improve the borderline profile. The correct next step is to inspect battery-8 data/regime behavior and compare it with other B1_2C profiles before designing another repair.
+
+User workflow note: the user manually extracts zip packages and adds files to the project. Do not provide unzip commands unless explicitly requested.
+
+First run:
+powershell -ExecutionPolicy Bypass -File .\scripts\gv1_run_battery8_outlier_diagnosis_d97.ps1
+
+Return file:
+E:\XJTU battery dataset\_gv1_cache\xjtu_batch134_d97_battery8_outlier_diagnosis\d97_battery8_diagnosis_summary.json
+
+Do not run 24-profile 200ks yet.

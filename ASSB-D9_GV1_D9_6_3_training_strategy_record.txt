@@ -1,0 +1,6 @@
+ASSB-D9 / GV1 D9.6.3 record
+===========================
+D9.6 6x40ks and 6x200ks passed. D9.6 24x40ks had 23 pass + 1 borderline.
+D9.6.1 worsened high-voltage saturation. D9.6.2 over-constrained voltage and
+collapsed the dynamic range. D9.6.3 restores D9.6 behavior and only changes
+training strategy/selection for B1_2C battery-8 200ks.

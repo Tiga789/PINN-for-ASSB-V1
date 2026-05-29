@@ -1,0 +1,57 @@
+ASSB-D9 / GV1 D9.6 multi-cell verification record
+=================================================
+
+Fixed user workflow note
+------------------------
+The user manually unzips packages and adds/overwrites files in the local project. Do not provide
+unzip instructions in later operating guidance unless explicitly requested. Provide only post-add
+checks and run commands.
+
+Position after D9.5.1
+---------------------
+D9.5.1 is the current D9.x mainline. It passed 40ks, 200ks, and 500ks checks on the three
+representative XJTU profiles. The 500ks results were:
+- B1_2C: MAE about 0.0315 V, RMSE about 0.0533 V, corr about 0.9866;
+- B3_R25: MAE about 0.0701 V, RMSE about 0.1058 V, corr about 0.9515;
+- B4_R3: MAE about 0.0586 V, RMSE about 0.0832 V, corr about 0.9651.
+
+D9.5.1 should therefore be treated as the current single-profile voltage-fitting mainline.
+However, it is not yet a validated cross-cell or cross-protocol generalization model.
+
+D9.6 goal
+---------
+Move from three representative single-profile checks to multi-cell / multi-profile verification.
+The first D9.6 step is sequential 6-profile short-window verification, selecting two profiles
+each from 2C, R2.5, and R3 if available. This is still not joint training; each profile is trained
+separately with the D9.5.1 core so that failure modes can be localized by cell/protocol.
+
+Why not direct 24-profile full training
+---------------------------------------
+D8 established the XJTU Batch-1/3/4 replay data pipeline and 24 replay profiles, but D9.x is still
+validating the conditioned effective SPM PINN training layer. Direct full-profile or 24-profile
+joint training would mix data scale, protocol shift, and model structure issues, making failures
+hard to diagnose. D9.6 keeps the staged discipline:
+1. 6-profile 40ks;
+2. 6-profile 200ks;
+3. 24-profile 40ks;
+4. 24-profile 200ks;
+5. only then discuss joint or cell-level split training.
+
+Files added in D9.6
+-------------------
+scripts/gv1_d96_profile_inventory.py
+  Scans D8 replay profile folders and deterministically selects profiles by protocol quota.
+
+scripts/gv1_multicell_scorecard_d96.py
+  Converts per-profile metrics into pass/borderline/fail scorecard with protocol summaries.
+
+scripts/gv1_run_multicell_verify_d96.ps1
+  Generic sequential multi-profile runner.
+
+scripts/gv1_run_multicell_6x40ks_d96.ps1
+scripts/gv1_run_multicell_6x200ks_d96.ps1
+scripts/gv1_run_multicell_24x40ks_d96.ps1
+scripts/gv1_run_multicell_24x200ks_d96.ps1
+  Convenience wrappers for staged D9.6 checks.
+
+No old ASSB mainline files are changed.

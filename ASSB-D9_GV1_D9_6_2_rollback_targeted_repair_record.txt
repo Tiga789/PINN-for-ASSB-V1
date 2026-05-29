@@ -1,0 +1,35 @@
+ASSB-D9 / GV1 D9.6.2 rollback-style targeted repair record
+===========================================================
+
+User workflow note:
+- The user manually extracts provided zip packages and adds/overwrites files in
+  the local project. Future instructions should avoid decompression commands
+  unless explicitly requested.
+
+Context:
+- D9.5.1 became the current D9.x trend-first core after passing 500ks on the
+  three-profile checks.
+- D9.6 multi-profile verification passed 6x40ks and 6x200ks.
+- 24x40ks D9.6 produced 23 pass + 1 borderline, with B1_2C battery-8 as the
+  weak late-2C case.
+- Original battery-8 200ks D9.6 was weak but usable-ish: MAE about 0.101 V,
+  corr about 0.893, pred_upper_frac_ge_4p269 about 0.010.
+- D9.6.1 targeted soft-guard repair regressed badly: MAE about 0.178 V, corr
+  about 0.814, high-voltage saturation around 0.36, and direct voltage head
+  around 6.6 V. This indicates the guard clipped a runaway head instead of
+  correcting the underlying trend.
+
+D9.6.2 decision:
+- Roll back output transform to D9.6/D9.5.1 trend-first style.
+- Remove D9.6.1 soft guard as a targeted branch.
+- Keep no hard output clamp by default.
+- Add a loss-level component guardrail on voltage_direct_head and
+  voltage_base_branch to discourage runaway while preserving gradients.
+- For late Batch-1 2C profiles, lower event/tail branch strength and rare-regime
+  sampling/rare-loss warmup intensity.
+
+First validation:
+- Run scripts/gv1_run_borderline_B1_2C_battery8_200ks_d962.ps1.
+- Compare metrics_borderline_200ks_d962.json against original D9.6 and failed
+  D9.6.1_v2.
+- Do not run 24x200ks until the single borderline profile is acceptable.

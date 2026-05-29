@@ -1,0 +1,36 @@
+ASSB-D9 / GV1 D9.5 trend-preserving rare-regime correction record
+
+Fixed user workflow note:
+- The user manually extracts zip files and adds/overwrites them into the project.
+- Future responses should provide post-overwrite checks and run commands, not automatic unzip commands, unless explicitly requested.
+
+Context:
+- D9.3 passed 500ks diagnostics with strong global trend, especially for B3/R25 and B4/R3, but low-voltage tails remained under-covered.
+- D9.4/D9.4.1 attempted profile-adaptive routing.  B3/R25 and B4/R3 remained good, but B1/2C 200ks correlation stayed around 0.83 and was not acceptable as the main path.
+
+D9.5 decision:
+- Do not keep D9.4.1 as the main route.
+- Keep D9.3 event-aware transform channels available for all profiles.
+- Add losses that improve rare-tail/event behavior while preserving trend.
+
+Main technical changes:
+1. losses.py
+   - voltage_corr: centered V(t) trend/correlation regularizer.
+   - voltage_ultra_quantile: extra low/high extreme quantile matching.
+   - voltage_low_coverage: differentiable coverage fraction matching around 2.75 V and 4.10 V.
+   - voltage_tail_balance: low/high tail mean matching.
+
+2. profile_adaptive.py
+   - lowrate_trend_tail: B1/2C uses D9.3 branch plus stronger trend/tail losses.
+   - event_highrate_trend_tail: B3/R25 and B4/R3 keep D9.3-style event branch with event-aware sampling.
+   - auto mode uses protocol/current/temperature only, not metrics.
+
+3. output_transform.py
+   - keeps event/low-tail components and branch diagnostics.
+
+Validation order:
+- First: 40ks_d95.
+- Then: 200ks_d95 if 40ks does not regress B1 trend.
+- Then: 500ks_d95 if 200ks passes.
+- Do not run 24 profiles until three-profile 500ks is stable.
+

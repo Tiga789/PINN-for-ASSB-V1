@@ -1,0 +1,64 @@
+ASSB-D9 / GV1 D9.3 regime-aware voltage/event correction record
+================================================================
+
+Fixed user workflow note
+------------------------
+The user manually extracts zip packages and manually adds/overwrites files in
+the local project.  Future instructions should provide post-overwrite checks and
+run commands, not automatic unzip commands, unless the user explicitly asks.
+
+Context
+-------
+D8 established the GV1 measured-current replay data pipe and training scaffold.
+D9.1 added the minimum conditioned effective-SPM PINN training loop.
+D9.2 corrected voltage-range compression and high-voltage saturation by removing
+hard terminal-voltage clipping and using an affine voltage head with soft losses.
+
+Observed D9.2 state
+-------------------
+D9.2 40ks/200ks/500ks diagnostics improved global voltage MAE substantially and
+eliminated most 4.269 V saturation.  However, rare low-voltage tail points were
+still under-covered, especially in R2.5/R3 and deep-discharge points.  This was
+not interpreted as a narrow low-voltage bug; it was treated as a general rare
+regime imbalance issue.
+
+D9.3 design decision
+--------------------
+D9.3 should improve the class of problems involving rare regimes:
+- low-voltage tail;
+- high-voltage tail;
+- high-current R2.5/R3 segments;
+- current step / rest transition regions;
+- temperature excursions.
+
+Implemented changes
+-------------------
+1. gv1/model.py
+   Added raw_voltage_low and raw_voltage_event channels to the potential branch.
+
+2. gv1/output_transform.py
+   Added low-voltage gate, low-tail correction, event correction and temperature
+   polarization correction while preserving the weak effective-SPM scaffold.
+
+3. gv1/losses.py
+   Added robust weighted voltage loss, quantile loss, asymmetric tail loss and
+   event loss.  Kept center/surface/radial/potential regularizers.
+
+4. gv1/trainer.py
+   Added event-aware sampling and event_sampling diagnostics in summaries.
+   The sampler mixes uniform points with boosted tail/current/transition/temp
+   event points.
+
+5. scripts/gv1_prediction_metrics.py
+   Added low/high coverage gaps, quantile-tail metrics, high-current metrics,
+   temperature-event metrics and new voltage-component diagnostics.
+
+6. scripts/gv1_run_profile_compare_*_d93.ps1
+   Added 40ks, 200ks and 500ks three-profile diagnostic runners.
+
+Boundary
+--------
+This is still a one-profile / three-profile diagnostic trainer.  It should be
+run as 40ks -> 200ks -> 500ks before any manifest-level or 24-profile training.
+It is not yet a full chemistry-specific OCP implementation or cross-cell
+held-out GV1 final model.

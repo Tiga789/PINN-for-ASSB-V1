@@ -1,0 +1,30 @@
+ASSB-D9 record note - GV1 D9.2 voltage transform correction
+===========================================================
+
+Fixed user operation preference:
+- The user manually extracts zip packages and manually adds/overwrites files in
+  the project.
+- Assistant responses after package delivery should provide post-overwrite file
+  checks and run commands only; do not provide extraction commands unless the
+  user explicitly asks.
+
+D9.1 diagnostic summary:
+- 40ks and 200ks shape tests passed, with corr around 0.927--0.943.
+- 500ks three-profile diagnostic also passed shape stability, but exposed the
+  voltage-transform bottleneck:
+  * MAE stayed around 0.237--0.251 V.
+  * bias stayed around -0.165 to -0.199 V.
+  * pred_upper_saturation_frac_4p269 was about 0.22--0.25.
+  * low-voltage coverage <=2.75 V was nearly absent.
+
+D9.2 objective:
+- Keep the measured-current cbar/radial effective-SPM scaffold.
+- Replace hard-clipped voltage output with soft-guarded hybrid residual output.
+- Add low-voltage tail weighting, voltage bias loss, voltage range loss and
+  soft voltage guard loss.
+- Re-run three-profile diagnostics in this order: 40ks -> 200ks -> 500ks.
+
+D9.2 boundary:
+- This is still a one-profile smoke/mid-window trainer.
+- It is not yet a 24-profile manifest-level trainer.
+- It is not yet cross-cell held-out GV1 generalization validation.

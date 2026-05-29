@@ -1,0 +1,77 @@
+ASSB-D9 / GV1 D9.4 profile-adaptive hybrid record
+==================================================
+
+Fixed user workflow note
+------------------------
+The user will manually extract zip packages and add/overwrite files in the local
+project. Future instructions should only provide post-overwrite checks and run
+commands, not decompression commands.
+
+Why D9.4 is needed
+------------------
+D9.2 corrected the large voltage-range compression and high-voltage saturation.
+It was strongest on the low-rate B1/2C profile. D9.3 added regime/event-aware
+sampling and correction channels; it improved B3/R2.5 and B4/R3, but the B1/2C
+500ks result was worse than the D9.2 500ks B1 result.
+
+Therefore D9.4 does not simply add another low-voltage-tail patch. It makes the
+voltage transform and loss profile-adaptive:
+
+- smooth_2c preset: D9.2-like branch, lower event correction, stronger global
+  range/bias behavior, intended for low-rate/low-temperature 2C.
+- event_highrate preset: D9.3-like branch, event-aware sampling/loss/corrections,
+  intended for R2.5/R3, high-current or high-temperature profiles.
+
+Selection rule
+--------------
+`gv1/profile_adaptive.py` inspects only replay metadata/statistics:
+
+- path/protocol hint: 2C / R2.5 / R3;
+- max absolute current;
+- measured temperature range.
+
+It does not inspect D9.2/D9.3 validation metrics and does not use test labels for
+model selection. This keeps the diagnostic auditable.
+
+Code-level changes
+------------------
+1. `gv1/profile_adaptive.py`
+   New module. It selects `smooth_2c` or `event_highrate` and returns trainer,
+   transform and loss presets.
+
+2. `gv1/output_transform.py`
+   Adds a profile-adaptive hybrid gate:
+
+   phis_c = voltage_base_branch + hybrid_gate * voltage_event_branch_delta
+
+   where base branch is D9.2-like and event branch contains low-tail/current/
+   temperature correction terms. The gate is selected by the preset and saved
+   in prediction diagnostics.
+
+3. `scripts/gv1_train_conditioned_pinn.py`
+   Adds `--profile_adaptive_mode auto|smooth_2c|event_highrate` and prints the
+   selected mode before training.
+
+4. `scripts/gv1_prediction_metrics.py`
+   Reports additional branch diagnostics: voltage_profile_event_gate,
+   voltage_base_branch and voltage_event_branch_delta.
+
+5. `scripts/gv1_run_profile_compare_*_d94.ps1`
+   Standard three-profile diagnostic commands for 40ks, 200ks and 500ks.
+
+First diagnostic sequence
+-------------------------
+1. Run py_compile.
+2. Run 40ks D9.4 three-profile comparison.
+3. Check that B1 uses smooth_2c and B3/B4 use event_highrate.
+4. Compare metrics with D9.2/D9.3:
+   - B1 should recover toward D9.2 behavior.
+   - B3/B4 should keep D9.3-like high-rate gains.
+   - High-voltage saturation should remain near zero.
+   - Low-tail diagnostics should improve or at least not regress severely.
+5. Only then run 200ks, then 500ks.
+
+Boundary
+--------
+D9.4 is still a diagnostic stage. It is not yet the final manifest-level or
+24-profile training implementation.

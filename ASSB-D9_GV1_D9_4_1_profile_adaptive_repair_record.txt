@@ -1,0 +1,59 @@
+ASSB-D9 / GV1 D9.4.1 profile-adaptive repair record
+
+Fixed user workflow note
+------------------------
+The user manually extracts zip packages and adds/overwrites files in the project.  Future ASSB-D9 instructions should give post-overwrite checks and run commands, not unzip instructions, unless the user explicitly asks for extraction commands.
+
+Context
+-------
+D9.2 improved global voltage MAE and removed high-voltage saturation, but B3/R2.5 and B4/R3 still needed stronger event/high-rate handling.
+D9.3 improved B3/R2.5 and B4/R3 with event-aware channels, but B1/2C was not the best candidate.
+D9.4 tried to combine both with profile-adaptive routing. Routing worked, but B1/2C 200ks regressed in correlation. B3/R2.5 and B4/R3 remained good.
+
+D9.4.1 decision
+---------------
+D9.4.1 is not another low-voltage-only patch. It is a conservative branch repair:
+
+1. Low-rate / low-temperature 2C profiles use a D9.2-locked smooth branch.
+2. R2.5/R3 and high-temperature/high-current profiles keep the D9.3-like event branch.
+3. The branch selector uses only pre-training profile metadata/statistics: path protocol hint, current scale and temperature range. It does not use held-out metrics.
+
+Code-level changes
+------------------
+1. gv1/profile_adaptive.py
+   - auto 2C path returns selected_mode=smooth_2c.
+   - smooth_2c now maps to a D9.2-locked preset.
+   - event_highrate remains D9.3-like.
+
+2. gv1/output_transform.py
+   - keeps D9.3 correction channels in architecture, but smooth_2c_d92locked sets all correction gates/scales to zero.
+   - event branch remains available for high-rate profiles.
+
+3. gv1/losses.py
+   - low-rate branch uses voltage_data/tail/bias/range/guardrail only.
+   - event/asymmetry/quantile emphasis is disabled for B1-safe smooth mode.
+
+4. gv1/trainer.py
+   - event sampling remains implemented, but smooth_2c_d92locked sets event_sampling_mix=0 and sample_weight_exponent=0.
+
+5. scripts/gv1_train_conditioned_pinn.py
+   - accepts profile_adaptive_mode=smooth_2c_d92locked.
+   - prints d9_4_1_profile_adaptive diagnostics.
+
+6. scripts/gv1_run_profile_compare_*_d941.ps1
+   - separate D9.4.1 output directories prevent mixing D9.4 and D9.4.1 metrics.
+
+Recommended validation sequence
+-------------------------------
+1. py_compile all updated Python files.
+2. Run 40ks D9.4.1 three-profile comparison.
+3. If B1_2C corr recovers and B3/B4 do not degrade, run 200ks.
+4. If 200ks passes, decide whether 500ks is needed.
+5. Do not run 24-profile training until the branch repair is stable.
+
+Pass/fail focus
+---------------
+B1_2C should recover trend correlation compared with D9.4 200ks.
+B3_R25 and B4_R3 should remain close to D9.3/D9.4 event-branch performance.
+High-voltage saturation should stay near zero.
+Low-voltage extreme tail can remain imperfect at this diagnostic stage; global trend and non-degradation across branches matter more for D9.4.1.

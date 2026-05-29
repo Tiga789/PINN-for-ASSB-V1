@@ -1,0 +1,2 @@
+param([string]$ProjectRoot="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1")
+& (Join-Path $ProjectRoot "scripts\gv1_run_profile_compare_d93.ps1") -ProjectRoot $ProjectRoot -OutRoot "E:\XJTU battery dataset\_gv1_cache\xjtu_batch134_train_conditioned_pinn_profile_compare_40ks_d93" -Epochs 1200 -BatchSize 4096 -MaxTimePoints 8192 -PredictionTimePoints 4096 -TimeWindowS 40000 -Lr 0.0007 -Device cuda

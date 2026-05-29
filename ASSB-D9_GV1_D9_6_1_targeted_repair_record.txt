@@ -1,0 +1,37 @@
+ASSB-D9 / GV1 D9.6.1 targeted repair record
+============================================
+
+Fixed user workflow note:
+The user will manually extract zip packages and manually add/overwrite files in
+the local project. Future responses should provide only post-cover checks and
+run commands, not unzip commands, unless explicitly requested.
+
+Context summary:
+D9.5.1 became the current D9.x core after passing single-profile 500ks and D9.6
+multi-profile verification. D9.6 then passed 6-profile 40ks and 6-profile 200ks.
+The 24-profile 40ks sweep gave 23 pass + 1 borderline. The borderline profile
+was B1_2C battery-8. A separate 200ks battery-8 check showed MAE about 0.1008 V,
+corr about 0.8926, and high-voltage overshoot fraction above 4.35 V about 0.0043.
+
+D9.6.1 decision:
+Do not run 24-profile 200ks yet. Add a targeted late-2C repair preset. The preset
+is selected by profile metadata/path when protocol is 2C and battery index is
+>= 6, or explicitly by --profile_adaptive_mode late_2c_guarded.
+
+Main technical changes:
+1. Output transform adds optional differentiable soft voltage guard.
+2. profile_adaptive.py adds late_2c_guarded_trend_warmup preset.
+3. Late-2C preset reduces event/low-tail branch aggressiveness and strengthens
+   correlation/range/guardrail losses.
+4. Metrics now report voltage_pre_soft_guard and voltage_soft_guard_delta.
+5. Scripts are added for battery-8 200ks and 2C-tail battery-6/7/8 200ks checks.
+
+Recommended validation sequence:
+1. Run gv1_run_borderline_B1_2C_battery8_200ks_d961.ps1
+2. If pass, run gv1_run_multicell_2c_tail_3x200ks_d961.ps1
+3. If pass, rerun 24x40ks_d961
+4. Only then consider 24x200ks_d961
+
+Boundary:
+This is still sequential verification, not joint multi-profile training and not
+full cell-level generalization proof.
