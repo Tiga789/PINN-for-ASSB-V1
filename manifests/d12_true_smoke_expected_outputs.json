@@ -1,0 +1,11 @@
+{
+  "expected_command_root": "E:/XJTU battery dataset/_gv1_cache/xjtu_batch134_d12_runtime_metadata_true_smoke_commands",
+  "expected_run_dirs": "E:/XJTU battery dataset/_gv1_cache/xjtu_batch134_d12_runtime_metadata_{off,zero,on}_*_TRUE_SMOKE_40ks_e50",
+  "preflight_forbids": [
+    "--epochs 40000",
+    "--time_window_s 200000",
+    "--max_time_points 8192",
+    "--batch_size 2048",
+    "_200ks"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "stage": "D10-P0 battery-8 outlier/regime judgement",
+  "default_cache_root": "E:/XJTU battery dataset/_gv1_cache",
+  "required_existing_artifacts": [
+    "xjtu_batch134_d97_battery8_outlier_diagnosis/d97_battery8_diagnosis_summary.json",
+    "xjtu_batch134_d97_battery8_outlier_diagnosis/diagnosis_plots/d97_candidate_metrics_table.csv",
+    "xjtu_batch134_train_conditioned_pinn_borderline_B1_2C_battery8_200ks_d96/metrics_borderline_200ks.json",
+    "xjtu_batch134_train_conditioned_pinn_multicell_24x40ks_d96/scorecard_d96_40ks.json",
+    "xjtu_batch134_train_conditioned_pinn_multicell_6x200ks_d96/scorecard_d96_200ks.json"
+  ],
+  "new_outputs": [
+    "xjtu_batch134_d10_p0_battery8_regime_judgement/d10_p0_battery8_judgement_summary.json",
+    "xjtu_batch134_d10_p0_battery8_regime_judgement/D10_P0_RECOMMENDATION.md",
+    "xjtu_batch134_d10_p0_battery8_regime_judgement/d10_p0_candidate_metrics_normalized.csv",
+    "xjtu_batch134_d10_p0_battery8_regime_judgement/d10_p0_segment_metrics_table.csv",
+    "xjtu_batch134_d10_p0_battery8_regime_judgement/d10_p0_peer_comparison_table.csv"
+  ],
+  "important_rule": "Diagnostic-only first. Do not overwrite D9.6/D9.5.1 mainline and do not run 24-profile 200ks before this judgement."
+}

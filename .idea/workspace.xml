@@ -5,91 +5,91 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7b854bbc-0a8a-4911-bc87-dd9f1f68d852" name="更改" comment="">
-      <change afterPath="$PROJECT_DIR$/ASSB-D9_GV1_D9_2_voltage_transform_record.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASSB-D9_GV1_D9_3_regime_aware_record.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASSB-D9_GV1_D9_4_1_profile_adaptive_repair_record.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASSB-D9_GV1_D9_4_profile_adaptive_record.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASSB-D9_GV1_D9_5_1_trend_first_warmup_record.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASSB-D9_GV1_D9_5_trend_preserving_tail_record.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASSB-D9_GV1_D9_6_1_targeted_repair_record.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASSB-D9_GV1_D9_6_2_rollback_targeted_repair_record.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASSB-D9_GV1_D9_6_3_training_strategy_record.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASSB-D9_GV1_D9_6_multicell_verification_record.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ASSB-D9_GV1_D9_7_battery8_outlier_regime_diagnosis_record.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_GV1_D9_1.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_GV1_D9_2.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_GV1_D9_3.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_GV1_D9_4.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_GV1_D9_4_1.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_GV1_D9_5.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_GV1_D9_5_1.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_GV1_D9_6.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_GV1_D9_6_1.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_GV1_D9_6_2.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_GV1_D9_6_3.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_GV1_D9_7.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_GV1_D9_7_plot_patch.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gv1/gv1_train_conditioned_pinn.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gv1/losses.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gv1/model.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gv1/output_transform.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gv1/profile_adaptive.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gv1/trainer.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d96_profile_inventory.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d97_battery8_outlier_diagnosis.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_multicell_scorecard_d96.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_multicell_scorecard_d961.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_multicell_scorecard_d962.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_plot_battery8_regime_d97.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_plot_battery8_regime_d97.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_prediction_metrics.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_b1_2c_24x40ks_scorecard_d97.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_battery8_outlier_diagnosis_d97.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_borderline_B1_2C_battery8_200ks_d961.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_borderline_B1_2C_battery8_200ks_d962.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_borderline_B1_2C_battery8_200ks_d963_probe.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_borderline_B1_2C_battery8_200ks_d963_sweep.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_multicell_24x200ks_d96.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_multicell_24x200ks_d961.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_multicell_24x200ks_d962.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_multicell_24x40ks_d96.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_multicell_24x40ks_d961.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_multicell_24x40ks_d962.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_multicell_2c_tail_3x200ks_d961.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_multicell_6x200ks_d96.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_multicell_6x200ks_d962.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_multicell_6x40ks_d96.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_multicell_6x40ks_d962.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_multicell_verify_d96.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_multicell_verify_d961.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_multicell_verify_d962.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_profile_compare_200ks.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_profile_compare_200ks_d92.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_profile_compare_200ks_d93.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_profile_compare_200ks_d94.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_profile_compare_200ks_d941.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_profile_compare_200ks_d95.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_profile_compare_200ks_d951.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_profile_compare_40ks_d92.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_profile_compare_40ks_d93.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_profile_compare_40ks_d94.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_profile_compare_40ks_d941.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_profile_compare_40ks_d95.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_profile_compare_40ks_d951.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_profile_compare_500ks_d92.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_profile_compare_500ks_d93.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_profile_compare_500ks_d94.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_profile_compare_500ks_d941.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_profile_compare_500ks_d95.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_profile_compare_500ks_d951.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_profile_compare_d92.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_profile_compare_d93.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_profile_compare_d94.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_profile_compare_d941.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_profile_compare_d95.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_profile_compare_d951.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_select_borderline_d963.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_train_conditioned_pinn.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PACKAGE_FILE_LIST.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_GV1_D10_P0.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_GV1_D10_P3.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_GV1_D10_P5.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_GV1_D11C2.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_GV1_D11_B.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_GV1_D11_C.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_GV1_D12.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_GV1_D12_RUNTIME_METADATA_PATCH.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_GV1_D12_S2_BALANCED_STRICT_SMOKE_PACKAGE.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_GV1_D12_TRUE_SMOKE_RESCUE_SCORECARD_FIX.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D10_P5_SCOPE.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D11C2_SCOPE.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D11_B_SCOPE.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D11_C_SCOPE.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D12_RUNTIME_METADATA_PATCH_SCOPE.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D12_S1_STRICT_SMOKE_README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D12_S2_BALANCED_STRICT_SMOKE_README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D12_TRUE_SMOKE_RESCUE_README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/d12_metadata_runtime.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manifests/d10_p0_expected_outputs.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manifests/d10_p3_expected_outputs.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manifests/d10_p5_expected_outputs.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manifests/d11_b_expected_outputs.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manifests/d11_c_expected_outputs.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manifests/d11c2_expected_outputs.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manifests/d12_expected_outputs.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manifests/d12_runtime_expected_outputs.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manifests/d12_s1_expected_outputs.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manifests/d12_true_smoke_expected_outputs.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manifests/d12_true_smoke_rescue_expected_outputs.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/package_info.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/gv1_d10_metrics_from_prediction.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/gv1_d10_p0_battery8_regime_judgement.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/gv1_d10_p1_collect_scorecard.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/gv1_d10_p1_prepare_23profile_200ks_plan.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/gv1_d10_p3_battery8_lightweight_correction.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/gv1_d10_p5_regime_policy_and_d11_plan.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/gv1_d11_b_regime_feature_distance_audit.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/gv1_d11_c_flag_aware_metadata_ablation.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/gv1_d11_c_flag_aware_metadata_ablation_design.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/gv1_d11c2_metadata_input_patch.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/gv1_d12_collect_on_off_scorecard.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/gv1_d12_collect_runtime_onoff_scorecard.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/gv1_d12_collect_true_smoke_scorecard.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/gv1_d12_prepare_metadata_on_off_ablation.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/gv1_d12_prepare_runtime_onoff_commands.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/gv1_d12_prepare_runtime_true_smoke_commands.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/gv1_d12_rescue_true_smoke_metrics_and_scorecard.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/gv1_d12_runtime_patch_guardrail.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/gv1_d12_s1_prepare_strict_smoke_commands.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/gv1_d12_s1_scorecard_from_predictions.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/gv1_d12_s2_prepare_balanced_strict_smoke_commands.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/gv1_d12_s2_scorecard_from_predictions.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/gv1_train_conditioned_pinn_d12_metadata_runtime.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/mark_bad_d12_runtime_longrun_dirs_interrupted.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d10_p0_battery8_judgement.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d10_p1_prepare_23profile_plan.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d10_p3_battery8_lightweight_correction.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d10_p5_regime_policy_and_d11_plan.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d11_b_regime_feature_distance_audit.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d11_c_flag_aware_metadata_ablation.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d11_c_flag_aware_metadata_ablation_design.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d11c2_metadata_input_patch.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d12_collect_on_off_scorecard.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d12_collect_runtime_onoff_scorecard.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d12_collect_true_smoke_scorecard.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d12_prepare_metadata_on_off_ablation.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d12_prepare_runtime_onoff_commands.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d12_prepare_runtime_true_smoke_commands.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d12_rescue_true_smoke_metrics_and_scorecard.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d12_runtime_metadata_smoke_pair.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d12_runtime_patch_guardrail.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d12_s1_all_in_one_safe.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d12_s1_collect_scorecard.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d12_s1_preflight.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d12_s1_prepare_strict_smoke_commands.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d12_s1_run_triplet.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d12_s2_all_in_one_safe.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d12_s2_collect_scorecard.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d12_s2_preflight.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d12_s2_prepare_balanced_strict_smoke_commands.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d12_s2_run_triplet.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d12_true_smoke_preflight.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d12_true_smoke_triplet.ps1" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
@@ -149,10 +149,10 @@
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1" />
+      <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\docs" />
       <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\scripts" />
+      <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\manifests" />
       <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\gv1" />
-      <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\gv1\io" />
-      <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\gv1\pipeline" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1" />
@@ -233,7 +233,7 @@
       <workItem from="1776793294745" duration="2000" />
       <workItem from="1776796578394" duration="75259000" />
       <workItem from="1777704900369" duration="98542000" />
-      <workItem from="1778744192031" duration="158655000" />
+      <workItem from="1778744192031" duration="181273000" />
     </task>
     <servers />
   </component>

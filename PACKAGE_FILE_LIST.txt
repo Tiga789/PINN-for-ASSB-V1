@@ -1,0 +1,10 @@
+./PACKAGE_FILE_LIST.txt
+./README_GV1_D12_S2_BALANCED_STRICT_SMOKE_PACKAGE.md
+./docs/D12_S2_BALANCED_STRICT_SMOKE_README.md
+./scripts/gv1_d12_s2_prepare_balanced_strict_smoke_commands.py
+./scripts/gv1_d12_s2_scorecard_from_predictions.py
+./scripts/run_gv1_d12_s2_all_in_one_safe.ps1
+./scripts/run_gv1_d12_s2_collect_scorecard.ps1
+./scripts/run_gv1_d12_s2_preflight.ps1
+./scripts/run_gv1_d12_s2_prepare_balanced_strict_smoke_commands.ps1
+./scripts/run_gv1_d12_s2_run_triplet.ps1

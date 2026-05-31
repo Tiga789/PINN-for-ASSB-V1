@@ -1,0 +1,21 @@
+{
+  "stage": "D10-P3 battery-8 lightweight correction",
+  "default_out_dir": "E:/XJTU battery dataset/_gv1_cache/xjtu_batch134_d10_p3_battery8_lightweight_correction",
+  "expected_outputs": [
+    "d10_p3_lightweight_correction_summary.json",
+    "D10_P3_RECOMMENDATION.md",
+    "d10_p3_candidate_metrics.csv",
+    "d10_p3_candidate_metrics_fullfit.csv",
+    "d10_p3_candidate_metrics_holdout.csv",
+    "d10_p3_battery8_corrected_prediction.npz"
+  ],
+  "optional_outputs_if_make_plots": [
+    "plots/d10_p3_voltage_overlay.png",
+    "plots/d10_p3_residual_overlay.png"
+  ],
+  "policy": {
+    "does_not_modify_d9_6_mainline": true,
+    "no_strong_voltage_clamp": true,
+    "battery8_flagged_profile_only": true
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "package": "GV1 D10-P5 regime policy and D11 plan",
+  "stage": "D10-P5",
+  "report_only": true,
+  "does_not_modify": [
+    "gv1/model.py",
+    "gv1/output_transform.py",
+    "gv1/profile_adaptive.py",
+    "gv1/losses.py",
+    "gv1/trainer.py",
+    "scripts/gv1_train_conditioned_pinn.py",
+    "main.py",
+    "util/*",
+    "integration_spm/*"
+  ],
+  "default_output_dir": "E:/XJTU battery dataset/_gv1_cache/xjtu_batch134_d10_p5_regime_policy_d11_plan",
+  "expected_outputs": [
+    "D10_P5_RECOMMENDATION.md",
+    "d10_p5_regime_policy_summary.json",
+    "d10_p5_mainline_acceptance_checklist.csv",
+    "d10_p5_flagged_profile_registry.csv",
+    "d10_p5_d11_candidate_routes.csv"
+  ],
+  "required_prior_outputs": [
+    "xjtu_batch134_d10_p0_battery8_regime_judgement/d10_p0_battery8_judgement_summary.json",
+    "xjtu_batch134_train_conditioned_pinn_23x200ks_d10p1_exclude_battery8/scorecard_d10_p1_23profile_200ks.json",
+    "xjtu_batch134_d10_p3_battery8_lightweight_correction/D10_P3_RECOMMENDATION.md",
+    "xjtu_batch134_d10_p4_final_mainline_decision/D10_P4_FINAL_MAINLINE_DECISION.md"
+  ],
+  "default_verdict_when_successful": "d10_p5_mainline_freeze_and_regime_policy_ready_for_d11"
+}

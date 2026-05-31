@@ -1,0 +1,25 @@
+{
+  "command_root": "E:/XJTU battery dataset/_gv1_cache/xjtu_batch134_d12_s1_metadata_ablation_commands",
+  "scorecard_dir": "E:/XJTU battery dataset/_gv1_cache/xjtu_batch134_d12_s1_metadata_ablation_scorecard",
+  "default_parameters": {
+    "profile_limit": 3,
+    "epochs": 100,
+    "time_window_s": 40000,
+    "max_time_points": 1024,
+    "batch_size": 512
+  },
+  "forbidden_parameters": [
+    "--epochs 40000",
+    "--time_window_s 200000",
+    "--max_time_points 8192",
+    "--batch_size 2048",
+    "_200ks"
+  ],
+  "expected_scorecard_files": [
+    "d12_s1_scorecard_summary.json",
+    "d12_s1_scorecard.csv",
+    "d12_s1_segment_metrics.csv",
+    "d12_s1_mode_summary.csv",
+    "D12_S1_SCORECARD_RECOMMENDATION.md"
+  ]
+}

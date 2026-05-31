@@ -1,0 +1,27 @@
+{
+  "stage": "D11-B regime feature distance audit",
+  "default_out_dir": "E:\\XJTU battery dataset\\_gv1_cache\\xjtu_batch134_d11_b_regime_feature_distance_audit",
+  "expected_inputs": [
+    "E:\\XJTU battery dataset\\_gv1_cache\\xjtu_batch134_training_ready\\xjtu_batch134_profile_manifest.csv",
+    "E:\\XJTU battery dataset\\_gv1_cache\\xjtu_batch134_training_ready\\xjtu_batch134_cycle_training_manifest.csv",
+    "E:\\XJTU battery dataset\\_gv1_cache\\xjtu_batch134_d10_p5_regime_policy_d11_plan\\d10_p5_regime_policy_summary.json",
+    "E:\\XJTU battery dataset\\_gv1_cache\\xjtu_batch134_d10_p0_battery8_regime_judgement\\d10_p0_battery8_judgement_summary.json",
+    "E:\\XJTU battery dataset\\_gv1_cache\\xjtu_batch134_train_conditioned_pinn_23x200ks_d10p1_exclude_battery8\\scorecard_d10_p1_23profile_200ks.json",
+    "E:\\XJTU battery dataset\\_gv1_cache\\xjtu_batch134_d10_p3_battery8_lightweight_correction\\D10_P3_RECOMMENDATION.md"
+  ],
+  "expected_outputs": [
+    "D11_B_RECOMMENDATION.md",
+    "d11_b_regime_feature_distance_summary.json",
+    "d11_b_profile_feature_table.csv",
+    "d11_b_battery8_vs_b1_2c_peer_distance.csv",
+    "d11_b_battery8_top_distance_features.csv",
+    "d11_b_b1_2c_pairwise_distance_matrix.csv"
+  ],
+  "non_modifying_guardrail": [
+    "gv1/model.py",
+    "gv1/output_transform.py",
+    "gv1/losses.py",
+    "gv1/trainer.py",
+    "scripts/gv1_train_conditioned_pinn.py"
+  ]
+}

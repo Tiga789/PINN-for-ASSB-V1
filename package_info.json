@@ -1,0 +1,11 @@
+{
+  "package": "GV1_D11_C_flag_aware_metadata_ablation_package",
+  "version": "v2_regenerated",
+  "stage": "D11-C",
+  "created_by": "ChatGPT",
+  "purpose": "Design-only flag-aware metadata ablation outputs after D11-B; no training and no mainline modification.",
+  "main_script": "scripts/gv1_d11_c_flag_aware_metadata_ablation.py",
+  "run_script": "scripts/run_gv1_d11_c_flag_aware_metadata_ablation.ps1",
+  "alias_script": "scripts/gv1_d11_c_flag_aware_metadata_ablation_design.py",
+  "alias_run_script": "scripts/run_gv1_d11_c_flag_aware_metadata_ablation_design.ps1"
+}

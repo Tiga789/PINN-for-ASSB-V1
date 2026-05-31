@@ -1,0 +1,19 @@
+{
+  "stage": "D12 metadata on/off ablation plan",
+  "default_out_dir": "E:\\XJTU battery dataset\\_gv1_cache\\xjtu_batch134_d12_metadata_on_off_ablation_plan",
+  "expected_files": [
+    "D12_RECOMMENDATION.md",
+    "d12_metadata_on_off_ablation_summary.json",
+    "d12_guardrail_checklist.csv",
+    "d12_metadata_off_23profile_manifest.csv",
+    "d12_metadata_on_23profile_manifest.csv",
+    "d12_battery8_target_probe_manifest_not_mainline.csv",
+    "d12_all_profiles_review_manifest.csv",
+    "d12_ablation_contract.json",
+    "D12_COMMAND_TEMPLATES_NOT_EXECUTABLE.md",
+    "d12_candidate_routes.csv"
+  ],
+  "expected_verdict": "d12_metadata_on_off_ablation_plan_ready_no_mainline_overwrite",
+  "guardrail_policy": "no fail rows; warn rows require manual review",
+  "training_policy": "preparation only; no training launched"
+}

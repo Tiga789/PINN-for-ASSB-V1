@@ -1,0 +1,44 @@
+{
+  "package": "GV1 D11-C flag-aware metadata ablation design package",
+  "stage": "D11-C",
+  "design_only": true,
+  "does_not_modify": [
+    "gv1/model.py",
+    "gv1/output_transform.py",
+    "gv1/profile_adaptive.py",
+    "gv1/losses.py",
+    "gv1/trainer.py",
+    "scripts/gv1_train_conditioned_pinn.py",
+    "main.py",
+    "util/*",
+    "integration_spm/*"
+  ],
+  "default_output_dir": "E:/XJTU battery dataset/_gv1_cache/xjtu_batch134_d11_c_flag_aware_metadata_ablation_design",
+  "default_inputs": [
+    "E:/XJTU battery dataset/_gv1_cache/xjtu_batch134_d10_p5_regime_policy_d11_plan/d10_p5_regime_policy_summary.json",
+    "E:/XJTU battery dataset/_gv1_cache/xjtu_batch134_d11_b_regime_feature_distance_audit/d11_b_regime_feature_distance_summary.json",
+    "E:/XJTU battery dataset/_gv1_cache/xjtu_batch134_d11_b_regime_feature_distance_audit/d11_b_battery8_top_distance_features.csv",
+    "E:/XJTU battery dataset/_gv1_cache/xjtu_batch134_training_ready/xjtu_batch134_profile_manifest.csv"
+  ],
+  "expected_outputs": [
+    "D11_C_RECOMMENDATION.md",
+    "d11_c_flag_aware_metadata_ablation_summary.json",
+    "d11_c_profile_metadata_manifest.csv",
+    "d11_c_candidate_routes.csv",
+    "d11_c_guardrail_checklist.csv",
+    "d11_c_feature_group_summary.csv",
+    "d11_c_metadata_patch_design.md"
+  ],
+  "expected_verdicts": [
+    "d11_c_design_only_flag_aware_metadata_ablation_plan_ready",
+    "d11_c_incomplete_context_keep_design_only_do_not_train"
+  ],
+  "guardrails": [
+    "No training is launched by this package.",
+    "D9.6/D9.5.1 mainline remains frozen.",
+    "B1_2C battery-8 remains flagged/excluded from mainline claim.",
+    "No hard voltage clamp/component clamp repair.",
+    "Do not use same-window target voltage features as predictive metadata for V(t).",
+    "Do not run direct 24-profile 200ks mainline claim from D11-C."
+  ]
+}

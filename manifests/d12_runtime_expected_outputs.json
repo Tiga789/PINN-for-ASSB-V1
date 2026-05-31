@@ -1,0 +1,34 @@
+{
+  "stage": "D12 runtime metadata model patch",
+  "role": "opt-in metadata on/off ablation backend",
+  "new_files": [
+    "gv1/d12_metadata_runtime.py",
+    "scripts/gv1_train_conditioned_pinn_d12_metadata_runtime.py",
+    "scripts/gv1_d12_runtime_patch_guardrail.py",
+    "scripts/gv1_d12_prepare_runtime_onoff_commands.py",
+    "scripts/gv1_d12_collect_runtime_onoff_scorecard.py",
+    "scripts/run_gv1_d12_runtime_patch_guardrail.ps1",
+    "scripts/run_gv1_d12_prepare_runtime_onoff_commands.ps1",
+    "scripts/run_gv1_d12_runtime_metadata_smoke_pair.ps1",
+    "scripts/run_gv1_d12_collect_runtime_onoff_scorecard.ps1"
+  ],
+  "does_not_modify": [
+    "gv1/model.py",
+    "gv1/output_transform.py",
+    "gv1/profile_adaptive.py",
+    "gv1/losses.py",
+    "gv1/trainer.py",
+    "scripts/gv1_train_conditioned_pinn.py",
+    "main.py",
+    "util/*",
+    "integration_spm/*"
+  ],
+  "metadata_modes": {
+    "off": "strict D9.6/D9.5.1 reference, no metadata dimensions appended",
+    "zero": "metadata architecture-control, append zero metadata vector",
+    "on": "append D11C2/D12 metadata values"
+  },
+  "default_guardrail_output": "E:/XJTU battery dataset/_gv1_cache/xjtu_batch134_d12_runtime_metadata_patch_guardrail",
+  "default_commands_output": "E:/XJTU battery dataset/_gv1_cache/xjtu_batch134_d12_runtime_metadata_ablation_commands",
+  "default_scorecard_output": "E:/XJTU battery dataset/_gv1_cache/xjtu_batch134_d12_runtime_metadata_ablation_scorecard"
+}

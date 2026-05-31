@@ -1,0 +1,10 @@
+{
+  "out_dir": "E:/XJTU battery dataset/_gv1_cache/xjtu_batch134_d12_runtime_metadata_true_smoke_scorecard_rescued",
+  "expected_files": [
+    "d12_true_smoke_scorecard_rescued_summary.json",
+    "d12_true_smoke_scorecard_rescued.csv",
+    "d12_true_smoke_segment_metrics_rescued.csv",
+    "D12_TRUE_SMOKE_RESCUE_RECOMMENDATION.md"
+  ],
+  "launches_training": false
+}

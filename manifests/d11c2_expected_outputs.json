@@ -1,0 +1,16 @@
+{
+  "stage": "D11C2 flag-aware metadata input patch",
+  "default_out_dir": "E:\\XJTU battery dataset\\_gv1_cache\\xjtu_batch134_d11c2_metadata_input_patch_design",
+  "expected_files": [
+    "D11C2_RECOMMENDATION.md",
+    "d11c2_metadata_input_patch_summary.json",
+    "d11c2_profile_metadata_input_manifest.csv",
+    "d11c2_guardrail_checklist.csv",
+    "d11c2_feature_context_from_d11b.csv",
+    "d11c2_patch_contract.json",
+    "D12_TRAINING_STUB_NOT_EXECUTABLE.md"
+  ],
+  "guardrail_expectation": "all pass",
+  "training_launched": false,
+  "mainline_modified": false
+}
