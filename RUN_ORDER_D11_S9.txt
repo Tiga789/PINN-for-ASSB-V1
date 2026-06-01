@@ -1,0 +1,11 @@
+D11-S9 run order
+
+1. cd C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1
+2. Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+3. D:\Anaconda\envs\torchgpu\python.exe -m compileall gv1 scripts
+4. .\scripts\run_gv1_d11_s9_preflight_check.ps1
+5. .\scripts\run_gv1_d11_s9_trainable_p2dlike_correction.ps1
+6. .\scripts\run_gv1_d11_s9_collect_scorecard.ps1
+7. Send these files back:
+   E:\XJTU battery dataset\_gv1_cache\xjtu_batch134_d11_s9_trainable_p2dlike_correction_scorecard\D11_S9_scorecard_summary.json
+   E:\XJTU battery dataset\_gv1_cache\xjtu_batch134_d11_s9_trainable_p2dlike_correction_scorecard\D11_S9_RECOMMENDATION.md

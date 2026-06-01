@@ -1,0 +1,35 @@
+D11-S5A run order
+=================
+
+From project root:
+
+1) cd "C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1"
+   Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+
+2) D:\Anaconda\envs\torchgpu\python.exe -m compileall gv1 scripts
+
+3) .\scripts\run_gv1_d11_s5a_preflight_check.ps1
+
+4) .\scripts\run_gv1_d11_s5a_prepare_commands.ps1
+
+5) .\scripts\run_gv1_d11_s5a_preflight_check.ps1 -AfterPrepare
+
+6) Run generated scripts, preferably one mode at a time:
+
+   & "E:\XJTU battery dataset\_gv1_cache\xjtu_batch134_d11_s5a_lowtarget_sign_gate_commands\run_d11_s5a_baseline_d951.generated.ps1"
+   & "E:\XJTU battery dataset\_gv1_cache\xjtu_batch134_d11_s5a_lowtarget_sign_gate_commands\run_d11_s5a_lowtarget_gate_probe.generated.ps1"
+   & "E:\XJTU battery dataset\_gv1_cache\xjtu_batch134_d11_s5a_lowtarget_sign_gate_commands\run_d11_s5a_lowtarget_downward_mild.generated.ps1"
+   & "E:\XJTU battery dataset\_gv1_cache\xjtu_batch134_d11_s5a_lowtarget_sign_gate_commands\run_d11_s5a_lowtarget_downward_strict.generated.ps1"
+
+   Or run all modes:
+
+   & "E:\XJTU battery dataset\_gv1_cache\xjtu_batch134_d11_s5a_lowtarget_sign_gate_commands\run_d11_s5a_all_modes.generated.ps1"
+
+7) .\scripts\run_gv1_d11_s5a_collect_scorecard.ps1
+
+8) Inspect:
+
+   notepad "E:\XJTU battery dataset\_gv1_cache\xjtu_batch134_d11_s5a_lowtarget_sign_gate_scorecard\D11_S5A_RECOMMENDATION.md"
+   notepad "E:\XJTU battery dataset\_gv1_cache\xjtu_batch134_d11_s5a_lowtarget_sign_gate_scorecard\D11_S5A_scorecard_summary.json"
+
+Do not proceed to 200ks unless both low_target and low_target_le_2p75 improve.

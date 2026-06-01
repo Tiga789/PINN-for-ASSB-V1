@@ -1,0 +1,31 @@
+{
+  "ok": true,
+  "stage": "D11-S7 apply low-voltage escape diagnostic patch",
+  "project_root": "C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\PINN-for-ASSB-V1",
+  "output_transform": {
+    "path": "C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\PINN-for-ASSB-V1\\gv1\\output_transform.py",
+    "exists": true,
+    "changed": true,
+    "notes": [
+      "added escape config fields",
+      "inserted escape block",
+      "added voltage_low_escape_correction output"
+    ],
+    "backup": "C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\PINN-for-ASSB-V1\\gv1\\output_transform.py.D11S7_backup_20260601_232936"
+  },
+  "train_script": {
+    "path": "C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\PINN-for-ASSB-V1\\scripts\\gv1_train_conditioned_pinn.py",
+    "exists": true,
+    "changed": true,
+    "notes": [
+      "added escape CLI args",
+      "added transform pass-through key enable_low_voltage_escape",
+      "added transform pass-through key low_voltage_escape_scale_V",
+      "added transform pass-through key low_voltage_escape_gate_center_V",
+      "added transform pass-through key low_voltage_escape_gate_width_V",
+      "added transform pass-through key low_voltage_escape_pred_center_V",
+      "added transform pass-through key low_voltage_escape_pred_width_V"
+    ],
+    "backup": "C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\PINN-for-ASSB-V1\\scripts\\gv1_train_conditioned_pinn.py.D11S7_backup_20260601_232936"
+  }
+}

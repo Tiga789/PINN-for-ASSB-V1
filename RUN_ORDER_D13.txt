@@ -1,0 +1,28 @@
+D13 segment/protocol diagnosis run order
+========================================
+
+1. Put package contents into project root.
+
+2. Open PowerShell / PyCharm terminal:
+
+   cd "C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1"
+   Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+
+3. Preflight:
+
+   .\scripts\run_gv1_d13_preflight_check.ps1
+
+4. Run diagnosis:
+
+   .\scripts\run_gv1_d13_segment_protocol_diagnosis.ps1
+
+5. Open recommendation:
+
+   notepad "E:\XJTU battery dataset\_gv1_cache\xjtu_batch134_d13_segment_protocol_diagnosis\D13_RECOMMENDATION.md"
+
+6. Send these files back if you want a decision:
+
+   D13_segment_protocol_summary.json
+   D13_RECOMMENDATION.md
+   D13_mode_protocol_segment_summary.csv
+   D13_worst_runs_by_mae.csv

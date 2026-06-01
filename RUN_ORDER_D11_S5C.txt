@@ -1,0 +1,22 @@
+D11-S5C run order
+
+1. Add the package files to the project root.
+2. Run:
+   cd "C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1"
+   Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+   D:\Anaconda\envs\torchgpu\python.exe -m compileall gv1 scripts
+3. Run preflight:
+   .\scripts\run_gv1_d11_s5c_preflight_check.ps1
+4. Prepare commands:
+   .\scripts\run_gv1_d11_s5c_prepare_commands.ps1
+5. Run after-prepare safety check:
+   .\scripts\run_gv1_d11_s5c_preflight_check.ps1 -AfterPrepare
+6. Run generated scripts in:
+   E:\XJTU battery dataset\_gv1_cache\xjtu_batch134_d11_s5c_lowtarget_amplitude_repair_commands
+7. Collect scorecard:
+   .\scripts\run_gv1_d11_s5c_collect_scorecard.ps1
+8. Inspect:
+   D11_S5C_scorecard_summary.json
+   D11_S5C_RECOMMENDATION.md
+   D11_S5C_global_vs_lowtarget_tradeoff.csv
+   D11_S5C_mode_segment_summary.csv

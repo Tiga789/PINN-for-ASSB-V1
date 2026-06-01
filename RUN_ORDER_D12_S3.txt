@@ -1,0 +1,53 @@
+D12-S3 clean 23-profile 40ks ablation run order
+=================================================
+
+1) Put this package into project root by manual extraction.
+
+Expected paths after extraction:
+  PINN-for-ASSB-V1/scripts/gv1_d12_s3_prepare_23profile_strict_commands.py
+  PINN-for-ASSB-V1/scripts/gv1_d12_s3_scorecard_from_predictions.py
+  PINN-for-ASSB-V1/scripts/run_gv1_d12_s3_prepare_commands.ps1
+  PINN-for-ASSB-V1/scripts/run_gv1_d12_s3_collect_scorecard.ps1
+  PINN-for-ASSB-V1/scripts/run_gv1_d12_s3_preflight_check.ps1
+  PINN-for-ASSB-V1/scripts/run_gv1_d12_s3_full_workflow_optional.ps1
+  PINN-for-ASSB-V1/README_D12_S3_CLEAN_23PROFILE.md
+
+2) In PowerShell:
+
+cd "C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1"
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+
+3) Preflight source code:
+
+.\scripts\run_gv1_d12_s3_preflight_check.ps1
+
+4) Prepare generated run commands:
+
+.\scripts\run_gv1_d12_s3_prepare_commands.ps1
+
+5) Preflight generated commands:
+
+.\scripts\run_gv1_d12_s3_preflight_check.ps1 -AfterPrepare
+
+6) Run either separate modes or all modes:
+
+& "E:\XJTU battery dataset\_gv1_cache\xjtu_batch134_d12_s3_metadata_ablation_commands\run_d12_s3_metadata_off_23profile.generated.ps1"
+& "E:\XJTU battery dataset\_gv1_cache\xjtu_batch134_d12_s3_metadata_ablation_commands\run_d12_s3_metadata_zero_23profile.generated.ps1"
+& "E:\XJTU battery dataset\_gv1_cache\xjtu_batch134_d12_s3_metadata_ablation_commands\run_d12_s3_metadata_on_23profile.generated.ps1"
+
+or:
+
+& "E:\XJTU battery dataset\_gv1_cache\xjtu_batch134_d12_s3_metadata_ablation_commands\run_d12_s3_all_modes_23profile.generated.ps1"
+
+7) Collect scorecard:
+
+.\scripts\run_gv1_d12_s3_collect_scorecard.ps1
+
+8) Key success condition:
+
+  run_count = 69
+  expected_run_count = 69
+  counts.strict_completed_metrics_ok = 69
+  verdict = d12_s3_all_runs_completed_metrics_ok
+
+Then compare metadata_off / metadata_zero / metadata_on mean_MAE_V.

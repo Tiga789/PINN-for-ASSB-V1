@@ -1,0 +1,40 @@
+D11-S7 run order
+=================
+
+From project root:
+
+1) Set location and execution policy
+   cd "C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1"
+   Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+
+2) Compile check
+   D:\Anaconda\envs\torchgpu\python.exe -m compileall gv1 scripts
+
+3) Preflight before patch
+   .\scripts\run_gv1_d11_s7_preflight_check.ps1
+
+4) Apply D11-S7 low-voltage escape patch
+   .\scripts\run_gv1_d11_s7_apply_patch.ps1
+
+5) Preflight after patch
+   .\scripts\run_gv1_d11_s7_preflight_check.ps1
+
+6) Prepare generated commands
+   .\scripts\run_gv1_d11_s7_prepare_commands.ps1
+
+7) Preflight generated commands
+   .\scripts\run_gv1_d11_s7_preflight_check.ps1 -AfterPrepare
+
+8) Run generated scripts, preferably one mode at a time:
+   & "E:\XJTU battery dataset\_gv1_cache\xjtu_batch134_d11_s7_lowvoltage_escape_commands\run_d11_s7_baseline_d951.generated.ps1"
+   & "E:\XJTU battery dataset\_gv1_cache\xjtu_batch134_d11_s7_lowvoltage_escape_commands\run_d11_s7_lowvoltage_escape_mild.generated.ps1"
+   & "E:\XJTU battery dataset\_gv1_cache\xjtu_batch134_d11_s7_lowvoltage_escape_commands\run_d11_s7_lowvoltage_escape_medium.generated.ps1"
+   & "E:\XJTU battery dataset\_gv1_cache\xjtu_batch134_d11_s7_lowvoltage_escape_commands\run_d11_s7_lowvoltage_escape_strong_guarded.generated.ps1"
+
+9) Collect scorecard
+   .\scripts\run_gv1_d11_s7_collect_scorecard.ps1
+
+10) Inspect:
+   E:\XJTU battery dataset\_gv1_cache\xjtu_batch134_d11_s7_lowvoltage_escape_scorecard\D11_S7_scorecard_summary.json
+   E:\XJTU battery dataset\_gv1_cache\xjtu_batch134_d11_s7_lowvoltage_escape_scorecard\D11_S7_RECOMMENDATION.md
+   E:\XJTU battery dataset\_gv1_cache\xjtu_batch134_d11_s7_lowvoltage_escape_scorecard\D11_S7_mode_segment_summary.csv

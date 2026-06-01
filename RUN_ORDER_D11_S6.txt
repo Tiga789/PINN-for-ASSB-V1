@@ -1,0 +1,14 @@
+D11-S6 run order
+=================
+
+1. Add package files to project root.
+2. Open PowerShell at project root:
+   cd "C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1"
+   Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+3. Preflight:
+   .\scripts\run_gv1_d11_s6_preflight_check.ps1
+4. Audit:
+   .\scripts\run_gv1_d11_s6_lowtarget_floor_capacity_audit.ps1
+5. Read:
+   notepad "E:\XJTU battery dataset\_gv1_cache\xjtu_batch134_d11_s6_lowtarget_floor_capacity_audit\D11_S6_RECOMMENDATION.md"
+   notepad "E:\XJTU battery dataset\_gv1_cache\xjtu_batch134_d11_s6_lowtarget_floor_capacity_audit\D11_S6_summary.json"

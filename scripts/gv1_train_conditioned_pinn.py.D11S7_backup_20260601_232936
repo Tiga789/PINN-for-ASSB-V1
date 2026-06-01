@@ -166,13 +166,6 @@ def main() -> None:
     ap.add_argument("--voltage_guard_low_V", type=float, default=None)
     ap.add_argument("--voltage_guard_high_V", type=float, default=None)
     ap.add_argument("--enable_voltage_hard_clamp", type=_bool_arg, default=None)
-    # D11-S7 diagnostic low-voltage escape head arguments.
-    ap.add_argument("--enable_low_voltage_escape", type=_bool_arg, default=None)
-    ap.add_argument("--low_voltage_escape_scale_V", type=float, default=None)
-    ap.add_argument("--low_voltage_escape_gate_center_V", type=float, default=None)
-    ap.add_argument("--low_voltage_escape_gate_width_V", type=float, default=None)
-    ap.add_argument("--low_voltage_escape_pred_center_V", type=float, default=None)
-    ap.add_argument("--low_voltage_escape_pred_width_V", type=float, default=None)
     ap.add_argument("--voltage_min_V", type=float, default=None, help="Only used when --voltage_range_strategy fixed")
     ap.add_argument("--voltage_max_V", type=float, default=None, help="Only used when --voltage_range_strategy fixed")
 
@@ -214,12 +207,6 @@ def main() -> None:
         "voltage_guard_low_V",
         "voltage_guard_high_V",
         "enable_voltage_hard_clamp",
-        "low_voltage_escape_pred_width_V",
-        "low_voltage_escape_pred_center_V",
-        "low_voltage_escape_gate_width_V",
-        "low_voltage_escape_gate_center_V",
-        "low_voltage_escape_scale_V",
-        "enable_low_voltage_escape",
         "voltage_min_V",
         "voltage_max_V",
     ]

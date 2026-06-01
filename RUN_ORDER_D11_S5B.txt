@@ -1,0 +1,21 @@
+D11-S5B run order
+==================
+
+1. cd to project root:
+   cd "C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1"
+   Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+
+2. Syntax/preflight:
+   D:\Anaconda\envs\torchgpu\python.exe -m compileall gv1 scripts
+   .\scripts\run_gv1_d11_s5b_preflight_check.ps1
+
+3. Run diagnostic analysis:
+   .\scripts\run_gv1_d11_s5b_lowtarget_gate_sign_analysis.ps1
+
+4. Open outputs:
+   notepad "E:\XJTU battery dataset\_gv1_cache\xjtu_batch134_d11_s5b_lowtarget_gate_sign_analysis\D11_S5B_RECOMMENDATION.md"
+   notepad "E:\XJTU battery dataset\_gv1_cache\xjtu_batch134_d11_s5b_lowtarget_gate_sign_analysis\D11_S5B_summary.json"
+   notepad "E:\XJTU battery dataset\_gv1_cache\xjtu_batch134_d11_s5b_lowtarget_gate_sign_analysis\D11_S5B_mode_component_summary.csv"
+   notepad "E:\XJTU battery dataset\_gv1_cache\xjtu_batch134_d11_s5b_lowtarget_gate_sign_analysis\D11_S5B_duplicate_mode_check.csv"
+
+Important: D11-S5B does not train. It diagnoses existing S5A predictions only.

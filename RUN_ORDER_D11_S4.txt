@@ -1,0 +1,31 @@
+D11-S4 low-voltage tail correction smoke run order
+==================================================
+
+1. Add package files to project root.
+
+2. Open PowerShell in project root:
+   cd "C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1"
+   Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+
+3. Compile check:
+   D:\Anaconda\envs\torchgpu\python.exe -m compileall gv1 scripts
+
+4. Preflight before prepare:
+   .\scripts\run_gv1_d11_s4_preflight_check.ps1
+
+5. Prepare generated run scripts:
+   .\scripts\run_gv1_d11_s4_prepare_commands.ps1
+
+6. Preflight after prepare:
+   .\scripts\run_gv1_d11_s4_preflight_check.ps1 -AfterPrepare
+
+7. Run modes separately:
+   & "E:\XJTU battery dataset\_gv1_cache\xjtu_batch134_d11_s4_lowtail_correction_smoke_commands\run_d11_s4_baseline_d951.generated.ps1"
+   & "E:\XJTU battery dataset\_gv1_cache\xjtu_batch134_d11_s4_lowtail_correction_smoke_commands\run_d11_s4_lowtail_mild.generated.ps1"
+   & "E:\XJTU battery dataset\_gv1_cache\xjtu_batch134_d11_s4_lowtail_correction_smoke_commands\run_d11_s4_lowtail_strong_safe.generated.ps1"
+
+8. Collect scorecard:
+   .\scripts\run_gv1_d11_s4_collect_scorecard.ps1
+
+9. Open recommendation:
+   notepad "E:\XJTU battery dataset\_gv1_cache\xjtu_batch134_d11_s4_lowtail_correction_smoke_scorecard\D11_S4_RECOMMENDATION.md"
