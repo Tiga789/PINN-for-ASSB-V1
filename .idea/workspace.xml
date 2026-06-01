@@ -4,80 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7b854bbc-0a8a-4911-bc87-dd9f1f68d852" name="更改" comment="">
-      <change afterPath="$PROJECT_DIR$/README_D11_S4_LOW_VOLTAGE_TAIL_CORRECTION.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_D11_S5A_LOWTARGET_SIGN_GATE_DIAGNOSIS.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_D11_S5B_LOWTARGET_GATE_SIGN_DIAGNOSTIC.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_D11_S5C_LOWTARGET_AMPLITUDE_REPAIR.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_D11_S6_LOWTARGET_FLOOR_CAPACITY_AUDIT.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_D11_S7_LOWVOLTAGE_ESCAPE.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_D11_S8_P2D_LIKE_TRANSPORT_CORRECTION.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_D12_S3_CLEAN_23PROFILE.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_D13_SEGMENT_PROTOCOL_DIAGNOSIS.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/RUN_ORDER_D11_S4.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/RUN_ORDER_D11_S5A.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/RUN_ORDER_D11_S5B.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/RUN_ORDER_D11_S5C.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/RUN_ORDER_D11_S6.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/RUN_ORDER_D11_S7.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/RUN_ORDER_D11_S8.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/RUN_ORDER_D12_S3.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/RUN_ORDER_D13.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/clean_clone_repro_check/README_CLEAN_CLONE_REPRO_CHECK.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/clean_clone_repro_check/check_repo_after_clone.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/clean_clone_repro_check/run_clean_clone_repro_check.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d11_s4_prepare_lowtail_smoke_commands.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d11_s4_scorecard_from_predictions.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d11_s5a_prepare_lowtarget_diagnosis_commands.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d11_s5a_scorecard_from_predictions.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d11_s5b_lowtarget_gate_sign_analysis.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d11_s5c_prepare_lowtarget_amplitude_repair_commands.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d11_s5c_scorecard_from_predictions.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d11_s6_lowtarget_floor_capacity_audit.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d11_s7_apply_lowvoltage_escape_patch.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d11_s7_prepare_lowvoltage_escape_commands.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d11_s7_scorecard_from_predictions.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d11_s8_p2dlike_transport_correction_from_baseline.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d11_s8_prepare_p2dlike_commands.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d11_s8_scorecard_from_predictions.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d11_s9_scorecard_from_predictions.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d11_s9_trainable_p2dlike_head_from_baseline.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d12_s3_prepare_23profile_strict_commands.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d12_s3_scorecard_from_predictions.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d13_segment_protocol_diagnosis.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d11_s4_collect_scorecard.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d11_s4_preflight_check.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d11_s4_prepare_commands.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d11_s5a_collect_scorecard.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d11_s5a_preflight_check.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d11_s5a_prepare_commands.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d11_s5b_lowtarget_gate_sign_analysis.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d11_s5b_preflight_check.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d11_s5c_collect_scorecard.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d11_s5c_preflight_check.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d11_s5c_prepare_commands.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d11_s6_lowtarget_floor_capacity_audit.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d11_s6_preflight_check.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d11_s7_apply_patch.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d11_s7_collect_scorecard.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d11_s7_preflight_check.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d11_s7_prepare_commands.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d11_s8_collect_scorecard.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d11_s8_preflight_check.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d11_s8_prepare_commands.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d11_s9_collect_scorecard.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d11_s9_preflight_check.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d11_s9_trainable_p2dlike_correction.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d12_s3_collect_scorecard.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d12_s3_full_workflow_optional.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d12_s3_preflight_check.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d12_s3_prepare_commands.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d13_preflight_check.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d13_segment_protocol_diagnosis.ps1" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gv1/output_transform.py" beforeDir="false" afterPath="$PROJECT_DIR$/gv1/output_transform.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/gv1_train_conditioned_pinn.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/gv1_train_conditioned_pinn.py" afterDir="false" />
-    </list>
+    <list default="true" id="7b854bbc-0a8a-4911-bc87-dd9f1f68d852" name="更改" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -121,7 +48,7 @@
     "Python.smoke_assb_params.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "main",
-    "last_opened_file_path": "C:/Users/Tiga_QJW/Desktop/ASSB_Scheme_V1/PINN-for-ASSB-V1/scripts",
+    "last_opened_file_path": "C:/Users/Tiga_QJW/Desktop/ASSB_Scheme_V1/PINN-for-ASSB-V1",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -133,8 +60,8 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\scripts" />
       <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1" />
+      <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\scripts" />
       <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\docs" />
       <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\manifests" />
       <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\gv1" />
@@ -218,7 +145,7 @@
       <workItem from="1776793294745" duration="2000" />
       <workItem from="1776796578394" duration="75259000" />
       <workItem from="1777704900369" duration="98542000" />
-      <workItem from="1778744192031" duration="204365000" />
+      <workItem from="1778744192031" duration="205015000" />
     </task>
     <servers />
   </component>
