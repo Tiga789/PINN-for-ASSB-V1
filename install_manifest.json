@@ -1,0 +1,12 @@
+{
+  "package": "GV1_D12_battery8_data_diagnosis_package_v1",
+  "purpose": "Diagnose Batch-1_2C_battery-8 raw/profile anomalies vs Batch-1 2C peers; no training; no mainline modification.",
+  "files": [
+    "scripts/gv1_d12_battery8_data_diagnosis.py",
+    "scripts/gv1_run_d12_battery8_data_diagnosis.ps1",
+    "README_D12_BATTERY8_DATA_DIAGNOSIS.md",
+    "install_manifest.json"
+  ],
+  "mainline_overwritten": false,
+  "training_disabled": true
+}
