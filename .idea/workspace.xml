@@ -5,65 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7b854bbc-0a8a-4911-bc87-dd9f1f68d852" name="更改" comment="">
-      <change afterPath="$PROJECT_DIR$/README_D12_BATTERY8_DATA_DIAGNOSIS.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_D12_S1.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_D12_S1B.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_D12_S1C.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_D12_S1D.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_D12_S1E.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_D12_S1F.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_D12_S1G.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_D12_S1H.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_D12_S1I.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_D12_S1J.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_D12_S1K.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_D12_S1K_200KS_SOURCEGEN.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_D12_S1K_v2.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_D12_S1K_v3.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gv1/d12_s1_p2d_losses.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gv1/d12_s1_p2d_model.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gv1/d12_s1_p2d_trainer.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gv1/d12_s1_p2d_transform.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/install_manifest.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_apply_d12_s1i_high_region_wrapper.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_apply_d12_s1k_two_candidate_wrapper.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d12_battery8_data_diagnosis.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d12_s1h_diagnose_s1e_soft.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d12_s1j_diagnose_200ks_leakage.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_d12_battery8_data_diagnosis.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_d12_s1_6profile_200ks.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_d12_s1_6profile_40ks.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_d12_s1b_6profile_200ks.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_d12_s1b_6profile_40ks.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_d12_s1c_6profile_200ks.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_d12_s1c_6profile_40ks.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_d12_s1d_6profile_200ks.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_d12_s1d_6profile_40ks.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_d12_s1e_6profile_200ks.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_d12_s1e_6profile_40ks.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_d12_s1f_6profile_200ks.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_d12_s1f_6profile_40ks.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_d12_s1f_6profile_40ks_fast_parallel_v2.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_d12_s1f_6profile_40ks_fast_parallel_v3.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_d12_s1g_6profile_200ks.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_d12_s1g_6profile_40ks.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_d12_s1g_6profile_40ks_fast_parallel.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_d12_s1h_diagnose_s1e_soft.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_d12_s1i_apply_s1e_soft_200ks.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_d12_s1i_apply_s1e_soft_40ks.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_d12_s1j_diagnose_200ks_leakage.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_d12_s1k_apply_23profile_200ks.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_d12_s1k_apply_23profile_40ks.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_d12_s1k_generate_s1e_source_23profile_200ks_fast_parallel.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_d12_s1k_generate_s1e_source_23profile_40ks_fast_parallel.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_scorecard_d12_s1.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_scorecard_d12_s1b.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_scorecard_d12_s1c.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_scorecard_d12_s1d.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_scorecard_d12_s1e.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_scorecard_d12_s1f.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_scorecard_d12_s1g.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_train_d12_s1_p2d_local.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -206,7 +147,7 @@
       <workItem from="1776793294745" duration="2000" />
       <workItem from="1776796578394" duration="75259000" />
       <workItem from="1777704900369" duration="98542000" />
-      <workItem from="1778744192031" duration="237109000" />
+      <workItem from="1778744192031" duration="241723000" />
     </task>
     <servers />
   </component>
