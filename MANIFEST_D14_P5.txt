@@ -1,0 +1,27 @@
+D14-P5 XJTU P2Dlite Soft-label Neural-network Smoke Package
+=============================================================
+
+Purpose:
+  Build, train, evaluate, and verify a small supervised neural-network smoke
+  using the eight P4B-v3 successful P2Dlite soft-label profiles.
+
+Scope:
+  - supervised NN smoke only;
+  - reads P4B-v3 solution_softlabels.npz;
+  - predicts theta_a/theta_c/phie/phis_c;
+  - n_r=17;
+  - no SOH generation;
+  - no full-P2D truth claim;
+  - no modification of GV1 mainline training code.
+
+Files:
+  configs/d14_p5_xjtu_p2dlite_nn_smoke_config.json
+  gv1/softlabels_nn/xjtu_p2dlite_dataset.py
+  gv1/softlabels_nn/xjtu_p2dlite_model.py
+  gv1/softlabels_nn/xjtu_p2dlite_losses.py
+  gv1/softlabels_nn/xjtu_p2dlite_metrics.py
+  scripts/gv1_d14_p5_build_softlabel_manifest.py
+  scripts/gv1_d14_p5_train_p2dlite_softlabel_nn.py
+  scripts/gv1_d14_p5_eval_p2dlite_softlabel_nn.py
+  scripts/gv1_d14_p5_verify_outputs.py
+  scripts/run_gv1_d14_p5_xjtu_p2dlite_nn_smoke.ps1

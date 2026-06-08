@@ -1,0 +1,2 @@
+D14-P4B v2 robust profile discovery package
+Fixes the first P4B selector that only selected 3 profiles despite valid generation.

@@ -1,0 +1,30 @@
+{
+  "package": "D14-P5A XJTU P2Dlite NN eval/verify fix",
+  "version": "2026-06-07",
+  "purpose": "Fix D14-P5 eval aggregation bug and regenerate metrics_by_split + eval report without retraining.",
+  "default_paths": {
+    "output_dir": "E:/XJTU battery dataset/_gv1_cache/xjtu_d14_p5_p2dlite_nn_smoke",
+    "manifest_csv": "E:/XJTU battery dataset/_gv1_cache/xjtu_d14_p5_p2dlite_nn_smoke/D14_P5_SOFTLABEL_NN_MANIFEST.csv",
+    "model_dir": "E:/XJTU battery dataset/_gv1_cache/xjtu_d14_p5_p2dlite_nn_smoke/ModelFin_D14_P5_p2dlite_nn_smoke",
+    "config": "configs/d14_p5_xjtu_p2dlite_nn_smoke_config.json"
+  },
+  "eval": {
+    "max_points_per_profile_eval": 20000,
+    "save_prediction_npz": true,
+    "allow_repair_from_existing_metrics_by_profile": true,
+    "pass_thresholds": {
+      "train_phis_c_mae_warn_V": 0.12,
+      "val_phis_c_mae_warn_V": 0.16,
+      "test_phis_c_mae_warn_V": 0.22,
+      "val_theta_mean_mae_warn": 0.1,
+      "test_theta_mean_mae_warn": 0.14
+    }
+  },
+  "boundaries": {
+    "does_not_retrain": true,
+    "does_not_generate_softlabels": true,
+    "does_not_generate_soh": true,
+    "does_not_modify_gv1_mainline": true,
+    "fixes_only_d14_p5_eval_verify": true
+  }
+}

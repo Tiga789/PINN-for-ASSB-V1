@@ -1,0 +1,112 @@
+{
+  "package": "D14-P5B-v2 XJTU P2Dlite 8-cell closed-set precision stable GTX1080Ti",
+  "version": "2026-06-07-v2",
+  "task_type": "closed-set calibration benchmark, not held-out generalization",
+  "softlabel_root": "E:/XJTU battery dataset/_gv1_cache/xjtu_softlabels_p2dlite_v1_p4b_multicell_v3",
+  "prior_file": "configs/P2Dlite_prior_xjtu_lr18650la_v0.json",
+  "output_dir": "E:/XJTU battery dataset/_gv1_cache/xjtu_d14_p5b_8cell_closedset_precision",
+  "profile_policy": {
+    "mode": "all_profiles_closed_train",
+    "expected_profile_count": 8,
+    "include_batches": [
+      "Batch-1",
+      "Batch-3",
+      "Batch-4",
+      "Batch-5",
+      "Batch-6"
+    ],
+    "exclude_exact_outliers": [
+      "Batch-1_2C_battery-8",
+      "B1_2C_battery-8"
+    ],
+    "all_selected_profiles_are_train_and_eval": true
+  },
+  "input_features": {
+    "base": [
+      "t_norm",
+      "q_norm",
+      "I_scaled",
+      "V_scaled",
+      "T_scaled",
+      "cycle_norm"
+    ],
+    "fourier_time_features": 12,
+    "fourier_charge_features": 6,
+    "include_step_type_onehot": true,
+    "include_batch_onehot": true,
+    "include_protocol_onehot": true,
+    "include_profile_onehot": true,
+    "include_current_voltage_interactions": true
+  },
+  "sampling": {
+    "max_points_per_profile": 50000,
+    "preserve_low_voltage": true,
+    "low_voltage_threshold_V": 3.05,
+    "preserve_step_transitions": true,
+    "uniform_fraction": 0.55,
+    "random_fraction": 0.25,
+    "low_voltage_fraction": 0.1,
+    "transition_fraction": 0.1,
+    "seed": 42
+  },
+  "model": {
+    "hidden_dim": 896,
+    "num_layers": 6,
+    "dropout": 0.0,
+    "activation": "gelu",
+    "residual_theta_baseline": true,
+    "profile_conditioning": "feature_onehot",
+    "theta_output": "sigmoid",
+    "scalar_output": "normalized_linear"
+  },
+  "training": {
+    "epochs": 500,
+    "batch_size": 65536,
+    "learning_rate": 0.0008,
+    "weight_decay": 1e-07,
+    "grad_clip_norm": 10.0,
+    "device": "auto",
+    "seed": 42,
+    "amp": false,
+    "torch_compile": "false",
+    "gpu_resident_tensors": true,
+    "num_workers": 0,
+    "loss_weights": {
+      "theta_a": 1.0,
+      "theta_c": 1.0,
+      "phie": 0.45,
+      "phis_c": 0.85,
+      "surface_theta": 0.2,
+      "radial_shape": 0.15
+    },
+    "log_every_epochs": 10,
+    "target_gpu_utilization_note": "P5B-v2 disables torch.compile and AMP by default for GTX 1080 Ti/Pascal stability, but keeps GPU-resident tensors and a large dense batch to improve utilization. Try BatchSize 131072 if memory allows; use 32768 if OOM."
+  },
+  "eval": {
+    "save_prediction_npz": true,
+    "pass_thresholds": {
+      "closed_phis_c_mae_pass_V": 0.015,
+      "closed_phis_c_mae_warn_V": 0.025,
+      "closed_phie_mae_pass": 0.015,
+      "closed_phie_mae_warn": 0.025,
+      "closed_theta_mean_mae_pass": 0.02,
+      "closed_theta_mean_mae_warn": 0.035,
+      "profile_phis_c_mae_warn_V": 0.035,
+      "profile_theta_mean_mae_warn": 0.05
+    }
+  },
+  "boundaries": {
+    "does_train_nn": true,
+    "closed_set_calibration": true,
+    "not_generalization_claim": true,
+    "does_not_generate_softlabels": true,
+    "does_not_generate_soh": true,
+    "does_not_modify_gv1_mainline": true,
+    "uses_standalone_p2dlite_prior": true
+  },
+  "runtime_guard": {
+    "stop_pipeline_immediately_if_training_fails": true,
+    "write_training_failed_json": true,
+    "gtx1080ti_stable_defaults": true
+  }
+}

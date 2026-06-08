@@ -1,0 +1,16 @@
+D14-P3 FAST Feasibility Patch v3
+=================================
+
+This patch replaces the too-deep D14-P3 audit with a fast, shallow, auditable
+Batch-5/6 feasibility audit.
+
+It is designed to finish quickly by:
+  - discovering raw Batch-5/6 files;
+  - using shallow .mat metadata inspection via scipy.io.whosmat or h5py keys;
+  - not loading full .mat arrays;
+  - not iterating every subrecord/cycle;
+  - writing logs before Python starts;
+  - avoiding PowerShell native stderr / Tee-Object termination behavior.
+
+It does not train, does not modify GV1 mainline, does not generate SOH in the
+voltage soft-label generator, and does not generate P2D state labels.

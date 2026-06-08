@@ -1,0 +1,43 @@
+{
+  "schema_version": "d14_p0_expected_mainline_v1",
+  "purpose": "Expected files and directories for D14-P0 freeze/no-regression audit.",
+  "expected_gv1_core_files": [
+    "gv1/model.py",
+    "gv1/output_transform.py",
+    "gv1/profile_adaptive.py",
+    "gv1/losses.py",
+    "gv1/trainer.py",
+    "scripts/gv1_train_conditioned_pinn.py"
+  ],
+  "expected_assb_no_regression_files": [
+    "main.py",
+    "README.md",
+    "util/thermo_assb.py",
+    "util/_losses.py",
+    "util/_rescale.py",
+    "util/init_pinn.py",
+    "util/spm_assb_train_discharge.py",
+    "integration_spm/spm_int_assb_cycle.py"
+  ],
+  "expected_cache_dirs": {
+    "d10_p1_23x200ks_exclude_battery8": "E:/XJTU battery dataset/_gv1_cache/xjtu_batch134_train_conditioned_pinn_23x200ks_d10p1_exclude_battery8",
+    "d12_s1k_23x200ks_scorecard": "E:/XJTU battery dataset/_gv1_cache/xjtu_batch134_d12_s1k_two_candidate_23x200ks_scorecard",
+    "d14_p0_output": "E:/XJTU battery dataset/_gv1_cache/xjtu_d14_p0_freeze_audit"
+  },
+  "expected_s1k_candidates": [
+    "baseline",
+    "low_only_revert_nonlow_to_baseline",
+    "low_plus_transition_fade_to_baseline"
+  ],
+  "battery8_policy": {
+    "profile": "Batch-1_2C_battery-8",
+    "mainline_status": "flagged/excluded from non-outlier mainline",
+    "allowed_use": "stress-test / outlier diagnostic only"
+  },
+  "forbidden_mainline_defaults": [
+    "enable_voltage_hard_clamp=True",
+    "metadata_on as default training mode",
+    "D9.6.1/D9.6.2/D9.6.3 failed branch active replacements",
+    "unflag/include battery-8 in mainline success statistics"
+  ]
+}

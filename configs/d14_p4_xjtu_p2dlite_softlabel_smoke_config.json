@@ -1,0 +1,73 @@
+{
+  "package": "D14-P4 XJTU P2Dlite soft-label generator smoke",
+  "version": "2026-06-07",
+  "prior_file": "configs/P2Dlite_prior_xjtu_lr18650la_v0.json",
+  "input_profile_dirs": [
+    "E:/XJTU battery dataset/_gv1_cache/xjtu_batch134_replay_profiles",
+    "E:/XJTU battery dataset/_gv1_cache/xjtu_d14_p3b_batch56_replay_smoke/profiles"
+  ],
+  "output_dir": "E:/XJTU battery dataset/_gv1_cache/xjtu_softlabels_p2dlite_v1_smoke",
+  "selection": {
+    "max_profiles_total": 2,
+    "prefer_batches": [
+      "Batch-1",
+      "Batch-3",
+      "Batch-4",
+      "Batch-5",
+      "Batch-6"
+    ],
+    "exclude_patterns": [
+      "Batch-1_2C_battery-8",
+      "B1_2C_battery-8"
+    ]
+  },
+  "generator": {
+    "n_r": 17,
+    "max_points_per_profile": 100000,
+    "adaptive_sample": true,
+    "preserve_low_voltage": true,
+    "low_voltage_threshold_V": 3.05,
+    "preserve_step_transitions": true,
+    "dtype": "float32"
+  },
+  "pass_criteria": {
+    "max_theta_out_of_bounds_fraction_warn": 0.02,
+    "max_theta_out_of_bounds_fraction_fail": 0.1,
+    "required_npz_keys": [
+      "t_global_s",
+      "I_profile",
+      "voltage_exp",
+      "temperature_C",
+      "cycle_id",
+      "step_id",
+      "step_type",
+      "r_a",
+      "r_c",
+      "cs_a",
+      "cs_c",
+      "theta_a",
+      "theta_c",
+      "phie",
+      "phis_c",
+      "phis_c_base",
+      "phis_c_soft",
+      "cbar_a",
+      "cbar_c",
+      "Uocp_a",
+      "Uocp_c",
+      "eta_a",
+      "eta_c",
+      "j_a",
+      "j_c",
+      "voltage_residual_s1k",
+      "low_transition_weight",
+      "resolved_spec_hash"
+    ]
+  },
+  "boundaries": {
+    "does_train": false,
+    "modifies_gv1_mainline": false,
+    "generates_soh": false,
+    "generates_full_p2d_truth": false
+  }
+}

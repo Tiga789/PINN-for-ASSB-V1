@@ -1,0 +1,45 @@
+{
+  "package": "D14-P3B Batch-5/6 controlled replay-profile build smoke",
+  "version": "2026-06-07",
+  "batches": [
+    "Batch-5",
+    "Batch-6"
+  ],
+  "files_per_batch": 1,
+  "select_policy": "smallest_file_per_batch",
+  "max_subrecords_per_file": 30,
+  "max_total_points_per_profile": 120000,
+  "raw_extensions": [
+    ".mat",
+    ".csv",
+    ".parquet"
+  ],
+  "skip_path_fragments": [
+    "_gv1_cache",
+    "CacheGV1",
+    "xjtu_d14_",
+    ".git",
+    "__pycache__"
+  ],
+  "current_policy": {
+    "positive_current_is_charge": true,
+    "rest_current_abs_A": 0.02,
+    "dynamic_rest_fraction_of_max_abs_current": 0.01
+  },
+  "required_npz_keys": [
+    "t_global_s",
+    "I_profile",
+    "voltage_exp",
+    "temperature_C",
+    "cycle_id",
+    "step_id",
+    "step_type"
+  ],
+  "boundaries": {
+    "does_train": false,
+    "modifies_gv1_mainline": false,
+    "voltage_soft_label_generator_generates_soh": false,
+    "generates_p2d_internal_state_labels": false,
+    "batch1_battery8_policy": "unchanged flagged/excluded"
+  }
+}

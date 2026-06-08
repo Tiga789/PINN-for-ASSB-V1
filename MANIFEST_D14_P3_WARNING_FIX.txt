@@ -1,0 +1,14 @@
+D14-P3 warning/stderr PowerShell fix
+=====================================
+
+Overwrite these files in the project root:
+
+  scripts/gv1_d14_p3_batch56_feasibility_audit.py
+  scripts/run_gv1_d14_p3_batch56_feasibility.ps1
+
+Fixes:
+  - suppresses pandas dateutil fallback warnings during schema audit
+  - prevents Windows PowerShell from converting native Python stderr warnings into terminating NativeCommandError
+  - still preserves and checks real Python exit codes
+
+No GV1 mainline model file is changed. No training is performed.

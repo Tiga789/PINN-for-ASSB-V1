@@ -1,0 +1,106 @@
+{
+  "package": "D14-P5 XJTU P2Dlite soft-label neural-network smoke",
+  "version": "2026-06-07",
+  "task_type": "voltage-current-informed internal-state inference smoke",
+  "softlabel_root": "E:/XJTU battery dataset/_gv1_cache/xjtu_softlabels_p2dlite_v1_p4b_multicell_v3",
+  "prior_file": "configs/P2Dlite_prior_xjtu_lr18650la_v0.json",
+  "output_dir": "E:/XJTU battery dataset/_gv1_cache/xjtu_d14_p5_p2dlite_nn_smoke",
+  "state_targets": [
+    "theta_a",
+    "theta_c",
+    "phie",
+    "phis_c"
+  ],
+  "concentration_reference": [
+    "cs_a",
+    "cs_c"
+  ],
+  "input_features": {
+    "use_time": true,
+    "use_current": true,
+    "use_voltage": true,
+    "use_temperature": true,
+    "use_cycle_norm": true,
+    "use_step_type_onehot": true,
+    "use_batch_onehot": true,
+    "use_protocol_onehot": true,
+    "use_cell_onehot": false
+  },
+  "profile_split": {
+    "explicit_cell_uid_split": {
+      "Batch-1_2C_battery-1": "train",
+      "0014_battery-6_R2.5_battery-6": "train",
+      "Batch-4_R3_battery-2": "train",
+      "Batch-5_battery-7": "train",
+      "0003_battery-3_2C_battery-3": "val",
+      "0015_battery-7_R2.5_battery-7": "val",
+      "0023_battery-7_R3_battery-7": "test",
+      "Batch-6_battery-3": "test"
+    },
+    "fallback_split_order": [
+      "train",
+      "train",
+      "val",
+      "test"
+    ],
+    "minimum_profiles_total": 4,
+    "require_nonempty_splits": [
+      "train",
+      "val",
+      "test"
+    ]
+  },
+  "sampling": {
+    "max_points_per_profile_train": 12000,
+    "max_points_per_profile_val": 12000,
+    "max_points_per_profile_test": 16000,
+    "preserve_low_voltage": true,
+    "low_voltage_threshold_V": 3.05,
+    "preserve_step_transitions": true,
+    "random_fraction": 0.2,
+    "seed": 42
+  },
+  "model": {
+    "hidden_dim": 160,
+    "num_layers": 4,
+    "dropout": 0.0,
+    "activation": "gelu",
+    "theta_output": "sigmoid",
+    "scalar_output": "normalized_linear"
+  },
+  "training": {
+    "epochs": 120,
+    "batch_size": 2048,
+    "learning_rate": 0.001,
+    "weight_decay": 1e-06,
+    "grad_clip_norm": 5.0,
+    "device": "auto",
+    "seed": 42,
+    "loss_weights": {
+      "theta_a": 1.0,
+      "theta_c": 1.0,
+      "phie": 0.35,
+      "phis_c": 0.6,
+      "smoothness": 0.0
+    }
+  },
+  "eval": {
+    "max_points_per_profile_eval": 20000,
+    "save_prediction_npz": true,
+    "pass_thresholds": {
+      "train_phis_c_mae_warn_V": 0.12,
+      "val_phis_c_mae_warn_V": 0.16,
+      "test_phis_c_mae_warn_V": 0.22,
+      "val_theta_mean_mae_warn": 0.1,
+      "test_theta_mean_mae_warn": 0.14
+    }
+  },
+  "boundaries": {
+    "does_train_nn": true,
+    "does_not_generate_softlabels": true,
+    "does_not_generate_soh": true,
+    "does_not_modify_gv1_mainline": true,
+    "uses_standalone_p2dlite_prior": true,
+    "state_interpretation": "network learns P2Dlite model-consistent soft labels, not experimental internal-state ground truth"
+  }
+}

@@ -1,0 +1,25 @@
+D14-P3 Batch-5/6 Feasibility Audit Package
+=================================================
+
+Purpose:
+  D14-P3 checks whether XJTU Batch-5 / Batch-6 raw data can be safely routed
+  into the existing GV1 measured-current replay pipeline.
+
+Scope:
+  - data discovery for Batch-5 and Batch-6
+  - raw file schema audit
+  - time/cycle/step recoverability audit
+  - SOH eligibility policy audit from original capacity/cycle data
+  - replay-readiness report
+  - no training
+  - no changes to GV1 mainline
+  - no SOH generation in voltage soft-label generator
+  - no P2D internal-state label generation
+
+Files:
+  configs/d14_p3_batch56_feasibility_config.json
+  docs/D14_P3_README.md
+  docs/D14_P3_EXPECTED_OUTPUTS.md
+  scripts/gv1_d14_p3_batch56_feasibility_audit.py
+  scripts/gv1_d14_p3_verify_outputs.py
+  scripts/run_gv1_d14_p3_batch56_feasibility.ps1

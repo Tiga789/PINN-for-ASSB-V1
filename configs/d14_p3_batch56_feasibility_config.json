@@ -1,0 +1,51 @@
+{
+  "package": "D14-P3 Batch-5/6 feasibility audit",
+  "version": "2026-06-06",
+  "expected_batches": [
+    "Batch-5",
+    "Batch-6"
+  ],
+  "expected_files_per_batch": 8,
+  "raw_extensions": [
+    ".mat",
+    ".csv",
+    ".parquet"
+  ],
+  "skip_path_fragments": [
+    "_gv1_cache",
+    "CacheGV1",
+    "xjtu_d14_",
+    ".git",
+    "__pycache__"
+  ],
+  "voltage_limits": {
+    "nominal_charge_cutoff_V": 4.2,
+    "full_discharge_cutoff_V": 2.5,
+    "full_discharge_tolerance_V": 0.05,
+    "partial_discharge_boundary_V": 3.0
+  },
+  "current_policy": {
+    "assumed_positive_current": "charge",
+    "rest_current_abs_A": 0.02,
+    "dynamic_rest_fraction_of_max_abs_current": 0.01
+  },
+  "soh_policy": {
+    "source": "original XJTU cycle/capacity data only",
+    "voltage_soft_label_generator_generates_soh": false,
+    "eligible_rule": "complete discharge / capacity-check cycles only; partial discharge cycles are replay-only"
+  },
+  "status_thresholds": {
+    "missing_expected_batch": "FAIL",
+    "missing_raw_files": "FAIL",
+    "missing_core_voltage_or_current": "FAIL",
+    "missing_time_but_index_reconstructable": "WARN",
+    "no_full_discharge_candidates": "WARN",
+    "unexpected_batch1_battery8_touch": "FAIL"
+  },
+  "mainline_boundaries": {
+    "assb_baseline": "ModelFin_112_deterministic_wrapper",
+    "gv1_training_mainline": "D9.6/D9.5.1",
+    "xjtu_voltage_wrapper": "D12-S1K transition_fade",
+    "flagged_outlier": "Batch-1_2C_battery-8 only"
+  }
+}

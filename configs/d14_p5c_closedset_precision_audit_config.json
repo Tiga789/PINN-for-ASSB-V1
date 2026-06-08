@@ -1,0 +1,54 @@
+{
+  "package": "D14-P5C XJTU P2Dlite 8-cell closed-set precision audit",
+  "version": "2026-06-07",
+  "purpose": "Freeze and audit D14-P5B-v2 closed-set precision result; no retraining and no new batteries.",
+  "default_paths": {
+    "p5b_output_dir": "E:/XJTU battery dataset/_gv1_cache/xjtu_d14_p5b_8cell_closedset_precision_v2",
+    "output_dir": "E:/XJTU battery dataset/_gv1_cache/xjtu_d14_p5c_8cell_closedset_precision_audit"
+  },
+  "required_inputs": {
+    "training_summary": "ModelFin_D14_P5B_8cell_closedset_precision/training_summary.json",
+    "loss_history": "ModelFin_D14_P5B_8cell_closedset_precision/loss_history.csv",
+    "eval_report": "EvalFin_D14_P5B_8cell_closedset_precision/D14_P5B_EVAL_REPORT.json",
+    "metrics_by_profile": "EvalFin_D14_P5B_8cell_closedset_precision/metrics_by_profile.csv",
+    "metrics_global": "EvalFin_D14_P5B_8cell_closedset_precision/metrics_global.json",
+    "verify_report": "D14_P5B_VERIFY_REPORT.json"
+  },
+  "precision_thresholds": {
+    "mean_phis_c_mae_pass_V": 0.01,
+    "max_phis_c_mae_pass_V": 0.015,
+    "mean_phie_mae_pass": 0.01,
+    "max_phie_mae_pass": 0.015,
+    "mean_theta_mean_mae_pass": 0.01,
+    "max_theta_mean_mae_pass": 0.015,
+    "mean_theta_a_mae_pass": 0.01,
+    "mean_theta_c_mae_pass": 0.01,
+    "min_phis_c_corr_pass": 0.999,
+    "min_theta_corr_pass": 0.999,
+    "profile_count_required": 8,
+    "n_r_required": 17,
+    "mean_phis_c_mae_warn_V": 0.015,
+    "max_phis_c_mae_warn_V": 0.025,
+    "mean_theta_mean_mae_warn": 0.02,
+    "max_theta_mean_mae_warn": 0.035
+  },
+  "target_batteries": [
+    "Batch-1 / 2C / battery-1",
+    "Batch-1 / 2C / battery-3",
+    "Batch-3 / R2.5 / battery-6",
+    "Batch-3 / R2.5 / battery-7",
+    "Batch-4 / R3 / battery-2",
+    "Batch-4 / R3 / battery-7",
+    "Batch-5 / random_walk / battery-7",
+    "Batch-6 / GEO / battery-3"
+  ],
+  "boundaries": {
+    "closed_set_calibration": true,
+    "not_generalization_claim": true,
+    "does_not_train": true,
+    "does_not_generate_softlabels": true,
+    "does_not_generate_soh": true,
+    "does_not_modify_gv1_mainline": true,
+    "uses_existing_p5b_outputs": true
+  }
+}

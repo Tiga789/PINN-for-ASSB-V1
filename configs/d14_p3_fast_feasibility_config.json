@@ -1,0 +1,27 @@
+{
+  "package": "D14-P3 FAST Batch-5/6 feasibility audit",
+  "version": "v3",
+  "expected_batches": [
+    "Batch-5",
+    "Batch-6"
+  ],
+  "expected_files_per_batch": 8,
+  "raw_extensions": [
+    ".mat",
+    ".csv",
+    ".parquet"
+  ],
+  "skip_path_fragments": [
+    "_gv1_cache",
+    "CacheGV1",
+    "xjtu_d14_",
+    ".git",
+    "__pycache__"
+  ],
+  "policy": {
+    "mat_loading": "shallow only; never load full arrays",
+    "soh_source": "original XJTU capacity/cycle data only",
+    "voltage_soft_label_generator_generates_soh": false,
+    "batch1_battery8_policy": "unchanged flagged/excluded"
+  }
+}

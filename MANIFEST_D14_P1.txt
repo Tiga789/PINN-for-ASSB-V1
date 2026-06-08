@@ -1,0 +1,24 @@
+D14-P1 Evidence Boundary Package
+================================
+
+Files:
+  scripts/gv1_d14_p1_generate_evidence_boundary_report.py
+  scripts/gv1_d14_p1_verify_outputs.py
+  scripts/run_gv1_d14_p1_evidence_boundary.ps1
+  configs/d14_p1_evidence_boundary_config.json
+  docs/D14_P1_README.md
+  docs/D14_P1_EXPECTED_OUTPUTS.md
+  MANIFEST_D14_P1.txt
+
+Scope:
+  Documentation / evidence-boundary audit only.
+  No model training.
+  No modification to gv1 mainline logic.
+  No SOH generation in XJTU voltage soft-label generator.
+
+Main decision enforced:
+  ASSB ModelFin_112 = engineering wrapper.
+  XJTU D12-S1K = non-outlier measured-current voltage-wrapper evidence.
+  Batch-1_2C_battery-8 = flagged / stress-test.
+  XJTU internal states = not experimental ground truth without P2D/external validation.
+  XJTU SOH = from capacity/cycle data, not voltage soft-label generator.

@@ -1,0 +1,29 @@
+D14-P4B XJTU P2Dlite Controlled Multi-profile Soft-label Expansion
+===================================================================
+
+Purpose:
+  Expand the D14-P4A 2-profile smoke into a controlled multi-profile soft-label
+  generation run while still avoiding a full unbounded all-profile generation.
+
+Key principle:
+  The physical model is not duplicated in this package. It reads the same
+  standalone prior file used by P4/P4A:
+      configs/P2Dlite_prior_xjtu_lr18650la_v0.json
+
+Prerequisite:
+  D14-P4A package has been installed successfully. In particular, the following
+  modules must exist in the project:
+      gv1/softlabels/p2dlite_prior.py
+      gv1/softlabels/xjtu_p2dlite_solver.py
+      gv1/softlabels/xjtu_softlabel_audit.py
+      gv1/softlabels/xjtu_softlabel_io.py
+
+Scope:
+  - controlled profile selection
+  - default selection: Batch-1/3/4 each 2 profiles, Batch-5/6 each 1 smoke profile
+  - n_r default = 17
+  - max_points_per_profile default = 100000
+  - no training
+  - no SOH generation
+  - no full-P2D ground-truth claim
+  - no modification of GV1 mainline training files

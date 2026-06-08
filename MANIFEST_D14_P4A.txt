@@ -1,0 +1,35 @@
+D14-P4A XJTU P2Dlite Soft-label Bounds/Metadata Patch
+========================================================
+
+This is a real patch package, not a placeholder.
+
+Purpose:
+  Fix D14-P4 smoke blind spots before expanding XJTU P2Dlite soft-label generation:
+  1. Infer and persist batch/protocol/cell_uid metadata for replay profiles that lack scalar metadata.
+  2. Bound phis_c_soft within a small margin around the nominal terminal-voltage window.
+  3. Add terminal-voltage bound audit for phis_c_soft and diagnostics for phis_c_soft_raw.
+  4. Keep the single standalone P2Dlite prior file as the shared source of physical parameters.
+
+Primary standalone prior file:
+  configs/P2Dlite_prior_xjtu_lr18650la_v0.json
+
+Files overwritten/added:
+  configs/P2Dlite_prior_xjtu_lr18650la_v0.json
+  configs/d14_p4a_xjtu_softlabel_patch_config.json
+  gv1/softlabels/p2dlite_prior.py
+  gv1/softlabels/xjtu_p2dlite_voltage.py
+  gv1/softlabels/xjtu_p2dlite_solver.py
+  gv1/softlabels/xjtu_softlabel_audit.py
+  scripts/gv1_generate_xjtu_p2dlite_softlabels.py
+  scripts/gv1_audit_xjtu_p2dlite_softlabels.py
+  scripts/gv1_d14_p4a_verify_outputs.py
+  scripts/run_gv1_d14_p4a_xjtu_p2dlite_softlabel_patch.ps1
+  docs/D14_P4A_README.md
+  docs/D14_P4A_EXPECTED_OUTPUTS.md
+  docs/P2Dlite_PRIOR_FILE_USAGE.md
+
+Boundary:
+  - No training.
+  - No GV1 mainline training code modification.
+  - No SOH generation in voltage soft-label generator.
+  - No full-P2D ground-truth claim.

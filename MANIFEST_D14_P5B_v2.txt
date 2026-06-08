@@ -1,0 +1,1 @@
+D14-P5B-v2 stable GTX1080Ti package. Disables torch.compile and AMP by default, keeps GPU-resident tensors and large batches.

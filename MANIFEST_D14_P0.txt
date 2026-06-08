@@ -1,0 +1,21 @@
+D14_P0_freeze_audit_package
+
+Purpose:
+  Correct D14-P0 package for XJTU/ASSB freeze and no-regression audit.
+  This is NOT a P2D state-label generator and NOT a placeholder package.
+
+Files:
+  scripts/gv1_d14_p0_freeze_mainline_audit.py
+  scripts/gv1_d14_p0_verify_outputs.py
+  scripts/run_gv1_d14_p0_freeze_audit.ps1
+  configs/d14_p0_expected_mainline.json
+  docs/D14_P0_README.md
+
+Outputs generated locally by the audit script:
+  D14_P0_FREEZE_AUDIT.json
+  D14_P0_FREEZE_AUDIT.md
+  D14_P0_FILE_FINGERPRINTS.csv
+  D14_P0_BASELINE_FINGERPRINT.json
+  D14_P0_SCORECARD_INDEX.csv
+  D14_P0_SCORECARD_INDEX.json
+  D14_P0_RUN_SUMMARY.txt

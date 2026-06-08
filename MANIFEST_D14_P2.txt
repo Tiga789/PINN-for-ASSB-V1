@@ -1,0 +1,18 @@
+D14_P2_generalization_scorecard_package
+
+Purpose:
+  Build auditable XJTU multi-cell / multi-protocol / multi-segment voltage replay scorecards from existing evidence.
+
+Files:
+  scripts/gv1_d14_p2_build_generalization_scorecard.py
+  scripts/gv1_d14_p2_verify_outputs.py
+  scripts/run_gv1_d14_p2_generalization_scorecard.ps1
+  configs/d14_p2_generalization_scorecard_config.json
+  docs/D14_P2_README.md
+  docs/D14_P2_EXPECTED_OUTPUTS.md
+
+Does not:
+  - train a model
+  - modify GV1 mainline
+  - generate XJTU SOH labels
+  - claim XJTU internal-state ground truth

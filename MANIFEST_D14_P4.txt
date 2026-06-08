@@ -1,0 +1,40 @@
+D14-P4 XJTU P2Dlite Soft-label Generator Smoke Package
+=========================================================
+
+Purpose:
+  Implement a small-sample XJTU P2Dlite soft-label generator smoke.
+  The key design requirement is that all physical prior parameters are stored
+  in one standalone user-editable file:
+      configs/P2Dlite_prior_xjtu_lr18650la_v0.json
+
+  Both the soft-label generator and future model prediction/training code should
+  read this same prior file, instead of duplicating battery parameters in
+  multiple scripts.
+
+Scope:
+  - XJTU replay-profile NPZ input only
+  - low-r P2Dlite model-consistent soft labels
+  - n_r default = 17
+  - output under E:/XJTU battery dataset/_gv1_cache
+  - no training
+  - no GV1 mainline modification
+  - no SOH generation in the voltage soft-label generator
+  - no full-P2D ground-truth claim
+
+Files:
+  configs/P2Dlite_prior_xjtu_lr18650la_v0.json
+  configs/d14_p4_xjtu_p2dlite_softlabel_smoke_config.json
+  gv1/softlabels/__init__.py
+  gv1/softlabels/p2dlite_prior.py
+  gv1/softlabels/xjtu_lowr_grid.py
+  gv1/softlabels/xjtu_p2dlite_solver.py
+  gv1/softlabels/xjtu_p2dlite_voltage.py
+  gv1/softlabels/xjtu_softlabel_io.py
+  gv1/softlabels/xjtu_softlabel_audit.py
+  scripts/gv1_generate_xjtu_p2dlite_softlabels.py
+  scripts/gv1_audit_xjtu_p2dlite_softlabels.py
+  scripts/gv1_d14_p4_verify_outputs.py
+  scripts/run_gv1_d14_p4_xjtu_p2dlite_softlabel_smoke.ps1
+  docs/D14_P4_README.md
+  docs/D14_P4_EXPECTED_OUTPUTS.md
+  docs/P2Dlite_PRIOR_FILE_USAGE.md

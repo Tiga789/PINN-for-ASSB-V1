@@ -5,6 +5,128 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7b854bbc-0a8a-4911-bc87-dd9f1f68d852" name="更改" comment="">
+      <change afterPath="$PROJECT_DIR$/MANIFEST_D14_P0.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MANIFEST_D14_P1.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MANIFEST_D14_P1_FIX.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MANIFEST_D14_P2.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MANIFEST_D14_P3.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MANIFEST_D14_P3B.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MANIFEST_D14_P3_FAST.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MANIFEST_D14_P3_WARNING_FIX.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MANIFEST_D14_P4.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MANIFEST_D14_P4A.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MANIFEST_D14_P4B.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MANIFEST_D14_P4B_v2.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MANIFEST_D14_P4B_v3.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MANIFEST_D14_P5.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MANIFEST_D14_P5A.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MANIFEST_D14_P5B.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MANIFEST_D14_P5B_v2.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MANIFEST_D14_P5C.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/P2Dlite_prior_xjtu_lr18650la_v0.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d14_p0_expected_mainline.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d14_p1_evidence_boundary_config.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d14_p2_generalization_scorecard_config.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d14_p3_batch56_feasibility_config.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d14_p3_fast_feasibility_config.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d14_p3b_batch56_replay_smoke_config.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d14_p4_xjtu_p2dlite_softlabel_smoke_config.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d14_p4a_xjtu_softlabel_patch_config.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d14_p4b_xjtu_p2dlite_multicell_softlabel_config.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d14_p5_xjtu_p2dlite_nn_smoke_config.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d14_p5a_eval_verify_fix_config.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d14_p5b_xjtu_p2dlite_8cell_closedset_precision_config.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d14_p5c_closedset_precision_audit_config.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D14_P0_C12_FALSE_POSITIVE_FIX.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D14_P0_CORRECTION_NOTE.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D14_P0_README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D14_P1_EXPECTED_OUTPUTS.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D14_P1_NEGATION_GUARDRAIL_FIX_README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D14_P1_README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D14_P2_EXPECTED_OUTPUTS.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D14_P2_README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D14_P3B_EXPECTED_OUTPUTS.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D14_P3B_README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D14_P3_EXPECTED_OUTPUTS.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D14_P3_FAST_README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D14_P3_README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D14_P4A_EXPECTED_OUTPUTS.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D14_P4A_README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D14_P4B_EXPECTED_OUTPUTS.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D14_P4B_README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D14_P4_BASE_EXPECTED_OUTPUTS_reference.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D14_P4_BASE_README_reference.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D14_P4_EXPECTED_OUTPUTS.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D14_P4_README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D14_P5A_EXPECTED_OUTPUTS.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D14_P5A_README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D14_P5B_EXPECTED_OUTPUTS.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D14_P5B_README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D14_P5B_v2_README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D14_P5C_EXPECTED_OUTPUTS.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D14_P5C_README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D14_P5_EXPECTED_OUTPUTS.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D14_P5_README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/P2Dlite_PRIOR_FILE_USAGE.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/softlabels/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/softlabels/p2dlite_prior.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/softlabels/xjtu_lowr_grid.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/softlabels/xjtu_p2dlite_solver.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/softlabels/xjtu_p2dlite_voltage.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/softlabels/xjtu_softlabel_audit.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/softlabels/xjtu_softlabel_io.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/softlabels_nn/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/softlabels_nn/xjtu_p2dlite_closedset_dataset.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/softlabels_nn/xjtu_p2dlite_closedset_losses.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/softlabels_nn/xjtu_p2dlite_closedset_metrics.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/softlabels_nn/xjtu_p2dlite_closedset_model.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/softlabels_nn/xjtu_p2dlite_dataset.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/softlabels_nn/xjtu_p2dlite_losses.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/softlabels_nn/xjtu_p2dlite_metrics.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/softlabels_nn/xjtu_p2dlite_model.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/gv1_audit_xjtu_p2dlite_softlabels.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/gv1_d14_p0_freeze_mainline_audit.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/gv1_d14_p0_verify_outputs.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/gv1_d14_p1_generate_evidence_boundary_report.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/gv1_d14_p1_verify_outputs.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/gv1_d14_p2_build_generalization_scorecard.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/gv1_d14_p2_verify_outputs.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/gv1_d14_p3_batch56_fast_feasibility_audit.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/gv1_d14_p3_batch56_feasibility_audit.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/gv1_d14_p3_fast_verify_outputs.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/gv1_d14_p3_verify_outputs.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/gv1_d14_p3b_build_batch56_replay_smoke.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/gv1_d14_p3b_verify_outputs.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/gv1_d14_p4_verify_outputs.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/gv1_d14_p4a_verify_outputs.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/gv1_d14_p4b_audit_outputs.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/gv1_d14_p4b_generate_multicell_softlabels.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/gv1_d14_p4b_verify_outputs.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/gv1_d14_p5_build_softlabel_manifest.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/gv1_d14_p5_eval_p2dlite_softlabel_nn.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/gv1_d14_p5_train_p2dlite_softlabel_nn.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/gv1_d14_p5_verify_outputs.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/gv1_d14_p5a_eval_p2dlite_softlabel_nn.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/gv1_d14_p5b_build_closedset_manifest.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/gv1_d14_p5b_eval_closedset_precision.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/gv1_d14_p5b_train_closedset_precision.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/gv1_d14_p5b_verify_outputs.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/gv1_d14_p5c_audit_closedset_precision.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/gv1_d14_p5c_verify_audit_outputs.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/gv1_generate_xjtu_p2dlite_softlabels.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d14_p0_freeze_audit.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d14_p1_evidence_boundary.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d14_p2_generalization_scorecard.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d14_p3_batch56_fast.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d14_p3_batch56_feasibility.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d14_p3b_batch56_replay_smoke.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d14_p4_xjtu_p2dlite_softlabel_smoke.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d14_p4a_xjtu_p2dlite_softlabel_patch.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d14_p4b_multicell_softlabels.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d14_p5_xjtu_p2dlite_nn_smoke.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d14_p5a_eval_verify_fix.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d14_p5b_8cell_closedset_precision.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d14_p5c_closedset_precision_audit.ps1" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -43,30 +165,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.estimate_assb_ocp_from_record.executor": "Run",
-    "Python.smoke_assb_ocp.executor": "Run",
-    "Python.smoke_assb_params.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "C:/Users/Tiga_QJW/Desktop/ASSB_Scheme_V1/PINN-for-ASSB-V1",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.lookFeel",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.estimate_assb_ocp_from_record.executor&quot;: &quot;Run&quot;,
+    &quot;Python.smoke_assb_ocp.executor&quot;: &quot;Run&quot;,
+    &quot;Python.smoke_assb_params.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Tiga_QJW/Desktop/ASSB_Scheme_V1/PINN-for-ASSB-V1&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1" />
       <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\scripts" />
-      <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\gv1" />
       <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\docs" />
-      <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\manifests" />
+      <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\configs" />
+      <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\gv1\softlabels_nn" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1" />
@@ -147,7 +269,7 @@
       <workItem from="1776793294745" duration="2000" />
       <workItem from="1776796578394" duration="75259000" />
       <workItem from="1777704900369" duration="98542000" />
-      <workItem from="1778744192031" duration="241723000" />
+      <workItem from="1778744192031" duration="264903000" />
     </task>
     <servers />
   </component>

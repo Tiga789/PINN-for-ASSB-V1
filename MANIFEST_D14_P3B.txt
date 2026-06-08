@@ -1,0 +1,24 @@
+D14-P3B Batch-5/6 Controlled Replay-Profile Build Smoke
+================================================================
+
+Purpose:
+  Build a small number of replay-profile NPZ files from XJTU Batch-5 and Batch-6
+  raw data to verify that raw time/current/voltage/temperature/cycle/step
+  records can be expanded into the GV1 measured-current replay format.
+
+Scope:
+  - Batch-5 / Batch-6 only
+  - default: 1 file per batch
+  - bounded subrecord and point count
+  - no training
+  - no GV1 mainline modification
+  - no SOH generation in voltage soft-label generator
+  - no P2D internal-state label generation
+
+Files:
+  configs/d14_p3b_batch56_replay_smoke_config.json
+  docs/D14_P3B_README.md
+  docs/D14_P3B_EXPECTED_OUTPUTS.md
+  scripts/gv1_d14_p3b_build_batch56_replay_smoke.py
+  scripts/gv1_d14_p3b_verify_outputs.py
+  scripts/run_gv1_d14_p3b_batch56_replay_smoke.ps1

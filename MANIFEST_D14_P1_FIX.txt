@@ -1,0 +1,8 @@
+D14-P1 negation-aware risky wording scan fix
+
+Files:
+- scripts/gv1_d14_p1_generate_evidence_boundary_report.py
+- docs/D14_P1_NEGATION_GUARDRAIL_FIX_README.md
+
+Overwrite path:
+C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\scripts\gv1_d14_p1_generate_evidence_boundary_report.py

@@ -1,0 +1,15 @@
+D14-P5A XJTU P2Dlite NN Eval/Verify Fix Package
+=================================================
+
+Purpose:
+  Repair D14-P5 eval/verify closure after the original evaluator crashed while
+  aggregating split metrics due to non-numeric metadata columns.
+
+Boundary:
+  - no retraining by default;
+  - no soft-label generation;
+  - no SOH generation;
+  - no GV1 mainline modification.
+
+Primary command:
+  scripts/run_gv1_d14_p5a_eval_verify_fix.ps1 -RepairOnly -AllowWarn

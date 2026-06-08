@@ -1,0 +1,12 @@
+D14-P5C XJTU P2Dlite 8-cell Closed-set Precision Audit Package
+================================================================
+
+Purpose:
+  Formal archive audit of D14-P5B-v2 8-cell closed-set calibration result.
+
+Scope:
+  - no training;
+  - no soft-label generation;
+  - no SOH generation;
+  - reads existing D14-P5B-v2 output files;
+  - produces compact reports and pass/warn/fail checks.

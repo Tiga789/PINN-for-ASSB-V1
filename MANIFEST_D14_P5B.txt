@@ -1,0 +1,17 @@
+D14-P5B XJTU P2Dlite 8-cell Closed-set Precision Package
+=========================================================
+
+Purpose:
+  Train a higher-capacity supervised NN on the same 8 P4B-v3 successful
+  P2Dlite soft-label profiles and evaluate in closed-set calibration mode.
+
+Boundary:
+  - This is not a generalization claim.
+  - This does not add new batteries.
+  - This does not generate SOH.
+  - This does not regenerate soft labels.
+  - This does not modify GV1 mainline model/loss/trainer files.
+
+GPU utilization:
+  Defaults use GPU-resident tensors, AMP, torch.compile when possible, hidden_dim
+  768, 6 layers, and batch_size 65536.
