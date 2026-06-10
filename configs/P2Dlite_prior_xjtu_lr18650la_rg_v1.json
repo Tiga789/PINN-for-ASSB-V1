@@ -1,0 +1,95 @@
+{
+  "schema_version": "D15-P0.P2Dlite-RG-v1",
+  "project": "QJW-2 / PINN-for-ASSB-V1",
+  "purpose": "Radial-gradient-aware P2Dlite soft-label audit and generator for XJTU/Lishen 18650 NCM523/graphite profiles.",
+  "important_boundary": [
+    "These outputs are model-consistent soft labels, not experimentally measured internal states.",
+    "Do not overwrite P4B/P5B/P5C baseline directories.",
+    "SOH is not generated here; SOH remains linked from original capacity/cycle manifests.",
+    "phis_c/phie voltage labels are preserved from the source P2Dlite/D12-S1K-compatible labels in D15-P0."
+  ],
+  "source_baselines": {
+    "voltage_baseline": "D12-S1K low_plus_transition_fade_to_baseline wrapper",
+    "source_softlabels_default": "E:/XJTU battery dataset/_gv1_cache/xjtu_softlabels_p2dlite_v1_p4b_multicell_v3",
+    "closed_set_reference": "P5B-v2/P5C 8-cell closed-set NN precision benchmark"
+  },
+  "output_policy": {
+    "cache_root_default": "E:/XJTU battery dataset/_gv1_cache",
+    "output_softlabels_default": "E:/XJTU battery dataset/_gv1_cache/xjtu_softlabels_p2dlite_rg_v1_d15p0_8cell",
+    "audit_old_default": "E:/XJTU battery dataset/_gv1_cache/xjtu_d15_p0_radial_gradient_audit_p2dlite_v1",
+    "audit_rg_default": "E:/XJTU battery dataset/_gv1_cache/xjtu_d15_p0_radial_gradient_audit_p2dlite_rg_v1",
+    "comparison_default": "E:/XJTU battery dataset/_gv1_cache/xjtu_d15_p0_radial_gradient_rg_comparison",
+    "do_not_overwrite_existing_output": true,
+    "write_per_profile_subdirs": true
+  },
+  "cell": {
+    "manufacturer": "Lishen",
+    "form_factor": "18650",
+    "positive_material": "LiNi0.5Co0.2Mn0.3O2 / NCM523",
+    "negative_material": "graphite / C",
+    "nominal_capacity_Ah": 2.0,
+    "nominal_voltage_V": 3.6,
+    "voltage_min_V": 2.5,
+    "voltage_max_V": 4.2,
+    "sampling_Hz": 1.0
+  },
+  "current_sign": {
+    "positive_current_means": "charge",
+    "positive_electrode_expected_surface_center_sign": "-sign(I)",
+    "negative_electrode_expected_surface_center_sign": "+sign(I)"
+  },
+  "electrodes": {
+    "positive": {
+      "alias": ["c", "p", "positive", "cathode"],
+      "material": "NCM523",
+      "particle_radius_m": 6.5e-6,
+      "solid_diffusivity_m2_s": 2.5e-14,
+      "csmax_mol_m3": 5.05e4,
+      "theta_min": 0.2535,
+      "theta_max": 0.9149,
+      "gradient_clip_normalized": 0.12
+    },
+    "negative": {
+      "alias": ["a", "n", "negative", "anode"],
+      "material": "graphite",
+      "particle_radius_m": 8.5e-6,
+      "solid_diffusivity_m2_s": 3.0e-14,
+      "csmax_mol_m3": 3.15e4,
+      "theta_min": 0.0079,
+      "theta_max": 0.8544,
+      "gradient_clip_normalized": 0.12
+    }
+  },
+  "radial_gradient": {
+    "enabled": true,
+    "solver_version": "P2Dlite-RG-v1-implicit-FVM-zero-mean",
+    "n_r_min": 17,
+    "alpha_D_positive": 0.65,
+    "alpha_D_negative": 0.65,
+    "alpha_J_positive": 1.00,
+    "alpha_J_negative": 1.00,
+    "prefer_existing_j_fields": true,
+    "fallback_j_from_cbar_derivative": true,
+    "fallback_j_from_current_and_capacity_prior": false,
+    "zero_mean_deviation_projection": true,
+    "surface_center_direction_audit": true,
+    "rest_relaxation_audit": true,
+    "clip_final_theta_to_0_1": true,
+    "max_dt_s_for_warning": 60.0,
+    "implicit_step_subdivide_dt_s": 10.0,
+    "preserve_source_voltage_labels": true,
+    "preserve_source_phi_labels": true
+  },
+  "audit_thresholds": {
+    "active_current_abs_A_min": 0.02,
+    "gradient_nonzero_abs_norm_min": 0.002,
+    "mean_active_abs_gradient_norm_warn_below": 0.003,
+    "p95_active_abs_gradient_norm_warn_below": 0.008,
+    "direction_match_fraction_pass_min": 0.70,
+    "direction_match_fraction_warn_min": 0.50,
+    "mass_cbar_mae_norm_pass_max": 5e-4,
+    "mass_cbar_mae_norm_warn_max": 2e-3,
+    "physical_theta_min": -0.02,
+    "physical_theta_max": 1.02
+  }
+}

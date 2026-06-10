@@ -1,0 +1,74 @@
+{
+  "stage": "D15-P3C-NN",
+  "name": "xjtu_batch2_15cell_rg_nn_closedset_benchmark",
+  "description": "15-cell Batch-2 closed-set NN benchmark using D15-P3C generated P2Dlite-RG soft labels. Raw NN predictions may be REVIEW; final acceptance uses D15-P3B-style inference-time theta projection.",
+  "default_paths": {
+    "cache_root_windows": "E:/XJTU battery dataset/_gv1_cache",
+    "softlabel_dir": "E:/XJTU battery dataset/_gv1_cache/xjtu_softlabels_p2dlite_rg_v1_d15p3c_batch2_15cell",
+    "output_root": "E:/XJTU battery dataset/_gv1_cache/xjtu_d15_p3c_batch2_15cell_rg_nn_benchmark"
+  },
+  "data": {
+    "filename": "solution_softlabels.npz",
+    "expected_profile_count": 15,
+    "max_time_points_per_profile_train": 8192,
+    "max_time_points_per_profile_val": 2048,
+    "eval_stride": 4,
+    "include_profile_onehot": true,
+    "include_voltage_exp_feature": true,
+    "include_temperature_feature": true,
+    "random_seed": 15315
+  },
+  "model": {
+    "hidden_dim": 320,
+    "num_hidden_layers": 5,
+    "activation": "silu",
+    "dropout": 0.0,
+    "residual_blocks": true
+  },
+  "training": {
+    "epochs": 1800,
+    "batch_size": 32768,
+    "learning_rate": 0.0012,
+    "weight_decay": 0.000001,
+    "lr_decay_gamma": 0.985,
+    "lr_decay_every": 50,
+    "grad_clip_norm": 5.0,
+    "device": "auto",
+    "use_amp": false,
+    "use_torch_compile": false,
+    "log_every": 25,
+    "early_stop_patience": 350,
+    "early_stop_min_delta": 1e-7
+  },
+  "loss_weights": {
+    "theta_a": 1.0,
+    "theta_c": 1.0,
+    "phie": 0.5,
+    "phis_c": 1.0,
+    "gradient_a": 0.18,
+    "gradient_c": 0.18,
+    "theta_boundary_penalty": 0.03
+  },
+  "scorecard_thresholds": {
+    "smoke_global_phis_c_mae_max_v": 0.020,
+    "smoke_global_phie_mae_max_v": 0.020,
+    "smoke_global_theta_a_mae_max": 0.020,
+    "smoke_global_theta_c_mae_max": 0.020,
+    "smoke_global_theta_a_mean_mae_max": 0.012,
+    "smoke_global_theta_c_mean_mae_max": 0.012,
+    "smoke_global_grad_a_mae_max": 0.025,
+    "smoke_global_grad_c_mae_max": 0.025,
+    "smoke_global_min_corr": 0.985,
+    "pred_theta_outside_fraction_max": 0.010,
+    "pred_theta_boundary_hit_fraction_max": 0.200,
+    "max_abs_review_theta_a": 0.16,
+    "max_abs_review_theta_c": 0.14,
+    "max_abs_review_phis_c_v": 0.30,
+    "max_abs_review_phie_v": 0.35
+  },
+  "audit_notes": [
+    "This is 15-cell Batch-2 closed-set applicability expansion, not held-out validation.",
+    "Eval uses eval_stride=4 by default to keep 15-cell full-profile runtime manageable. Do not compare max_abs directly with stride-1 P2 without noting stride.",
+    "Final P3C promotion requires theta projection repair PASS, because Batch-2 3-cell P3 exposed raw theta outside-boundary behavior."
+  ]
+}

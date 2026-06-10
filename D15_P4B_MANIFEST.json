@@ -1,0 +1,9 @@
+{
+  "package": "D15_P4B_ready18_p2dlite_rg_softlabel_generation",
+  "version": "clean_v1",
+  "no_gv1_files": true,
+  "no_pycache": true,
+  "stage": "D15-P4B",
+  "purpose": "Generate P2Dlite-RG soft labels and radial audit for 18 replay-ready remaining XJTU cells from Batch-1/3/4.",
+  "default_review_zip": "E:/XJTU battery dataset/_gv1_cache/xjtu_d15_p4b_results_for_review.zip"
+}

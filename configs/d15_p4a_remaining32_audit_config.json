@@ -1,0 +1,48 @@
+{
+  "stage": "D15-P4A",
+  "description": "XJTU remaining-cell replay-profile and soft-label coverage audit before D15-P4B remaining 32-cell P2Dlite-RG soft-label completion.",
+  "defaults": {
+    "dataset_root": "E:/XJTU battery dataset",
+    "cache_root": "E:/XJTU battery dataset/_gv1_cache",
+    "expected_total_cells": 55,
+    "expected_existing_rg_cells": 23,
+    "expected_remaining_cells": 32,
+    "out_dir": "E:/XJTU battery dataset/_gv1_cache/xjtu_d15_p4a_remaining32_replay_audit",
+    "review_zip": "E:/XJTU battery dataset/_gv1_cache/xjtu_d15_p4a_results_for_review.zip"
+  },
+  "existing_rg_softlabel_roots": [
+    "E:/XJTU battery dataset/_gv1_cache/xjtu_softlabels_p2dlite_rg_v1_d15p0_8cell",
+    "E:/XJTU battery dataset/_gv1_cache/xjtu_softlabels_p2dlite_rg_v1_d15p3c_batch2_15cell"
+  ],
+  "replay_profile_scan": {
+    "scan_cache_root_for_solution_replay_profile": true,
+    "preferred_roots": [
+      "E:/XJTU battery dataset/_gv1_cache/xjtu_batch134_replay_profiles",
+      "E:/XJTU battery dataset/_gv1_cache/xjtu_batch2_replay_profiles_d15p3",
+      "E:/XJTU battery dataset/_gv1_cache/xjtu_batch56_replay_profiles",
+      "E:/XJTU battery dataset/_gv1_cache/xjtu_batch56_replay_profiles_d15",
+      "E:/XJTU battery dataset/_gv1_cache/xjtu_batch56_replay_profiles_d15p4a"
+    ],
+    "skip_dir_keywords": [
+      "softlabels",
+      "rg_nn",
+      "precision_benchmark",
+      "boundary_projection",
+      "applicability_scorecard",
+      "radial_audit",
+      "eval",
+      "plots",
+      "ModelFin"
+    ]
+  },
+  "required_replay_keys": ["t_global_s", "I_profile", "voltage_exp", "cycle_id"],
+  "optional_replay_keys": ["temperature_C", "step_id", "step_type", "cell_uid", "batch", "protocol"],
+  "batch_protocol_notes": {
+    "Batch-1": "fixed 2C charge / 1C discharge, full discharge",
+    "Batch-2": "fixed 3C charge / 1C discharge, full discharge",
+    "Batch-3": "variable discharge-rate to 2.5 V",
+    "Batch-4": "variable partial discharge to 3.0 V plus capacity tests",
+    "Batch-5": "random-walk discharge protocol",
+    "Batch-6": "GEO satellite-like discharge protocol"
+  }
+}

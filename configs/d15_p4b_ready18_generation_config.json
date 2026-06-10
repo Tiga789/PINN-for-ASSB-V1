@@ -1,0 +1,22 @@
+{
+  "stage": "D15-P4B remaining-ready 18-cell P2Dlite-RG soft-label generation",
+  "cache_root": "E:/XJTU battery dataset/_gv1_cache",
+  "p4a_fix_manifest_csv": "E:/XJTU battery dataset/_gv1_cache/xjtu_d15_p4a_fix_replay_readiness_audit/D15_P4A_FIX_P4B_INPUT_MANIFEST.csv",
+  "prior_json": "configs/P2Dlite_prior_xjtu_lr18650la_rg_v1.json",
+  "output_softlabels_dir": "E:/XJTU battery dataset/_gv1_cache/xjtu_softlabels_p2dlite_rg_v1_d15p4b_ready18",
+  "radial_audit_dir": "E:/XJTU battery dataset/_gv1_cache/xjtu_d15_p4b_ready18_radial_audit",
+  "scorecard_dir": "E:/XJTU battery dataset/_gv1_cache/xjtu_d15_p4b_ready18_scorecard",
+  "review_zip": "E:/XJTU battery dataset/_gv1_cache/xjtu_d15_p4b_results_for_review.zip",
+  "expected_ready_cell_count": 18,
+  "generation": {
+    "capacity_scale_Ah": 2.0,
+    "theta_positive_initial": 0.90,
+    "theta_negative_initial": 0.08,
+    "n_r": 17,
+    "phie_ohmic_scale_V_per_A": -0.015,
+    "default_temperature_C": 25.0,
+    "save_mode": "uncompressed",
+    "workers": 2
+  },
+  "boundary_note": "D15-P4B generates P2Dlite-RG model-consistent soft labels for 18 replay-ready remaining XJTU cells. These labels are not experimental internal-state truth."
+}

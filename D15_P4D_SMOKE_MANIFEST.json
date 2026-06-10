@@ -1,0 +1,10 @@
+{
+  "package": "D15_P4D_smoke_batch56_remaining14_resource_test",
+  "created_for": "QJW-2 / PINN-for-ASSB-V1",
+  "contains_gv1_root_files": false,
+  "contains_gv1_init": false,
+  "contains_pycache": false,
+  "contains_pyc": false,
+  "purpose": "Resource smoke before remaining14 P2Dlite-RG soft-label generation",
+  "default_review_zip": "E:/XJTU battery dataset/_gv1_cache/xjtu_d15_p4d_smoke_results_for_review.zip"
+}

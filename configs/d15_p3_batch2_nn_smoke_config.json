@@ -1,0 +1,69 @@
+{
+  "stage": "D15-P3D",
+  "name": "xjtu_batch2_3cell_rg_nn_smoke",
+  "description": "3-cell Batch-2 closed-set NN smoke using D15-P3 generated provisional P2Dlite-RG soft labels.",
+  "default_paths": {
+    "cache_root_windows": "E:/XJTU battery dataset/_gv1_cache",
+    "softlabel_dir": "E:/XJTU battery dataset/_gv1_cache/xjtu_softlabels_p2dlite_rg_v1_d15p3_batch2_3cell",
+    "output_root": "E:/XJTU battery dataset/_gv1_cache/xjtu_d15_p3_batch2_3cell_rg_nn_smoke"
+  },
+  "data": {
+    "filename": "solution_softlabels.npz",
+    "expected_profile_count": 3,
+    "max_time_points_per_profile_train": 8192,
+    "max_time_points_per_profile_val": 2048,
+    "eval_stride": 1,
+    "include_profile_onehot": true,
+    "include_voltage_exp_feature": true,
+    "include_temperature_feature": true,
+    "random_seed": 153
+  },
+  "model": {
+    "hidden_dim": 256,
+    "num_hidden_layers": 4,
+    "activation": "silu",
+    "dropout": 0.0,
+    "residual_blocks": true
+  },
+  "training": {
+    "epochs": 1200,
+    "batch_size": 8192,
+    "learning_rate": 0.0015,
+    "weight_decay": 0.000001,
+    "lr_decay_gamma": 0.985,
+    "lr_decay_every": 50,
+    "grad_clip_norm": 5.0,
+    "device": "auto",
+    "use_amp": false,
+    "use_torch_compile": false,
+    "log_every": 25,
+    "early_stop_patience": 250,
+    "early_stop_min_delta": 1e-7
+  },
+  "loss_weights": {
+    "theta_a": 1.0,
+    "theta_c": 1.0,
+    "phie": 0.5,
+    "phis_c": 1.0,
+    "gradient_a": 0.15,
+    "gradient_c": 0.15,
+    "theta_boundary_penalty": 0.02
+  },
+  "scorecard_thresholds": {
+    "smoke_global_phis_c_mae_max_v": 0.035,
+    "smoke_global_phie_mae_max_v": 0.050,
+    "smoke_global_theta_a_mae_max": 0.040,
+    "smoke_global_theta_c_mae_max": 0.040,
+    "smoke_global_theta_a_mean_mae_max": 0.025,
+    "smoke_global_theta_c_mean_mae_max": 0.025,
+    "smoke_global_grad_a_mae_max": 0.045,
+    "smoke_global_grad_c_mae_max": 0.045,
+    "smoke_global_min_corr": 0.970,
+    "pred_theta_outside_fraction_max": 0.010,
+    "pred_theta_boundary_hit_fraction_max": 0.150
+  },
+  "audit_notes": [
+    "This is 3-cell Batch-2 closed-set smoke, not held-out Batch-2 validation.",
+    "If D15-P3D passes, expand to Batch-2 5-cell then 15-cell; do not directly claim all Batch-2 solved."
+  ]
+}

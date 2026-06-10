@@ -1,0 +1,12 @@
+{
+  "package": "D15_P4A_remaining32_replay_profile_audit",
+  "version": "v1.0",
+  "stage": "D15-P4A",
+  "purpose": "Audit XJTU remaining 32 cells before D15-P4B P2Dlite-RG soft-label completion.",
+  "expected_counts": {
+    "xjtu_total_cells": 55,
+    "existing_rg_softlabel_cells": 23,
+    "remaining_cells": 32
+  },
+  "review_zip": "E:/XJTU battery dataset/_gv1_cache/xjtu_d15_p4a_results_for_review.zip"
+}

@@ -1,0 +1,35 @@
+{
+  "package": "D15_P0_xjtu_p2dlite_rg_audit_generator",
+  "stage": "D15-P0",
+  "date": "2026-06-08",
+  "model": "GPT-5.5 Pro",
+  "purpose": "Radial-gradient audit and P2Dlite-RG soft-label generator for XJTU 8-cell P4B-v3 source labels.",
+  "protected_baselines": [
+    "ModelFin_112_deterministic_wrapper",
+    "D12-S1K voltage wrapper",
+    "xjtu_softlabels_p2dlite_v1_p4b_multicell_v3",
+    "P5B-v2/P5C closed-set NN precision benchmark"
+  ],
+  "new_default_outputs": [
+    "E:/XJTU battery dataset/_gv1_cache/xjtu_softlabels_p2dlite_rg_v1_d15p0_8cell",
+    "E:/XJTU battery dataset/_gv1_cache/xjtu_d15_p0_radial_gradient_audit_p2dlite_v1",
+    "E:/XJTU battery dataset/_gv1_cache/xjtu_d15_p0_radial_gradient_audit_p2dlite_rg_v1",
+    "E:/XJTU battery dataset/_gv1_cache/xjtu_d15_p0_radial_gradient_rg_comparison"
+  ],
+  "files": [
+    "README_D15_P0.md",
+    "D15_P0_FILE_MAP.md",
+    "D15_P0_MANIFEST.json",
+    "configs/P2Dlite_prior_xjtu_lr18650la_rg_v1.json",
+    "gv1/p2dlite_rg/__init__.py",
+    "gv1/p2dlite_rg/io_utils.py",
+    "gv1/p2dlite_rg/radial_solver.py",
+    "gv1/p2dlite_rg/audit.py",
+    "scripts/d15_p0_preflight.py",
+    "scripts/d15_p0_radial_gradient_audit.py",
+    "scripts/d15_p0_generate_p2dlite_rg_softlabels.py",
+    "scripts/d15_p0_compare_radial_audits.py",
+    "scripts/d15_p0_selftest_rg_solver.py",
+    "scripts/d15_p0_run_all.ps1"
+  ]
+}

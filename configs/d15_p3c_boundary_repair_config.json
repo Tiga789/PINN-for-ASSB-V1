@@ -1,0 +1,41 @@
+{
+  "stage": "D15-P3C-boundary-projection",
+  "name": "xjtu_batch2_15cell_theta_projection_repair",
+  "description": "Inference-time theta projection audit for D15-P3C Batch-2 15-cell closed-set NN predictions.",
+  "data": {
+    "filename": "solution_softlabels.npz",
+    "eval_stride": 4
+  },
+  "projection": {
+    "enabled": true,
+    "theta_min": 0.0001,
+    "theta_max": 0.9999,
+    "apply_to": ["theta_a", "theta_c"],
+    "projection_type": "clip_only_theta_targets",
+    "important_boundary": "Projection is an inference-time bounded-output repair. It does not alter P2Dlite-RG soft labels and must be reported separately from raw predictions."
+  },
+  "inference": {
+    "device": "auto",
+    "batch_size": 262144,
+    "save_prediction_npz": false
+  },
+  "scorecard_thresholds": {
+    "smoke_global_phis_c_mae_max_v": 0.020,
+    "smoke_global_phie_mae_max_v": 0.020,
+    "smoke_global_theta_a_mae_max": 0.020,
+    "smoke_global_theta_c_mae_max": 0.020,
+    "smoke_global_theta_a_mean_mae_max": 0.012,
+    "smoke_global_theta_c_mean_mae_max": 0.012,
+    "smoke_global_grad_a_mae_max": 0.025,
+    "smoke_global_grad_c_mae_max": 0.025,
+    "smoke_global_min_corr": 0.985,
+    "pred_theta_outside_fraction_max": 0.001,
+    "pred_theta_boundary_hit_fraction_max": 0.250,
+    "projection_mae_regression_abs_tol": 0.0015,
+    "projection_mae_regression_rel_tol": 0.20
+  },
+  "audit_notes": [
+    "P3C projection repair is expected to fix raw theta outside-boundary events exposed by P3/P3B.",
+    "Projection pass does not imply experimental internal-state truth; it only validates a bounded NN representation of P2Dlite-RG soft labels."
+  ]
+}

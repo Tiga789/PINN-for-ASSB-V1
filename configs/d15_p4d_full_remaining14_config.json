@@ -1,0 +1,49 @@
+{
+  "stage": "D15-P4D full Batch-5/6 remaining14 P2Dlite-RG soft-label generation",
+  "cache_root": "E:/XJTU battery dataset/_gv1_cache",
+  "p4c_replay_manifest_csv": "E:/XJTU battery dataset/_gv1_cache/xjtu_batch56_remaining14_replay_profiles_d15p4c/xjtu_batch56_remaining14_replay_profile_manifest.csv",
+  "prior_json": "configs/P2Dlite_prior_xjtu_lr18650la_rg_v1.json",
+  "output_softlabels_dir": "E:/XJTU battery dataset/_gv1_cache/xjtu_softlabels_p2dlite_rg_v1_d15p4d_batch56_remaining14",
+  "radial_audit_dir": "E:/XJTU battery dataset/_gv1_cache/xjtu_d15_p4d_batch56_remaining14_radial_audit",
+  "scorecard_dir": "E:/XJTU battery dataset/_gv1_cache/xjtu_d15_p4d_batch56_remaining14_scorecard",
+  "review_zip": "E:/XJTU battery dataset/_gv1_cache/xjtu_d15_p4d_results_for_review.zip",
+  "target_cell_count": 14,
+  "target_cells": [
+    "Batch-5_battery-1",
+    "Batch-5_battery-2",
+    "Batch-5_battery-3",
+    "Batch-5_battery-4",
+    "Batch-5_battery-5",
+    "Batch-5_battery-6",
+    "Batch-5_battery-8",
+    "Batch-6_battery-1",
+    "Batch-6_battery-2",
+    "Batch-6_battery-4",
+    "Batch-6_battery-5",
+    "Batch-6_battery-6",
+    "Batch-6_battery-7",
+    "Batch-6_battery-8"
+  ],
+  "generation": {
+    "n_r": 17,
+    "capacity_scale_Ah": 2.0,
+    "theta_positive_initial": 0.90,
+    "theta_negative_initial": 0.08,
+    "phie_ohmic_scale_V_per_A": -0.015,
+    "default_temperature_C": 25.0,
+    "save_mode": "uncompressed",
+    "recommended_workers": 4,
+    "resume_skip_completed": true
+  },
+  "resource_monitor": {
+    "interval_seconds": 10,
+    "expected_min_cpu_peak_percent": 35.0,
+    "expected_min_cpu_mean_percent": 18.0,
+    "memory_warning_available_mb": 3500
+  },
+  "notes": [
+    "Full P4D generation is CPU/NumPy cell-level fanout, not CUDA. GPU usage is not expected unless the RG generator is rewritten.",
+    "This package resumes completed cells by default. Do not delete completed cells unless a regeneration is intentional.",
+    "Workers=4 follows D15-P4D smoke evidence on a 32GB system; increase only after checking memory headroom."
+  ]
+}

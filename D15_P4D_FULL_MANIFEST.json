@@ -1,0 +1,13 @@
+{
+  "package": "D15_P4D_full_batch56_remaining14_p2dlite_rg_generation_clean",
+  "created_by": "GPT-5.5 Pro",
+  "scope": "Generate P2Dlite-RG soft labels and radial audit for remaining 14 Batch-5/6 XJTU cells.",
+  "contains_gv1_root_files": false,
+  "contains_gv1_init_py": false,
+  "contains_pycache": false,
+  "contains_pyc": false,
+  "default_workers": 4,
+  "resume_by_default": true,
+  "gpu_expected_for_generation": false,
+  "review_zip": "E:/XJTU battery dataset/_gv1_cache/xjtu_d15_p4d_results_for_review.zip"
+}

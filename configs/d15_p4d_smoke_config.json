@@ -1,0 +1,38 @@
+{
+  "stage": "D15-P4D-smoke Batch-5/6 remaining14 P2Dlite-RG soft-label generation resource smoke",
+  "cache_root": "E:/XJTU battery dataset/_gv1_cache",
+  "p4c_replay_manifest_csv": "E:/XJTU battery dataset/_gv1_cache/xjtu_batch56_remaining14_replay_profiles_d15p4c/xjtu_batch56_remaining14_replay_profile_manifest.csv",
+  "prior_json": "configs/P2Dlite_prior_xjtu_lr18650la_rg_v1.json",
+  "output_dir": "E:/XJTU battery dataset/_gv1_cache/xjtu_d15_p4d_smoke_resource_test",
+  "review_zip": "E:/XJTU battery dataset/_gv1_cache/xjtu_d15_p4d_smoke_results_for_review.zip",
+  "smoke_cells": [
+    "Batch-5_battery-1",
+    "Batch-5_battery-2",
+    "Batch-6_battery-5",
+    "Batch-6_battery-2"
+  ],
+  "generation": {
+    "max_time_points_per_cell": 300000,
+    "n_r": 17,
+    "capacity_scale_Ah": 2.0,
+    "theta_positive_initial": 0.90,
+    "theta_negative_initial": 0.08,
+    "phie_ohmic_scale_V_per_A": -0.015,
+    "default_temperature_C": 25.0,
+    "save_mode": "uncompressed",
+    "sample_mode": "prefix"
+  },
+  "resource_monitor": {
+    "interval_seconds": 5,
+    "expected_min_cpu_peak_percent": 35.0,
+    "expected_min_cpu_mean_percent": 18.0,
+    "expected_cuda_smoke": true,
+    "cuda_smoke_seconds": 25,
+    "cuda_matrix_size": 2048
+  },
+  "notes": [
+    "This stage is a resource and correctness smoke, not final remaining14 soft-label completion.",
+    "The real P2Dlite-RG generator remains NumPy/CPU unless a torch/CuPy backend is implemented.",
+    "The CUDA smoke verifies available GPU compute separately; GPU usage during NumPy label generation is not expected."
+  ]
+}

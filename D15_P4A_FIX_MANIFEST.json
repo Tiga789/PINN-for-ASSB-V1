@@ -1,0 +1,43 @@
+{
+  "stage": "D15-P4A-fix",
+  "package": "D15_P4A_fix_replay_readiness_audit_clean",
+  "contains_gv1_root_init": false,
+  "contains_gv1_files": false,
+  "files": [
+    {
+      "path": "D15_P4A_FIX_FILE_MAP.md",
+      "size": 333,
+      "sha256": "fad612a0401f81e30b0fd900eb919f67512b10559ccd67ff95e3277cdc63b0c4"
+    },
+    {
+      "path": "README_D15_P4A_FIX.md",
+      "size": 838,
+      "sha256": "3403bd4c2dbda162b5e5767ba17e2565e052fe265bb3aa4c0b0ca9fbc1c1c05a"
+    },
+    {
+      "path": "configs/d15_p4a_fix_replay_readiness_config.json",
+      "size": 1715,
+      "sha256": "90c53e5401d62a2cbad8a21bf0230433e615630d08269d7e0a694ad907f826bc"
+    },
+    {
+      "path": "scripts/d15_p4a_fix_pack_review.py",
+      "size": 1108,
+      "sha256": "9b4442eb2ed4f0889708df051d3aadaae22ed720502ff376eeb92009c6a4c3e0"
+    },
+    {
+      "path": "scripts/d15_p4a_fix_replay_readiness_audit.py",
+      "size": 15185,
+      "sha256": "0fce0a38e269b03db4071ec3059aa17112c4606219ffe91e0d5b665be8875b9e"
+    },
+    {
+      "path": "scripts/d15_p4a_fix_run_all.ps1",
+      "size": 970,
+      "sha256": "853119010a5980f1fcb269b2e81f8a858c414b8c512df3a53cd26d3dae6494d6"
+    },
+    {
+      "path": "scripts/d15_p4a_fix_selftest.py",
+      "size": 1899,
+      "sha256": "f63811a7a2830e4f7b6129a5a73408fcac68a9febb5b44e04b891f3aa0528f8c"
+    }
+  ]
+}

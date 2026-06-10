@@ -1,0 +1,16 @@
+{
+  "package": "D15_P3B_batch2_theta_boundary_projection_repair",
+  "version": "v1",
+  "created_by": "GPT-5.5 Pro",
+  "purpose": "Repair D15-P3 Batch-2 3-cell NN REVIEW caused by theta prediction outside [0,1] using explicit inference-time theta projection and full raw/projected audit.",
+  "does_not_modify": [
+    "Batch-2 P2Dlite-RG soft labels",
+    "D15-P0/P1/P2 outputs",
+    "D15-P3 replay profiles and soft labels",
+    "P4B/P5B/P5C baselines",
+    "ASSB ModelFin_112",
+    "D12-S1K voltage wrapper"
+  ],
+  "default_output": "E:/XJTU battery dataset/_gv1_cache/xjtu_d15_p3b_batch2_boundary_projection_repair",
+  "review_zip": "E:/XJTU battery dataset/_gv1_cache/xjtu_d15_p3b_results_for_review.zip"
+}

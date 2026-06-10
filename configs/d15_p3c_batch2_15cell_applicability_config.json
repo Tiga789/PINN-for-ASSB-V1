@@ -1,0 +1,50 @@
+{
+  "stage": "D15-P3C",
+  "name": "xjtu_batch2_15cell_p2dlite_rg_applicability_expansion",
+  "description": "Batch-2 full 15-cell P2Dlite-RG applicability expansion. This stage generates all 15 Batch-2 P2Dlite-RG soft labels, audits radial gradients, trains/evaluates a 15-cell closed-set NN, then applies the D15-P3B theta projection repair for final scorecard.",
+  "default_paths": {
+    "cache_root_windows": "E:/XJTU battery dataset/_gv1_cache",
+    "replay_dir": "E:/XJTU battery dataset/_gv1_cache/xjtu_batch2_replay_profiles_d15p3",
+    "all15_manifest_csv": "E:/XJTU battery dataset/_gv1_cache/xjtu_d15_p3c_batch2_15cell_applicability_scorecard/D15_P3C_BATCH2_ALL15_MANIFEST.csv",
+    "softlabel_dir": "E:/XJTU battery dataset/_gv1_cache/xjtu_softlabels_p2dlite_rg_v1_d15p3c_batch2_15cell",
+    "radial_audit_dir": "E:/XJTU battery dataset/_gv1_cache/xjtu_d15_p3c_batch2_15cell_radial_audit",
+    "nn_run_dir": "E:/XJTU battery dataset/_gv1_cache/xjtu_d15_p3c_batch2_15cell_rg_nn_benchmark",
+    "boundary_repair_dir": "E:/XJTU battery dataset/_gv1_cache/xjtu_d15_p3c_batch2_15cell_boundary_projection_repair",
+    "scorecard_dir": "E:/XJTU battery dataset/_gv1_cache/xjtu_d15_p3c_batch2_15cell_applicability_scorecard",
+    "review_zip": "E:/XJTU battery dataset/_gv1_cache/xjtu_d15_p3c_results_for_review.zip"
+  },
+  "batch2_scope": {
+    "expected_batch": "Batch-2",
+    "expected_cell_count": 15,
+    "expected_protocol": "3C_charge_1C_discharge_fixed_full_depth",
+    "positive_current_means": "charge",
+    "nominal_capacity_Ah": 2.0,
+    "important_boundary": "This is a Batch-2 15-cell closed-set applicability expansion, not held-out generalization and not experimental internal-state truth."
+  },
+  "p2dlite_rg_generation": {
+    "prior_json": "configs/P2Dlite_prior_xjtu_lr18650la_rg_v1.json",
+    "n_r": 17,
+    "theta_positive_initial": 0.90,
+    "theta_negative_initial": 0.08,
+    "capacity_scale_Ah": 2.0,
+    "phie_ohmic_scale_V_per_A": -0.015,
+    "preserve_voltage_exp_as_phis_c_soft": true,
+    "generation_note": "Generate all 15 Batch-2 profiles. The output can be large because every profile keeps full-resolution cs_a/cs_c radial labels."
+  },
+  "thresholds": {
+    "all15_manifest_required_count": 15,
+    "rg_generation_error_count_max": 0,
+    "radial_audit_fail_count_max": 0,
+    "radial_audit_warn_count_max_for_pass": 0,
+    "raw_nn_allowed_status": ["PASS", "REVIEW"],
+    "projection_repair_required_status": "PASS",
+    "projected_theta_outside_fraction_max": 0.001,
+    "projected_nonregression_required": "PASS"
+  },
+  "notes": [
+    "P3C intentionally expands from P3/P3B 3-cell to all 15 Batch-2 cells.",
+    "It reuses the D15-P3 replay profiles under xjtu_batch2_replay_profiles_d15p3.",
+    "It does not overwrite D15-P3 3-cell outputs, P3B repair outputs, D15-P0/P1/P2, P4B/P5B/P5C, D12-S1K, or ASSB ModelFin_112.",
+    "The final acceptance should be based on projection-repaired metrics, while raw NN metrics must still be reported."
+  ]
+}

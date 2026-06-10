@@ -1,0 +1,58 @@
+{
+  "stage": "D15-P4C",
+  "name": "xjtu_batch56_remaining14_replay_profile_completion",
+  "description": "Complete replay profiles for the remaining 14 XJTU Batch-5/6 cells before P2Dlite-RG soft-label generation. Also provide a resource smoke for the next soft-label stage.",
+  "default_paths": {
+    "raw_root_windows": "E:/XJTU battery dataset",
+    "cache_root_windows": "E:/XJTU battery dataset/_gv1_cache",
+    "replay_output_dir": "E:/XJTU battery dataset/_gv1_cache/xjtu_batch56_remaining14_replay_profiles_d15p4c",
+    "replay_audit_dir": "E:/XJTU battery dataset/_gv1_cache/xjtu_d15_p4c_batch56_remaining14_replay_audit",
+    "resource_smoke_dir": "E:/XJTU battery dataset/_gv1_cache/xjtu_d15_p4c_softlabel_resource_smoke",
+    "scorecard_dir": "E:/XJTU battery dataset/_gv1_cache/xjtu_d15_p4c_batch56_replay_completion_scorecard",
+    "review_zip": "E:/XJTU battery dataset/_gv1_cache/xjtu_d15_p4c_results_for_review.zip"
+  },
+  "target_cells": [
+    "Batch-5_battery-1", "Batch-5_battery-2", "Batch-5_battery-3", "Batch-5_battery-4", "Batch-5_battery-5", "Batch-5_battery-6", "Batch-5_battery-8",
+    "Batch-6_battery-1", "Batch-6_battery-2", "Batch-6_battery-4", "Batch-6_battery-5", "Batch-6_battery-6", "Batch-6_battery-7", "Batch-6_battery-8"
+  ],
+  "batch_info": {
+    "Batch-5": {
+      "protocol": "random_walk",
+      "candidate_dirs": ["Batch-5", "Batch5", "batch-5", "batch5", "Batch_5"],
+      "candidate_file_patterns": ["*battery*.mat", "*.mat"]
+    },
+    "Batch-6": {
+      "protocol": "GEO",
+      "candidate_dirs": ["Batch-6", "Batch6", "batch-6", "batch6", "Batch_6"],
+      "candidate_file_patterns": ["*battery*.mat", "*.mat"]
+    }
+  },
+  "reader": {
+    "current_rest_abs_A_threshold": 0.05,
+    "temperature_fallback_C": 25.0,
+    "auto_flip_current_to_positive_charge": true,
+    "save_mode": "compressed",
+    "min_time_points_per_profile": 1000
+  },
+  "resource_smoke": {
+    "enabled": true,
+    "max_profiles": 2,
+    "max_time_points_per_profile": 20000,
+    "radial_points": 17,
+    "cpu_smoke_repeats": 8,
+    "torch_cuda_smoke": true,
+    "important_note": "Current P2Dlite-RG soft-label generator is NumPy/CPU. GPU utilization in this smoke only proves CUDA availability for NN stages or a future rewritten torch generator; it does not make the current NumPy generator GPU-backed."
+  },
+  "thresholds": {
+    "expected_target_count": 14,
+    "replay_pass_required": 14,
+    "replay_read_error_max": 0,
+    "time_monotonic_required": true,
+    "finite_core_required": true
+  },
+  "notes": [
+    "D15-P4C does not generate P2Dlite-RG soft labels and does not train any NN.",
+    "D15-P4C prepares Batch-5/6 remaining 14-cell replay profiles for D15-P4D.",
+    "No gv1/ files are included in this clean package."
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "package": "D15_P3_xjtu_batch2_p2dlite_rg_applicability_validation",
+  "created_for": "QJW-2 / PINN-for-ASSB-V1",
+  "model": "GPT-5.5 Pro",
+  "stage": "D15-P3",
+  "purpose": "Extend P2Dlite-RG applicability validation to XJTU Batch-2 using 3 representative cells before any full Batch-2 expansion.",
+  "does_not_overwrite": [
+    "ModelFin_112_deterministic_wrapper",
+    "D12-S1K voltage wrapper",
+    "xjtu_softlabels_p2dlite_v1_p4b_multicell_v3",
+    "xjtu_softlabels_p2dlite_rg_v1_d15p0_8cell",
+    "xjtu_d15_p1_rg_closedset_nn_smoke",
+    "xjtu_d15_p2_rg_precision_benchmark",
+    "P5B/P5C baseline"
+  ],
+  "default_review_zip": "E:/XJTU battery dataset/_gv1_cache/xjtu_d15_p3_results_for_review.zip"
+}

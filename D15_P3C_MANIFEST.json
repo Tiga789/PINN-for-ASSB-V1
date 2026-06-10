@@ -1,0 +1,19 @@
+{
+  "stage": "D15-P3C",
+  "package": "D15_P3C_xjtu_batch2_15cell_p2dlite_rg_applicability_expansion",
+  "created_by": "GPT-5.5 Pro",
+  "scope": "XJTU Batch-2 15-cell P2Dlite-RG applicability expansion",
+  "does_not_overwrite": [
+    "ModelFin_112_deterministic_wrapper",
+    "D12-S1K voltage wrapper",
+    "xjtu_softlabels_p2dlite_v1_p4b_multicell_v3",
+    "xjtu_softlabels_p2dlite_rg_v1_d15p0_8cell",
+    "xjtu_d15_p1_rg_closedset_nn_smoke",
+    "xjtu_d15_p2_rg_precision_benchmark",
+    "xjtu_softlabels_p2dlite_rg_v1_d15p3_batch2_3cell",
+    "xjtu_d15_p3b_batch2_boundary_projection_repair",
+    "P5B/P5C benchmarks"
+  ],
+  "expected_review_zip": "E:/XJTU battery dataset/_gv1_cache/xjtu_d15_p3c_results_for_review.zip",
+  "important_boundary": "Closed-set applicability only; not held-out generalization and not experimental internal-state truth."
+}

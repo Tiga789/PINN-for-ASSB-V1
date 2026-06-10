@@ -1,0 +1,86 @@
+{
+  "package": "D15_P1_xjtu_p2dlite_rg_closedset_nn_smoke_CLEAN",
+  "stage": "D15-P1",
+  "created_by": "GPT-5.5 Pro",
+  "purpose": "Clean 8-cell closed-set NN smoke package for D15-P0 P2Dlite-RG soft labels; excludes __pycache__ and .pyc files.",
+  "default_input": "E:/XJTU battery dataset/_gv1_cache/xjtu_softlabels_p2dlite_rg_v1_d15p0_8cell",
+  "default_output": "E:/XJTU battery dataset/_gv1_cache/xjtu_d15_p1_rg_closedset_nn_smoke",
+  "note": "This clean package intentionally excludes Python bytecode caches generated during validation.",
+  "files": [
+    {
+      "path": "D15_P1_FILE_MAP.md",
+      "size": 1634,
+      "sha256": "15e844a30932a4f9af0a20680eb2eea63c1e713a83fabe8156e01c0d2be0f53b"
+    },
+    {
+      "path": "README_D15_P1.md",
+      "size": 4225,
+      "sha256": "05ebe615388eb70042bf96e488e8661b3b8ffd18920d9f121f96ad82d492add1"
+    },
+    {
+      "path": "configs/d15_p1_nn_smoke_config.json",
+      "size": 2510,
+      "sha256": "dc77acde9fec97c4ec122c02674a2fa76fefdea36726b7d70d79c2494f61b981"
+    },
+    {
+      "path": "gv1/p2dlite_rg_nn/__init__.py",
+      "size": 139,
+      "sha256": "e3eb7f237a9bc3d864b0fab8d57ebecdffe75c5dd8e6c4c5f7f46c7e8875fed6"
+    },
+    {
+      "path": "gv1/p2dlite_rg_nn/data.py",
+      "size": 17848,
+      "sha256": "b4f9df50722c101bf7b970cd97207cc69629859912b1cd1ed963af57de87cdaa"
+    },
+    {
+      "path": "gv1/p2dlite_rg_nn/metrics.py",
+      "size": 6145,
+      "sha256": "6354a38cca3d8397e0b45dda9c0bce095c7437dc79e3c55787d009f8571ea884"
+    },
+    {
+      "path": "gv1/p2dlite_rg_nn/model.py",
+      "size": 2355,
+      "sha256": "993ea71945ffbe635d56cf7ec9616fd828bb0329bd57dd25818f4f9419b28e37"
+    },
+    {
+      "path": "gv1/p2dlite_rg_nn/train_eval.py",
+      "size": 3071,
+      "sha256": "b8d896babfea771af4fa99f0126451474cf1c41bd269a2461bad2ff77f043c9d"
+    },
+    {
+      "path": "gv1/p2dlite_rg_nn/utils.py",
+      "size": 3034,
+      "sha256": "192fc22e318b01345c9ddacb90b5ce671e6715fe5ea89282961d18a133bb0fb5"
+    },
+    {
+      "path": "scripts/d15_p1_collect_scorecard.py",
+      "size": 2463,
+      "sha256": "e3d7b142821d05efc10279084d9d7cd15c4dd7013def09aed545f6acddf6ffa2"
+    },
+    {
+      "path": "scripts/d15_p1_eval_rg_closedset_nn_smoke.py",
+      "size": 5864,
+      "sha256": "f64ff5251c256349bcf966eabc73bf8877ebb447690607b37b68fe2e3a45ddd5"
+    },
+    {
+      "path": "scripts/d15_p1_preflight.py",
+      "size": 4186,
+      "sha256": "e13255ad93a08ef959e6ddec68ddc110f6fec3e8351223608e4e1e6b155c25ad"
+    },
+    {
+      "path": "scripts/d15_p1_run_all.ps1",
+      "size": 2553,
+      "sha256": "a8ff60d4614570e1348271436b1d58f3c010d329cda0dbe6d1ff2b707343bd51"
+    },
+    {
+      "path": "scripts/d15_p1_selftest_nn_smoke.py",
+      "size": 2638,
+      "sha256": "aea6e6d39d3198dfe92a5f0ef3d746d0660771409ea1e51fe8f43616ad39273b"
+    },
+    {
+      "path": "scripts/d15_p1_train_rg_closedset_nn_smoke.py",
+      "size": 10440,
+      "sha256": "7a6ad4807637645927ae660777362f04c2fa379adf39651cd93b232c433fb546"
+    }
+  ]
+}

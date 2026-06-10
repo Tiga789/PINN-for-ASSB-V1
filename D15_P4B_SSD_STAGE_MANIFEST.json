@@ -1,0 +1,11 @@
+{
+  "stage": "D15-P4B SSD staging hotfix",
+  "contains_gv1_files": false,
+  "contains_pycache": false,
+  "files": [
+    "scripts/d15_p4b_prepare_ssd_staging.py",
+    "scripts/d15_p4b_run_all_ssd_stage.ps1",
+    "README_D15_P4B_SSD_STAGE.md",
+    "D15_P4B_SSD_STAGE_MANIFEST.json"
+  ]
+}

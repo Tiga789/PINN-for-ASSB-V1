@@ -1,0 +1,45 @@
+{
+  "stage": "D15-P4D-targeted-fix",
+  "name": "batch5_battery8_weak_anode_gradient_targeted_fix",
+  "target_cell": "Batch-5_battery-8",
+  "cache_root": "E:/XJTU battery dataset/_gv1_cache",
+  "p4d_config": "configs/d15_p4d_full_remaining14_config.json",
+  "p4c_replay_manifest_csv": "E:/XJTU battery dataset/_gv1_cache/xjtu_batch56_remaining14_replay_profiles_d15p4c/xjtu_batch56_remaining14_replay_profile_manifest.csv",
+  "base_prior_json": "configs/P2Dlite_prior_xjtu_lr18650la_rg_v1.json",
+  "final_softlabels_dir": "E:/XJTU battery dataset/_gv1_cache/xjtu_softlabels_p2dlite_rg_v1_d15p4d_batch56_remaining14",
+  "target_fix_run_dir": "E:/XJTU battery dataset/_gv1_cache/xjtu_d15_p4d_batch5_battery8_targeted_fix",
+  "review_zip": "E:/XJTU battery dataset/_gv1_cache/xjtu_d15_p4d_batch5_battery8_targeted_fix_review.zip",
+  "save_mode": "uncompressed",
+  "backup_old_cell_dir": false,
+  "candidates": [
+    {
+      "name": "negD0p50_conservative",
+      "alpha_D_negative": 0.50,
+      "alpha_J_negative": 1.00,
+      "note": "Conservative anode diffusivity reduction only; expected to lift mean active anode gradient above 0.003."
+    },
+    {
+      "name": "negD0p45_medium",
+      "alpha_D_negative": 0.45,
+      "alpha_J_negative": 1.00,
+      "note": "Medium anode diffusivity reduction if candidate 0.50 still warns."
+    },
+    {
+      "name": "negD0p40_stronger",
+      "alpha_D_negative": 0.40,
+      "alpha_J_negative": 1.00,
+      "note": "Stronger but still bounded anode diffusivity reduction; use only if needed."
+    }
+  ],
+  "selection_rule": {
+    "accept_first_candidate_with_audit_PASS": true,
+    "required_overall_status": "PASS",
+    "target_warn_count_max": 0,
+    "target_fail_count_max": 0
+  },
+  "notes": [
+    "This package only regenerates Batch-5_battery-8 and overwrites its old P4D soft-label profile after a candidate passes targeted radial audit.",
+    "No other cell output is modified.",
+    "No gv1/ files are included in this package. It relies on existing D15-P0 and D15-P4D scripts/modules already installed in the project."
+  ]
+}

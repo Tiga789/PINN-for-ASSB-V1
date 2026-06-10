@@ -5,129 +5,175 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7b854bbc-0a8a-4911-bc87-dd9f1f68d852" name="更改" comment="">
-      <change afterPath="$PROJECT_DIR$/MANIFEST_D14_P0.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/MANIFEST_D14_P1.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/MANIFEST_D14_P1_FIX.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/MANIFEST_D14_P2.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/MANIFEST_D14_P3.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/MANIFEST_D14_P3B.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/MANIFEST_D14_P3_FAST.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/MANIFEST_D14_P3_WARNING_FIX.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/MANIFEST_D14_P4.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/MANIFEST_D14_P4A.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/MANIFEST_D14_P4B.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/MANIFEST_D14_P4B_v2.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/MANIFEST_D14_P4B_v3.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/MANIFEST_D14_P5.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/MANIFEST_D14_P5A.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/MANIFEST_D14_P5B.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/MANIFEST_D14_P5B_v2.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/MANIFEST_D14_P5C.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/configs/P2Dlite_prior_xjtu_lr18650la_v0.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/configs/d14_p0_expected_mainline.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/configs/d14_p1_evidence_boundary_config.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/configs/d14_p2_generalization_scorecard_config.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/configs/d14_p3_batch56_feasibility_config.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/configs/d14_p3_fast_feasibility_config.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/configs/d14_p3b_batch56_replay_smoke_config.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/configs/d14_p4_xjtu_p2dlite_softlabel_smoke_config.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/configs/d14_p4a_xjtu_softlabel_patch_config.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/configs/d14_p4b_xjtu_p2dlite_multicell_softlabel_config.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/configs/d14_p5_xjtu_p2dlite_nn_smoke_config.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/configs/d14_p5a_eval_verify_fix_config.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/configs/d14_p5b_xjtu_p2dlite_8cell_closedset_precision_config.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/configs/d14_p5c_closedset_precision_audit_config.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/D14_P0_C12_FALSE_POSITIVE_FIX.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/D14_P0_CORRECTION_NOTE.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/D14_P0_README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/D14_P1_EXPECTED_OUTPUTS.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/D14_P1_NEGATION_GUARDRAIL_FIX_README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/D14_P1_README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/D14_P2_EXPECTED_OUTPUTS.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/D14_P2_README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/D14_P3B_EXPECTED_OUTPUTS.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/D14_P3B_README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/D14_P3_EXPECTED_OUTPUTS.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/D14_P3_FAST_README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/D14_P3_README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/D14_P4A_EXPECTED_OUTPUTS.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/D14_P4A_README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/D14_P4B_EXPECTED_OUTPUTS.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/D14_P4B_README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/D14_P4_BASE_EXPECTED_OUTPUTS_reference.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/D14_P4_BASE_README_reference.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/D14_P4_EXPECTED_OUTPUTS.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/D14_P4_README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/D14_P5A_EXPECTED_OUTPUTS.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/D14_P5A_README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/D14_P5B_EXPECTED_OUTPUTS.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/D14_P5B_README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/D14_P5B_v2_README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/D14_P5C_EXPECTED_OUTPUTS.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/D14_P5C_README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/D14_P5_EXPECTED_OUTPUTS.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/D14_P5_README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/P2Dlite_PRIOR_FILE_USAGE.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gv1/softlabels/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gv1/softlabels/p2dlite_prior.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gv1/softlabels/xjtu_lowr_grid.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gv1/softlabels/xjtu_p2dlite_solver.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gv1/softlabels/xjtu_p2dlite_voltage.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gv1/softlabels/xjtu_softlabel_audit.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gv1/softlabels/xjtu_softlabel_io.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gv1/softlabels_nn/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gv1/softlabels_nn/xjtu_p2dlite_closedset_dataset.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gv1/softlabels_nn/xjtu_p2dlite_closedset_losses.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gv1/softlabels_nn/xjtu_p2dlite_closedset_metrics.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gv1/softlabels_nn/xjtu_p2dlite_closedset_model.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gv1/softlabels_nn/xjtu_p2dlite_dataset.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gv1/softlabels_nn/xjtu_p2dlite_losses.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gv1/softlabels_nn/xjtu_p2dlite_metrics.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gv1/softlabels_nn/xjtu_p2dlite_model.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_audit_xjtu_p2dlite_softlabels.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d14_p0_freeze_mainline_audit.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d14_p0_verify_outputs.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d14_p1_generate_evidence_boundary_report.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d14_p1_verify_outputs.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d14_p2_build_generalization_scorecard.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d14_p2_verify_outputs.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d14_p3_batch56_fast_feasibility_audit.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d14_p3_batch56_feasibility_audit.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d14_p3_fast_verify_outputs.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d14_p3_verify_outputs.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d14_p3b_build_batch56_replay_smoke.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d14_p3b_verify_outputs.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d14_p4_verify_outputs.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d14_p4a_verify_outputs.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d14_p4b_audit_outputs.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d14_p4b_generate_multicell_softlabels.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d14_p4b_verify_outputs.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d14_p5_build_softlabel_manifest.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d14_p5_eval_p2dlite_softlabel_nn.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d14_p5_train_p2dlite_softlabel_nn.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d14_p5_verify_outputs.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d14_p5a_eval_p2dlite_softlabel_nn.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d14_p5b_build_closedset_manifest.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d14_p5b_eval_closedset_precision.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d14_p5b_train_closedset_precision.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d14_p5b_verify_outputs.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d14_p5c_audit_closedset_precision.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d14_p5c_verify_audit_outputs.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_generate_xjtu_p2dlite_softlabels.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d14_p0_freeze_audit.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d14_p1_evidence_boundary.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d14_p2_generalization_scorecard.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d14_p3_batch56_fast.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d14_p3_batch56_feasibility.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d14_p3b_batch56_replay_smoke.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d14_p4_xjtu_p2dlite_softlabel_smoke.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d14_p4a_xjtu_p2dlite_softlabel_patch.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d14_p4b_multicell_softlabels.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d14_p5_xjtu_p2dlite_nn_smoke.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d14_p5a_eval_verify_fix.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d14_p5b_8cell_closedset_precision.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/run_gv1_d14_p5c_closedset_precision_audit.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/D15_P0_FILE_MAP.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/D15_P0_MANIFEST.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/D15_P1_FILE_MAP.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/D15_P1_MANIFEST.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/D15_P2_FILE_MAP.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/D15_P2_MANIFEST.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/D15_P3B_FILE_MAP.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/D15_P3B_MANIFEST.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/D15_P3C_FILE_MAP.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/D15_P3C_MANIFEST.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/D15_P3_FILE_MAP.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/D15_P3_MANIFEST.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/D15_P4A_FILE_MAP.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/D15_P4A_FIX_FILE_MAP.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/D15_P4A_FIX_MANIFEST.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/D15_P4A_MANIFEST.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/D15_P4B_FILE_MAP.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/D15_P4B_MANIFEST.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/D15_P4B_SSD_STAGE_MANIFEST.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/D15_P4C_FILE_MAP.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/D15_P4C_MANIFEST.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/D15_P4D_FULL_FILE_MAP.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/D15_P4D_FULL_MANIFEST.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/D15_P4D_SMOKE_FILE_MAP.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/D15_P4D_SMOKE_MANIFEST.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/D15_P4D_TARGET_B5B8_FIX_FILE_MAP.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/D15_P4D_TARGET_B5B8_FIX_MANIFEST.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_D15_BATCH4_BATTERY7_CS3D.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_D15_P0.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_D15_P1.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_D15_P2.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_D15_P3.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_D15_P3B.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_D15_P3C.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_D15_P4A.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_D15_P4A_FIX.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_D15_P4B.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_D15_P4B_SSD_STAGE.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_D15_P4C.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_D15_P4D_FULL.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_D15_P4D_SMOKE.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_D15_P4D_TARGET_B5B8_FIX.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/P2Dlite_prior_xjtu_lr18650la_rg_v1.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d15_p1_nn_smoke_config.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d15_p2_precision_benchmark_config.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d15_p3_batch2_applicability_config.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d15_p3_batch2_nn_smoke_config.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d15_p3b_boundary_repair_config.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d15_p3c_batch2_15cell_applicability_config.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d15_p3c_batch2_15cell_nn_config.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d15_p3c_boundary_repair_config.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d15_p4a_fix_replay_readiness_config.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d15_p4a_remaining32_audit_config.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d15_p4b_ready18_generation_config.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d15_p4c_batch56_remaining14_replay_config.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d15_p4d_batch5_battery8_targeted_fix_config.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d15_p4d_full_remaining14_config.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d15_p4d_smoke_config.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/p2dlite_rg/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/p2dlite_rg/audit.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/p2dlite_rg/data.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/p2dlite_rg/io_utils.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/p2dlite_rg/metrics.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/p2dlite_rg/model.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/p2dlite_rg/radial_solver.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/p2dlite_rg/train_eval.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/p2dlite_rg/utils.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/p2dlite_rg_batch2/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/p2dlite_rg_batch2/batch2_io.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/p2dlite_rg_batch2/utils.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/p2dlite_rg_batch2_15cell/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/p2dlite_rg_batch2_15cell/utils.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/p2dlite_rg_boundary/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/p2dlite_rg_boundary/projection.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/p2dlite_rg_nn/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/p2dlite_rg_nn/data.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/p2dlite_rg_nn/metrics.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/p2dlite_rg_nn/model.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/p2dlite_rg_nn/train_eval.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/p2dlite_rg_nn/utils.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/p2dlite_rg_nn_precision/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/p2dlite_rg_nn_precision/audit.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/p2dlite_rg_p4a/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/p2dlite_rg_p4a/utils.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p0_compare_radial_audits.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p0_generate_p2dlite_rg_softlabels.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p0_preflight.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p0_radial_gradient_audit.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p0_run_all.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p0_selftest_rg_solver.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p1_collect_scorecard.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p1_eval_rg_closedset_nn_smoke.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p1_preflight.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p1_run_all.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p1_selftest_nn_smoke.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p1_train_rg_closedset_nn_smoke.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p2_collect_scorecard.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p2_eval_rg_precision_benchmark.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p2_pack_review.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p2_precision_audit.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p2_preflight.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p2_run_all.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p2_selftest_precision_benchmark.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p2_train_rg_precision_benchmark.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p3_collect_scorecard.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p3_pack_review.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p3_run_all.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p3_selftest_batch2.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p3a_build_batch2_replay_profiles.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p3a_discover_batch2.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p3a_preflight_batch2.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p3b_boundary_projection_repair.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p3b_collect_scorecard.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p3b_pack_review.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p3b_run_all.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p3b_select_batch2_representatives.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p3b_selftest_boundary_repair.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p3c_collect_scorecard.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p3c_generate_batch2_15cell_rg_softlabels.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p3c_generate_batch2_rg_softlabels.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p3c_make_batch2_all15_manifest.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p3c_pack_review.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p3c_run_all.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p3c_selftest_15cell.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p4a_audit_remaining32.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p4a_fix_pack_review.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p4a_fix_replay_readiness_audit.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p4a_fix_run_all.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p4a_fix_selftest.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p4a_pack_review.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p4a_run_all.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p4a_selftest.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p4b_collect_scorecard.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p4b_generate_ready18_rg_softlabels.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p4b_pack_review.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p4b_preflight.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p4b_prepare_ssd_staging.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p4b_run_all.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p4b_run_all_ssd_stage.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p4b_selftest.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p4c_audit_replay_profiles.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p4c_build_batch56_replay_profiles.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p4c_collect_scorecard.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p4c_pack_review.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p4c_preflight.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p4c_run_all.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p4c_selftest.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p4c_softlabel_resource_smoke.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p4c_utils.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p4d_collect_smoke_scorecard.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p4d_cuda_smoke.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p4d_full_collect_generation_report.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p4d_full_collect_scorecard.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p4d_full_generate_one_rg_softlabel.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p4d_full_pack_review.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p4d_full_run_all.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p4d_full_selftest.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p4d_generate_one_smoke_profile.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p4d_pack_review.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p4d_run_smoke.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p4d_selftest.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p4d_target_b5b8_fix.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p4d_target_b5b8_pack_review.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p4d_target_b5b8_run_all.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_p4d_target_b5b8_selftest.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d15_plot_batch4_battery7_cs3d.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -165,32 +211,34 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Python.estimate_assb_ocp_from_record.executor&quot;: &quot;Run&quot;,
-    &quot;Python.smoke_assb_ocp.executor&quot;: &quot;Run&quot;,
-    &quot;Python.smoke_assb_params.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Tiga_QJW/Desktop/ASSB_Scheme_V1/PINN-for-ASSB-V1&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python.estimate_assb_ocp_from_record.executor": "Run",
+    "Python.smoke_assb_ocp.executor": "Run",
+    "Python.smoke_assb_params.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "C:/Users/Tiga_QJW/Desktop/ASSB_Scheme_V1/PINN-for-ASSB-V1",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.lookFeel",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1" />
       <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\scripts" />
-      <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\docs" />
       <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\configs" />
-      <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\gv1\softlabels_nn" />
+      <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\gv1" />
+      <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\gv1\p2dlite_rg_nn_precision" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\gv1" />
+      <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\gv1\p2dlite_rg" />
       <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1" />
       <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\util" />
     </key>
@@ -269,7 +317,7 @@
       <workItem from="1776793294745" duration="2000" />
       <workItem from="1776796578394" duration="75259000" />
       <workItem from="1777704900369" duration="98542000" />
-      <workItem from="1778744192031" duration="264903000" />
+      <workItem from="1778744192031" duration="302720000" />
     </task>
     <servers />
   </component>

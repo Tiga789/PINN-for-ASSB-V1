@@ -1,0 +1,98 @@
+{
+  "stage": "D15-P2",
+  "name": "xjtu_p2dlite_rg_precision_benchmark",
+  "description": "8-cell closed-set precision benchmark for D15-P0 P2Dlite-RG soft labels. This stage keeps the P1 NN architecture family but uses stricter train/eval settings, full-profile prediction dumps, per-profile/electrode boundary audits, current-transition audits, and top-k error reports.",
+  "default_paths": {
+    "cache_root_windows": "E:/XJTU battery dataset/_gv1_cache",
+    "softlabel_dir": "E:/XJTU battery dataset/_gv1_cache/xjtu_softlabels_p2dlite_rg_v1_d15p0_8cell",
+    "output_root": "E:/XJTU battery dataset/_gv1_cache/xjtu_d15_p2_rg_precision_benchmark"
+  },
+  "data": {
+    "filename": "solution_softlabels.npz",
+    "expected_profile_count": 8,
+    "max_time_points_per_profile_train": 16384,
+    "max_time_points_per_profile_val": 4096,
+    "eval_stride": 1,
+    "include_profile_onehot": true,
+    "include_voltage_exp_feature": true,
+    "include_temperature_feature": true,
+    "random_seed": 152
+  },
+  "model": {
+    "hidden_dim": 384,
+    "num_hidden_layers": 5,
+    "activation": "silu",
+    "dropout": 0.0,
+    "residual_blocks": true
+  },
+  "training": {
+    "epochs": 2400,
+    "batch_size": 8192,
+    "learning_rate": 0.0012,
+    "weight_decay": 0.000001,
+    "lr_decay_gamma": 0.985,
+    "lr_decay_every": 50,
+    "grad_clip_norm": 5.0,
+    "device": "auto",
+    "use_amp": false,
+    "use_torch_compile": false,
+    "log_every": 25,
+    "early_stop_patience": 500,
+    "early_stop_min_delta": 5e-8
+  },
+  "loss_weights": {
+    "theta_a": 1.0,
+    "theta_c": 1.0,
+    "phie": 0.5,
+    "phis_c": 1.0,
+    "gradient_a": 0.25,
+    "gradient_c": 0.25,
+    "theta_boundary_penalty": 0.04
+  },
+  "scorecard_thresholds": {
+    "smoke_global_phis_c_mae_max_v": 0.008,
+    "smoke_global_phie_mae_max_v": 0.010,
+    "smoke_global_theta_a_mae_max": 0.006,
+    "smoke_global_theta_c_mae_max": 0.005,
+    "smoke_global_theta_a_mean_mae_max": 0.0045,
+    "smoke_global_theta_c_mean_mae_max": 0.0035,
+    "smoke_global_grad_a_mae_max": 0.008,
+    "smoke_global_grad_c_mae_max": 0.006,
+    "smoke_global_min_corr": 0.995,
+    "pred_theta_outside_fraction_max": 0.003,
+    "pred_theta_boundary_hit_fraction_max": 0.080
+  },
+  "precision_audit": {
+    "theta_outside_eps": 1e-5,
+    "theta_boundary_eps": 1e-5,
+    "topk_errors": 50,
+    "transition_abs_dI_fraction": 0.20,
+    "transition_window_points": 20,
+    "rest_current_fraction": 0.02,
+    "per_profile_thresholds": {
+      "phis_c_mae_max_v": 0.012,
+      "phie_mae_max_v": 0.015,
+      "theta_a_mae_max": 0.009,
+      "theta_c_mae_max": 0.008,
+      "grad_a_mae_max": 0.012,
+      "grad_c_mae_max": 0.010,
+      "min_corr": 0.992,
+      "theta_outside_fraction_max": 0.006
+    },
+    "transition_thresholds": {
+      "phis_c_transition_mae_max_v": 0.040,
+      "theta_transition_mae_max": 0.035
+    },
+    "max_abs_review_thresholds": {
+      "phis_c_max_abs_review_v": 0.250,
+      "phie_max_abs_review_v": 0.300,
+      "theta_a_max_abs_review": 0.120,
+      "theta_c_max_abs_review": 0.120
+    }
+  },
+  "audit_notes": [
+    "Closed-set means the same 8 cells are used for train/eval; this is a precision calibration benchmark, not held-out generalization.",
+    "D15-P2 reproduces D15-P0 P2Dlite-RG soft labels and does not claim experimental ground-truth radial internal states.",
+    "Old P4B/P5B/P5C, D15-P0, D15-P1, D12-S1K, and ModelFin_112 baselines must not be overwritten."
+  ]
+}

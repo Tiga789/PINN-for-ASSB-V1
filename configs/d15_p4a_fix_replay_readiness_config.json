@@ -1,0 +1,31 @@
+{
+  "stage": "D15-P4A-fix",
+  "description": "Fixed canonical replay-profile readiness audit. No gv1 root files are included.",
+  "xjtu_root": "E:/XJTU battery dataset",
+  "cache_root": "E:/XJTU battery dataset/_gv1_cache",
+  "expected_batches": {
+    "1": {"cell_count": 8, "protocol": "2C"},
+    "2": {"cell_count": 15, "protocol": "3C"},
+    "3": {"cell_count": 8, "protocol": "R2.5"},
+    "4": {"cell_count": 8, "protocol": "R3"},
+    "5": {"cell_count": 8, "protocol": "random_walk"},
+    "6": {"cell_count": 8, "protocol": "GEO"}
+  },
+  "existing_rg_softlabel_roots": [
+    "E:/XJTU battery dataset/_gv1_cache/xjtu_softlabels_p2dlite_rg_v1_d15p0_8cell",
+    "E:/XJTU battery dataset/_gv1_cache/xjtu_softlabels_p2dlite_rg_v1_d15p3c_batch2_15cell",
+    "E:/XJTU battery dataset/_gv1_cache/xjtu_softlabels_p2dlite_rg_v1_d15p3_batch2_3cell"
+  ],
+  "replay_profile_roots": [
+    "E:/XJTU battery dataset/_gv1_cache/xjtu_batch134_replay_profiles",
+    "E:/XJTU battery dataset/_gv1_cache/xjtu_batch2_replay_profiles_d15p3",
+    "E:/XJTU battery dataset/_gv1_cache/xjtu_d14_p3b_batch56_replay_smoke",
+    "E:/XJTU battery dataset/_gv1_cache/xjtu_batch56_replay_profiles",
+    "E:/XJTU battery dataset/_gv1_cache/xjtu_batch5_replay_profiles",
+    "E:/XJTU battery dataset/_gv1_cache/xjtu_batch6_replay_profiles"
+  ],
+  "output_dir": "E:/XJTU battery dataset/_gv1_cache/xjtu_d15_p4a_fix_replay_readiness_audit",
+  "review_zip": "E:/XJTU battery dataset/_gv1_cache/xjtu_d15_p4a_fix_results_for_review.zip",
+  "required_replay_keys": ["t_global_s", "I_profile", "voltage_exp", "cycle_id"],
+  "required_softlabel_keys": ["t_global_s", "I_profile", "voltage_exp", "cs_a", "cs_c", "theta_a", "theta_c", "phis_c", "phie"]
+}

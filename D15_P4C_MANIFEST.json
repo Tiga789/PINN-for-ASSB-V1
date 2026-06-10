@@ -1,0 +1,70 @@
+{
+  "stage": "D15-P4C",
+  "package": "D15_P4C_batch56_remaining14_replay_completion_clean",
+  "contains_gv1_files": false,
+  "contains_gv1_init": false,
+  "contains_pycache_or_pyc": false,
+  "file_count": 12,
+  "files": [
+    {
+      "path": "D15_P4C_FILE_MAP.md",
+      "size_bytes": 965,
+      "sha256": "a4e1f8ca6a3ffe8db381d029769a3987f3343bee35a02d39898b1d67f12c6d5f"
+    },
+    {
+      "path": "README_D15_P4C.md",
+      "size_bytes": 2272,
+      "sha256": "7639920aab6b70b10f82120df9413f5d14102eed0bb37846b88f957e932f1a71"
+    },
+    {
+      "path": "configs/d15_p4c_batch56_remaining14_replay_config.json",
+      "size_bytes": 2761,
+      "sha256": "425bba63f723e183d58f6a98659ac01def8d5353ffb0e4f2b7d248a8b5583482"
+    },
+    {
+      "path": "scripts/d15_p4c_audit_replay_profiles.py",
+      "size_bytes": 2523,
+      "sha256": "54c203e37330430987ae00cdb128bf9957947e9ef0c218338ae4cfb25b383c1c"
+    },
+    {
+      "path": "scripts/d15_p4c_build_batch56_replay_profiles.py",
+      "size_bytes": 4727,
+      "sha256": "0389c54b9cac72041b520ed81589dc2ae0c634dcb5ab989e9a1eae9270b2d63b"
+    },
+    {
+      "path": "scripts/d15_p4c_collect_scorecard.py",
+      "size_bytes": 3173,
+      "sha256": "463d964c8a7da63e5626430c5b182f7b6faf688c7325f471da18bcbd603ccde6"
+    },
+    {
+      "path": "scripts/d15_p4c_pack_review.py",
+      "size_bytes": 1044,
+      "sha256": "c53a9ea12ffbdc90c529b5f3d663d35c304c843512bcc11e3e69776fa7507239"
+    },
+    {
+      "path": "scripts/d15_p4c_preflight.py",
+      "size_bytes": 1983,
+      "sha256": "1bd33bf1fa02db05f622b7738933bcad3cde3a9abd3374d7d19c73596688bf53"
+    },
+    {
+      "path": "scripts/d15_p4c_run_all.ps1",
+      "size_bytes": 3514,
+      "sha256": "c336078f440b4974f0de4e533a4ae5bb8cc306439dc89e4dc3ba97aa174c17b9"
+    },
+    {
+      "path": "scripts/d15_p4c_selftest.py",
+      "size_bytes": 1047,
+      "sha256": "393129bae08d8a1e4b6d76cafbd8159e6070079014294a0e0a8d6f3418490594"
+    },
+    {
+      "path": "scripts/d15_p4c_softlabel_resource_smoke.py",
+      "size_bytes": 5580,
+      "sha256": "078f4fad53bebea11095a4355dd0ffde31e9d48a332ff9ed7f90b285f5993300"
+    },
+    {
+      "path": "scripts/d15_p4c_utils.py",
+      "size_bytes": 21245,
+      "sha256": "893dfaf878c1cadb671abe5d09ac0c9682dc90e1c8ae00d6f6233056049ea9a1"
+    }
+  ]
+}

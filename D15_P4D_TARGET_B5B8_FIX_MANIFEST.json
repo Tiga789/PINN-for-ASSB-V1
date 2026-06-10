@@ -1,0 +1,12 @@
+{
+  "package": "D15_P4D_target_Batch5_battery8_radial_gradient_fix",
+  "clean_package_guards": {
+    "contains_gv1_files": false,
+    "contains_gv1_root_init": false,
+    "contains_pycache": false,
+    "contains_pyc": false
+  },
+  "target_cell": "Batch-5_battery-8",
+  "mode": "targeted_regenerate_then_overwrite_target_cell_only",
+  "review_zip": "E:/XJTU battery dataset/_gv1_cache/xjtu_d15_p4d_batch5_battery8_targeted_fix_review.zip"
+}
