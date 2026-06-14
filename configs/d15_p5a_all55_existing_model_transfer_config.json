@@ -1,0 +1,46 @@
+{
+  "stage": "D15-P5A ALL55 existing-model transfer evaluation",
+  "all55_softlabel_dir": "E:/XJTU battery dataset/_gv1_cache/xjtu_softlabels_p2dlite_rg_v1_D15_ALL55_FINAL",
+  "output_dir": "E:/XJTU battery dataset/_gv1_cache/xjtu_d15_p5a_all55_existing_model_transfer_eval",
+  "review_zip": "E:/XJTU battery dataset/_gv1_cache/xjtu_d15_p5a_results_for_review.zip",
+  "filename": "solution_softlabels.npz",
+  "eval_stride": 64,
+  "batch_size": 262144,
+  "device": "auto",
+  "onehot_unseen_policy": "zero",
+  "projection": {
+    "enabled": true,
+    "theta_min": 0.0001,
+    "theta_max": 0.9999
+  },
+  "models": [
+    {
+      "model_id": "D15_P2_8cell_precision",
+      "description": "D15-P2 8-cell P2Dlite-RG precision benchmark model; tests transfer from cross-batch 8-cell calibration set to ALL55.",
+      "model_dir": "E:/XJTU battery dataset/_gv1_cache/xjtu_d15_p2_rg_precision_benchmark",
+      "enabled": true
+    },
+    {
+      "model_id": "D15_P3C_Batch2_15cell",
+      "description": "D15-P3C Batch-2 15-cell closed-set model; tests whether the Batch-2 stress-test model is batch-specific or transferable.",
+      "model_dir": "E:/XJTU battery dataset/_gv1_cache/xjtu_d15_p3c_batch2_15cell_rg_nn_benchmark",
+      "enabled": true
+    }
+  ],
+  "transfer_quality_thresholds": {
+    "projected_phis_c_mae_max_v": 0.02,
+    "projected_phie_mae_max": 0.02,
+    "projected_theta_a_mae_max": 0.02,
+    "projected_theta_c_mae_max": 0.02,
+    "projected_grad_a_mae_max": 0.02,
+    "projected_grad_c_mae_max": 0.02,
+    "projected_pred_theta_outside_fraction_max": 0.000001,
+    "projected_min_selected_corr_min": 0.98
+  },
+  "notes": [
+    "This stage does not train a new model and does not modify soft labels.",
+    "P2Dlite-RG labels remain model-consistent soft labels, not experimental internal-state truth.",
+    "The default one-hot fallback for profiles unseen by a closed-set model is all-zero onehot; seen/unseen groups are reported separately.",
+    "If no existing model transfers well to ALL55, the next step should be ALL55 unified NN training or batch/protocol-aware expert design."
+  ]
+}

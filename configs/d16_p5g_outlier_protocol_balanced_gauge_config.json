@@ -1,0 +1,92 @@
+{
+  "stage": "D16-P5G train6-eval49 outlier/protocol-balanced theta-gauge refinement",
+  "principles": {
+    "no_internal_softlabel_data_loss": true,
+    "training_time_series_allowed": ["t_global_s", "I_profile", "voltage_exp"],
+    "training_time_series_forbidden": ["theta_a", "theta_c", "cs_a", "cs_c", "phie", "phis_c", "phis_c_soft"],
+    "softlabels_used_only_for_evaluation": true,
+    "exact_global_r2_in_eval": true
+  },
+  "selected_train_cells": [
+    {"batch": "Batch-1", "battery": "battery-3", "reason": "fixed 2C/CV + 1C full discharge; avoids flagged Batch-1 battery-8 and Batch-1 battery-1 source-voltage warning"},
+    {"batch": "Batch-2", "battery": "battery-8", "reason": "middle representative of Batch-2 3C charge / 1C full-discharge stress-test"},
+    {"batch": "Batch-3", "battery": "battery-6", "reason": "R2.5 variable full-discharge representative from D14/D15 8-cell set"},
+    {"batch": "Batch-4", "battery": "battery-7", "reason": "R3 partial-discharge representative; used in D14 3D radial-gradient diagnosis"},
+    {"batch": "Batch-5", "battery": "battery-7", "reason": "random-walk representative from D14/D15 8-cell set"},
+    {"batch": "Batch-6", "battery": "battery-3", "reason": "GEO representative from D14/D15 8-cell set; difficult sparse-spike case"}
+  ],
+  "model": {
+    "hidden_dim": 256,
+    "num_layers": 5,
+    "activation": "silu",
+    "dropout": 0.0,
+    "radial_points_default": 17,
+    "gradient_clip": 0.25
+  },
+  "training": {
+    "epochs": 1000,
+    "batch_size": 131072,
+    "learning_rate": 0.00016,
+    "weight_decay": 1e-6,
+    "max_train_points_per_profile": 250000,
+    "max_val_points_per_profile": 40000,
+    "seed": 20260616,
+    "early_stop_patience": 180,
+    "loss_weights": {
+      "voltage_observation": 1.0,
+      "theta_q_correlation": 0.22,
+      "theta_voltage_correlation": 0.035,
+      "theta_centered_mass_coupling": 0.22,
+      "theta_midrange_guard": 0.004,
+      "balanced_mean_gauge": 0.12,
+      "balanced_point_guard": 0.025,
+      "theta_pair_slack": 0.12,
+      "weak_center_prior": 0.016,
+      "p5g_gap_target": 0.24,
+      "p5g_stress_gap_guard": 0.12,
+      "teacher_anode_preservation": 0.018,
+      "teacher_voltage_preservation": 0.018,
+      "teacher_gradient_preservation": 0.010,
+      "gradient_anchor": 0.080,
+      "rest_relaxation": 0.055,
+      "gradient_direction": 0.045,
+      "smoothness": 0.010,
+      "phie_regularization": 0.006
+    }
+  },
+  "p5g_outlier_protocol_balanced_gauge": {
+    "design_note": "P5G targets the P5F residual failure mode: random_walk/GEO/flagged-like profiles still carry a paired +theta_a/-theta_c gauge offset. It adds an observed-only gap refinement and stress-balanced gauge loss. No soft-label data loss is used.",
+    "enable_gap_refinement": true,
+    "gap_projection_gain": 0.58,
+    "gap_base": -0.02,
+    "gap_voltage_amplitude": 0.30,
+    "gap_q_amplitude": 0.10,
+    "gap_voltage_slope": 0.85,
+    "gap_stress_reduction": 0.08,
+    "gap_min": -0.42,
+    "gap_max": 0.42,
+    "stress_gap_weight": 1.15,
+    "stress_pair_gap_margin": 0.32,
+    "theta_floor": 0.02,
+    "theta_ceiling": 0.98,
+    "gradient_target_scale": 0.05,
+    "midrange_margin": 0.42,
+    "anode_mean_ceiling": 0.67,
+    "cathode_mean_floor": 0.34,
+    "anode_point_ceiling": 0.83,
+    "cathode_point_floor": 0.20,
+    "pair_sum_center": 1.02,
+    "pair_sum_slack": 0.16,
+    "center_prior_base_a": 0.43,
+    "center_prior_base_c": 0.59,
+    "center_prior_amplitude": 0.09,
+    "center_prior_slope": 0.70
+  },
+  "evaluation": {
+    "batch_size": 65536,
+    "chunk_size": 200000,
+    "save_prediction_npz": false,
+    "mmap_cache_enabled": true,
+    "metrics_include_exact_r2": true
+  }
+}

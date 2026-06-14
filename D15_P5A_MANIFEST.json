@@ -1,0 +1,25 @@
+{
+  "package": "D15_P5A_ALL55_existing_model_transfer_evaluation_clean",
+  "stage": "D15-P5A",
+  "created_for": "QJW-2 / PINN-for-ASSB-V1",
+  "purpose": "Evaluate previously successful D15 models on ALL55 P2Dlite-RG soft labels before deciding whether to train a new 55-cell unified NN.",
+  "contains_gv1_root_files": false,
+  "contains_pycache": false,
+  "contains_pyc": false,
+  "does_train_new_model": false,
+  "does_modify_softlabels": false,
+  "default_all55_root": "E:/XJTU battery dataset/_gv1_cache/xjtu_softlabels_p2dlite_rg_v1_D15_ALL55_FINAL",
+  "default_output_dir": "E:/XJTU battery dataset/_gv1_cache/xjtu_d15_p5a_all55_existing_model_transfer_eval",
+  "default_review_zip": "E:/XJTU battery dataset/_gv1_cache/xjtu_d15_p5a_results_for_review.zip",
+  "files": [
+    "configs/d15_p5a_all55_existing_model_transfer_config.json",
+    "scripts/d15_p5a_selftest.py",
+    "scripts/d15_p5a_preflight.py",
+    "scripts/d15_p5a_existing_model_transfer_eval.py",
+    "scripts/d15_p5a_pack_review.py",
+    "scripts/d15_p5a_run_all.ps1",
+    "README_D15_P5A.md",
+    "D15_P5A_FILE_MAP.md",
+    "D15_P5A_MANIFEST.json"
+  ]
+}

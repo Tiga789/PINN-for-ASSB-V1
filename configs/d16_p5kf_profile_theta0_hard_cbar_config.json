@@ -1,0 +1,255 @@
+{
+  "stage": "D16-P5K-F profile-theta0 hard-cbar OCP residual train12",
+  "principles": {
+    "unified_assb_xjtu_direction": "Same Aether/PINN workflow with shared observable encoder and branch-specific electrochemical baselines; P5K-F keeps XJTU branch compatible with future ASSB integration.",
+    "training_time_series_allowed": [
+      "t_global_s",
+      "I_profile",
+      "voltage_exp"
+    ],
+    "training_time_series_forbidden": [
+      "theta_a",
+      "theta_c",
+      "cs_a",
+      "cs_c",
+      "phie",
+      "phis_c",
+      "phis_c_soft"
+    ],
+    "softlabels_use": "evaluation_only_no_data_loss",
+    "assb_success_to_restore": [
+      "I(t)-cbar hard baseline",
+      "profile-level theta0/OCP initialization",
+      "bounded residual learning",
+      "asymmetric radial residual",
+      "current-aware potential baseline",
+      "exact R2 mandatory"
+    ],
+    "generator_prior_use": "audit_weak_no_regression_only_not_hard_output_anchor"
+  },
+  "train_sets": {
+    "F_train12_profile_theta0": [
+      {
+        "batch": "Batch-1",
+        "battery": "battery-3",
+        "split": "core_train",
+        "reason": "core_train_2C_representative"
+      },
+      {
+        "batch": "Batch-2",
+        "battery": "battery-8",
+        "split": "core_train",
+        "reason": "core_train_3C_mid_representative"
+      },
+      {
+        "batch": "Batch-3",
+        "battery": "battery-6",
+        "split": "core_train",
+        "reason": "core_train_R2p5_representative"
+      },
+      {
+        "batch": "Batch-4",
+        "battery": "battery-7",
+        "split": "core_train",
+        "reason": "core_train_R3_representative"
+      },
+      {
+        "batch": "Batch-5",
+        "battery": "battery-7",
+        "split": "core_train",
+        "reason": "core_train_random_walk_representative"
+      },
+      {
+        "batch": "Batch-6",
+        "battery": "battery-3",
+        "split": "core_train",
+        "reason": "core_train_GEO_representative"
+      },
+      {
+        "batch": "Batch-5",
+        "battery": "battery-2",
+        "split": "core_train",
+        "reason": "added_random_walk_non_outlier_initializer_anchor"
+      },
+      {
+        "batch": "Batch-6",
+        "battery": "battery-5",
+        "split": "core_train",
+        "reason": "added_GEO_long_profile_initializer_anchor"
+      },
+      {
+        "batch": "Batch-5",
+        "battery": "battery-8",
+        "split": "hard_probe",
+        "reason": "hard_probe_random_walk_extreme_do_not_pollute_core_score"
+      },
+      {
+        "batch": "Batch-1",
+        "battery": "battery-8",
+        "split": "hard_probe",
+        "reason": "hard_probe_flagged_2C_boundary"
+      },
+      {
+        "batch": "Batch-6",
+        "battery": "battery-6",
+        "split": "hard_probe",
+        "reason": "hard_probe_GEO_long_extreme"
+      },
+      {
+        "batch": "Batch-2",
+        "battery": "battery-2",
+        "split": "hard_probe",
+        "reason": "hard_probe_3C_stress_case"
+      }
+    ],
+    "C_train10_compat": [
+      {
+        "batch": "Batch-1",
+        "battery": "battery-3",
+        "split": "core_train",
+        "reason": "compat_C_train10_2C_representative"
+      },
+      {
+        "batch": "Batch-2",
+        "battery": "battery-8",
+        "split": "core_train",
+        "reason": "compat_C_train10_3C_mid_representative"
+      },
+      {
+        "batch": "Batch-3",
+        "battery": "battery-6",
+        "split": "core_train",
+        "reason": "compat_C_train10_R2p5_representative"
+      },
+      {
+        "batch": "Batch-4",
+        "battery": "battery-7",
+        "split": "core_train",
+        "reason": "compat_C_train10_R3_representative"
+      },
+      {
+        "batch": "Batch-5",
+        "battery": "battery-7",
+        "split": "core_train",
+        "reason": "compat_C_train10_random_walk_representative"
+      },
+      {
+        "batch": "Batch-6",
+        "battery": "battery-3",
+        "split": "core_train",
+        "reason": "compat_C_train10_GEO_representative"
+      },
+      {
+        "batch": "Batch-5",
+        "battery": "battery-8",
+        "split": "hard_probe",
+        "reason": "compat_C_train10_hard_random_walk"
+      },
+      {
+        "batch": "Batch-1",
+        "battery": "battery-8",
+        "split": "hard_probe",
+        "reason": "compat_C_train10_flagged_2C"
+      },
+      {
+        "batch": "Batch-6",
+        "battery": "battery-6",
+        "split": "hard_probe",
+        "reason": "compat_C_train10_GEO_long"
+      },
+      {
+        "batch": "Batch-2",
+        "battery": "battery-2",
+        "split": "hard_probe",
+        "reason": "compat_C_train10_3C_stress"
+      }
+    ]
+  },
+  "default_train_set": "F_train12_profile_theta0",
+  "model": {
+    "hidden_dim": 256,
+    "num_layers": 5,
+    "gradient_clip": 0.25,
+    "residual_bound_a": 0.07,
+    "residual_bound_c": 0.07
+  },
+  "hard_cbar_ocp_baseline": {
+    "voltage_low": 2.5,
+    "voltage_high": 4.2,
+    "capacity_Ah": 2.0,
+    "legacy_phase_weight": 0.62,
+    "profile_coulomb_phase_weight": 0.3,
+    "absolute_voltage_phase_weight": 0.08,
+    "voltage_sigmoid_gain": 1.15,
+    "q_tanh_gain": 1.25,
+    "voltage_weight": 0.72,
+    "q_weight": 0.28,
+    "q_cell_gain": 0.42,
+    "v0_weight": 0.7,
+    "vmean_weight": 0.3,
+    "theta_a_mid": 0.405,
+    "theta_c_mid": 0.61,
+    "theta_a_amplitude": 0.245,
+    "theta_c_amplitude": 0.245,
+    "theta_a_min": 0.02,
+    "theta_a_max": 0.96,
+    "theta_c_min": 0.02,
+    "theta_c_max": 0.96,
+    "pair_sum_center": 1.015,
+    "pair_sum_slack": 0.13,
+    "baseline_name": "P5K-C legacy phase blended with profile-level OCP theta0 and Coulomb integral"
+  },
+  "training": {
+    "seed": 20260613,
+    "epochs": 1200,
+    "lr": 0.001,
+    "weight_decay": 1e-06,
+    "max_train_points_per_profile": 260000,
+    "max_train_points_per_hard_probe": 180000,
+    "max_val_points_per_profile": 50000,
+    "loss_weights": {
+      "voltage_observation": 1.0,
+      "hard_baseline_residual_small": 0.24,
+      "residual_pair_balance": 0.18,
+      "baseline_non_regression": 0.11,
+      "theta_cbar_q_correlation": 0.18,
+      "theta_voltage_correlation": 0.025,
+      "theta_pair_slack": 0.08,
+      "gradient_anchor": 0.07,
+      "gradient_direction": 0.04,
+      "rest_relaxation": 0.05,
+      "smoothness": 0.006,
+      "phie_regularization": 0.006,
+      "teacher_voltage_preservation": 0.015,
+      "teacher_gradient_preservation": 0.006,
+      "profile_theta0_non_drift": 0.03
+    }
+  },
+  "baseline_preflight": {
+    "required_before_full_training": true,
+    "compare_to": "P5K-C baseline-only and final split metrics",
+    "no_regression_hint": "If baseline-only exact R2 is worse than P5K-C by a large margin, do not run long training."
+  },
+  "evaluation": {
+    "exact_r2_required": true,
+    "metrics": [
+      "phis_c",
+      "phie",
+      "theta_a",
+      "theta_c",
+      "theta_a_mean",
+      "theta_c_mean",
+      "grad_a_surface_center",
+      "grad_c_surface_center",
+      "cs_a",
+      "cs_c",
+      "cs_a_mean",
+      "cs_c_mean"
+    ]
+  },
+  "warm_start": {
+    "preferred_model_dir": "E:/XJTU battery dataset/_gv1_cache/xjtu_d16_p5k_train6to10_hard_cbar_ocp_residual_FAST/C_train10/model_hard_cbar_ocp_residual",
+    "fallback_model_dir": "E:/XJTU battery dataset/_gv1_cache/xjtu_d16_p5f_train6_eval49_balanced_gauge_FAST/model_train6_balanced_gauge_observation_physics",
+    "load_policy": "compatible_state_dict_only"
+  }
+}

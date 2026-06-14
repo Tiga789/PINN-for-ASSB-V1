@@ -1,0 +1,665 @@
+from __future__ import annotations
+
+import argparse
+import csv
+import copy
+import json
+import math
+import random
+from pathlib import Path
+from typing import Any, Dict, List, Tuple
+
+import numpy as np
+import torch
+from torch import nn
+
+# D16-P5K-D: hard cbar / OCP-style residual model.
+# Training boundary: observed time series only (t, I, V). Soft-label internal states are never loaded here.
+TRAIN_USED_KEYS = ['t_global_s', 'I_profile', 'voltage_exp']
+TRAIN_FORBIDDEN_KEYS = ['theta_a', 'theta_c', 'cs_a', 'cs_c', 'phie', 'phis_c', 'phis_c_soft']
+
+FEATURE_NAMES = [
+    't_norm', 't_norm2', 'sin_t', 'cos_t',
+    'I_norm', 'absI_norm', 'dI_norm', 'q_norm',
+    'q_cell_frac', 'voltage_abs_soc', 'voltage_exp_norm_local', 'dV_norm',
+    'p2dlite_phase', 'v0_abs_soc', 'current_stress',
+    'is_charge', 'is_rest', 'is_discharge',
+]
+OUTPUT_NAMES = ['res_a_raw', 'res_c_raw', 'grad_a_raw', 'grad_c_raw', 'phie_norm', 'phis_c_norm']
+
+
+def load_json(path: str | Path) -> Dict[str, Any]:
+    with Path(path).open('r', encoding='utf-8') as f:
+        return json.load(f)
+
+
+def write_json(obj: Any, path: str | Path) -> None:
+    p = Path(path)
+    p.parent.mkdir(parents=True, exist_ok=True)
+    with p.open('w', encoding='utf-8') as f:
+        json.dump(obj, f, indent=2, ensure_ascii=False)
+
+
+def read_manifest(path: str | Path) -> List[Dict[str, str]]:
+    with Path(path).open('r', newline='', encoding='utf-8') as f:
+        return list(csv.DictReader(f))
+
+
+def first_key(z: Any, keys: List[str]) -> str | None:
+    for k in keys:
+        if k in z:
+            return k
+    return None
+
+
+def as_1d_float(a: Any, name: str) -> np.ndarray:
+    x = np.asarray(a)
+    if x.dtype.kind in {'U', 'S', 'O'}:
+        raise TypeError(f'{name} is not numeric')
+    return x.astype(np.float32).reshape(-1)
+
+
+def load_observed_npz(npz_path: str | Path) -> Dict[str, np.ndarray]:
+    # IMPORTANT: this function is the training input boundary.
+    # It does not load theta/cs/phie/phis target arrays.
+    with np.load(npz_path, allow_pickle=True) as z:
+        keys = set(z.files)
+        kt = first_key(z, ['t_global_s', 'time_s', 't_s', 'time', 't'])
+        ki = first_key(z, ['I_profile', 'current_A', 'I_A', 'current', 'I'])
+        kv = first_key(z, ['voltage_exp', 'voltage_V', 'V_exp', 'V'])
+        missing = []
+        if kt is None: missing.append('time')
+        if ki is None: missing.append('current')
+        if kv is None: missing.append('voltage')
+        if missing:
+            raise KeyError(f'{npz_path}: missing observed keys {missing}')
+        t = as_1d_float(z[kt], kt)
+        I = as_1d_float(z[ki], ki)
+        V = as_1d_float(z[kv], kv)
+        if not (t.size == I.size == V.size):
+            raise ValueError(f'{npz_path}: observed lengths differ: t={t.size} I={I.size} V={V.size}')
+        return {
+            't': t, 'I': I, 'V': V,
+            'source_keys': {'time': kt, 'current': ki, 'voltage': kv},
+            'available_keys': sorted(keys),
+        }
+
+
+def load_generator_sidecars(npz_path: str | Path) -> Dict[str, Any]:
+    """Read soft-label generator sidecars without reading internal state arrays.
+
+    This is evaluation/generator-prior metadata only: summary/audit hashes,
+    P2Dlite-RG flags, resolved_spec_hash, radial-gradient audit status, etc.
+    It does not load theta/cs/phie/phis arrays and is not a data-loss target.
+    """
+    p = Path(npz_path)
+    d = p.parent
+    out: Dict[str, Any] = {'profile_dir': str(d), 'summary_found': False, 'audit_found': False}
+    for name, key in [('soft_label_summary.json', 'summary'), ('soft_label_audit.json', 'audit')]:
+        fp = d / name
+        if fp.exists():
+            try:
+                obj = json.load(open(fp, 'r', encoding='utf-8'))
+                out[key + '_found'] = True
+                # Keep only compact scalar/string metadata to avoid huge audit dumps.
+                compact = {}
+                for k, v in obj.items():
+                    if isinstance(v, (str, int, float, bool)) or v is None:
+                        compact[k] = v
+                    elif k.lower() in {'resolved_spec_hash', 'prior_hash', 'status', 'profile_id', 'batch', 'protocol'}:
+                        compact[k] = v
+                out[key] = compact
+            except Exception as exc:
+                out[key + '_error'] = repr(exc)
+    return out
+
+
+
+def sample_indices(n: int, max_count: int, rng: np.random.Generator) -> np.ndarray:
+    if max_count <= 0 or max_count >= n:
+        return np.arange(n, dtype=np.int64)
+    if max_count < 4:
+        return np.linspace(0, n - 1, max_count).astype(np.int64)
+    edges = np.linspace(0, n, max_count + 1, dtype=np.int64)
+    idx = []
+    for a, b in zip(edges[:-1], edges[1:]):
+        if b <= a:
+            continue
+        idx.append(int(rng.integers(a, b)))
+    if idx:
+        idx[0] = 0
+        idx[-1] = n - 1
+    return np.array(sorted(set(idx)), dtype=np.int64)
+
+
+def build_q_norm(t: np.ndarray, I: np.ndarray) -> np.ndarray:
+    dt = np.diff(t, prepend=t[0]).astype(np.float32)
+    dt[~np.isfinite(dt)] = 0.0
+    if dt.size > 10:
+        p = np.nanpercentile(dt, 99.9)
+        if np.isfinite(p) and p > 0:
+            dt = np.clip(dt, 0.0, p * 10.0)
+    q = np.cumsum(I.astype(np.float32) * dt) / 3600.0
+    q0 = q - np.nanmean(q)
+    scale = float(np.nanpercentile(np.abs(q0), 99.5)) if q0.size else 1.0
+    if not np.isfinite(scale) or scale < 1e-12:
+        scale = 1.0
+    return np.clip(q0 / scale, -1.5, 1.5).astype(np.float32)
+
+
+def _cfg_prior(cfg: Dict[str, Any]) -> Dict[str, float]:
+    p = cfg.get('p2dlite_rg_prior', {})
+    return {
+        'nominal_capacity_Ah': float(p.get('nominal_capacity_Ah', 2.0)),
+        'voltage_min': float(p.get('voltage_min', 2.5)),
+        'voltage_max': float(p.get('voltage_max', 4.2)),
+        'I_1C_A': float(p.get('I_1C_A', 2.0)),
+    }
+
+
+def build_features_from_observed(obs: Dict[str, np.ndarray], idx: np.ndarray | None = None, cfg: Dict[str, Any] | None = None) -> Tuple[np.ndarray, Dict[str, float]]:
+    t = obs['t']; I = obs['I']; V = obs['V']
+    n = len(t)
+    if idx is None:
+        idx = np.arange(n, dtype=np.int64)
+    idx = np.asarray(idx, dtype=np.int64)
+    cfg = cfg or {}
+    prior = _cfg_prior(cfg)
+    span = float(t[-1] - t[0]) if n > 1 else 1.0
+    if not np.isfinite(span) or span <= 0: span = 1.0
+    tn_full = ((t - t[0]) / span).astype(np.float32)
+    I_scale = float(np.nanpercentile(np.abs(I), 99.5)) if n else 1.0
+    if not np.isfinite(I_scale) or I_scale < 1e-12: I_scale = 1.0
+    In_full = (I / I_scale).astype(np.float32)
+    dI_full = np.diff(In_full, prepend=In_full[0]).astype(np.float32)
+    dt = np.diff(t, prepend=t[0]).astype(np.float32)
+    dt[~np.isfinite(dt)] = 0.0
+    if dt.size > 10:
+        p99 = np.nanpercentile(dt, 99.9)
+        if np.isfinite(p99) and p99 > 0:
+            dt = np.clip(dt, 0.0, p99 * 10.0)
+    q_Ah = np.cumsum(I.astype(np.float32) * dt) / 3600.0
+    q0 = q_Ah - np.nanmean(q_Ah)
+    q_scale = float(np.nanpercentile(np.abs(q0), 99.5)) if q0.size else 1.0
+    if not np.isfinite(q_scale) or q_scale < 1e-12: q_scale = 1.0
+    qn_full = np.clip(q0 / q_scale, -1.5, 1.5).astype(np.float32)
+    cap = max(1e-6, prior['nominal_capacity_Ah'])
+    q_cell_frac_full = np.clip((q_Ah - q_Ah[0]) / cap, -1.5, 1.5).astype(np.float32)
+    v_mean = float(np.nanmean(V)) if V.size else 0.0
+    v_std = float(np.nanstd(V)) if V.size else 1.0
+    if not np.isfinite(v_std) or v_std < 1e-8: v_std = 1.0
+    vn_full = ((V - v_mean) / v_std).astype(np.float32)
+    dV_full = np.diff(vn_full, prepend=vn_full[0]).astype(np.float32)
+    vmin = prior['voltage_min']; vmax = prior['voltage_max']; vrange = max(1e-6, vmax - vmin)
+    v_abs_soc_full = np.clip((V - vmin) / vrange, 0.0, 1.0).astype(np.float32)
+    v0_abs_soc = float(np.clip((V[0] - vmin) / vrange, 0.0, 1.0)) if n else 0.5
+    # P2Dlite-RG generator-style phase: absolute OCP/voltage anchor + Coulomb replay correction.
+    g = cfg.get('generator_aligned_baseline', {})
+    wv = float(g.get('phase_voltage_weight', 0.82))
+    wq = float(g.get('phase_coulomb_weight', 0.18))
+    q_soc_full = np.clip(v0_abs_soc + q_cell_frac_full, 0.0, 1.0).astype(np.float32)
+    phase_full = np.clip(wv * v_abs_soc_full + wq * q_soc_full, 0.0, 1.0).astype(np.float32)
+    I_1C = max(1e-6, prior['I_1C_A'])
+    current_stress_full = np.clip(np.abs(I) / I_1C, 0.0, 5.0).astype(np.float32)
+    eps = max(1e-9, 0.001 * float(np.nanmax(np.abs(I)) + 1e-12))
+    charge = (I > eps).astype(np.float32)
+    discharge = (I < -eps).astype(np.float32)
+    rest = (np.abs(I) <= eps).astype(np.float32)
+    X = np.stack([
+        tn_full[idx],
+        tn_full[idx] ** 2,
+        np.sin(2 * np.pi * tn_full[idx]).astype(np.float32),
+        np.cos(2 * np.pi * tn_full[idx]).astype(np.float32),
+        In_full[idx],
+        np.abs(In_full[idx]).astype(np.float32),
+        dI_full[idx],
+        qn_full[idx],
+        q_cell_frac_full[idx],
+        v_abs_soc_full[idx],
+        vn_full[idx],
+        dV_full[idx],
+        phase_full[idx],
+        np.full(idx.shape, v0_abs_soc, dtype=np.float32),
+        current_stress_full[idx],
+        charge[idx],
+        rest[idx],
+        discharge[idx],
+    ], axis=1).astype(np.float32)
+    stats = {
+        't0': float(t[0]), 't_span': float(span), 'I_scale': float(I_scale),
+        'v_mean': float(v_mean), 'v_std': float(v_std), 'n_time': int(n),
+        'v0_abs_soc': float(v0_abs_soc), 'q_cell_frac_min': float(np.nanmin(q_cell_frac_full)),
+        'q_cell_frac_max': float(np.nanmax(q_cell_frac_full)),
+        'p2dlite_phase_min': float(np.nanmin(phase_full)), 'p2dlite_phase_max': float(np.nanmax(phase_full)),
+    }
+    return X, stats
+
+
+
+class ResidualBlock(nn.Module):
+    def __init__(self, dim: int):
+        super().__init__()
+        self.net = nn.Sequential(nn.Linear(dim, dim), nn.SiLU(), nn.Linear(dim, dim))
+        self.act = nn.SiLU()
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        return self.act(x + self.net(x))
+
+
+class HardCbarOCPResidualMLP(nn.Module):
+    def __init__(self, input_dim: int, hidden_dim: int = 256, num_layers: int = 5, output_dim: int = 6):
+        super().__init__()
+        layers: List[nn.Module] = [nn.Linear(input_dim, hidden_dim), nn.SiLU()]
+        for _ in range(max(1, int(num_layers))):
+            layers.append(ResidualBlock(hidden_dim))
+        layers.append(nn.Linear(hidden_dim, output_dim))
+        self.net = nn.Sequential(*layers)
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        return self.net(x)
+
+
+def _feature(x_raw: torch.Tensor, name: str) -> torch.Tensor:
+    return x_raw[:, FEATURE_NAMES.index(name)]
+
+
+def hard_baseline_from_observed(x_raw: torch.Tensor, cfg: Dict[str, Any]) -> Dict[str, torch.Tensor]:
+    # Generator-aligned theta baseline: use the same prior concept as P2Dlite-RG soft-label generator:
+    # capacity/OCP windows + measured-current Coulomb replay + bounded residual.
+    p = cfg.get('p2dlite_rg_prior', {})
+    g = cfg.get('generator_aligned_baseline', {})
+    phase = torch.clamp(_feature(x_raw, 'p2dlite_phase'), 0.0, 1.0)
+    v_soc = torch.clamp(_feature(x_raw, 'voltage_abs_soc'), 0.0, 1.0)
+    q_frac = _feature(x_raw, 'q_cell_frac')
+    # Optional small OCP-phase correction using voltage absolute SOC. This is not a soft-label target.
+    blend_back = float(g.get('voltage_phase_backstop', 0.10))
+    phase = torch.clamp((1.0 - blend_back) * phase + blend_back * v_soc, 0.0, 1.0)
+    a_min = float(p.get('theta_a_min', 0.0079)); a_max = float(p.get('theta_a_max', 0.8544))
+    c_min = float(p.get('theta_c_min', 0.2535)); c_max = float(p.get('theta_c_max', 0.9149))
+    # In NMC/graphite, higher terminal voltage generally means anode more lithiated and cathode less lithiated.
+    base_a = torch.clamp(a_min + (a_max - a_min) * phase, 0.0, 1.0)
+    base_c = torch.clamp(c_max - (c_max - c_min) * phase, 0.0, 1.0)
+    # A very weak Coulomb offset is allowed to represent measured-current replay without overriding OCP anchor.
+    kq_a = float(g.get('coulomb_theta_gain_a', 0.045))
+    kq_c = float(g.get('coulomb_theta_gain_c', 0.045))
+    base_a = torch.clamp(base_a + kq_a * torch.tanh(q_frac), 0.0, 1.0)
+    base_c = torch.clamp(base_c - kq_c * torch.tanh(q_frac), 0.0, 1.0)
+    return {'phase': phase, 'theta_a_base': base_a, 'theta_c_base': base_c}
+
+
+
+def transform_outputs(raw: torch.Tensor, x_raw: torch.Tensor, cfg: Dict[str, Any]) -> Dict[str, torch.Tensor]:
+    model_cfg = cfg.get('model', {})
+    grad_clip = float(model_cfg.get('gradient_clip', 0.25))
+    rb_a = float(model_cfg.get('residual_bound_a', 0.055))
+    rb_c = float(model_cfg.get('residual_bound_c', 0.055))
+    b = hard_baseline_from_observed(x_raw, cfg)
+    res_a = rb_a * torch.tanh(raw[:, 0])
+    res_c = rb_c * torch.tanh(raw[:, 1])
+    ta = torch.clamp(b['theta_a_base'] + res_a, 0.0, 1.0)
+    tc = torch.clamp(b['theta_c_base'] + res_c, 0.0, 1.0)
+    return {
+        'theta_a_mean': ta,
+        'theta_c_mean': tc,
+        'theta_a_base': b['theta_a_base'],
+        'theta_c_base': b['theta_c_base'],
+        'theta_phase': b['phase'],
+        'theta_a_residual': res_a,
+        'theta_c_residual': res_c,
+        'grad_a': grad_clip * torch.tanh(raw[:, 2]),
+        'grad_c': grad_clip * torch.tanh(raw[:, 3]),
+        'phie_norm': raw[:, 4],
+        'phis_c_norm': raw[:, 5],
+    }
+
+
+def _safe_corr(a: torch.Tensor, b: torch.Tensor, eps: float = 1e-6) -> torch.Tensor:
+    a0 = a - torch.mean(a); b0 = b - torch.mean(b)
+    denom = torch.sqrt(torch.mean(a0 * a0) * torch.mean(b0 * b0) + eps)
+    return torch.mean(a0 * b0) / denom
+
+
+def _corr_loss(a: torch.Tensor, b: torch.Tensor, target_sign: float = 1.0) -> torch.Tensor:
+    if a.numel() < 8:
+        return a.new_tensor(0.0)
+    return 1.0 - float(target_sign) * _safe_corr(a, b)
+
+
+def physics_observation_loss(raw: torch.Tensor, x_std: torch.Tensor, x_raw: torch.Tensor, cfg: Dict[str, Any], teacher_raw: torch.Tensor | None = None) -> Tuple[torch.Tensor, Dict[str, float]]:
+    w = cfg.get('training', {}).get('loss_weights', {})
+    y = transform_outputs(raw, x_raw, cfg)
+    v_z = _feature(x_raw, 'voltage_exp_norm_local')
+    q_frac = _feature(x_raw, 'q_cell_frac')
+    I_norm = _feature(x_raw, 'I_norm')
+    absI_norm = _feature(x_raw, 'absI_norm')
+    current_stress = _feature(x_raw, 'current_stress')
+    is_rest = _feature(x_raw, 'is_rest')
+    ta = y['theta_a_mean']; tc = y['theta_c_mean']
+
+    # Voltage inverse-observation branch: allowed task input for state inference.
+    loss_v = torch.mean((y['phis_c_norm'] - v_z) ** 2)
+    loss_phie = torch.mean(y['phie_norm'] ** 2)
+
+    # P2Dlite-RG generator-aligned non-regression: theta_mean must stay near hard cbar/OCP baseline.
+    loss_res_small = torch.mean(y['theta_a_residual'] ** 2 + y['theta_c_residual'] ** 2)
+    loss_baseline_nonreg = torch.mean((ta - y['theta_a_base']) ** 2 + (tc - y['theta_c_base']) ** 2)
+    # Pair balance is soft and slack-based; avoids P5C/P5G hard erroneous gauge.
+    pair_center = float(cfg.get('generator_aligned_baseline', {}).get('pair_sum_center', 1.02))
+    pair_slack = float(cfg.get('generator_aligned_baseline', {}).get('pair_sum_slack', 0.18))
+    pair_dev = torch.relu(torch.abs((ta + tc) - pair_center) - pair_slack)
+    loss_pair_slack = torch.mean(pair_dev ** 2)
+
+    # Coulomb direction and voltage/OCP trend consistency, but no data label target.
+    loss_q_corr = _corr_loss(ta, q_frac, target_sign=+1.0) + _corr_loss(tc, q_frac, target_sign=-1.0)
+    loss_v_corr = _corr_loss(ta, _feature(x_raw, 'voltage_abs_soc'), target_sign=+1.0) + _corr_loss(tc, _feature(x_raw, 'voltage_abs_soc'), target_sign=-1.0)
+
+    # Radial-gradient-aware P2Dlite-RG prior: nonzero gradient under current, relaxation during rest.
+    rg = cfg.get('p2dlite_rg_prior', {})
+    grad_base = float(rg.get('gradient_base', 0.055))
+    grad_target = grad_base * torch.tanh(0.75 * current_stress) * torch.sign(I_norm)
+    loss_grad_anchor = torch.mean((y['grad_a'] - grad_target) ** 2) + torch.mean((y['grad_c'] + grad_target) ** 2)
+    loss_grad_dir = torch.mean(torch.relu(-(y['grad_a'] * I_norm))) + torch.mean(torch.relu(y['grad_c'] * I_norm))
+    loss_rest = torch.mean(is_rest * (y['grad_a'] ** 2 + y['grad_c'] ** 2))
+
+    # Teacher preservation: only voltage/gradient branches, not the old free theta gauge.
+    loss_teacher_voltage = raw.new_tensor(0.0)
+    loss_teacher_grad = raw.new_tensor(0.0)
+    if teacher_raw is not None:
+        yt = transform_outputs(teacher_raw.detach(), x_raw, cfg)
+        loss_teacher_voltage = torch.mean((y['phis_c_norm'] - yt['phis_c_norm']) ** 2)
+        loss_teacher_grad = torch.mean((y['grad_a'] - yt['grad_a']) ** 2) + torch.mean((y['grad_c'] - yt['grad_c']) ** 2)
+
+    total = (
+        float(w.get('voltage_observation', 1.0)) * loss_v +
+        float(w.get('baseline_non_regression', 0.42)) * loss_baseline_nonreg +
+        float(w.get('bounded_residual_small', 0.55)) * loss_res_small +
+        float(w.get('theta_pair_slack', 0.08)) * loss_pair_slack +
+        float(w.get('theta_coulomb_correlation', 0.10)) * loss_q_corr +
+        float(w.get('theta_ocp_voltage_correlation', 0.06)) * loss_v_corr +
+        float(w.get('rg_gradient_anchor', 0.060)) * loss_grad_anchor +
+        float(w.get('rg_gradient_direction', 0.035)) * loss_grad_dir +
+        float(w.get('rest_relaxation', 0.050)) * loss_rest +
+        float(w.get('phie_regularization', 0.006)) * loss_phie +
+        float(w.get('teacher_voltage_preservation', 0.015)) * loss_teacher_voltage +
+        float(w.get('teacher_gradient_preservation', 0.006)) * loss_teacher_grad
+    )
+    parts = {
+        'loss_total': float(total.detach().cpu()),
+        'loss_voltage_observation': float(loss_v.detach().cpu()),
+        'loss_baseline_non_regression': float(loss_baseline_nonreg.detach().cpu()),
+        'loss_bounded_residual_small': float(loss_res_small.detach().cpu()),
+        'loss_theta_pair_slack': float(loss_pair_slack.detach().cpu()),
+        'loss_theta_coulomb_correlation': float(loss_q_corr.detach().cpu()),
+        'loss_theta_ocp_voltage_correlation': float(loss_v_corr.detach().cpu()),
+        'loss_rg_gradient_anchor': float(loss_grad_anchor.detach().cpu()),
+        'loss_rg_gradient_direction': float(loss_grad_dir.detach().cpu()),
+        'loss_rest_relaxation': float(loss_rest.detach().cpu()),
+        'loss_phie_regularization': float(loss_phie.detach().cpu()),
+        'loss_teacher_voltage_preservation': float(loss_teacher_voltage.detach().cpu()),
+        'loss_teacher_gradient_preservation': float(loss_teacher_grad.detach().cpu()),
+    }
+    return total, parts
+
+
+
+def standardize_train_val(Xtr: np.ndarray, Xva: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    mean = np.mean(Xtr, axis=0).astype(np.float32)
+    std = np.std(Xtr, axis=0).astype(np.float32)
+    std[~np.isfinite(std) | (std < 1e-8)] = 1.0
+    return ((Xtr - mean) / std).astype(np.float32), ((Xva - mean) / std).astype(np.float32), mean, std
+
+
+def _find_checkpoint(model_dir: str | Path) -> Path | None:
+    if not model_dir:
+        return None
+    p = Path(model_dir)
+    for cand in [p / 'model' / 'best_with_state.pt', p / 'best_with_state.pt']:
+        if cand.exists():
+            return cand
+    return None
+
+
+def load_warm_start(model: nn.Module, warm_model_dir: str, device: torch.device) -> Dict[str, Any]:
+    ckpt_path = _find_checkpoint(warm_model_dir)
+    if ckpt_path is None:
+        return {'loaded': False, 'reason': 'warm_start_checkpoint_not_found', 'warm_start_model_dir': str(warm_model_dir)}
+    try:
+        ckpt = torch.load(ckpt_path, map_location='cpu', weights_only=False)
+        state = ckpt.get('state', ckpt)
+        own = model.state_dict()
+        compatible = {k: v for k, v in state.items() if k in own and tuple(v.shape) == tuple(own[k].shape)}
+        partial = {}
+        # Preserve old first-layer weights when the new generator-aligned feature set has extra columns.
+        for k, v in state.items():
+            if k in compatible or k not in own:
+                continue
+            if k.endswith('0.weight') and len(v.shape) == 2 and len(own[k].shape) == 2 and v.shape[0] == own[k].shape[0] and v.shape[1] <= own[k].shape[1]:
+                nv = own[k].clone()
+                nv[:, :v.shape[1]] = v
+                partial[k] = nv
+            elif k.endswith('0.bias') and tuple(v.shape) == tuple(own[k].shape):
+                partial[k] = v
+        merged = {**own, **compatible, **partial}
+        missing = [k for k in own.keys() if k not in compatible and k not in partial]
+        model.load_state_dict(merged)
+        model.to(device)
+        return {'loaded': True, 'checkpoint': str(ckpt_path), 'compatible_param_count': len(compatible), 'partial_param_count': len(partial), 'missing_param_count': len(missing)}
+    except Exception as exc:
+        return {'loaded': False, 'checkpoint': str(ckpt_path), 'error': repr(exc)}
+
+
+def main() -> int:
+    ap = argparse.ArgumentParser(description='D16-P5K-D FAST train hard-cbar/OCP residual model. No internal-state soft-label data loss is used.')
+    ap.add_argument('--manifest', required=True)
+    ap.add_argument('--out-dir', required=True)
+    ap.add_argument('--config', default='configs/d16_p5kd_generator_aligned_hard_cbar_ocp_config.json')
+    ap.add_argument('--device', default='cuda:0')
+    ap.add_argument('--allow-overwrite', action='store_true')
+    ap.add_argument('--epochs', type=int, default=None)
+    ap.add_argument('--batch-size', type=int, default=None)
+    ap.add_argument('--val-every', type=int, default=10)
+    ap.add_argument('--steps-per-epoch', type=int, default=0)
+    ap.add_argument('--warm-start-model-dir', default='')
+    ap.add_argument('--no-warm-start', action='store_true')
+    args = ap.parse_args()
+
+    cfg = load_json(args.config)
+    out_dir = Path(args.out_dir)
+    if out_dir.exists() and any(out_dir.iterdir()) and not args.allow_overwrite:
+        raise FileExistsError(f'out-dir exists and is non-empty: {out_dir}; pass --allow-overwrite')
+    out_dir.mkdir(parents=True, exist_ok=True)
+    (out_dir / 'model').mkdir(parents=True, exist_ok=True)
+
+    rows = read_manifest(args.manifest)
+    train_rows = [r for r in rows if r.get('split') == 'train']
+    if len(train_rows) not in (6, 8, 10, 12, 14):
+        raise ValueError(f'Expected 6/8/10/12/14 train rows, got {len(train_rows)}')
+
+    seed = int(cfg.get('training', {}).get('seed', 20260612))
+    rng = np.random.default_rng(seed)
+    random.seed(seed); np.random.seed(seed); torch.manual_seed(seed)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed_all(seed)
+        torch.backends.cudnn.benchmark = True
+
+    max_train = int(cfg.get('training', {}).get('max_train_points_per_profile', 260000))
+    max_val = int(cfg.get('training', {}).get('max_val_points_per_profile', 50000))
+    Xtr_list: List[np.ndarray] = []
+    Xva_list: List[np.ndarray] = []
+    audit_rows = []
+    for r in train_rows:
+        obs = load_observed_npz(r['softlabel_npz'])
+        n = len(obs['t'])
+        tr_idx = sample_indices(n, max_train, rng)
+        rem = np.setdiff1d(np.arange(n, dtype=np.int64), tr_idx, assume_unique=False)
+        if rem.size == 0:
+            va_idx = tr_idx[::max(1, tr_idx.size // max(1, min(max_val, tr_idx.size)))]
+        else:
+            local = sample_indices(rem.size, min(max_val, rem.size), rng)
+            va_idx = rem[local]
+        Xtr, stats = build_features_from_observed(obs, tr_idx, cfg)
+        Xva, _ = build_features_from_observed(obs, va_idx, cfg)
+        sidecar = load_generator_sidecars(r['softlabel_npz'])
+        Xtr_list.append(Xtr); Xva_list.append(Xva)
+        audit_rows.append({
+            'profile_id': r['profile_id'], 'batch': r['batch'], 'battery': r['battery'], 'split': r.get('split', 'train'),
+            'reason': r.get('reason', ''), 'softlabel_npz': r['softlabel_npz'], 'n_time': int(n),
+            'train_points': int(Xtr.shape[0]), 'val_points': int(Xva.shape[0]),
+            'training_used_keys': TRAIN_USED_KEYS,
+            'training_forbidden_keys_not_loaded': TRAIN_FORBIDDEN_KEYS,
+            'source_keys': obs['source_keys'], 'profile_stats': stats, 'generator_sidecar_audit': sidecar,
+        })
+        print(f"[D16-P5K-D train] loaded observed-only {r['profile_id']}: n={n} train={Xtr.shape[0]} val={Xva.shape[0]}", flush=True)
+
+    X_train = np.concatenate(Xtr_list, axis=0).astype(np.float32)
+    X_val = np.concatenate(Xva_list, axis=0).astype(np.float32)
+    X_train_s, X_val_s, x_mean, x_std = standardize_train_val(X_train, X_val)
+
+    device = torch.device(args.device if args.device != 'auto' else ('cuda:0' if torch.cuda.is_available() else 'cpu'))
+    model_cfg = cfg.get('model', {})
+    model = HardCbarOCPResidualMLP(input_dim=X_train_s.shape[1], hidden_dim=int(model_cfg.get('hidden_dim', 256)), num_layers=int(model_cfg.get('num_layers', 5)), output_dim=6).to(device)
+
+    warm_info = {'loaded': False, 'reason': 'disabled'}
+    if not args.no_warm_start:
+        warm_dir = args.warm_start_model_dir or cfg.get('warm_start', {}).get('preferred_model_dir', '')
+        warm_info = load_warm_start(model, warm_dir, device)
+        if not warm_info.get('loaded'):
+            fallback = cfg.get('warm_start', {}).get('fallback_model_dir', '')
+            if fallback and fallback != warm_dir:
+                warm_info = {'first_attempt': warm_info, 'fallback_attempt': load_warm_start(model, fallback, device)}
+                if warm_info['fallback_attempt'].get('loaded'):
+                    warm_info['loaded'] = True
+    print('[D16-P5K-D train] warm_start:', warm_info, flush=True)
+
+    lr = float(cfg.get('training', {}).get('lr', 0.0012))
+    wd = float(cfg.get('training', {}).get('weight_decay', 1e-6))
+    opt = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=wd)
+    epochs = int(args.epochs if args.epochs is not None else cfg.get('training', {}).get('epochs', 1200))
+    batch_size = int(args.batch_size if args.batch_size is not None else 131072)
+    val_every = max(1, int(args.val_every))
+    steps_per_epoch = int(args.steps_per_epoch)
+
+    Xtr_s_t = torch.from_numpy(X_train_s).to(device)
+    Xtr_raw_t = torch.from_numpy(X_train).to(device)
+    Xva_s_t = torch.from_numpy(X_val_s).to(device)
+    Xva_raw_t = torch.from_numpy(X_val).to(device)
+
+    best_val = float('inf')
+    best_epoch = -1
+    history: List[Dict[str, Any]] = []
+    gen = torch.Generator(device=device)
+    gen.manual_seed(seed)
+
+    def eval_loss() -> Tuple[float, Dict[str, float]]:
+        model.eval()
+        losses = []
+        last_parts: Dict[str, float] = {}
+        with torch.no_grad():
+            for i in range(0, Xva_s_t.shape[0], batch_size):
+                xs = Xva_s_t[i:i+batch_size]
+                xr = Xva_raw_t[i:i+batch_size]
+                raw = model(xs)
+                loss, parts = physics_observation_loss(raw, xs, xr, cfg)
+                losses.append(float(loss.detach().cpu()))
+                last_parts = parts
+        return float(np.mean(losses)) if losses else float('inf'), last_parts
+
+    for ep in range(1, epochs + 1):
+        model.train()
+        if steps_per_epoch > 0:
+            step_losses = []
+            last_train_parts: Dict[str, float] = {}
+            for _ in range(steps_per_epoch):
+                idx = torch.randint(0, Xtr_s_t.shape[0], (min(batch_size, Xtr_s_t.shape[0]),), device=device, generator=gen)
+                xs = Xtr_s_t[idx]
+                xr = Xtr_raw_t[idx]
+                opt.zero_grad(set_to_none=True)
+                raw = model(xs)
+                loss, parts = physics_observation_loss(raw, xs, xr, cfg)
+                loss.backward()
+                torch.nn.utils.clip_grad_norm_(model.parameters(), 5.0)
+                opt.step()
+                step_losses.append(float(loss.detach().cpu()))
+                last_train_parts = parts
+            train_loss = float(np.mean(step_losses))
+            train_parts = last_train_parts
+        else:
+            perm = torch.randperm(Xtr_s_t.shape[0], device=device, generator=gen)
+            losses = []
+            train_parts: Dict[str, float] = {}
+            for i in range(0, perm.numel(), batch_size):
+                idx = perm[i:i+batch_size]
+                xs = Xtr_s_t[idx]
+                xr = Xtr_raw_t[idx]
+                opt.zero_grad(set_to_none=True)
+                raw = model(xs)
+                loss, parts = physics_observation_loss(raw, xs, xr, cfg)
+                loss.backward()
+                torch.nn.utils.clip_grad_norm_(model.parameters(), 5.0)
+                opt.step()
+                losses.append(float(loss.detach().cpu()))
+                train_parts = parts
+            train_loss = float(np.mean(losses))
+
+        if ep == 1 or ep % val_every == 0 or ep == epochs:
+            val_loss, val_parts = eval_loss()
+            row = {'epoch': ep, 'train_loss': train_loss, 'val_loss': val_loss, **{f'train_{k}': v for k, v in train_parts.items()}, **{f'val_{k}': v for k, v in val_parts.items()}}
+            history.append(row)
+            print(f"[D16-P5K-D train] epoch={ep} train={train_loss:.6g} val={val_loss:.6g} best={best_val:.6g}", flush=True)
+            if val_loss < best_val:
+                best_val = val_loss
+                best_epoch = ep
+                ckpt = {
+                    'stage': 'D16-P5K-D hard-cbar OCP residual model',
+                    'state': copy.deepcopy(model.state_dict()),
+                    'model_class': 'HardCbarOCPResidualMLP',
+                    'model_config': model_cfg,
+                    'config': cfg,
+                    'feature_names': FEATURE_NAMES,
+                    'output_names': OUTPUT_NAMES,
+                    'x_mean': x_mean,
+                    'x_std': x_std,
+                    'best_epoch': best_epoch,
+                    'best_val_loss': best_val,
+                    'warm_start': warm_info,
+                    'train_count': len(train_rows),
+                    'training_boundary': {
+                        'used_keys': TRAIN_USED_KEYS,
+                        'forbidden_keys_not_loaded': TRAIN_FORBIDDEN_KEYS,
+                        'no_softlabel_data_loss': True,
+                    },
+                }
+                torch.save(ckpt, out_dir / 'model' / 'best_with_state.pt')
+
+    # Write history CSV.
+    if history:
+        keys = sorted(set().union(*(h.keys() for h in history)))
+        with (out_dir / 'training_history.csv').open('w', newline='', encoding='utf-8') as f:
+            wcsv = csv.DictWriter(f, fieldnames=keys)
+            wcsv.writeheader(); wcsv.writerows(history)
+
+    write_json({'stage': 'D16-P5K-D train input audit', 'rows': audit_rows}, out_dir / 'D16_P5KD_TRAIN_INPUT_AUDIT.json')
+    summary = {
+        'stage': 'D16-P5K-D hard-cbar OCP residual training summary',
+        'status': 'PASS' if (out_dir / 'model' / 'best_with_state.pt').exists() else 'FAIL',
+        'manifest': str(args.manifest),
+        'out_dir': str(out_dir),
+        'train_profile_count': len(train_rows),
+        'epochs_requested': epochs,
+        'best_epoch': best_epoch,
+        'best_val_loss': best_val,
+        'checkpoint': str(out_dir / 'model' / 'best_with_state.pt'),
+        'warm_start': warm_info,
+        'training_boundary': {
+            'used_keys': TRAIN_USED_KEYS,
+            'forbidden_keys_not_loaded': TRAIN_FORBIDDEN_KEYS,
+            'no_softlabel_data_loss': True,
+            'softlabels_evaluation_only': True,
+        },
+        'interpretation': 'P5K-D restores ASSB-style hard cbar baseline and aligns it to XJTU P2Dlite-RG generator priors/sidecars. Internal soft-label arrays are not used during training.',
+    }
+    write_json(summary, out_dir / 'D16_P5KD_TRAINING_SUMMARY.json')
+    print('[D16-P5K-D train] wrote:', out_dir / 'D16_P5KD_TRAINING_SUMMARY.json', flush=True)
+    return 0 if summary['status'] == 'PASS' else 2
+
+
+if __name__ == '__main__':
+    raise SystemExit(main())

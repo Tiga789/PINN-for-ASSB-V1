@@ -1,0 +1,11 @@
+# Optional: list cell_uid values that the existing model has seen during training.
+# One cell per line. Delete comments before use if your parser is strict elsewhere.
+# Example 8-cell D15-P2 set; update names to match your actual ALL55 manifest.
+Batch-1_battery-1
+Batch-1_battery-3
+Batch-3_battery-6
+Batch-3_battery-7
+Batch-4_battery-2
+Batch-4_battery-7
+Batch-5_battery-7
+Batch-6_battery-3

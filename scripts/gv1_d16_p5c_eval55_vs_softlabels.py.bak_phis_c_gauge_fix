@@ -1,0 +1,458 @@
+from __future__ import annotations
+
+import argparse
+import csv
+import json
+import math
+import re
+import sys
+import zipfile
+from pathlib import Path
+from typing import Any, Dict, Iterable, List, Tuple
+
+import numpy as np
+import torch
+from torch import nn
+
+ROOT = Path(__file__).resolve().parents[1]
+
+FEATURE_NAMES = ['t_norm', 't_norm2', 'sin_t', 'cos_t', 'I_norm', 'absI_norm', 'dI_norm', 'q_norm', 'voltage_exp_norm_local', 'dV_norm', 'is_charge', 'is_rest', 'is_discharge']
+
+
+def write_json(obj: Any, path: str | Path) -> None:
+    p = Path(path)
+    p.parent.mkdir(parents=True, exist_ok=True)
+    with p.open('w', encoding='utf-8') as f:
+        json.dump(obj, f, indent=2, ensure_ascii=False)
+
+
+def read_manifest(path: str | Path) -> List[Dict[str, str]]:
+    with Path(path).open('r', newline='', encoding='utf-8') as f:
+        return list(csv.DictReader(f))
+
+
+def write_csv(rows: List[Dict[str, Any]], path: str | Path) -> None:
+    p = Path(path)
+    p.parent.mkdir(parents=True, exist_ok=True)
+    if not rows:
+        p.write_text('', encoding='utf-8')
+        return
+    keys: List[str] = []
+    for r in rows:
+        for k in r:
+            if k not in keys:
+                keys.append(k)
+    with p.open('w', newline='', encoding='utf-8') as f:
+        w = csv.DictWriter(f, fieldnames=keys)
+        w.writeheader()
+        for r in rows:
+            w.writerow(r)
+
+
+class ResidualBlock(nn.Module):
+    def __init__(self, dim: int):
+        super().__init__()
+        self.net = nn.Sequential(nn.Linear(dim, dim), nn.SiLU(), nn.Linear(dim, dim))
+        self.act = nn.SiLU()
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        return self.act(x + self.net(x))
+
+
+class ObsPhysicsMLP(nn.Module):
+    def __init__(self, input_dim: int, hidden_dim: int = 256, num_layers: int = 5, output_dim: int = 6):
+        super().__init__()
+        layers: List[nn.Module] = [nn.Linear(input_dim, hidden_dim), nn.SiLU()]
+        for _ in range(max(1, int(num_layers))):
+            layers.append(ResidualBlock(hidden_dim))
+        layers.append(nn.Linear(hidden_dim, output_dim))
+        self.net = nn.Sequential(*layers)
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        return self.net(x)
+
+
+def transform_outputs(raw: torch.Tensor, grad_clip: float = 0.25) -> Dict[str, torch.Tensor]:
+    return {
+        'theta_a_mean': torch.sigmoid(raw[:, 0]),
+        'theta_c_mean': torch.sigmoid(raw[:, 1]),
+        'grad_a': grad_clip * torch.tanh(raw[:, 2]),
+        'grad_c': grad_clip * torch.tanh(raw[:, 3]),
+        'phie_norm': raw[:, 4],
+        'phis_c_norm': raw[:, 5],
+    }
+
+
+def first_key(d: Dict[str, Any], keys: List[str]) -> str | None:
+    for k in keys:
+        if k in d:
+            return k
+    return None
+
+
+def as_1d_float(a: Any, name: str) -> np.ndarray:
+    x = np.asarray(a)
+    if x.dtype.kind in {'U', 'S', 'O'}:
+        raise TypeError(f'{name} is not numeric')
+    return x.astype(np.float32).reshape(-1)
+
+
+def orient_time_radial(a: Any, n_time: int, name: str) -> np.ndarray:
+    x = np.asarray(a)
+    if x.dtype.kind in {'U', 'S', 'O'}:
+        raise TypeError(f'{name} is not numeric')
+    x = x.astype(np.float32)
+    if x.ndim == 1:
+        if x.size != n_time:
+            raise ValueError(f'{name} length {x.size} != n_time {n_time}')
+        return x[:, None]
+    if x.ndim != 2:
+        raise ValueError(f'{name} expected 1D/2D, got {x.shape}')
+    if x.shape[0] == n_time:
+        return x
+    if x.shape[1] == n_time:
+        return x.T
+    raise ValueError(f'{name} cannot orient shape={x.shape} n_time={n_time}')
+
+
+def extract_npy_member(npz_path: Path, key: str, cache_dir: Path) -> Path:
+    out = cache_dir / (key + '.npy')
+    if out.exists() and out.stat().st_size > 0:
+        return out
+    cache_dir.mkdir(parents=True, exist_ok=True)
+    member = key + '.npy'
+    with zipfile.ZipFile(npz_path, 'r') as zf:
+        if member not in zf.namelist():
+            raise KeyError(f'{npz_path}: missing member {member}')
+        tmp = out.with_suffix('.npy.tmp')
+        with zf.open(member, 'r') as src, tmp.open('wb') as dst:
+            while True:
+                block = src.read(1024 * 1024 * 16)
+                if not block:
+                    break
+                dst.write(block)
+        tmp.replace(out)
+    return out
+
+
+def load_mmap_arrays(npz_path: Path, cache_root: Path) -> Dict[str, Any]:
+    # Extract only needed members to uncompressed .npy, then memmap them.
+    safe = re.sub(r'[^A-Za-z0-9_.-]+', '__', str(npz_path.parent.name))
+    cache = cache_root / safe
+    # Need to discover possible key aliases from npz member list.
+    with zipfile.ZipFile(npz_path, 'r') as zf:
+        members = {Path(n).stem for n in zf.namelist() if n.endswith('.npy')}
+    def pick(keys: List[str], required: bool = True) -> str | None:
+        for k in keys:
+            if k in members:
+                return k
+        if required:
+            raise KeyError(f'{npz_path}: missing any of {keys}')
+        return None
+    kt = pick(['t_global_s', 'time_s', 't_s', 'time', 't'])
+    ki = pick(['I_profile', 'current_A', 'I_A', 'current', 'I'])
+    kv = pick(['voltage_exp', 'voltage_V', 'V_exp', 'V'])
+    kth_a = pick(['theta_a', 'theta_n', 'theta_negative'])
+    kth_c = pick(['theta_c', 'theta_p', 'theta_positive'])
+    kphie = pick(['phie', 'phi_e', 'phi_e_eff'])
+    kphis = pick(['phis_c_soft', 'phis_c', 'voltage_soft', 'V_soft', 'V_pred'])
+    arrs = {}
+    for alias, key in [('t', kt), ('I', ki), ('V', kv), ('theta_a', kth_a), ('theta_c', kth_c), ('phie', kphie), ('phis_c', kphis)]:
+        p = extract_npy_member(npz_path, key, cache)
+        arrs[alias] = np.load(p, mmap_mode='r')
+        arrs[alias + '_key'] = key
+    return arrs
+
+
+def build_q_norm(t: np.ndarray, I: np.ndarray) -> np.ndarray:
+    dt = np.diff(t, prepend=t[0]).astype(np.float32)
+    dt[~np.isfinite(dt)] = 0.0
+    dt = np.clip(dt, 0.0, np.nanpercentile(dt, 99.9) * 10.0 if dt.size > 10 else np.inf)
+    q = np.cumsum(I.astype(np.float32) * dt) / 3600.0
+    scale = float(np.nanmax(np.abs(q))) if q.size else 1.0
+    if not np.isfinite(scale) or scale < 1e-12:
+        scale = 1.0
+    return (q / scale).astype(np.float32)
+
+
+def feature_chunk(t: np.ndarray, I: np.ndarray, V: np.ndarray, start: int, stop: int, full_stats: Dict[str, float], qn_full: np.ndarray) -> np.ndarray:
+    idx = slice(start, stop)
+    span = full_stats['t_span']
+    I_scale = full_stats['I_scale']
+    v_mean = full_stats['v_mean']
+    v_std = full_stats['v_std']
+    tn = ((t[idx].astype(np.float32) - float(t[0])) / span).astype(np.float32)
+    In = (I[idx].astype(np.float32) / I_scale).astype(np.float32)
+    # Derivatives use local prepend; this is sufficient for eval features and avoids cross-chunk dependency complexity.
+    dI = np.diff(In, prepend=In[0]).astype(np.float32)
+    vn = ((V[idx].astype(np.float32) - v_mean) / v_std).astype(np.float32)
+    dV = np.diff(vn, prepend=vn[0]).astype(np.float32)
+    eps = max(1e-9, 0.001 * float(full_stats['I_abs_max'] + 1e-12))
+    charge = (I[idx] > eps).astype(np.float32)
+    discharge = (I[idx] < -eps).astype(np.float32)
+    rest = (np.abs(I[idx]) <= eps).astype(np.float32)
+    X = np.stack([
+        tn, tn ** 2, np.sin(2*np.pi*tn).astype(np.float32), np.cos(2*np.pi*tn).astype(np.float32),
+        In, np.abs(In).astype(np.float32), dI, qn_full[idx].astype(np.float32), vn, dV,
+        charge, rest, discharge,
+    ], axis=1).astype(np.float32)
+    return X
+
+
+class Accum:
+    def __init__(self):
+        self.n = 0
+        self.sum_abs = 0.0
+        self.sum_sq = 0.0
+        self.sum_err = 0.0
+        self.max_abs = 0.0
+        self.sum_t = 0.0
+        self.sum_p = 0.0
+        self.sum_t2 = 0.0
+        self.sum_p2 = 0.0
+        self.sum_tp = 0.0
+    def update(self, true: np.ndarray, pred: np.ndarray):
+        t = np.asarray(true, dtype=np.float64).reshape(-1)
+        p = np.asarray(pred, dtype=np.float64).reshape(-1)
+        mask = np.isfinite(t) & np.isfinite(p)
+        if not np.any(mask):
+            return
+        t = t[mask]; p = p[mask]
+        e = p - t
+        ae = np.abs(e)
+        self.n += int(t.size)
+        self.sum_abs += float(np.sum(ae))
+        self.sum_sq += float(np.sum(e * e))
+        self.sum_err += float(np.sum(e))
+        self.max_abs = max(self.max_abs, float(np.max(ae)))
+        self.sum_t += float(np.sum(t)); self.sum_p += float(np.sum(p))
+        self.sum_t2 += float(np.sum(t*t)); self.sum_p2 += float(np.sum(p*p)); self.sum_tp += float(np.sum(t*p))
+    def row(self, prefix: str) -> Dict[str, Any]:
+        n = max(1, self.n)
+        cov = self.sum_tp - self.sum_t*self.sum_p/n
+        vt = self.sum_t2 - self.sum_t*self.sum_t/n
+        vp = self.sum_p2 - self.sum_p*self.sum_p/n
+        corr = cov / math.sqrt(vt*vp) if vt > 1e-20 and vp > 1e-20 else float('nan')
+        return {
+            f'{prefix}_count': int(self.n),
+            f'{prefix}_mae': self.sum_abs/n if self.n else float('nan'),
+            f'{prefix}_rmse': math.sqrt(self.sum_sq/n) if self.n else float('nan'),
+            f'{prefix}_bias': self.sum_err/n if self.n else float('nan'),
+            f'{prefix}_max_abs': self.max_abs if self.n else float('nan'),
+            f'{prefix}_corr': corr,
+        }
+
+
+def infer_chunk(model: nn.Module, X: np.ndarray, x_mean: np.ndarray, x_std: np.ndarray, device: torch.device, batch_size: int, grad_clip: float, v_mean: float, v_std: float, nr_a: int, nr_c: int) -> Dict[str, np.ndarray]:
+    radial_a = np.linspace(-0.5, 0.5, nr_a, dtype=np.float32)
+    radial_c = np.linspace(-0.5, 0.5, nr_c, dtype=np.float32)
+    outs = {k: [] for k in ['theta_a', 'theta_c', 'theta_a_mean', 'theta_c_mean', 'grad_a_surface_center', 'grad_c_surface_center', 'phie', 'phis_c']}
+    model.eval()
+    with torch.no_grad():
+        Xs = ((X - x_mean) / x_std).astype(np.float32)
+        for i in range(0, Xs.shape[0], batch_size):
+            xb = torch.from_numpy(Xs[i:i+batch_size]).to(device)
+            raw = model(xb)
+            y = transform_outputs(raw, grad_clip=grad_clip)
+            ta_m = y['theta_a_mean'].cpu().numpy().astype(np.float32)
+            tc_m = y['theta_c_mean'].cpu().numpy().astype(np.float32)
+            ga = y['grad_a'].cpu().numpy().astype(np.float32)
+            gc = y['grad_c'].cpu().numpy().astype(np.float32)
+            phie = (y['phie_norm'].cpu().numpy().astype(np.float32) * v_std)
+            phis = (y['phis_c_norm'].cpu().numpy().astype(np.float32) * v_std)
+            theta_a = np.clip(ta_m[:, None] + ga[:, None] * radial_a[None, :], 0.0, 1.0).astype(np.float32)
+            theta_c = np.clip(tc_m[:, None] + gc[:, None] * radial_c[None, :], 0.0, 1.0).astype(np.float32)
+            outs['theta_a'].append(theta_a); outs['theta_c'].append(theta_c)
+            outs['theta_a_mean'].append(ta_m); outs['theta_c_mean'].append(tc_m)
+            outs['grad_a_surface_center'].append((theta_a[:, -1] - theta_a[:, 0]).astype(np.float32))
+            outs['grad_c_surface_center'].append((theta_c[:, -1] - theta_c[:, 0]).astype(np.float32))
+            outs['phie'].append(phie); outs['phis_c'].append(phis)
+    return {k: np.concatenate(v, axis=0) for k, v in outs.items()}
+
+
+def parse_meta(row: Dict[str, str]) -> Dict[str, str]:
+    return {
+        'profile_id': row.get('profile_id', ''),
+        'batch': row.get('batch', ''),
+        'battery': row.get('battery', ''),
+        'split': row.get('split', 'eval'),
+        'reason': row.get('reason', ''),
+    }
+
+
+def main() -> int:
+    ap = argparse.ArgumentParser(description='D16-P5C evaluate train6 model on all55 against P2Dlite-RG soft labels. Soft labels are used only here, never in training.')
+    ap.add_argument('--manifest', required=True)
+    ap.add_argument('--model-dir', required=True)
+    ap.add_argument('--out-dir', required=True)
+    ap.add_argument('--config', default='configs/d16_p5c_theta_anchor_config.json')
+    ap.add_argument('--device', default='cuda:0')
+    ap.add_argument('--batch-size', type=int, default=65536)
+    ap.add_argument('--chunk-size', type=int, default=200000)
+    ap.add_argument('--mmap-cache-root', default='')
+    ap.add_argument('--allow-overwrite', action='store_true')
+    args = ap.parse_args()
+
+    cfg = json.load(open(args.config, 'r', encoding='utf-8'))
+    out_dir = Path(args.out_dir)
+    if out_dir.exists() and any(out_dir.iterdir()) and not args.allow_overwrite:
+        raise FileExistsError(f'out-dir exists and non-empty: {out_dir}; pass --allow-overwrite')
+    out_dir.mkdir(parents=True, exist_ok=True)
+    cache_root = Path(args.mmap_cache_root) if args.mmap_cache_root else out_dir / 'mmap_cache'
+    ckpt_path = Path(args.model_dir) / 'model' / 'best_with_state.pt'
+    if not ckpt_path.exists():
+        ckpt_path = Path(args.model_dir) / 'best_with_state.pt'
+    if not ckpt_path.exists():
+        raise FileNotFoundError(f'missing checkpoint best_with_state.pt under {args.model_dir}')
+    device = torch.device(args.device if args.device != 'auto' else ('cuda:0' if torch.cuda.is_available() else 'cpu'))
+    ckpt = torch.load(ckpt_path, map_location='cpu', weights_only=False)
+    model_cfg = ckpt.get('model_config', {})
+    model = ObsPhysicsMLP(input_dim=len(FEATURE_NAMES), hidden_dim=int(model_cfg.get('hidden_dim', 256)), num_layers=int(model_cfg.get('num_layers', 5)), output_dim=6)
+    model.load_state_dict(ckpt['state'])
+    model.to(device).eval()
+    x_mean = np.asarray(ckpt['x_mean'], dtype=np.float32)
+    x_std = np.asarray(ckpt['x_std'], dtype=np.float32)
+    grad_clip = float(ckpt.get('config', cfg).get('model', {}).get('gradient_clip', 0.25))
+    rows = read_manifest(args.manifest)
+    metrics_rows: List[Dict[str, Any]] = []
+    failures: List[Dict[str, str]] = []
+    group_acc: Dict[str, Dict[str, Accum]] = {}
+
+    def add_group(group: str, metric: str, true: np.ndarray, pred: np.ndarray):
+        group_acc.setdefault(group, {}).setdefault(metric, Accum()).update(true, pred)
+
+    for row in rows:
+        meta = parse_meta(row)
+        npz_path = Path(row['softlabel_npz'])
+        try:
+            arr = load_mmap_arrays(npz_path, cache_root)
+            t = np.asarray(arr['t'], dtype=np.float32).reshape(-1)
+            I = np.asarray(arr['I'], dtype=np.float32).reshape(-1)
+            V = np.asarray(arr['V'], dtype=np.float32).reshape(-1)
+            n = len(t)
+            full_stats = {
+                't_span': float(t[-1] - t[0]) if n > 1 else 1.0,
+                'I_scale': float(np.nanpercentile(np.abs(I), 99.5)) if n else 1.0,
+                'I_abs_max': float(np.nanmax(np.abs(I))) if n else 0.0,
+                'v_mean': float(np.nanmean(V)) if n else 0.0,
+                'v_std': float(np.nanstd(V)) if n else 1.0,
+            }
+            if not np.isfinite(full_stats['t_span']) or full_stats['t_span'] <= 0: full_stats['t_span'] = 1.0
+            if not np.isfinite(full_stats['I_scale']) or full_stats['I_scale'] < 1e-12: full_stats['I_scale'] = 1.0
+            if not np.isfinite(full_stats['v_std']) or full_stats['v_std'] < 1e-8: full_stats['v_std'] = 1.0
+            qn = build_q_norm(t, I)
+            th_a_shape = arr['theta_a'].shape
+            th_c_shape = arr['theta_c'].shape
+            nr_a = int(th_a_shape[1] if len(th_a_shape) == 2 and th_a_shape[0] == n else th_a_shape[0] if len(th_a_shape) == 2 else 1)
+            nr_c = int(th_c_shape[1] if len(th_c_shape) == 2 and th_c_shape[0] == n else th_c_shape[0] if len(th_c_shape) == 2 else 1)
+            accs = {m: Accum() for m in ['phis_c', 'phie', 'theta_a', 'theta_c', 'theta_a_mean', 'theta_c_mean', 'grad_a_surface_center', 'grad_c_surface_center']}
+            outside_count = 0
+            outside_total = 0
+            for s in range(0, n, int(args.chunk_size)):
+                e = min(n, s + int(args.chunk_size))
+                X = feature_chunk(t, I, V, s, e, full_stats, qn)
+                pred = infer_chunk(model, X, x_mean, x_std, device, int(args.batch_size), grad_clip, full_stats['v_mean'], full_stats['v_std'], nr_a, nr_c)
+                # Orient true arrays per chunk.
+                true_phis = np.asarray(arr['phis_c'][s:e], dtype=np.float32).reshape(-1)
+                true_phie = np.asarray(arr['phie'][s:e], dtype=np.float32).reshape(-1)
+                true_ta = np.asarray(arr['theta_a'][s:e], dtype=np.float32) if arr['theta_a'].shape[0] == n else np.asarray(arr['theta_a'][:, s:e], dtype=np.float32).T
+                true_tc = np.asarray(arr['theta_c'][s:e], dtype=np.float32) if arr['theta_c'].shape[0] == n else np.asarray(arr['theta_c'][:, s:e], dtype=np.float32).T
+                true_ta_m = np.mean(true_ta, axis=1)
+                true_tc_m = np.mean(true_tc, axis=1)
+                true_ga = true_ta[:, -1] - true_ta[:, 0]
+                true_gc = true_tc[:, -1] - true_tc[:, 0]
+                accs['phis_c'].update(true_phis, pred['phis_c'])
+                accs['phie'].update(true_phie, pred['phie'])
+                accs['theta_a'].update(true_ta, pred['theta_a'])
+                accs['theta_c'].update(true_tc, pred['theta_c'])
+                accs['theta_a_mean'].update(true_ta_m, pred['theta_a_mean'])
+                accs['theta_c_mean'].update(true_tc_m, pred['theta_c_mean'])
+                accs['grad_a_surface_center'].update(true_ga, pred['grad_a_surface_center'])
+                accs['grad_c_surface_center'].update(true_gc, pred['grad_c_surface_center'])
+                outside_count += int(np.sum((pred['theta_a'] < -1e-6) | (pred['theta_a'] > 1 + 1e-6)) + np.sum((pred['theta_c'] < -1e-6) | (pred['theta_c'] > 1 + 1e-6)))
+                outside_total += int(pred['theta_a'].size + pred['theta_c'].size)
+                if s == 0 or e == n:
+                    print(f"[D16-P5C eval] {meta['profile_id']}: chunk {s}:{e}/{n}", flush=True)
+            r = dict(meta)
+            r['n_time'] = n
+            for name, ac in accs.items():
+                r.update(ac.row(name))
+                add_group('ALL', name, np.array([0.0]), np.array([0.0]))  # ensure group exists
+            r['pred_theta_outside_fraction'] = outside_count / max(1, outside_total)
+            metrics_rows.append(r)
+            # Aggregate from per-profile accs into split/batch/protocol/all by replaying accumulators is cumbersome.
+            # Instead aggregate from profile rows later with count-weighted metrics.
+        except Exception as exc:
+            failures.append({**meta, 'softlabel_npz': str(npz_path), 'error': repr(exc)})
+            print(f"[D16-P5C eval] FAIL {meta['profile_id']}: {exc!r}", flush=True)
+
+    write_csv(metrics_rows, out_dir / 'D16_P5C_METRICS_BY_PROFILE.csv')
+    write_json(failures, out_dir / 'D16_P5C_FAILURES.json')
+
+    def aggregate(rows_in: List[Dict[str, Any]], group_name: str) -> Dict[str, Any]:
+        out: Dict[str, Any] = {'group': group_name, 'profile_count': len(rows_in)}
+        metrics = ['phis_c', 'phie', 'theta_a', 'theta_c', 'theta_a_mean', 'theta_c_mean', 'grad_a_surface_center', 'grad_c_surface_center']
+        for m in metrics:
+            count_key = f'{m}_count'
+            total = sum(float(r.get(count_key, 0) or 0) for r in rows_in)
+            out[count_key] = int(total)
+            for stat in ['mae', 'rmse', 'bias']:
+                key = f'{m}_{stat}'
+                if total > 0:
+                    if stat == 'rmse':
+                        # combine rmse from sum of squared errors
+                        val = math.sqrt(sum((float(r.get(key, 'nan')) ** 2) * float(r.get(count_key, 0) or 0) for r in rows_in if str(r.get(key, 'nan')) != 'nan') / total)
+                    else:
+                        val = sum(float(r.get(key, 'nan')) * float(r.get(count_key, 0) or 0) for r in rows_in if str(r.get(key, 'nan')) != 'nan') / total
+                else:
+                    val = float('nan')
+                out[key] = val
+            max_key = f'{m}_max_abs'
+            vals = [float(r.get(max_key, 'nan')) for r in rows_in if str(r.get(max_key, 'nan')) != 'nan']
+            out[max_key] = max(vals) if vals else float('nan')
+            corr_key = f'{m}_corr'
+            vals = [float(r.get(corr_key, 'nan')) for r in rows_in if str(r.get(corr_key, 'nan')) != 'nan']
+            out[f'{m}_corr_mean'] = float(np.mean(vals)) if vals else float('nan')
+        total_points = sum(int(r.get('theta_a_count', 0) or 0) + int(r.get('theta_c_count', 0) or 0) for r in rows_in)
+        out['pred_theta_outside_fraction_weighted'] = sum(float(r.get('pred_theta_outside_fraction', 0.0)) * (int(r.get('theta_a_count', 0) or 0) + int(r.get('theta_c_count', 0) or 0)) for r in rows_in) / max(1, total_points)
+        return out
+
+    all_summary = aggregate(metrics_rows, 'ALL')
+    split_rows = []
+    for split in sorted(set(r.get('split', '') for r in metrics_rows)):
+        split_rows.append(aggregate([r for r in metrics_rows if r.get('split') == split], split))
+    batch_rows = []
+    for batch in sorted(set(r.get('batch', '') for r in metrics_rows)):
+        batch_rows.append(aggregate([r for r in metrics_rows if r.get('batch') == batch], batch))
+    protocol_rows = []
+    # protocol is not explicitly in manifest; infer by batch name for reporting.
+    protocol_map = {'Batch-1': '2C', 'Batch-2': '3C', 'Batch-3': 'R2.5', 'Batch-4': 'R3', 'Batch-5': 'random_walk', 'Batch-6': 'GEO'}
+    for r in metrics_rows:
+        r['protocol'] = protocol_map.get(r.get('batch', ''), r.get('batch', 'unknown'))
+    for protocol in sorted(set(r.get('protocol', '') for r in metrics_rows)):
+        protocol_rows.append(aggregate([r for r in metrics_rows if r.get('protocol') == protocol], protocol))
+    write_csv(split_rows, out_dir / 'D16_P5C_SPLIT_METRICS.csv')
+    write_csv(batch_rows, out_dir / 'D16_P5C_BATCH_METRICS.csv')
+    write_csv(protocol_rows, out_dir / 'D16_P5C_PROTOCOL_METRICS.csv')
+    score = {
+        'stage': 'D16-P5C train6/eval49 observation-physics evaluation',
+        'model_dir': str(args.model_dir),
+        'manifest': str(args.manifest),
+        'out_dir': str(out_dir),
+        'profile_count_evaluated': len(metrics_rows),
+        'failure_count': len(failures),
+        'operational_status': 'PASS' if len(metrics_rows) == 55 and not failures else 'REVIEW' if metrics_rows else 'FAIL',
+        'global_metrics_weighted': all_summary,
+        'split_metrics': split_rows,
+        'notes': [
+            'Training used only I/V/time; this eval is the first place where soft-label internal states are read.',
+            'Evaluation is full-profile chunked and uses mmap cache for large arrays.',
+            'D16-P5C target is train6/eval49, not ALL55 supervised training.'
+        ]
+    }
+    write_json(score, out_dir / 'D16_P5C_FINAL_SCORECARD.json')
+    print('[D16-P5C eval] operational_status:', score['operational_status'], 'evaluated=', len(metrics_rows), 'failures=', len(failures), flush=True)
+    print('[D16-P5C eval] wrote:', out_dir / 'D16_P5C_FINAL_SCORECARD.json', flush=True)
+    return 0 if score['operational_status'] in {'PASS', 'REVIEW'} else 2
+
+
+if __name__ == '__main__':
+    raise SystemExit(main())

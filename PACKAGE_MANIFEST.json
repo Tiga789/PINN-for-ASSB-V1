@@ -1,0 +1,23 @@
+{
+  "package": "D16_P5K_G_rulev2_strict_gate_formal_training_package_v1",
+  "stage": "D16-P5K-G formal training",
+  "created_for": "QJW-2 / PINN-for-ASSB-V1",
+  "files": [
+    "configs/d16_p5kg_rulev2_strict_gate_config.json",
+    "scripts/gv1_d16_p5kg_build_manifest.py",
+    "scripts/gv1_d16_p5kg_train_rulev2_strict_fast.py",
+    "scripts/gv1_d16_p5kg_eval55_vs_softlabels_v3.py",
+    "scripts/gv1_d16_p5kg_baseline_only_audit.py",
+    "scripts/gv1_run_d16_p5kg_train_fast.ps1",
+    "scripts/gv1_check_d16_p5kg_outputs.ps1",
+    "README_D16_P5K_G_RULEV2_STRICT.md",
+    "PACKAGE_MANIFEST.json"
+  ],
+  "checks": {
+    "no_empty_config_dir": true,
+    "no_empty_directories": true,
+    "no_pycache": true,
+    "no_pyc": true,
+    "no_tabulate_dependency": true
+  }
+}

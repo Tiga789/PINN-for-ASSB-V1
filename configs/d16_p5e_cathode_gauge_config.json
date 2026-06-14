@@ -1,0 +1,104 @@
+{
+  "stage": "D16-P5E train6-eval49 cathode-side offset-safe observation-physics",
+  "principles": {
+    "no_internal_softlabel_data_loss": true,
+    "training_time_series_allowed": [
+      "t_global_s",
+      "I_profile",
+      "voltage_exp"
+    ],
+    "training_time_series_forbidden": [
+      "theta_a",
+      "theta_c",
+      "cs_a",
+      "cs_c",
+      "phie",
+      "phis_c",
+      "phis_c_soft"
+    ],
+    "softlabels_used_only_for_evaluation": true
+  },
+  "selected_train_cells": [
+    {
+      "batch": "Batch-1",
+      "battery": "battery-3",
+      "reason": "fixed 2C/CV + 1C full discharge; avoids flagged Batch-1 battery-8 and avoids Batch-1 battery-1 source-voltage warning"
+    },
+    {
+      "batch": "Batch-2",
+      "battery": "battery-8",
+      "reason": "middle representative of Batch-2 3C charge / 1C full-discharge stress-test"
+    },
+    {
+      "batch": "Batch-3",
+      "battery": "battery-6",
+      "reason": "R2.5 variable full-discharge representative from D14/D15 8-cell set"
+    },
+    {
+      "batch": "Batch-4",
+      "battery": "battery-7",
+      "reason": "R3 partial-discharge representative; used in D14 3D radial-gradient diagnosis"
+    },
+    {
+      "batch": "Batch-5",
+      "battery": "battery-7",
+      "reason": "random-walk representative from D14/D15 8-cell set"
+    },
+    {
+      "batch": "Batch-6",
+      "battery": "battery-3",
+      "reason": "GEO representative from D14/D15 8-cell set; difficult sparse-spike case"
+    }
+  ],
+  "model": {
+    "hidden_dim": 256,
+    "num_layers": 5,
+    "activation": "silu",
+    "dropout": 0.0,
+    "radial_points_default": 17,
+    "gradient_clip": 0.25
+  },
+  "training": {
+    "epochs": 700,
+    "batch_size": 131072,
+    "learning_rate": 0.00035,
+    "weight_decay": 1e-06,
+    "max_train_points_per_profile": 250000,
+    "max_val_points_per_profile": 40000,
+    "seed": 20260613,
+    "early_stop_patience": 140,
+    "loss_weights": {
+      "voltage_observation": 1.0,
+      "theta_q_correlation": 0.16,
+      "theta_voltage_correlation": 0.035,
+      "theta_centered_mass_coupling": 0.1,
+      "theta_midrange_guard": 0.004,
+      "cathode_floor_guard": 0.09,
+      "anode_ceiling_guard": 0.05,
+      "theta_cathode_center_prior": 0.035,
+      "theta_pair_offset_compensation": 0.06,
+      "gradient_anchor": 0.07,
+      "rest_relaxation": 0.05,
+      "gradient_direction": 0.04,
+      "smoothness": 0.008,
+      "phie_regularization": 0.006
+    }
+  },
+  "p5e_cathode_gauge": {
+    "gradient_target_scale": 0.05,
+    "midrange_margin": 0.42,
+    "cathode_floor": 0.22,
+    "anode_ceiling": 0.82,
+    "center_prior_amplitude": 0.22,
+    "center_prior_slope": 0.75,
+    "pair_sum_center": 1.02,
+    "pair_sum_slack": 0.22,
+    "design_note": "P5E keeps P5D delta-gauge behavior but adds weak, offset-safe cathode-side guards to reduce theta_c underestimation and theta_a overestimation. These guards use only q/V/current-derived features and fixed priors; no soft-label data loss is used."
+  },
+  "evaluation": {
+    "batch_size": 65536,
+    "chunk_size": 200000,
+    "save_prediction_npz": false,
+    "mmap_cache_enabled": true
+  }
+}
