@@ -5,153 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7b854bbc-0a8a-4911-bc87-dd9f1f68d852" name="更改" comment="">
-      <change afterPath="$PROJECT_DIR$/D15_P5A_FILE_MAP.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/D15_P5A_MANIFEST.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/PACKAGE_MANIFEST.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_D15_P5A.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_D16_P5A.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_D16_P5A_FIXED.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_D16_P5A_FIXED_V3.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_D16_P5A_V4.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_D16_P5A_V6_FULLPROFILE_FILL_MISSING.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_D16_P5A_V7_FULLPROFILE_COMPACT.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_D16_P5B_FAST.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_D16_P5B_TRAIN6_EVAL49.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_D16_P5C_THETA_ANCHOR.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_D16_P5D_DELTA_GAUGE.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_D16_P5E_CATHODE_GAUGE.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_D16_P5F_BALANCED_GAUGE.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_D16_P5G_OUTLIER_PROTOCOL_BALANCED.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_D16_P5H_EXACT_R2_AUDIT.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_D16_P5K_D_GENERATOR_ALIGNED.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_D16_P5K_E2_PROVENANCE_BASELINE_AUDIT.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_D16_P5K_EVAL_V3.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_D16_P5K_E_DIAGNOSTIC_FIRST.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_D16_P5K_F_PROFILE_THETA0.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_D16_P5K_G0_BASELINE_REPAIR_AUDIT.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_D16_P5K_G1_OBSERVED_THETA0.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_D16_P5K_G2_GATED_THETA0.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_D16_P5K_G3_THETA0_ADAPTER_V2.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_D16_P5K_G4_EXACT_ARRAY_AUDIT.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_D16_P5K_G_BASELINE_NOREGRESSION.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_D16_P5K_G_RULEV2_STRICT.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_D16_P5K_HARD_CBAR_OCP_RESIDUAL.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/configs/d15_p5a_all55_existing_model_transfer_config.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/configs/d16_p5a_seen_cells_template.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/configs/d16_p5b_train6_eval49_config.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/configs/d16_p5c_theta_anchor_config.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/configs/d16_p5d_delta_gauge_config.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/configs/d16_p5e_cathode_gauge_config.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/configs/d16_p5f_balanced_gauge_config.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/configs/d16_p5g_outlier_protocol_balanced_gauge_config.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/configs/d16_p5k_hard_cbar_ocp_residual_config.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/configs/d16_p5kd_generator_aligned_hard_cbar_ocp_config.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/configs/d16_p5kf_profile_theta0_hard_cbar_config.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/configs/d16_p5kg_rulev2_strict_gate_config.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/d15_p5a_existing_model_transfer_eval.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/d15_p5a_pack_review.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/d15_p5a_preflight.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/d15_p5a_run_all.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/d15_p5a_selftest.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_check_d16_p5a_v4_outputs.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_check_d16_p5a_v6_outputs.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_check_d16_p5a_v7_outputs.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_check_d16_p5b_outputs.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_check_d16_p5c_outputs.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_check_d16_p5d_outputs.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_check_d16_p5e_outputs.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_check_d16_p5f_outputs.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_check_d16_p5g_outputs.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_check_d16_p5h_outputs.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_check_d16_p5k_eval_v3_outputs.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_check_d16_p5k_outputs.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_check_d16_p5kd_outputs.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_check_d16_p5ke2_outputs.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_check_d16_p5ke_outputs.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_check_d16_p5kf_outputs.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_check_d16_p5kg0_outputs.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_check_d16_p5kg1_outputs.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_check_d16_p5kg2_outputs.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_check_d16_p5kg3_outputs.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_check_d16_p5kg4_outputs.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_check_d16_p5kg_baseline_audit_outputs.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_check_d16_p5kg_outputs.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d16_p5a_existing_transfer_eval_fixed.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d16_p5a_existing_transfer_eval_v4.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d16_p5a_fill_missing_fullprofile_v6.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d16_p5a_fill_missing_fullprofile_v7.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d16_p5a_transfer_eval.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d16_p5b_build_manifest.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d16_p5b_eval55_vs_softlabels.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d16_p5b_train6_observation_physics.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d16_p5b_train6_observation_physics_fast.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d16_p5c_build_manifest.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d16_p5c_eval55_vs_softlabels.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d16_p5c_train6_theta_anchor_fast.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d16_p5d_build_manifest.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d16_p5d_eval55_vs_softlabels.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d16_p5d_train6_delta_gauge_fast.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d16_p5e_build_manifest.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d16_p5e_eval55_vs_softlabels.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d16_p5e_train6_cathode_gauge_fast.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d16_p5f_build_manifest.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d16_p5f_eval55_vs_softlabels.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d16_p5f_train6_balanced_gauge_fast.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d16_p5g_build_manifest.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d16_p5g_eval55_vs_softlabels.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d16_p5g_train6_outlier_protocol_balanced_gauge_fast.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d16_p5h_exact_r2_audit.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d16_p5k_build_manifest.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d16_p5k_eval55_vs_softlabels.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d16_p5k_eval55_vs_softlabels_v3.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d16_p5k_train10_hard_cbar_ocp_residual_fast.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d16_p5kd_build_manifest.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d16_p5kd_eval55_vs_softlabels_v3.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d16_p5kd_train_generator_aligned_fast.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d16_p5ke2_provenance_baseline_audit.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d16_p5ke_diagnostic_first_audit.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d16_p5kf_baseline_only_audit.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d16_p5kf_build_manifest.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d16_p5kf_eval55_vs_softlabels_v3.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d16_p5kf_train_profile_theta0_fast.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d16_p5kg0_baseline_repair_audit.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d16_p5kg1_observed_theta0_estimator_audit.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d16_p5kg2_gated_theta0_adapter_audit.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d16_p5kg3_theta0_adapter_v2_audit.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d16_p5kg4_exact_array_audit.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d16_p5kg_baseline_noregression_audit.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d16_p5kg_baseline_only_audit.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d16_p5kg_build_manifest.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d16_p5kg_eval55_vs_softlabels_v3.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_d16_p5kg_train_rulev2_strict_fast.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_find_d15_existing_model_dirs.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_d16_p5a_examples.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_d16_p5a_fill_missing_v6.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_d16_p5a_fill_missing_v7.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_d16_p5a_fixed.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_d16_p5a_v4.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_d16_p5b_train6_eval49.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_d16_p5b_train6_eval49_fast.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_d16_p5c_train6_eval49_fast.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_d16_p5d_train6_eval49_fast.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_d16_p5e_train6_eval49_fast.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_d16_p5f_train6_eval49_fast.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_d16_p5g_train6_eval49_fast.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_d16_p5h_exact_r2_audit.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_d16_p5k_evalonly_v3.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_d16_p5k_train6to10_fast.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_d16_p5kd_train_fast.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_d16_p5ke2_audit.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_d16_p5ke_diagnostic.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_d16_p5kf_train_fast.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_d16_p5kg0_baseline_repair_audit.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_d16_p5kg1_observed_theta0_audit.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_d16_p5kg2_gated_theta0_audit.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_d16_p5kg3_theta0_adapter_v2_audit.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_d16_p5kg4_exact_array_audit.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_d16_p5kg_baseline_audit.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/gv1_run_d16_p5kg_train_fast.ps1" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -215,9 +69,9 @@
       <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\gv1\p2dlite_rg_nn_precision" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1" />
       <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\gv1" />
       <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\gv1\p2dlite_rg" />
-      <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1" />
       <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\util" />
     </key>
   </component>
@@ -295,7 +149,7 @@
       <workItem from="1776793294745" duration="2000" />
       <workItem from="1776796578394" duration="75259000" />
       <workItem from="1777704900369" duration="98542000" />
-      <workItem from="1778744192031" duration="374473000" />
+      <workItem from="1778744192031" duration="375753000" />
     </task>
     <servers />
   </component>
