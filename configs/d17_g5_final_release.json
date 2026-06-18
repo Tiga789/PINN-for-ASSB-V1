@@ -1,0 +1,12 @@
+{
+  "protocol": "D17-G5_FINAL_RELEASE_REPRODUCIBILITY_FREEZE",
+  "seed": 20260615,
+  "copy_small_artifacts": true,
+  "max_hash_mb": 512,
+  "policy": {
+    "training_performed": false,
+    "checkpoint_selection_performed": false,
+    "model_modified": false,
+    "frozen_test_feedback_used_to_modify_model": false
+  }
+}

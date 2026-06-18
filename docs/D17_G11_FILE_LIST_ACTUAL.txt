@@ -1,0 +1,6 @@
+./README_D17_G11_CLOSEDSET_ALIGNMENT_DIAGNOSTIC.md
+./configs/d17_g11_closedset_alignment_diagnostic.json
+./docs/D17_G11_FILE_LIST_ACTUAL.txt
+./gv1/d17_g/g11_diagnostics.py
+./scripts/d17_g11_closedset_alignment_diagnostic.py
+./scripts/d17_g11_inspect_summary.py

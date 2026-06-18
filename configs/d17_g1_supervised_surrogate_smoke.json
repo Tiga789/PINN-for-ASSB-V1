@@ -1,0 +1,39 @@
+{
+  "protocol": "D17-G1_SUPERVISED_GENERATOR_SURROGATE_SMOKE",
+  "seed": 20260615,
+  "device": "auto",
+  "train_profile_count": 12,
+  "validation_profile_count": 3,
+  "max_time_points": 512,
+  "time_window_s": 40000.0,
+  "epochs": 150,
+  "lr": 0.001,
+  "min_lr": 2e-05,
+  "batch_size": 1024,
+  "weight_decay": 1e-05,
+  "grad_clip_norm": 5.0,
+  "eval_every": 10,
+  "model": {
+    "width": 96,
+    "depth": 2,
+    "dropout": 0.02
+  },
+  "target_group_weights": {
+    "theta_a": 2.0,
+    "theta_c": 2.0,
+    "cs_a": 0.7,
+    "cs_c": 0.7,
+    "phie": 1.2,
+    "phis_c": 1.2
+  },
+  "smoke_train_r2_mean_threshold": 0.0,
+  "g2_validation_r2_mean_threshold": 0.95,
+  "policy": {
+    "train_cell_softlabels_allowed": true,
+    "validation_softlabels_withheld_from_training": true,
+    "frozen_test_softlabels_withheld": true,
+    "checkpoint_selection": "train_loss_only_for_G1_smoke",
+    "model_positioning": "generator-code-semantics-aware supervised surrogate smoke, not strict no-state-label inverse PINN"
+  },
+  "torch_num_threads": 2
+}

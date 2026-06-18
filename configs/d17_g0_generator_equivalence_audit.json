@@ -1,0 +1,14 @@
+{
+  "protocol": "D17-G0_GENERATOR_EQUIVALENCE_AUDIT",
+  "audit_only": true,
+  "min_semantics_known_fraction": 0.75,
+  "default_softlabel_root": "E:/XJTU battery dataset/_gv1_cache/xjtu_softlabels_p2dlite_rg_v1_D15_ALL55_FINAL",
+  "default_split_manifest": "E:/XJTU battery dataset/_gv1_cache/xjtu_d17_pinn_rebuild/split/d17_split_manifest.json",
+  "default_out_dir": "E:/XJTU battery dataset/_gv1_cache/xjtu_d17_g/g0_generator_equivalence_audit",
+  "semantic_classifier_patch": "v2_read_npz_scalar_metadata_and_branch_defaults",
+  "later_d17_g_policy": {
+    "train_cell_softlabels_allowed": true,
+    "validation_and_frozen_test_softlabels_withheld_from_training": true,
+    "goal": "generator-code-equivalent supervised surrogate rather than strict no-state-label inverse PINN"
+  }
+}

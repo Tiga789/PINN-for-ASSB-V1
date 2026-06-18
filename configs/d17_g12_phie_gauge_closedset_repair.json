@@ -1,0 +1,35 @@
+{
+  "seed": 20260615,
+  "device": "auto",
+  "train_profile_count": 12,
+  "validation_profile_count": 3,
+  "max_time_points": 512,
+  "time_window_s": 40000.0,
+  "epochs": 750,
+  "lr": 0.0008,
+  "batch_size": 1024,
+  "torch_num_threads": 2,
+  "eval_every": 50,
+  "min_epochs_before_early_stop": 220,
+  "early_stop_on_pass": true,
+  "closedset_r2_mean_threshold": 0.98,
+  "closedset_r2_min_threshold": 0.95,
+  "target_group_weights": {
+    "theta_a": 1.5,
+    "theta_c": 1.5,
+    "cs_a": 1.0,
+    "cs_c": 1.0,
+    "phie": 12.0,
+    "phis_c": 2.5
+  },
+  "model": {
+    "width": 640,
+    "depth": 7,
+    "dropout": 0.0,
+    "weight_decay": 1e-6,
+    "min_lr": 1e-5,
+    "grad_clip_norm": 5.0,
+    "profile_embedding_dim": 24,
+    "phie_direct_width": 192
+  }
+}

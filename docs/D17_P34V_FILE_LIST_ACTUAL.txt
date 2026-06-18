@@ -1,0 +1,6 @@
+gv1/d17_pinn/voltage_polish.py
+scripts/d17_p34v_validation_voltage_polish.py
+scripts/d17_p34v_inspect_summary.py
+configs/d17_pinn_rebuild_p34v_validation_voltage_polish.json
+docs/D17_P34V_FILE_LIST_ACTUAL.txt
+README_D17_P34V_FINAL_VALIDATION_POLISH.md

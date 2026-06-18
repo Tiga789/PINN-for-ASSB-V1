@@ -1,0 +1,10 @@
+gv1/d17_g/__init__.py
+gv1/d17_g/g1_data.py
+gv1/d17_g/g1_metrics.py
+gv1/d17_g/g13_model.py
+gv1/d17_g/g13_trainer.py
+scripts/d17_g13_validation_aware_surrogate.py
+scripts/d17_g13_inspect_summary.py
+configs/d17_g13_validation_aware_surrogate.json
+README_D17_G13_VALIDATION_AWARE_SURROGATE.md
+docs/D17_G13_FILE_LIST_ACTUAL.txt

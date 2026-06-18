@@ -1,0 +1,12 @@
+{
+  "protocol": "D17-P1_SPLIT_POLICY",
+  "seed": 20260615,
+  "level": "cell",
+  "stratify_by": ["batch", "protocol"],
+  "train_frac": 0.70,
+  "val_frac": 0.15,
+  "frozen_test_frac": 0.15,
+  "flag_cell": ["Batch-1_2C_battery-8"],
+  "flagged_probe_policy": "excluded_from_normal_promotion",
+  "state_label_policy": "soft labels are report-only after freeze; not training input/loss"
+}

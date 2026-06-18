@@ -1,0 +1,12 @@
+{
+  "protocol": "D17-G6_FULL_ALLCELL_ALLCYCLE_AUDIT",
+  "require_g21_ready": true,
+  "all_profile_target_mean_r2_threshold": 0.95,
+  "all_profile_target_min_r2_threshold": 0.90,
+  "notes": [
+    "G6 evaluates the frozen D17-G candidate on the full soft-label target time grid.",
+    "Use --max_time_points 0 and --time_window_s 0 for the true full all-cycle audit.",
+    "Start with --profile_limit 1 for smoke because full 55-cell evaluation can be I/O heavy.",
+    "By default predictions are not saved; use --save_predictions compressed_npz only for small selected subsets."
+  ]
+}

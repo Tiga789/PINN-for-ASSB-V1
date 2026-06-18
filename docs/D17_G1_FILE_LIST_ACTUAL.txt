@@ -1,0 +1,10 @@
+README_D17_G1_SUPERVISED_SURROGATE_SMOKE.md
+configs/d17_g1_supervised_surrogate_smoke.json
+docs/D17_G1_FILE_LIST_ACTUAL.txt
+gv1/d17_g/__init__.py
+gv1/d17_g/g1_data.py
+gv1/d17_g/g1_metrics.py
+gv1/d17_g/g1_model.py
+gv1/d17_g/g1_trainer.py
+scripts/d17_g1_inspect_summary.py
+scripts/d17_g1_supervised_surrogate_smoke.py

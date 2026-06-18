@@ -1,0 +1,73 @@
+{
+  "d17_protocol_version": 3,
+  "experiment_name": "d17_p3_6profile_mechanism_smoke",
+  "mode": "voltage_informed_inverse_pinn",
+  "seed": 20260615,
+  "paths": {
+    "split_manifest": "E:/XJTU battery dataset/_gv1_cache/xjtu_d17_pinn_rebuild/split/d17_split_manifest.json",
+    "resolved_spec": "configs/resolved_p2dlite_spec_placeholder.json",
+    "output_root": "E:/XJTU battery dataset/_gv1_cache/xjtu_d17_pinn_rebuild"
+  },
+  "train": {
+    "split": "train",
+    "profile_count": 6,
+    "time_window_s": 40000.0,
+    "max_time_points": 512,
+    "n_r": 17,
+    "epochs": 80,
+    "warmup_epochs": 20,
+    "lr": 0.0008,
+    "weight_decay": 1e-06,
+    "device": "auto",
+    "gradient_clip_norm": 10.0,
+    "allow_softlabel_npz_profile_source": false
+  },
+  "model": {
+    "hidden_dim": 64,
+    "latent_hidden_dim": 64,
+    "delta_layers": 3,
+    "delta_amp_fraction": 0.018,
+    "enable_low_transition_residual": true,
+    "enable_voltage_inverse_residual": true,
+    "voltage_inverse_residual_amp_V": 0.12,
+    "use_observed_voltage_for_gate": true
+  },
+  "loss_weights_warmup": {
+    "voltage": 1.0,
+    "diffusion_pde": 2e-08,
+    "surface_flux": 0.0002,
+    "cbar_inventory": 0.01,
+    "zero_mean_delta": 2.0,
+    "ocp_bv_closure": 0.0001,
+    "gauge_smooth": 0.0001,
+    "prior_z": 0.0001,
+    "residual_preservation": 0.002,
+    "state_bounds": 0.2
+  },
+  "loss_weights": {
+    "voltage": 1.0,
+    "diffusion_pde": 1e-06,
+    "surface_flux": 0.001,
+    "cbar_inventory": 0.05,
+    "zero_mean_delta": 2.0,
+    "ocp_bv_closure": 0.0001,
+    "gauge_smooth": 0.0001,
+    "prior_z": 0.0005,
+    "residual_preservation": 0.005,
+    "state_bounds": 0.5
+  },
+  "checkpoint_selection": {
+    "use_voltage_metrics": true,
+    "use_physics_metrics": true,
+    "use_no_drift_metrics": true,
+    "use_state_softlabel_metrics": false,
+    "use_frozen_test_metrics": false
+  },
+  "audit": {
+    "no_state_label_training": true,
+    "split_manifest_locked": true,
+    "no_oracle_theta0": true,
+    "no_test_feedback": true,
+    "battery8_policy": "flagged_probe"
+  }
+}

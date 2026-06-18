@@ -1,0 +1,5 @@
+d17_protocol_version: 3.2
+experiment_name: d17_p32_12profile_aggressive_voltage_recovery
+mode: voltage_informed_inverse_pinn_no_state_labels
+# Use JSON config for execution unless PyYAML is available.
+# This YAML mirrors the JSON file for readability only.

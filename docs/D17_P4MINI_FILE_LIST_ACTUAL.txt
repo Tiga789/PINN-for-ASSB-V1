@@ -1,0 +1,5 @@
+configs/d17_pinn_rebuild_p4mini_adaptation_diagnostic.json
+docs/D17_P4MINI_FILE_LIST_ACTUAL.txt
+README_D17_P4MINI_ADAPTATION_DIAGNOSTIC.md
+scripts/d17_p4mini_adaptation_diagnostic.py
+scripts/d17_p4mini_inspect_summary.py

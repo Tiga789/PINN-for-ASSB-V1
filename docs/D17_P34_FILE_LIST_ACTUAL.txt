@@ -1,0 +1,11 @@
+README_D17_P34_FINAL_FORWARD_CORE_PROMOTION.md
+configs/d17_pinn_rebuild_p34_final_forward_core_promotion.json
+configs/d17_pinn_rebuild_p34_final_forward_core_promotion.yaml
+docs/D17_P34_FILE_LIST_ACTUAL.txt
+gv1/d17_pinn/latent_adapter.py
+gv1/d17_pinn/losses.py
+gv1/d17_pinn/model.py
+gv1/d17_pinn/p2dlite_prior.py
+gv1/d17_pinn/p34_resolved_spec.py
+scripts/d17_p34_final_forward_core_promotion.py
+scripts/d17_p34_inspect_summary.py

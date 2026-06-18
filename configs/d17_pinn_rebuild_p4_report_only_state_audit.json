@@ -1,0 +1,96 @@
+{
+  "d17_protocol_version": 4,
+  "experiment_name": "d17_p4_report_only_state_audit",
+  "mode": "frozen_candidate_report_only_internal_state_audit",
+  "seed": 20260615,
+  "paths": {
+    "split_manifest": "E:/XJTU battery dataset/_gv1_cache/xjtu_d17_pinn_rebuild/split/d17_split_manifest.json",
+    "candidate_p34_dir": "E:/XJTU battery dataset/_gv1_cache/xjtu_d17_pinn_rebuild/p34_final_forward_core_promotion",
+    "candidate_p34v_dir": "E:/XJTU battery dataset/_gv1_cache/xjtu_d17_pinn_rebuild/p34v_final_validation_voltage_polish",
+    "resolved_spec": "E:/XJTU battery dataset/_gv1_cache/xjtu_d17_pinn_rebuild/p34_final_forward_core_promotion/D17_P34_RESOLVED_P2DLITE_RG_SPEC_ALIGNED.json",
+    "checkpoint": "E:/XJTU battery dataset/_gv1_cache/xjtu_d17_pinn_rebuild/p34_final_forward_core_promotion/model/best_model_and_latents.pt",
+    "no_state_label_audit": "E:/XJTU battery dataset/_gv1_cache/xjtu_d17_pinn_rebuild/audit/no_state_label_audit.json",
+    "softlabel_root": "E:/XJTU battery dataset/_gv1_cache/xjtu_softlabels_p2dlite_rg_v1_D15_ALL55_FINAL",
+    "output_root": "E:/XJTU battery dataset/_gv1_cache/xjtu_d17_pinn_rebuild"
+  },
+  "p4": {
+    "n_r": 17,
+    "time_window_s": 40000.0,
+    "max_time_points": 512,
+    "adaptation_steps": 120,
+    "train_adaptation_steps": 80,
+    "validation_adaptation_steps": 120,
+    "frozen_test_adaptation_steps": 120,
+    "flagged_probe_adaptation_steps": 80,
+    "adaptation_lr": 0.010,
+    "gradient_clip_norm": 10.0,
+    "device": "auto",
+    "train_profile_limit": -1,
+    "validation_profile_limit": -1,
+    "frozen_test_profile_limit": -1,
+    "flagged_probe_profile_limit": -1,
+    "promotion_r2_mean_threshold": 0.98,
+    "promotion_r2_min_profile_threshold": 0.95,
+    "softlabels_report_only": true,
+    "no_p3_candidate_modification": true
+  },
+  "model": {
+    "hidden_dim": 96,
+    "latent_hidden_dim": 96,
+    "delta_layers": 3,
+    "delta_amp_fraction": 0.014,
+    "enable_low_transition_residual": true,
+    "enable_voltage_inverse_residual": true,
+    "voltage_inverse_residual_amp_V": 0.055,
+    "voltage_inverse_residual_gate_mode": "d12_transition_fade",
+    "enable_voltage_basis_residual": true,
+    "voltage_basis_residual_amp_V": 0.035,
+    "voltage_basis_count": 10,
+    "voltage_basis_formula_mode": "d12_transition_fade",
+    "use_observed_voltage_for_gate": true
+  },
+  "d12_transition_fade": {
+    "low_v": 2.75,
+    "normal_v": 3.05,
+    "low_width_v": 0.055,
+    "transition_width_v": 0.080,
+    "transition_gain": 0.70,
+    "non_low_preservation_floor": 0.02
+  },
+  "p4_adaptation_loss_weights": {
+    "voltage": 0.9,
+    "forward_voltage": 2.0,
+    "diffusion_pde": 0.00000008,
+    "surface_flux": 0.00015,
+    "cbar_inventory": 0.10,
+    "zero_mean_delta": 2.0,
+    "ocp_bv_closure": 0.0001,
+    "gauge_smooth": 0.0001,
+    "prior_z": 0.0007,
+    "residual_preservation": 0.014,
+    "state_bounds": 0.8,
+    "inverse_residual_regularization": 0.0020
+  },
+  "checkpoint_selection": {
+    "use_voltage_metrics": false,
+    "use_physics_metrics": false,
+    "use_no_drift_metrics": false,
+    "use_state_softlabel_metrics": false,
+    "use_frozen_test_metrics": false,
+    "note": "P4 does not select checkpoint; it uses the frozen P3.4 candidate."
+  },
+  "audit": {
+    "no_state_label_training": true,
+    "split_manifest_locked": true,
+    "no_oracle_theta0": true,
+    "no_test_feedback": true,
+    "battery8_policy": "flagged_probe",
+    "softlabels_report_only": true,
+    "state_softlabels_used_for_inference_or_adaptation": false,
+    "notes": "P4 predictions are generated first from replay_npz observed fields. Soft labels are loaded only afterward for report-only state metrics."
+  },
+  "experiment": {
+    "protocol_name": "D17-P4_REPORT_ONLY_STATE_AUDIT",
+    "scorecard_filename": "D17_P4_SCORECARD.json"
+  }
+}

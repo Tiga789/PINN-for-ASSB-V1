@@ -1,0 +1,50 @@
+{
+  "protocol": "D17-G1.5R_STRATIFIED_INTERNAL_HELDOUT_COVERAGE_REPAIR",
+  "seed": 20260615,
+  "torch_num_threads": 2,
+  "internal_heldout_profile_count": 4,
+  "min_fit_per_protocol": 1,
+  "max_internal_per_protocol": 1,
+  "force_fit_profile_contains": [
+    "Batch-4_R3_battery-4"
+  ],
+  "model": {
+    "width": 896,
+    "depth": 8,
+    "profile_width": 256,
+    "dropout": 0.05,
+    "phie_direct_width": 320,
+    "weight_decay": 0.000002,
+    "min_lr": 0.00001,
+    "grad_clip_norm": 5.0
+  },
+  "target_group_weights": {
+    "theta_a": 1.5,
+    "theta_c": 1.5,
+    "cs_a": 1.0,
+    "cs_c": 1.0,
+    "phie": 16.0,
+    "phis_c": 3.0
+  },
+  "phie_focus_epochs": 180,
+  "phie_focus_multiplier": 1.4,
+  "non_phie_focus_scale": 0.85,
+  "eval_every": 50,
+  "fit_status_r2_mean_threshold": 0.98,
+  "fit_status_r2_min_threshold": 0.95,
+  "fit_train_r2_mean_threshold": 0.99,
+  "fit_train_r2_min_threshold": 0.97,
+  "internal_heldout_r2_mean_threshold": 0.95,
+  "internal_heldout_r2_min_threshold": 0.90,
+  "internal_phie_r2_mean_threshold": 0.90,
+  "internal_phie_r2_min_threshold": 0.85,
+  "validation_r2_mean_threshold": 0.95,
+  "validation_r2_min_threshold": 0.90,
+  "validation_phie_r2_mean_threshold": 0.93,
+  "validation_phie_r2_min_threshold": 0.90,
+  "notes": [
+    "G1.5 showed G1.4 internal-heldout failure was dominated by Batch-4_R3_battery-4/phie and protocol coverage mismatch.",
+    "This run pins Batch-4_R3_battery-4 to fit-train and selects internal-heldout profiles stratified by protocol.",
+    "Validation soft labels remain report-only; frozen-test is not read. This is not G2."
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "purpose": "D17-G6.3 fast P4D/GEO generator formula forensics; no training and no radial solver.",
+  "require_branch_contains": "P4D",
+  "capacity_scale_Ah": 2.0,
+  "theta_positive_initial": 0.90,
+  "theta_negative_initial": 0.08,
+  "theta_min_a": 0.0079,
+  "theta_max_a": 0.8544,
+  "theta_min_c": 0.2535,
+  "theta_max_c": 0.9149,
+  "csmax_a_mol_m3": 31500.0,
+  "csmax_c_mol_m3": 50500.0,
+  "pass_r2_gate": 0.99,
+  "review_r2_gate": 0.90,
+  "notes": [
+    "This script compares P4D/GEO soft-label theta mean against multiple replay-current integral formula families.",
+    "It intentionally does not run generate_rg_profile or any training.",
+    "If config formula fails but fitted sign/intercept/capacity succeeds, patch direction is identified.",
+    "If no formula family succeeds, stop and inspect D15-P4D generator output semantics rather than retraining."
+  ]
+}

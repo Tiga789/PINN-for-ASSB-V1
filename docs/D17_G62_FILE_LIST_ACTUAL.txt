@@ -1,0 +1,7 @@
+configs/d17_g62_p4d_geo_semantic_inventory_patch.json
+docs/D17_G62_FILE_LIST_ACTUAL.txt
+gv1/d17_g/g62_p4d_inventory_patch.py
+scripts/d17_g62_inspect_summary.py
+scripts/d17_g62_p4d_geo_semantic_patch_audit.py
+scripts/d17_g62_p4d_inventory_equivalence_smoke.py
+README_D17_G62_P4D_GEO_SEMANTIC_PATCH.md

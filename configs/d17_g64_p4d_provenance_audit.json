@@ -1,0 +1,39 @@
+{
+  "branch_hint": "P4D",
+  "generator_files": [
+    "scripts/d15_p4d_full_generate_one_rg_softlabel.py",
+    "scripts/d15_p4d_generate_one_smoke_profile.py",
+    "configs/d15_p4d_full_remaining14_config.json",
+    "gv1/p2dlite_rg/radial_solver.py",
+    "gv1/p2dlite_rg/io_utils.py",
+    "gv1/p2dlite_rg/data.py"
+  ],
+  "extra_globs": [
+    "scripts/*p4d*.py",
+    "configs/*p4d*.json",
+    "configs/*P4D*.json",
+    "configs/*D15*P4D*.json"
+  ],
+  "config_globs": [
+    "configs/*p4d*.json",
+    "configs/*P4D*.json",
+    "configs/*D15*P4D*.json"
+  ],
+  "grep_patterns": [
+    "_cum_theta_from_current",
+    "theta_positive_initial",
+    "theta_negative_initial",
+    "capacity_scale_Ah",
+    "phie_ohmic_scale_V_per_A",
+    "phis_c_soft",
+    "voltage_exp",
+    "cycle_id",
+    "generate_rg_profile",
+    "source_profile",
+    "source_replay",
+    "sha256",
+    "soft_label_summary",
+    "theta_c",
+    "theta_a"
+  ]
+}

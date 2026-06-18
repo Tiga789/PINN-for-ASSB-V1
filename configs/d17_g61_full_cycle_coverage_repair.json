@@ -1,0 +1,42 @@
+{
+  "protocol": "D17-G6.1_FULL_CYCLE_COVERAGE_REPAIR",
+  "seed": 20260615,
+  "model": {
+    "width": 960,
+    "depth": 8,
+    "profile_width": 320,
+    "dropout": 0.05,
+    "phie_direct_width": 384
+  },
+  "target_group_weights": {
+    "theta_a": 2.0,
+    "theta_c": 2.0,
+    "cs_a": 1.3,
+    "cs_c": 1.3,
+    "phie": 18.0,
+    "phis_c": 3.5
+  },
+  "internal_heldout_profile_count": 6,
+  "force_fit_profile_contains": [
+    "Batch-4_R3_battery-4",
+    "Batch-5_random_walk_battery-8"
+  ],
+  "min_fit_per_protocol": 2,
+  "min_fit_per_semantic_branch": 2,
+  "min_fit_per_protocol_branch": 1,
+  "max_internal_per_protocol": 1,
+  "max_internal_per_semantic_branch": 4,
+  "fit_status_r2_mean_threshold": 0.98,
+  "fit_status_r2_min_threshold": 0.95,
+  "fit_train_r2_mean_threshold": 0.99,
+  "fit_train_r2_min_threshold": 0.97,
+  "internal_heldout_r2_mean_threshold": 0.95,
+  "internal_heldout_r2_min_threshold": 0.90,
+  "internal_phie_r2_mean_threshold": 0.90,
+  "internal_phie_r2_min_threshold": 0.85,
+  "validation_r2_mean_threshold": 0.95,
+  "validation_r2_min_threshold": 0.90,
+  "validation_phie_r2_mean_threshold": 0.93,
+  "validation_phie_r2_min_threshold": 0.90,
+  "full_cycle_coverage_note": "Use --time_window_s 0 and a larger --max_time_points, typically 2048/4096/8192, to train on full-profile time coverage rather than the first 40ks window."
+}

@@ -1,0 +1,23 @@
+{
+  "protocol": "D17-G6.2_P4D_GEO_SEMANTIC_INVENTORY_PATCH",
+  "seed": 20260615,
+  "purpose": "No-long-training repair for G6.1 full-cycle failure. Validate and apply a deterministic D15-P4D code-equivalent inventory layer for P4D/GEO/random_walk branch targets.",
+  "gates": {
+    "equivalence_mean_r2_threshold": 0.98,
+    "equivalence_min_r2_threshold": 0.95,
+    "patched_audit_mean_r2_threshold": 0.95,
+    "patched_audit_min_r2_threshold": 0.90
+  },
+  "policy": {
+    "training_performed": false,
+    "checkpoint_selection_performed": false,
+    "p4d_patch_uses_state_softlabels": false,
+    "softlabels_report_only_for_metrics": true,
+    "default_save_predictions": "none"
+  },
+  "notes": [
+    "G6.1 failed mainly on P4D/GEO theta_c inventory bias, not on phie. This package does not start another long training run.",
+    "Step A checks whether the D15-P4D deterministic current-integral generator rule reproduces P4D soft-label targets on the known failing profiles.",
+    "Step B evaluates the G6.1 checkpoint with P4D branch theta/cs/phie/phis predictions replaced by deterministic D15-P4D generator-equivalent outputs computed from observed t/I/V and prior JSON."
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "protocol": "D17-G4_FINAL_SCORECARD_SPEED_AUDIT",
+  "seed": 20260615,
+  "frozen_mean_r2_threshold": 0.95,
+  "frozen_min_r2_threshold": 0.9,
+  "frozen_phie_min_r2_threshold": 0.9,
+  "require_speed_pass": false,
+  "speed_warmup": 10,
+  "max_copy_artifact_mb": 50,
+  "notes": [
+    "G4 is report/export/speed-audit only. It does not train, select checkpoints, modify split, or use frozen-test feedback.",
+    "It requires G2.1 status=PASS/g3_ready=true and G3 status=PASS/promotion_status=PASS/g4_ready=true.",
+    "Speed audit is synthetic forward-only on the frozen checkpoint when the G3 model builder is available; it does not read soft labels."
+  ]
+}

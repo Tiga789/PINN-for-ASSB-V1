@@ -1,0 +1,37 @@
+{
+  "protocol": "D17-G1.3_VALIDATION_AWARE_GENERATOR_SURROGATE",
+  "seed": 20260615,
+  "torch_num_threads": 2,
+  "internal_heldout_profile_count": 2,
+  "eval_every": 50,
+  "min_epochs_before_early_stop": 300,
+  "early_stop_on_internal_pass": false,
+  "fit_status_r2_mean_threshold": 0.98,
+  "fit_status_r2_min_threshold": 0.95,
+  "fit_train_r2_mean_threshold": 0.99,
+  "fit_train_r2_min_threshold": 0.97,
+  "internal_heldout_r2_mean_threshold": 0.95,
+  "internal_heldout_r2_min_threshold": 0.9,
+  "validation_r2_mean_threshold": 0.95,
+  "validation_r2_min_threshold": 0.9,
+  "validation_phie_r2_mean_threshold": 0.9,
+  "validation_phis_c_r2_mean_threshold": 0.9,
+  "target_group_weights": {
+    "theta_a": 1.5,
+    "theta_c": 1.5,
+    "cs_a": 1.0,
+    "cs_c": 1.0,
+    "phie": 10.0,
+    "phis_c": 3.0
+  },
+  "model": {
+    "width": 768,
+    "depth": 7,
+    "profile_width": 224,
+    "dropout": 0.03,
+    "phie_direct_width": 224,
+    "weight_decay": 1e-06,
+    "grad_clip_norm": 5.0,
+    "min_lr": 1e-05
+  }
+}

@@ -1,0 +1,7 @@
+README_D17_G4_FINAL_SCORECARD_SPEED_AUDIT.md
+configs/d17_g4_final_scorecard_speed_audit.json
+docs/D17_G4_FILE_LIST_ACTUAL.txt
+gv1/d17_g/__init__.py
+gv1/d17_g/g4_finalization.py
+scripts/d17_g4_final_scorecard_speed_audit.py
+scripts/d17_g4_inspect_final.py

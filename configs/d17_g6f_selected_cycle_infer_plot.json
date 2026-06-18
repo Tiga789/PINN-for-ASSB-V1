@@ -1,0 +1,13 @@
+{
+  "protocol": "D17-G6F_SELECTED_CYCLE_ON_DEMAND_INFERENCE_AND_PLOTTING",
+  "default_metric_targets": ["cs_a", "cs_c", "phie", "phis_c"],
+  "default_plot_targets": ["cs_a", "cs_c"],
+  "r2_mean_gate": 0.98,
+  "r2_min_gate": 0.95,
+  "notes": [
+    "This stage performs no training and no checkpoint selection.",
+    "It loads a frozen D17-G candidate and performs on-demand selected-cycle inference.",
+    "Prediction arrays are not saved unless --save_temp_npz or --keep_temp_npz is explicitly used.",
+    "A selected-cycle PASS is local evidence for that requested cell/cycle range; full all-cell/all-cycle claims still require cycle-wise streaming audit."
+  ]
+}

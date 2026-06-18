@@ -1,0 +1,7 @@
+README_D17_G0_SEMANTIC_CLASSIFIER_PATCH_V2.md
+configs/d17_g0_generator_equivalence_audit.json
+docs/D17_G0_SEMANTIC_PATCH_FILE_LIST_ACTUAL.txt
+gv1/d17_g/__init__.py
+gv1/d17_g/generator_equivalence.py
+scripts/d17_g0_generator_equivalence_audit.py
+scripts/d17_g0_inspect_audit.py

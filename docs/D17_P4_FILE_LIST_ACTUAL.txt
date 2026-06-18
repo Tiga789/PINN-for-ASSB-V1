@@ -1,0 +1,6 @@
+gv1/d17_pinn/p4_state_audit.py
+scripts/d17_p4_report_only_state_audit.py
+scripts/d17_p4_inspect_scorecard.py
+configs/d17_pinn_rebuild_p4_report_only_state_audit.json
+docs/D17_P4_FILE_LIST_ACTUAL.txt
+README_D17_P4_REPORT_ONLY_STATE_AUDIT.md

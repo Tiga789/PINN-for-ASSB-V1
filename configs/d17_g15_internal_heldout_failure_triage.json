@@ -1,0 +1,18 @@
+{
+  "protocol": "D17-G1.5_INTERNAL_HELDOUT_FAILURE_TRIAGE",
+  "seed": 20260615,
+  "purpose": "Diagnose G1.4 internal-heldout failure before any G2 expansion. No training is performed.",
+  "thresholds": {
+    "internal_heldout_mean_r2_gate": 0.95,
+    "internal_heldout_min_r2_gate": 0.90,
+    "validation_mean_r2_reference": 0.95,
+    "validation_min_r2_reference": 0.90
+  },
+  "triage_policy": {
+    "training_performed": false,
+    "checkpoint_selection_performed": false,
+    "validation_softlabels_used_for_training": false,
+    "frozen_test_softlabels_used": false,
+    "not_a_G2_run": true
+  }
+}

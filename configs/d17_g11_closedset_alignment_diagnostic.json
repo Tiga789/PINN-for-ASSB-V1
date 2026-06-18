@@ -1,0 +1,55 @@
+{
+  "seed": 20260615,
+  "device": "auto",
+  "single_profile_count": 1,
+  "train_profile_count": 12,
+  "validation_profile_count": 3,
+  "max_time_points": 512,
+  "time_window_s": 40000.0,
+  "target_group_weights": {
+    "theta_a": 2.0,
+    "theta_c": 2.0,
+    "cs_a": 1.0,
+    "cs_c": 1.0,
+    "phie": 2.0,
+    "phis_c": 2.0
+  },
+  "single_profile_overfit": {
+    "epochs": 500,
+    "lr": 0.001,
+    "batch_size": 512,
+    "eval_every": 50,
+    "pass_r2_mean_threshold": 0.995,
+    "pass_r2_min_threshold": 0.98,
+    "model": {
+      "seed": 20260615,
+      "width": 512,
+      "depth": 6,
+      "dropout": 0.0,
+      "weight_decay": 0.0,
+      "min_lr": 1e-05,
+      "grad_clip_norm": 5.0
+    },
+    "min_epochs_before_early_stop": 120,
+    "early_stop_on_pass": true
+  },
+  "closedset_train": {
+    "epochs": 550,
+    "lr": 0.0008,
+    "batch_size": 1024,
+    "eval_every": 50,
+    "pass_r2_mean_threshold": 0.98,
+    "pass_r2_min_threshold": 0.95,
+    "model": {
+      "seed": 20260615,
+      "width": 512,
+      "depth": 6,
+      "dropout": 0.0,
+      "weight_decay": 1e-06,
+      "min_lr": 1e-05,
+      "grad_clip_norm": 5.0
+    },
+    "min_epochs_before_early_stop": 180,
+    "early_stop_on_pass": true
+  }
+}

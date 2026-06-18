@@ -1,0 +1,15 @@
+{
+  "protocol": "D17-G7-S0_FULLCYCLE_SAMPLING_DATA_COVERAGE_AUDIT",
+  "description": "No-training full-cycle coverage audit and deterministic sampling-plan builder for G7 full-cycle surrogate smoke.",
+  "default_seed": 20260615,
+  "default_splits": "train,validation",
+  "default_max_time_points_per_profile": 4096,
+  "default_prefer_time_source": "softlabel",
+  "default_min_cycle_coverage_fraction": 0.95,
+  "default_min_phase_fraction": 0.05,
+  "notes": [
+    "This stage must not train a model or select a checkpoint.",
+    "This stage reads time/cycle arrays only and avoids large state arrays.",
+    "Use --write_sample_points when preparing for S1 training."
+  ]
+}

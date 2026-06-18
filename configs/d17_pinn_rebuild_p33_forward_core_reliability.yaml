@@ -1,0 +1,115 @@
+d17_protocol_version: 3.3
+experiment_name: d17_p33_forward_core_reliability_audit
+mode: voltage_informed_inverse_pinn_no_state_labels_forward_core_audit
+seed: 20260615
+paths:
+  split_manifest: E:/XJTU battery dataset/_gv1_cache/xjtu_d17_pinn_rebuild/split/d17_split_manifest.json
+  resolved_spec: configs/resolved_p2dlite_spec_placeholder.json
+  output_root: E:/XJTU battery dataset/_gv1_cache/xjtu_d17_pinn_rebuild
+train:
+  split: train
+  profile_count: 12
+  time_window_s: 40000.0
+  max_time_points: 512
+  n_r: 17
+  epochs: 170
+  warmup_epochs: 25
+  voltage_recovery_until_epoch: 125
+  lr: 0.0009
+  weight_decay: 0.000001
+  device: auto
+  gradient_clip_norm: 10.0
+  allow_softlabel_npz_profile_source: false
+validation:
+  split: validation
+  profile_count: 6
+  adaptation_steps: 90
+  adaptation_lr: 0.012
+model:
+  hidden_dim: 96
+  latent_hidden_dim: 96
+  delta_layers: 3
+  delta_amp_fraction: 0.014
+  enable_low_transition_residual: true
+  enable_voltage_inverse_residual: true
+  voltage_inverse_residual_amp_V: 0.16
+  voltage_inverse_residual_gate_mode: d12_transition_fade
+  enable_voltage_basis_residual: true
+  voltage_basis_residual_amp_V: 0.095
+  voltage_basis_count: 10
+  voltage_basis_formula_mode: d12_transition_fade
+  use_observed_voltage_for_gate: true
+d12_transition_fade:
+  low_v: 2.75
+  normal_v: 3.05
+  low_width_v: 0.055
+  transition_width_v: 0.080
+  transition_gain: 0.70
+  non_low_preservation_floor: 0.02
+loss_weights_warmup:
+  voltage: 1.2
+  diffusion_pde: 0.000000002
+  surface_flux: 0.00005
+  cbar_inventory: 0.03
+  zero_mean_delta: 2.0
+  ocp_bv_closure: 0.00005
+  gauge_smooth: 0.00005
+  prior_z: 0.00005
+  residual_preservation: 0.003
+  state_bounds: 0.3
+  inverse_residual_regularization: 0.00008
+loss_weights_recovery:
+  voltage: 1.7
+  diffusion_pde: 0.00000001
+  surface_flux: 0.00008
+  cbar_inventory: 0.04
+  zero_mean_delta: 2.0
+  ocp_bv_closure: 0.00005
+  gauge_smooth: 0.00005
+  prior_z: 0.00008
+  residual_preservation: 0.006
+  state_bounds: 0.35
+  inverse_residual_regularization: 0.00012
+loss_weights:
+  voltage: 0.9
+  diffusion_pde: 0.00000025
+  surface_flux: 0.00035
+  cbar_inventory: 0.08
+  zero_mean_delta: 2.0
+  ocp_bv_closure: 0.0001
+  gauge_smooth: 0.0001
+  prior_z: 0.00045
+  residual_preservation: 0.010
+  state_bounds: 0.7
+  inverse_residual_regularization: 0.0010
+validation_loss_weights:
+  voltage: 1.5
+  diffusion_pde: 0.00000005
+  surface_flux: 0.0001
+  cbar_inventory: 0.08
+  zero_mean_delta: 2.0
+  ocp_bv_closure: 0.0001
+  gauge_smooth: 0.0001
+  prior_z: 0.0005
+  residual_preservation: 0.010
+  state_bounds: 0.7
+  inverse_residual_regularization: 0.0008
+checkpoint_selection:
+  use_voltage_metrics: true
+  use_physics_metrics: true
+  use_no_drift_metrics: true
+  use_state_softlabel_metrics: false
+  use_frozen_test_metrics: false
+audit:
+  no_state_label_training: true
+  split_manifest_locked: true
+  no_oracle_theta0: true
+  no_test_feedback: true
+  battery8_policy: flagged_probe
+  corrected_voltage_mae_target_V: 0.06
+  corrected_voltage_mae_review_threshold_V: 0.12
+  forward_voltage_mae_target_V: 0.09
+  residual_abs_mean_budget_V: 0.06
+  residual_abs_max_budget_V: 0.16
+  zero_mean_threshold_mol_m3: 0.01
+  mechanism_bounds_required: true

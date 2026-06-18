@@ -5,6 +5,253 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7b854bbc-0a8a-4911-bc87-dd9f1f68d852" name="更改" comment="">
+      <change afterPath="$PROJECT_DIR$/README_D17_G0_GENERATOR_EQUIVALENCE_AUDIT.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_D17_G0_SEMANTIC_CLASSIFIER_PATCH_V2.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_D17_G11_CLOSEDSET_ALIGNMENT_DIAGNOSTIC.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_D17_G12_PHIE_GAUGE_CLOSEDSET_REPAIR.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_D17_G13_VALIDATION_AWARE_SURROGATE.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_D17_G14_PHIE_VALIDATION_ROBUSTNESS.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_D17_G15R_STRATIFIED_HELDOUT_REPAIR.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_D17_G15_INTERNAL_HELDOUT_FAILURE_TRIAGE.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_D17_G1_SUPERVISED_SURROGATE_SMOKE.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_D17_G1_TIME_ALIGNMENT_PATCH_V1.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_D17_G21_P4D_BRANCH_REPAIR.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_D17_G2_HELDOUT_SURROGATE_EXPANSION.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_D17_G3_FROZEN_TEST_REPORT_ONLY_AUDIT.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_D17_G4_FINAL_SCORECARD_SPEED_AUDIT.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_D17_G5_FINAL_RELEASE.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_D17_G62L_FAST_P4D_GEO_PATCH.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_D17_G62_P4D_GEO_SEMANTIC_PATCH.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_D17_G63_P4D_GENERATOR_FORMULA_FORENSICS.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_D17_G64_P4D_PROVENANCE_AUDIT.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_D17_G65_EXACT_PROVENANCE_REPLAY.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_D17_G6F_SELECTED_CYCLE_INFER_PLOT.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_D17_G6_FULL_ALLCELL_ALLCYCLE_AUDIT.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_D17_G7S0_FULLCYCLE_SAMPLING_AUDIT.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_D17_G7S1_SMALL_FULLCYCLE_SMOKE.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_D17_G_PLOT_CS3D_INTERACTIVE.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_D17_P0_P1.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_D17_P1_SPLIT_PATCH.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_D17_P1_SPLIT_PATCH_V3.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_D17_P2.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_D17_P2_PATCH_NoPyYAML.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_D17_P31_12PROFILE_MECHANISM_SMOKE.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_D17_P32_AGGRESSIVE_VOLTAGE_RECOVERY.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_D17_P33_FORWARD_CORE_RELIABILITY_AUDIT.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_D17_P34V_FINAL_VALIDATION_POLISH.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_D17_P34_FINAL_FORWARD_CORE_PROMOTION.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_D17_P3_6PROFILE_MECHANISM_SMOKE.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_D17_P3_HARD_BOUNDS_PATCH_v2.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_D17_P3_ZERO_MEAN_PATCH_v1.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_D17_P4MINI_ADAPTATION_DIAGNOSTIC.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_D17_P4_REPORT_ONLY_STATE_AUDIT.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d17_g0_generator_equivalence_audit.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d17_g11_closedset_alignment_diagnostic.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d17_g12_phie_gauge_closedset_repair.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d17_g13_validation_aware_surrogate.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d17_g14_phie_validation_robustness.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d17_g15_internal_heldout_failure_triage.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d17_g15r_stratified_heldout_repair.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d17_g1_supervised_surrogate_smoke.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d17_g21_p4d_branch_repair.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d17_g2_heldout_surrogate_expansion.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d17_g3_frozen_test_report_only_audit.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d17_g4_final_scorecard_speed_audit.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d17_g5_final_release.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d17_g61_full_cycle_coverage_repair.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d17_g62_p4d_geo_semantic_inventory_patch.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d17_g62l_fast_p4d_geo_patch.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d17_g63_p4d_generator_formula_forensics.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d17_g64_p4d_provenance_audit.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d17_g65_exact_provenance_replay.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d17_g6_full_allcell_allcycle_audit.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d17_g6f_selected_cycle_infer_plot.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d17_g7s0_fullcycle_sampling_audit.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d17_g7s1_small_fullcycle_smoke.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d17_pinn_p2_smoke.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d17_pinn_rebuild_p2_smoke.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d17_pinn_rebuild_p2_smoke.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d17_pinn_rebuild_p31_12profile_smoke.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d17_pinn_rebuild_p31_12profile_smoke.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d17_pinn_rebuild_p32_12profile_voltage_recovery.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d17_pinn_rebuild_p32_12profile_voltage_recovery.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d17_pinn_rebuild_p33_forward_core_reliability.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d17_pinn_rebuild_p33_forward_core_reliability.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d17_pinn_rebuild_p34_final_forward_core_promotion.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d17_pinn_rebuild_p34_final_forward_core_promotion.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d17_pinn_rebuild_p34v_validation_voltage_polish.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d17_pinn_rebuild_p3_6profile_smoke.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d17_pinn_rebuild_p3_6profile_smoke.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d17_pinn_rebuild_p4_report_only_state_audit.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d17_pinn_rebuild_p4mini_adaptation_diagnostic.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d17_pinn_rebuild_smoke.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/d17_split_policy_seed20260615.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/resolved_p2dlite_spec_placeholder.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D17_G0_FILE_LIST_ACTUAL.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D17_G0_SEMANTIC_PATCH_FILE_LIST_ACTUAL.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D17_G11_FILE_LIST_ACTUAL.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D17_G12_FILE_LIST_ACTUAL.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D17_G13_FILE_LIST_ACTUAL.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D17_G14_FILE_LIST_ACTUAL.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D17_G15R_FILE_LIST_ACTUAL.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D17_G15_FILE_LIST_ACTUAL.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D17_G1_FILE_LIST_ACTUAL.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D17_G1_TIME_ALIGNMENT_PATCH_V1_FILE_LIST.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D17_G21_FILE_LIST_ACTUAL.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D17_G2_FILE_LIST_ACTUAL.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D17_G3_FILE_LIST_ACTUAL.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D17_G4_FILE_LIST_ACTUAL.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D17_G5_FILE_LIST_ACTUAL.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D17_G61_FILE_LIST_ACTUAL.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D17_G62L_FILE_LIST_ACTUAL.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D17_G62_FILE_LIST_ACTUAL.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D17_G63_FILE_LIST_ACTUAL.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D17_G64_FILE_LIST_ACTUAL.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D17_G65_FILE_LIST_ACTUAL.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D17_G6F_FILE_LIST_ACTUAL.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D17_G6_FILE_LIST_ACTUAL.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D17_G7S0_FILE_LIST_ACTUAL.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D17_G7S1_FILE_LIST_ACTUAL.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D17_G_PLOT_CS3D_FILE_LIST_ACTUAL.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D17_G_PLOT_CS3D_V2_FILE_LIST_ACTUAL.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D17_P2_FILE_LIST.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D17_P31_FILE_LIST.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D17_P32_FILE_LIST_ACTUAL.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D17_P33_FILE_LIST_ACTUAL.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D17_P34V_FILE_LIST_ACTUAL.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D17_P34_FILE_LIST_ACTUAL.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D17_P3_FILE_LIST.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D17_P3_FILE_LIST_ACTUAL.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D17_P4MINI_FILE_LIST_ACTUAL.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/D17_P4_FILE_LIST_ACTUAL.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/PACKAGE_FILE_LIST.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/d17_g/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/d17_g/g11_diagnostics.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/d17_g/g12_model.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/d17_g/g12_trainer.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/d17_g/g13_model.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/d17_g/g13_trainer.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/d17_g/g14_model.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/d17_g/g14_trainer.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/d17_g/g15_triage.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/d17_g/g15r_trainer.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/d17_g/g1_data.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/d17_g/g1_metrics.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/d17_g/g1_model.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/d17_g/g1_trainer.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/d17_g/g21_p4d_branch_tools.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/d17_g/g2_trainer.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/d17_g/g3_frozen_audit.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/d17_g/g4_finalization.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/d17_g/g5_release.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/d17_g/g61_tools.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/d17_g/g62_lite_patch.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/d17_g/g62_p4d_inventory_patch.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/d17_g/g63_forensics.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/d17_g/g64_provenance_audit.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/d17_g/g65_exact_replay.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/d17_g/g6_full_cycle_audit.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/d17_g/g6f_selected_cycle_infer.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/d17_g/generator_equivalence.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/d17_pinn/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/d17_pinn/audits.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/d17_pinn/cbar_core.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/d17_pinn/config.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/d17_pinn/d12_transition_fade.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/d17_pinn/dataset.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/d17_pinn/electrochem_closure.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/d17_pinn/evaluator.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/d17_pinn/latent_adapter.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/d17_pinn/losses.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/d17_pinn/model.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/d17_pinn/p2dlite_prior.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/d17_pinn/p31_trainer.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/d17_pinn/p32_trainer.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/d17_pinn/p33_trainer.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/d17_pinn/p34_resolved_spec.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/d17_pinn/p3_trainer.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/d17_pinn/p4_state_audit.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/d17_pinn/radial_fv_core.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/d17_pinn/spec_resolver.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/d17_pinn/torch_ops.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/d17_pinn/trainer.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gv1/d17_pinn/voltage_polish.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_audit_no_state_label_inputs.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_freeze_evidence.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_g0_generator_equivalence_audit.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_g0_inspect_audit.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_g11_closedset_alignment_diagnostic.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_g11_inspect_summary.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_g12_inspect_summary.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_g12_phie_gauge_closedset_repair.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_g13_inspect_summary.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_g13_validation_aware_surrogate.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_g14_inspect_summary.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_g14_phie_validation_robustness.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_g15_inspect_summary.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_g15_internal_heldout_failure_triage.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_g15r_inspect_summary.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_g15r_stratified_heldout_repair.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_g1_inspect_summary.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_g1_supervised_surrogate_smoke.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_g21_inspect_summary.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_g21_p4d_branch_failure_isolation.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_g21_p4d_branch_repair.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_g2_heldout_surrogate_expansion.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_g2_inspect_summary.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_g3_frozen_test_report_only_audit.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_g3_inspect_scorecard.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_g4_final_scorecard_speed_audit.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_g4_inspect_final.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_g5_final_release.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_g5_inspect_release.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_g61_full_cycle_coverage_repair.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_g61_inspect_summary.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_g62_inspect_summary.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_g62_p4d_geo_semantic_patch_audit.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_g62_p4d_inventory_equivalence_smoke.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_g62l_formula_only_inventory_check.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_g62l_inspect_summary.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_g62l_model_patch_smoke.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_g63_inspect_summary.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_g63_p4d_generator_forensics.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_g64_inspect_summary.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_g64_p4d_provenance_audit.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_g65_exact_provenance_replay.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_g65_inspect_summary.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_g6_full_allcell_allcycle_audit.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_g6_inspect_scorecard.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_g6f_inspect_selected_cycle_summary.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_g6f_selected_cycle_infer_plot.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_g7s0_fullcycle_sampling_audit.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_g7s0_inspect_summary.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_g7s1_inspect_summary.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_g7s1_small_fullcycle_smoke.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_g_plot_cs3d_interactive.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_make_split_manifest.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_p2_smoke_train.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_p2_synthetic_smoke.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_p31_inspect_summary.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_p31_mechanism_smoke_12profile.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_p32_aggressive_voltage_recovery_12profile.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_p32_inspect_summary.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_p33_forward_core_reliability_audit.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_p33_inspect_summary.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_p34_final_forward_core_promotion.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_p34_inspect_summary.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_p34v_inspect_summary.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_p34v_validation_voltage_polish.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_p3_inspect_summary.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_p3_mechanism_smoke_6profile.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_p4_inspect_scorecard.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_p4_report_only_state_audit.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_p4mini_adaptation_diagnostic.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/d17_p4mini_inspect_summary.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/gv1_eval_d17_pinn_rebuild.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/gv1_train_d17_pinn_rebuild.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/pinn_spm_param.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/pinn_spm_param.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -64,9 +311,9 @@
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1" />
       <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\scripts" />
+      <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\docs" />
       <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\configs" />
-      <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\gv1" />
-      <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\gv1\p2dlite_rg_nn_precision" />
+      <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1\gv1\d17_g" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1" />
@@ -149,7 +396,9 @@
       <workItem from="1776793294745" duration="2000" />
       <workItem from="1776796578394" duration="75259000" />
       <workItem from="1777704900369" duration="98542000" />
-      <workItem from="1778744192031" duration="375753000" />
+      <workItem from="1778744192031" duration="404427000" />
+      <workItem from="1781556046795" duration="82000" />
+      <workItem from="1781577406528" duration="28670000" />
     </task>
     <servers />
   </component>

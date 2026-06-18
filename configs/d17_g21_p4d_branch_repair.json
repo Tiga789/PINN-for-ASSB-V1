@@ -1,0 +1,54 @@
+{
+  "protocol": "D17-G2.1_P4D_BRANCH_REPAIR",
+  "seed": 20260615,
+  "torch_num_threads": 2,
+  "internal_heldout_profile_count": 6,
+  "min_fit_per_group": 2,
+  "max_internal_per_group": 1,
+  "force_fit_profile_contains": [
+    "Batch-4_R3_battery-4",
+    "Batch-5_random_walk_battery-8"
+  ],
+  "model": {
+    "width": 960,
+    "depth": 8,
+    "profile_width": 288,
+    "dropout": 0.05,
+    "phie_direct_width": 384,
+    "weight_decay": 0.000002,
+    "min_lr": 0.00001,
+    "grad_clip_norm": 5.0
+  },
+  "target_group_weights": {
+    "theta_a": 1.8,
+    "theta_c": 1.8,
+    "cs_a": 1.2,
+    "cs_c": 1.2,
+    "phie": 12.0,
+    "phis_c": 3.0
+  },
+  "phie_focus_epochs": 180,
+  "phie_focus_multiplier": 1.15,
+  "non_phie_focus_scale": 0.90,
+  "eval_every": 50,
+  "fit_status_r2_mean_threshold": 0.98,
+  "fit_status_r2_min_threshold": 0.95,
+  "fit_train_r2_mean_threshold": 0.99,
+  "fit_train_r2_min_threshold": 0.97,
+  "internal_heldout_r2_mean_threshold": 0.95,
+  "internal_heldout_r2_min_threshold": 0.90,
+  "internal_phie_r2_mean_threshold": 0.90,
+  "internal_phie_r2_min_threshold": 0.85,
+  "validation_r2_mean_threshold": 0.95,
+  "validation_r2_min_threshold": 0.90,
+  "validation_phie_r2_mean_threshold": 0.93,
+  "validation_phie_r2_min_threshold": 0.90,
+  "notes": [
+    "G2.1 is not a G3/frozen-test run.",
+    "Training uses train-cell soft labels as supervised generator-surrogate targets.",
+    "Validation soft labels remain report-only and are not used for checkpoint selection.",
+    "Frozen-test soft labels are not read.",
+    "Batch-5_random_walk_battery-8 is pinned into fit-train to test whether the G2 failure was a P4D/random_walk coverage issue.",
+    "Internal heldout is limited to one profile per protocol+branch group with at least two fit profiles preserved."
+  ]
+}

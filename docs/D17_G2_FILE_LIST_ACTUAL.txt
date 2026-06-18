@@ -1,0 +1,9 @@
+README_D17_G2_HELDOUT_SURROGATE_EXPANSION.md
+configs/d17_g2_heldout_surrogate_expansion.json
+docs/D17_G2_FILE_LIST_ACTUAL.txt
+gv1/d17_g/__pycache__/g2_trainer.cpython-313.pyc
+gv1/d17_g/g2_trainer.py
+scripts/__pycache__/d17_g2_heldout_surrogate_expansion.cpython-313.pyc
+scripts/__pycache__/d17_g2_inspect_summary.cpython-313.pyc
+scripts/d17_g2_heldout_surrogate_expansion.py
+scripts/d17_g2_inspect_summary.py

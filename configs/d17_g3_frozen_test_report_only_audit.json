@@ -1,0 +1,16 @@
+{
+  "protocol": "D17-G3_FROZEN_TEST_REPORT_ONLY_AUDIT",
+  "seed": 20260615,
+  "require_g21_ready": true,
+  "predict_batch_size": 8192,
+  "frozen_r2_mean_threshold": 0.95,
+  "frozen_r2_min_threshold": 0.9,
+  "frozen_phie_r2_mean_threshold": 0.93,
+  "frozen_phie_r2_min_threshold": 0.9,
+  "notes": [
+    "G3 is a one-time frozen-test report-only audit of the G2.1 candidate.",
+    "No training, no checkpoint selection, no split editing, and no frozen-test feedback is performed.",
+    "Train-cell soft labels were used upstream in G2.1 supervised generator-surrogate training; frozen-test soft labels are used only for this report-only metric computation.",
+    "Flagged probe is reported separately and is not used for normal promotion."
+  ]
+}

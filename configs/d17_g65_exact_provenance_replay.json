@@ -1,0 +1,13 @@
+{
+  "protocol": "D17-G6.5_EXACT_PROVENANCE_REPLAY_TEST",
+  "exact_replay_min_r2_gate": 0.999,
+  "diagnostic_affine_min_r2_gate": 0.995,
+  "d15_p4d_config": "configs/d15_p4d_full_remaining14_config.json",
+  "prior_json": null,
+  "notes": [
+    "No training is performed.",
+    "No radial solver is run.",
+    "This test only checks whether P4D/GEO theta_a/theta_c mean inventory can be replayed from provenance/config/replay current on a small sampled grid.",
+    "If exact_replay_ready=false, do not train or patch. Inspect D17_G65_FORMULA_CANDIDATE_METRICS.csv."
+  ]
+}

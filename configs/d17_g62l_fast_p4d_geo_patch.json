@@ -1,0 +1,27 @@
+{
+  "default_profile_contains": [
+    "Batch-6_GEO_battery-2",
+    "Batch-6_GEO_battery-5"
+  ],
+  "formula_inventory_min_r2_threshold": 0.90,
+  "model_patch_gates": {
+    "mean_r2": 0.95,
+    "min_r2": 0.90
+  },
+  "override_phie": true,
+  "override_phis_c": true,
+  "p4d_generation": {
+    "capacity_scale_Ah": 2.0,
+    "theta_positive_initial": 0.90,
+    "theta_negative_initial": 0.08,
+    "theta_positive_min": 0.2535,
+    "theta_positive_max": 0.9149,
+    "theta_negative_min": 0.0079,
+    "theta_negative_max": 0.8544,
+    "csmax_positive_mol_m3": 50500.0,
+    "csmax_negative_mol_m3": 31500.0,
+    "phie_ohmic_scale_V_per_A": -0.015,
+    "theta_c_current_sign": -1.0,
+    "theta_a_current_sign": 1.0
+  }
+}

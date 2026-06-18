@@ -1,0 +1,3 @@
+# JSON config is authoritative for P3.4. Use:
+#   configs/d17_pinn_rebuild_p34_final_forward_core_promotion.json
+# This YAML is intentionally minimal to avoid PyYAML dependency issues.

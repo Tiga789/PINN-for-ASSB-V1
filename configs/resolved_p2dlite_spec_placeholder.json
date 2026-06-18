@@ -1,0 +1,9 @@
+{
+  "schema": "D17 placeholder resolved P2Dlite spec; no state labels; replace with D15 generator resolved prior when available",
+  "cell": {"format": "Lishen 18650 NCM523/graphite assumed"},
+  "Q_nominal_Ah": 2.0,
+  "temperature_C": 25.0,
+  "Rohm_Ohm": 0.035,
+  "capacity": {"Q_eff_scale_range": [0.6, 1.2]},
+  "voltage": {"offset_V": 0.0}
+}

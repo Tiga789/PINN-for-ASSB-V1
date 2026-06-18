@@ -1,0 +1,7 @@
+README_D17_G5_FINAL_RELEASE.md
+configs/d17_g5_final_release.json
+docs/D17_G5_FILE_LIST_ACTUAL.txt
+gv1/d17_g/__init__.py
+gv1/d17_g/g5_release.py
+scripts/d17_g5_final_release.py
+scripts/d17_g5_inspect_release.py

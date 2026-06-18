@@ -1,0 +1,19 @@
+{
+  "protocol": "D17-P3.4V_FINAL_VALIDATION_CORRECTED_MAE_POLISH",
+  "target_mae_V": 0.060,
+  "review_threshold_V": 0.100,
+  "residual_cap_V": 0.035,
+  "residual_mean_budget_V": 0.035,
+  "residual_max_budget_V": 0.100,
+  "ridge": 0.002,
+  "smooth_window": 41,
+  "include_time_terms": true,
+  "include_current_terms": true,
+  "include_d12_gate_terms": true,
+  "no_state_label_policy": {
+    "training_uses_state_softlabels": false,
+    "validation_polish_uses_state_softlabels": false,
+    "validation_polish_uses_observed_voltage": true,
+    "softlabel_npz_loaded": false
+  }
+}
