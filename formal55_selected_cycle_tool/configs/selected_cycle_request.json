@@ -1,0 +1,48 @@
+{
+  "request_name": "batch2_battery5_cycles35_37",
+  "selection": {
+    "batch": 6,
+    "battery": 2,
+    "cycles": "245-247"
+  },
+  "paths": {
+    "formal_root": "C:\\Users\\Tiga_QJW\\Desktop\\XJTUstation\\D18\\Formal-A",
+    "cache_root": "E:\\XJTU battery dataset\\_gv1_cache",
+    "deploy_model_root": "",
+    "output_root": ""
+  },
+  "runtime": {
+    "device": "cuda",
+    "inference_batch_size": 8192,
+    "target_stream_chunk_rows": 32768,
+    "radial_margin_fraction": 0.95,
+    "max_selected_points": 250000,
+    "allow_large_selection": false,
+    "verify_bundle_hashes": true
+  },
+  "evaluation": {
+    "variables": ["cs_a", "cs_c"],
+    "exact_match_r2_threshold": 0.999999,
+    "exact_match_nmae_threshold": 1e-8
+  },
+  "plot": {
+    "enabled": true,
+    "show_interactive": true,
+    "save_png": true,
+    "font_family": "Times New Roman",
+    "time_axis": "global",
+    "radial_axis": "physical",
+    "max_time_points": 800,
+    "prediction_cmap": "coolwarm",
+    "truth_cmap": "viridis",
+    "elevation_deg": 24,
+    "azimuth_deg": -58,
+    "figure_width_in": 11.5,
+    "figure_height_in": 7.5,
+    "dpi": 160
+  },
+  "output": {
+    "save_selected_npz": false,
+    "save_truth_in_npz": false
+  }
+}

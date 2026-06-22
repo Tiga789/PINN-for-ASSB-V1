@@ -1,0 +1,170 @@
+{
+  "package_version": "D18-S0_S1-FIX-v2.0.0",
+  "project": {
+    "project_root": "..",
+    "github_url": "https://github.com/Tiga789/PINN-for-ASSB-V1",
+    "target_claim": "55_cells_all_cycles_high_accuracy_full_cycle_generator_surrogate"
+  },
+  "paths": {
+    "output_root": "E:/XJTU battery dataset/_gv1_cache/xjtu_d18_fullcycle_fix",
+    "prior_p0_manifest": "E:/XJTU battery dataset/_gv1_cache/xjtu_d18_fullcycle/d18_p0_freeze/p0_freeze_manifest.json",
+    "d17_g_root": "E:/XJTU battery dataset/_gv1_cache/xjtu_d17_g",
+    "d17_p_root": "E:/XJTU battery dataset/_gv1_cache/xjtu_d17_pinn_rebuild",
+    "d17_split_manifest": "${d17_p_root}/split/d17_split_manifest.json"
+  },
+  "s0": {
+    "synthetic_seed": 1801,
+    "synthetic_batch_size": 3,
+    "synthetic_cycle_count": 7,
+    "synthetic_time_count": 257,
+    "model": {
+      "cycle_feature_dim": 20,
+      "local_feature_dim": 14,
+      "cycle_hidden_dim": 64,
+      "local_hidden_dim": 64,
+      "fused_hidden_dim": 96,
+      "branch_embed_dim": 8,
+      "branch_count": 2,
+      "radial_basis_count": 6,
+      "n_radial_a": 17,
+      "n_radial_c": 17,
+      "dropout": 0.0,
+      "max_radial_fraction_a": 0.18,
+      "max_radial_fraction_c": 0.18,
+      "potential_residual_scale": 0.25,
+      "gauge_scale": 0.25,
+      "theta_min": 0.0,
+      "theta_max": 1.0,
+      "physical_eps": 0.000001,
+      "min_inventory_margin": 0.00000001
+    }
+  },
+  "dense_casepack": {
+    "synthetic_fixture_mode": false,
+    "d17_g6f_module": "gv1.d17_g.g6f_selected_cycle_infer",
+    "split_manifest": "${d17_split_manifest}",
+    "semantics_csv": "${d17_g_root}/g0_generator_equivalence_audit/D17_G0_PROFILE_SEMANTICS.csv",
+    "internal_heldout_manifest": "${d17_g_root}/g21_p4d_branch_repair/D17_G2_PREDICTION_MANIFEST.csv",
+    "candidate_dir": "${d17_g_root}/g21_p4d_branch_repair",
+    "candidate_summary": "${d17_g_root}/g21_p4d_branch_repair/D17_G21_P4D_BRANCH_REPAIR_SUMMARY.json",
+    "checkpoint": "${d17_g_root}/g21_p4d_branch_repair/model/best_model.pt",
+    "device": "auto",
+    "prediction_batch_size": 4096,
+    "prefer_replay_observed": true,
+    "cycles_per_position": 3,
+    "max_points_per_cycle": 0,
+    "dense_min_time_points": 768,
+    "cases": [
+      {
+        "id": "TRAIN_3C_B5_KNOWN_DENSE_FAILURE_C36_38",
+        "batch": "2",
+        "battery": "5",
+        "expected_split": "train",
+        "role": "known_non_test_dense_failure",
+        "cycles": "36-38",
+        "min_cycles": 3
+      },
+      {
+        "id": "INTERNAL_2C_B3_EARLY_MIDDLE_LATE",
+        "batch": "1",
+        "battery": "3",
+        "expected_split": "internal_heldout",
+        "role": "g2_internal_heldout_cycle_history",
+        "cycles_per_position": 3,
+        "min_cycles": 3
+      },
+      {
+        "id": "VALIDATION_2C_B7_EARLY_MIDDLE_LATE",
+        "batch": "1",
+        "battery": "7",
+        "expected_split": "validation",
+        "role": "validation_2C_cycle_history",
+        "cycles_per_position": 3,
+        "min_cycles": 3
+      },
+      {
+        "id": "VALIDATION_3C_B10_EARLY_MIDDLE_LATE",
+        "batch": "2",
+        "battery": "10",
+        "expected_split": "validation",
+        "role": "validation_3C_cycle_history",
+        "cycles_per_position": 3,
+        "min_cycles": 3
+      },
+      {
+        "id": "VALIDATION_R25_B7_EARLY_MIDDLE_LATE",
+        "batch": "3",
+        "battery": "7",
+        "expected_split": "validation",
+        "role": "validation_R2.5_cycle_history",
+        "cycles_per_position": 3,
+        "min_cycles": 3
+      },
+      {
+        "id": "VALIDATION_R3_B2_EARLY_MIDDLE_LATE",
+        "batch": "4",
+        "battery": "2",
+        "expected_split": "validation",
+        "role": "validation_R3_cycle_history",
+        "cycles_per_position": 3,
+        "min_cycles": 3
+      },
+      {
+        "id": "VALIDATION_RANDOM_WALK_B3_EARLY_MIDDLE_LATE",
+        "batch": "5",
+        "battery": "3",
+        "expected_split": "validation",
+        "role": "validation_random_walk_P4D_cycle_history",
+        "cycles_per_position": 3,
+        "min_cycles": 3
+      },
+      {
+        "id": "VALIDATION_GEO_B2_EARLY_MIDDLE_LATE",
+        "batch": "6",
+        "battery": "2",
+        "expected_split": "validation",
+        "role": "validation_GEO_P4D_cycle_history",
+        "cycles_per_position": 3,
+        "min_cycles": 3
+      }
+    ]
+  },
+  "s1": {
+    "prediction_roots": [],
+    "prediction_globs": ["*.npz"],
+    "max_candidate_files": 32,
+    "max_cases": 8,
+    "allowed_splits": ["train", "validation", "internal_heldout"],
+    "blocked_splits": ["frozen_test", "flagged_probe", "test", "unknown"],
+    "min_time_points": 256,
+    "dense_min_time_points": 768,
+    "require_dense": true,
+    "max_truth_file_bytes": 2147483648,
+    "max_lag_samples": 96,
+    "r2_failure_threshold": 0.9,
+    "r2_recovery_threshold": 0.95,
+    "low_dim_rank95_max": 4,
+    "lag_gain_threshold": 0.08,
+    "boundary_jump_error_threshold": 0.02,
+    "branch_mean_r2_gap_threshold": 0.2,
+    "coverage_min_cases": 8,
+    "coverage_min_cycles_per_case": 3,
+    "coverage_required_splits": ["train", "internal_heldout", "validation"],
+    "coverage_required_protocols": ["2C", "3C", "R2.5", "R3", "random_walk", "GEO"],
+    "coverage_required_branch_families": ["RG", "P4D"],
+    "coverage_required_cycle_positions": ["early", "middle", "late"],
+    "coverage_required_phases": ["charge", "rest", "discharge"],
+    "coverage_required_case_ids": [
+      "TRAIN_3C_B5_KNOWN_DENSE_FAILURE_C36_38",
+      "INTERNAL_2C_B3_EARLY_MIDDLE_LATE",
+      "VALIDATION_2C_B7_EARLY_MIDDLE_LATE",
+      "VALIDATION_3C_B10_EARLY_MIDDLE_LATE",
+      "VALIDATION_R25_B7_EARLY_MIDDLE_LATE",
+      "VALIDATION_R3_B2_EARLY_MIDDLE_LATE",
+      "VALIDATION_RANDOM_WALK_B3_EARLY_MIDDLE_LATE",
+      "VALIDATION_GEO_B2_EARLY_MIDDLE_LATE"
+    ],
+    "make_plots": true,
+    "max_plot_points": 3000
+  }
+}

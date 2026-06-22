@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "checks": {
+    "python_compile": true,
+    "request_parser_self_test": true,
+    "metric_and_exact_match_self_test": true,
+    "plot_downsampling_self_test": true,
+    "synthetic_end_to_end_with_frozen_deploy_bundle": true,
+    "four_png_surfaces_generated": true,
+    "target_arrays_loaded_after_prediction": true,
+    "no_full_profile_prediction_archive_written_by_default": true
+  },
+  "notes": [
+    "Synthetic end-to-end test used a copied frozen FORMAL55 deploy bundle and a small synthetic source profile.",
+    "The synthetic numerical accuracy itself is not a model-quality claim; the test validates execution, target isolation, outputs and plotting."
+  ]
+}

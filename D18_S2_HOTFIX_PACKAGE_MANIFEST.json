@@ -1,0 +1,26 @@
+{
+  "package": "D18-S2-HOTFIX-FAST-RESUME",
+  "created": "2026-06-18",
+  "files": [
+    {
+      "path": "RUN_D18_S2_HOTFIX_FAST_RESUME.ps1",
+      "size": 485,
+      "sha256": "369f6a1dfecf377db1605f1f004e3c9d973e6457ffdd1d0c0295af3dfb89789e"
+    },
+    {
+      "path": "docs/D18_S2_HOTFIX_FAST_RESUME_README.md",
+      "size": 644,
+      "sha256": "c02a6d65b654c8dd406dcb8d7836c571a83da680314512f688dc0a77721b21a2"
+    },
+    {
+      "path": "scripts/d18_run_s2_hotfix_fast_resume.py",
+      "size": 19454,
+      "sha256": "08c476a30b73abcdbd859f6d65139ebe3b26bee5badaa4ab3d352cd0d6c7d20d"
+    },
+    {
+      "path": "scripts/d18_s2_hotfix_verify_manifest.py",
+      "size": 1256,
+      "sha256": "db062b35d144b210b3ca903ff5b273ec977d62745c54bec6a026bbda24862f4e"
+    }
+  ]
+}

@@ -1,12 +1,10 @@
 # PINN-for-ASSB-V1 / QJW-2
 
-本项目基于 PINNSTRIPES / effective SPM / P2Dlite 思路，先完成 NMC811||Li-In 全固态电池（ASSB）的工程基线，再推进 XJTU 55-cell 多 protocol 数据上的 P2Dlite-RG soft-label generator 与 PINN / neural surrogate。
-
-当前最新工作阶段为 **ASSB-D17**。本 README 用于 D18 新窗口和 GitHub 首页接续，重点记录 D17 的已成立成果、未成立边界和下一步工作。
+本项目基于 PINNSTRIPES、effective SPM 与 P2Dlite-RG，先完成 NMC811||Li-In 全固态电池（ASSB）工程基线，再推进 XJTU 55-cell model-consistent internal-state surrogate。当前最新阶段为 **ASSB-D18 / FORMAL55-DEPLOY**。
 
 ## 当前总状态
 
-### ASSB 基线
+### ASSB 本体基线
 
 ASSB 五目标工程统一基线仍为：
 
@@ -15,200 +13,245 @@ ModelFin_112_deterministic_wrapper
 EvalFin_112_deterministic_wrapper
 ```
 
-该基线来自 D7：
+- `cs_a / cs_c / phie / phis_c` 来自 frozen `ModelFin_107A`。
+- SOH 来自 deterministic ridge head。
+- 这是 ASSB 本电池的 engineering wrapper，不是端到端联合网络，也不是跨电池规格泛化模型。
 
-- 四个电化学状态 `cs_a / cs_c / phie / phis_c` 来自 frozen `ModelFin_107A` state eval NPZ。
-- SOH 来自 `ModelFin_112_deterministicSOH_ridge_g4`。
-- 这是 engineering wrapper / unified package，不是端到端联合训练的单个神经网络，也不是跨电池规格泛化证明。
+### XJTU D18 当前工程模型
 
-### XJTU / D15 soft-label 数据
-
-D15 已完成 XJTU 55/55 cells 的 P2Dlite-RG model-consistent soft-label 数据集：
+当前冻结工程版本为：
 
 ```text
-E:/XJTU battery dataset/_gv1_cache/xjtu_softlabels_p2dlite_rg_v1_D15_ALL55_FINAL
+FORMAL55-DEPLOY
 ```
 
-数据边界：这些是 P2Dlite-RG model-consistent soft labels，不是实验直接测得的真实内部状态。D15 证明 soft-label 数据集生成、径向审计和 closed-set/repair evidence 成立，但不自动证明 held-out cell 或 full-cycle surrogate 泛化。
-
-### D17-G4 sampled-window surrogate
-
-D17-G 主线最终形成：
+准确定位：
 
 ```text
-D17-G4_GENERATOR_SURROGATE_CANDIDATE
+55-cell closed-set
++ Step2/P2Dlite-RG-assisted
++ protocol-routed
++ per-cell calibrated
++ model-consistent internal-state engineering surrogate
 ```
 
-它是一个 **physics-informed / generator-distilled neural surrogate**，用于快速复现 P2Dlite-RG soft-label generator 的输出。
-
-训练与审计协议：
+它不是：
 
 ```text
-train-cell soft labels: used for supervised training
-validation soft labels: report-only
-frozen-test soft labels: report-only; not used for training or checkpoint selection
-checkpoint selection: fit-train + train-internal heldout only
+实验真实内部状态 ground truth predictor
+跨 cell generalization model
+raw I/V/T-only independent solver
 ```
 
-G4 sampled-window 结果：
+## D18 已完成的主要工作
+
+1. 放弃不可辨识的 no-state-label 唯一反演目标，将任务改为复现固定 Step2/P2Dlite-RG teacher。
+2. 冻结 Step2、55-cell manifest、split、source priority 与 hash。
+3. 建立 33 fit / 6 internal / 7 validation / 8 frozen-test / 1 flagged 的角色体系。
+4. 从 zero-residual scaffold 逐步构建 protocol-specific concentration/radial residual。
+5. 冻结 `phie/phis_c` 与 cbar 主轨迹，theta 由 cs 推导。
+6. 形成 3C/R2.5/R3/random_walk learned specialists、2C conservative base、GEO conservative/reference route。
+7. 为 55 cells 生成 per-cell adapter 或 parent passthrough。
+8. 构建紧凑 `FORMAL55-DEPLOY` bundle、runtime、adapter registry 与 confidence ledger。
+9. 完成 55/55 operational audit 和全 cycle streaming performance audit。
+10. 交付 JSON-driven selected-cycle inference、soft-label audit 与交互式 3D 绘图工具。
+
+## 当前关键结果
+
+### Deploy bundle
+
+| 项目 | 结果 |
+|---|---:|
+| cells | 55/55 |
+| adapters | 55 |
+| parent artifacts | 40 |
+| bundle files | 118 |
+| bundle size | 6.37 MiB |
+| HIGH confidence | 45 |
+| MEDIUM confidence | 4 |
+| LOW confidence | 6 |
+
+### 55/55 bounded operational audit
 
 ```text
-status = PASS
-final_candidate_ready = true
-frozen_test_mean_r2 ≈ 0.99790
-frozen_test_min_r2 ≈ 0.97935
-speed_status = PASS
-samples_per_second ≈ 95,192
+55/55 cells PASS
+605/605 runtime checks PASS
+118/118 bundle hashes PASS
+40/40 parent hashes PASS
+finite / theta bounds / zero-mean / cbar reconstruction PASS
 ```
 
-重要边界：G4 的训练/审计使用每个 profile 的 sampled-grid，典型为 `39 × 512` train points 和 `7 × 512` validation points。它不能写成 55 cells × all cycles × full-time-grid 成功。
+该 audit 每 cell 只抽取一个 cycle、最多 128 点，只证明运行完整性，不是性能结论。
 
-## D17 关键结论
+### 全 cycle streaming performance audit
 
-### 1. D17-P no-state-label inverse PINN 路线暂停
-
-D17-P 尝试把 generator 的电化学机制写入 PINN，训练端不直接使用 `cs/theta/phie/phis` soft labels。该路线完成 P0/P1/P2/P3/P4 smoke 与 state audit，但最终结论是：
+审计覆盖：
 
 ```text
-terminal voltage consistency does not guarantee generator-consistent internal states
+55 cells
+26,606 / 26,606 cycles
+每 cycle 最多 64 个确定性事件感知点
 ```
 
-P4/P4mini 表明 `theta_c/cs_c/phie` 与 generator state 严重不对齐，因此 D17-P 不作为当前主线 promotion。
+结果：
 
-### 2. D17-G generator-distilled sampled-window surrogate 成立
+| 指标 | 结果 |
+|---|---:|
+| cell-balanced primary mean R² | 0.9163 |
+| cell-balanced q10 of cycle-q10 R² | 0.6359 |
+| complete predictive cycles | 26,244 |
+| negative complete cycles | 242 (0.922%) |
+| R² ≥ 0.7 cycle fraction | 88.13% |
+| suspicious exact metrics | 0 |
+| verdict | ACCEPT_WITH_LIMITATIONS |
 
-D17-G 从 G0 generator equivalence audit 开始，逐步修复 phie/gauge、profile-id memorization、protocol/branch heldout、P4D/random_walk coverage，最终通过 G3/G4 sampled-window frozen-test audit。
+协议级：
 
-保留主成果：
+| Protocol | Mean R² | Cycle q10 | R²≥0.7 cycle fraction |
+|---|---:|---:|---:|
+| R3 | 0.9799 | 0.9384 | 100.0% |
+| 3C | 0.9745 | 0.9415 | 97.91% |
+| R2.5 | 0.9518 | 0.8601 | 99.98% |
+| 2C | 0.9369 | 0.8531 | 100.0% |
+| random_walk | 0.8985 | 0.5085 | 91.76% |
+| GEO | 0.7053 | 0.0923 | 60.0% |
+
+注意：这是**全部 cycles + 每 cycle 最多64点**的事件感知审计，不是全部 1 Hz 原始点逐点审计。
+
+## 当前主要限制
+
+- GEO / Batch-6 是主要径向细节短板，尤其 battery-5 / battery-6。
+- random_walk battery-8 是明显 outlier/weak cell。
+- 3C battery-3 有极少数低方差灾难 cycle，整体主体仍较好。
+- `phie/phis_c` 当前为 Step2/reference-only，不报告 learned predictive R²。
+- 总 `cs` R² 可能被准确 `cbar` 主轨迹抬高，必须同时查看：
 
 ```text
-D17-G4 sampled-window P2Dlite-RG generator surrogate
+delta_cs R²
+surface-minus-mean R²
+surface-center gradient R²
+radial-energy R²
 ```
 
-不要误写成：
+- XJTU soft labels 是 P2Dlite-RG model-consistent teacher，不是实验 ground truth。
+- 当前是 closed-set per-cell calibrated deployment，不支持跨 cell 泛化主张。
+
+## 关键路径
+
+### 数据与模型
 
 ```text
-full-cycle arbitrary-cycle surrogate
-strict no-state-label PINN
-experimental ground-truth internal-state estimator
-```
-
-### 3. P4D generator provenance 已恢复
-
-D17 后期一度怀疑 Batch-6 GEO / P4D soft-label provenance 不完整。最终通过原始 D15-P4D 脚本 scratch 重放验证：
-
-```text
-scripts/d15_p4d_full_generate_one_rg_softlabel.py
-configs/d15_p4d_full_remaining14_config.json
-E:/XJTU battery dataset/_gv1_cache/xjtu_batch56_remaining14_replay_profiles_d15p4c/xjtu_batch56_remaining14_replay_profile_manifest.csv
-```
-
-`Batch-6_battery-2` 和 `Batch-6_battery-5` 的 scratch `solution_softlabels.npz` SHA256 与 ALL55 final 完全一致。结论：D15-P4D generator 可 exact replay；此前 G6.3/G6.5 失败是手写简化 formula replay 不等价。
-
-### 4. full-cycle arbitrary-cycle surrogate 当前未成立
-
-G6F selected-cycle on-demand inference 表明：
-
-- G3 saved 512-point prediction 本身高精度；
-- G6F 在同一 exact-grid 上 sanity PASS；
-- 但 dense selected cycles，例如 Batch-2 battery-3 cycles 1-4 / 36-38，指标明显失败。
-
-G7-S0 full-cycle sampling audit PASS，但 G7-S1 small full-cycle smoke 失败：fit-train 很高，internal-heldout/validation 很差。S1E 进一步显示超过一半低 R2 失败项不能靠简单 constant inventory shift 或 phie gauge shift 解释。
-
-因此：
-
-```text
-Do not enter G7-S2.
-Do not run another long training from the current S1 design.
-D18 must redesign the full-cycle/cycle-aware surrogate architecture.
-```
-
-## 当前不可误用的内容
-
-不要使用以下内容作为 promotion 依据：
-
-```text
-D17-G6.1 full_cycle_coverage_repair candidate      # g6_ready=false
-D17-G6.2 / G6.2L simplified P4D patch              # formula direction incorrect
-D17-G6.3 formula forensics                          # diagnostic only
-D17-G6.5 exact provenance replay                    # superseded by true D15-P4D script replay
-G7-S1 small full-cycle smoke                        # failed; selected_cycle_check_ready=false
-```
-
-不要声称：
-
-```text
-D17-G can predict arbitrary cycles with high accuracy.
-D17-G is a strict no-state-label PINN.
-XJTU soft labels are experimental ground-truth internal states.
-```
-
-## 推荐 D18 工作路线
-
-D18 应作为 full-cycle arbitrary-cycle surrogate 的新阶段，而不是继续 G7-S2。
-
-建议顺序：
-
-```text
-D18-P0: freeze D17 artifacts and write new D18 manifest
-D18-S0: design full-cycle/cycle-aware architecture
-D18-S1: array-level latent diagnostic on failed dense cycles
-D18-S2: small full-cycle smoke with cycle/protocol/branch stratification
-D18-S3: introduce sequence/operator or cycle-aware model family
-D18-S4: only if S2/S3 pass, run 39-train / 7-validation mini expansion
-D18-S5: cycle-wise streaming full audit, metrics-only by default
-```
-
-D18 model design should consider:
-
-- full-profile encoder, not selected-cycle-only summary;
-- cycle index / normalized cycle / cumulative Ah / EFC / aging-like latent;
-- deterministic inventory baseline + learned residual;
-- phie gauge / current-aware profile latent;
-- branch-specific adapters for RG and P4D;
-- selected-cycle dense audit and cycle-wise streaming audit as mandatory gates.
-
-## 常用路径
-
-```text
-Project root:
+项目根：
 C:/Users/Tiga_QJW/Desktop/ASSB_Scheme_V1/PINN-for-ASSB-V1
 
-GitHub:
-https://github.com/Tiga789/PINN-for-ASSB-V1
-
-ALL55 soft labels:
+ALL55 P2Dlite-RG soft labels：
 E:/XJTU battery dataset/_gv1_cache/xjtu_softlabels_p2dlite_rg_v1_D15_ALL55_FINAL
 
-D17-G outputs:
-E:/XJTU battery dataset/_gv1_cache/xjtu_d17_g
+FORMAL55-DEPLOY：
+C:/Users/Tiga_QJW/Desktop/XJTUstation/D18/Formal-A/Deploy_build/
+D18_DEPLOY_BUILD_OUTPUT/D18_FORMAL55_DEPLOY_BUILD_20260621_215009/
+MODELFIN_D18_FORMAL55_DEPLOY
 
-D17-P outputs:
-E:/XJTU battery dataset/_gv1_cache/xjtu_d17_pinn_rebuild
-
-D17 split manifest:
-E:/XJTU battery dataset/_gv1_cache/xjtu_d17_pinn_rebuild/split/d17_split_manifest.json
-
-D17-G4/G21 sampled-window candidate:
-E:/XJTU battery dataset/_gv1_cache/xjtu_d17_g/g21_p4d_branch_repair
-
-G7-S0 sampling audit:
-E:/XJTU battery dataset/_gv1_cache/xjtu_d17_g/g7s0_fullcycle_sampling_audit
-
-G7-S1 failed smoke:
-E:/XJTU battery dataset/_gv1_cache/xjtu_d17_g/g7s1_small_fullcycle_smoke
-
-G7-S1E diagnostic:
-E:/XJTU battery dataset/_gv1_cache/xjtu_d17_g/g7s1e_profile_latent_explainability
+All-cycle audit：
+E:/XJTU battery dataset/_gv1_cache/d18_formal55_allcycle_streaming_audit/
+D18_FORMAL55_ALLCYCLE_STREAMING_AUDIT_20260622_004323
 ```
 
-## 新窗口接续提示
+## Selected-cycle 按需推理与 3D 绘图
 
-在 D18 新窗口中，先阅读：
+工具目录：
 
 ```text
-ASSB-D17_项目进度复盘总结_20260617.docx
-README.md
+formal55_selected_cycle_tool
 ```
 
-然后查看本地项目与 Git 状态。不要直接进入训练。先确认 D17 成果和失败边界，再设计 full-cycle/cycle-aware surrogate。
+任务 JSON：
+
+```text
+formal55_selected_cycle_tool/configs/selected_cycle_request.json
+```
+
+示例：
+
+```json
+{
+  "selection": {
+    "batch": 2,
+    "battery": 5,
+    "cycles": "35-37"
+  }
+}
+```
+
+运行：
+
+```powershell
+cd "C:\Users\Tiga_QJW\Desktop\ASSB_Scheme_V1\PINN-for-ASSB-V1"
+
+powershell -ExecutionPolicy Bypass -File .\formal55_selected_cycle_tool\scripts\run_formal55_selected_cycle.ps1 `
+  -RequestJson ".\formal55_selected_cycle_tool\configs\selected_cycle_request.json"
+```
+
+执行顺序：
+
+```text
+读取目标 cycle 之前的历史
+→ 生成冻结 baseline / parent route
+→ 目标 cycles 全原始时间点推理
+→ 预测固定在内存
+→ 再读取 soft-label target
+→ 计算全局与逐 cycle 指标
+→ 打开 cs_a/cs_c prediction/reference 四张可旋转3D图
+```
+
+默认不保存大型预测 NPZ。指标使用目标 cycle 全部时间点；只有 3D surface 为绘图流畅可降采样。
+
+### 当前图形解释示例
+
+Batch-6 GEO battery-5 cycles 45-47：
+
+```text
+cathode total cs_c R² ≈ 0.9824
+NMAE ≈ 0.0326
+NRMSE ≈ 0.0418
+delta_cs R² ≈ 0.2692
+```
+
+说明平均库存与总 cycle 趋势复现较好，但径向偏差/gradient 仍弱。不能只看总浓度曲面。
+
+## 固定工程规则
+
+1. 新阶段使用独立目录，默认不覆盖旧文件。
+2. 大缓存和输出放 E 盘，不把 50GB 级文件写入项目根目录。
+3. 修改阶段先做 5–15 分钟 smoke；无高把握不得直接安排全量重审计。
+4. 包交付前至少执行 `py_compile`、`--help`、参数静态检查和合成端到端测试。
+5. UID 必须按 canonical batch/protocol/battery 精确匹配，禁止 substring。
+6. 预测必须先于 target state 读取；`R²≈1 + MAE≈0` 的 learned 输出触发泄露审计。
+7. 总状态指标与径向专属指标必须同时报告。
+8. reference-only、fallback、learned route 必须分开统计。
+9. 必须明确审计范围：cells、cycles、points/cycle、是否全原始点、是否 closed-set。
+
+## D19 下一步
+
+优先级：
+
+1. 升级 selected-cycle 工具：新增 `delta_cs` prediction/reference/error surface、surface-center gradient、radial energy 图。
+2. 从 all-cycle CSV 自动选择 GEO battery-5/6、random_walk battery-8、3C battery-3 的 worst cycles，做全原始点 targeted audit。
+3. 只有 targeted full-point audit 确认后，才训练局部 GEO/radial specialist 或修改 per-cell adapter。
+4. 生成 clean release：删除 pycache，重建 SHA256 manifest，冻结 D18 scorecard。
+5. 可选：将冻结 Step2 runtime 接入 raw replay，减少对外部 baseline channels 的依赖。
+
+## 科学边界
+
+允许表述：
+
+> FORMAL55-DEPLOY 是一个 55-cell closed-set、Step2/P2Dlite-RG-assisted、per-cell calibrated engineering surrogate。在覆盖全部 26,606 cycles、每 cycle 最多64个事件感知点的审计中，cell-balanced primary mean R²≈0.916，整体结论为 ACCEPT_WITH_LIMITATIONS。
+
+禁止表述：
+
+```text
+55 cells 所有原始1Hz采样点都达到 R²=0.916
+跨 cell 泛化已证明
+XJTU 内部状态是实验真值
+phie/phis_c learned prediction 已通过
+```

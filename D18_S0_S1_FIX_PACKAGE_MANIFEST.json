@@ -1,0 +1,135 @@
+{
+  "schema": "D18_S0_S1_FIX_PACKAGE_MANIFEST_v2",
+  "package_version": "2.0.0-force-install",
+  "purpose": "collision-safe installed-file verification",
+  "legacy_conflict_ignored": "tests/test_d18_core.py",
+  "file_count": 25,
+  "files": [
+    {
+      "path": "README_D18_S0_S1_FIX_V2.md",
+      "size_bytes": 776,
+      "sha256": "05874fa1c18c37aa45214b28b78c7575e9698962fe2870a4ba843e96bacb8e0c"
+    },
+    {
+      "path": "RUN_D18_S0_S1_FIX.ps1",
+      "size_bytes": 414,
+      "sha256": "86761f950aaa72de09f683cb402da9edade872a090956e7c603a89cea7f220cd"
+    },
+    {
+      "path": "RUN_D18_S0_S1_FIX_V2.ps1",
+      "size_bytes": 1121,
+      "sha256": "fc79bfe3d08b0ac497cf22c4412391e1541ea1dfbb1966e361d33788e612e33c"
+    },
+    {
+      "path": "VERIFY_D18_S0_S1_FIX.ps1",
+      "size_bytes": 253,
+      "sha256": "72be42d38b5ca5ff38263955e80d0fb2ad4487d8feed75456d385a36b5a8cb18"
+    },
+    {
+      "path": "VERIFY_D18_S0_S1_FIX_V2.ps1",
+      "size_bytes": 1218,
+      "sha256": "e0aaa7eeb05b688c89509eb8c3d2d914785aa2677b84b587d34d80b68403443e"
+    },
+    {
+      "path": "configs/d18_s0_s1_fix.json",
+      "size_bytes": 5867,
+      "sha256": "b7c11946b52998800a873330935600d5612ba63a834511141fef76e49fbf3dce"
+    },
+    {
+      "path": "docs/D18_S0_S1_FIX_V2_RUNBOOK.md",
+      "size_bytes": 941,
+      "sha256": "b6b22066e36222504e20802c05cccdfffa227091a427eb1a16a75dfe9725fa1f"
+    },
+    {
+      "path": "docs/D18_S1_EXPLICIT_CASES.md",
+      "size_bytes": 993,
+      "sha256": "3786e42ec81d7982f0077a696b819809ddd8684f792004452c5db9292f83477b"
+    },
+    {
+      "path": "gv1/d18_cycleaware/__init__.py",
+      "size_bytes": 226,
+      "sha256": "93c15313a863ce43aa3b9e88bbfab1483695c20efff8a363c550761c55f3c0ae"
+    },
+    {
+      "path": "gv1/d18_cycleaware/array_io.py",
+      "size_bytes": 24504,
+      "sha256": "476015b9c4001ae32110fb2792df48a24fed11c60cbc09660de98387c2a661ff"
+    },
+    {
+      "path": "gv1/d18_cycleaware/common.py",
+      "size_bytes": 13586,
+      "sha256": "66c413f8b76152cb2830ffc6d39be8b9db782c851cd625aa83f6842b049ea37f"
+    },
+    {
+      "path": "gv1/d18_cycleaware/cycle_features.py",
+      "size_bytes": 10076,
+      "sha256": "0314ff92a5f8906908dd7ca3a242465fba4e83442bae9e3666789628b89cefb2"
+    },
+    {
+      "path": "gv1/d18_cycleaware/dense_casepack.py",
+      "size_bytes": 24652,
+      "sha256": "eb21eebd7c14f066ef6e58535e7b23d0adb81d4675395fd9964cf59ff2b93a0b"
+    },
+    {
+      "path": "gv1/d18_cycleaware/diagnostics.py",
+      "size_bytes": 16737,
+      "sha256": "e491c6b9325c1a9cf577979241c6c70861c3c0dfa763358262bf247814dce6dd"
+    },
+    {
+      "path": "gv1/d18_cycleaware/metrics.py",
+      "size_bytes": 9304,
+      "sha256": "5ea4d231a659cb8c56b30d12a3251ee15a74ea9ba15b0ba400d7f9ef688fe9ec"
+    },
+    {
+      "path": "gv1/d18_cycleaware/model_scaffold.py",
+      "size_bytes": 21858,
+      "sha256": "ce226440a37bb3efb9f5ea30020c1f4fa9c2071afbd17c199db808fae33fbe02"
+    },
+    {
+      "path": "gv1/d18_cycleaware/reporting.py",
+      "size_bytes": 16959,
+      "sha256": "ab934039437739f414f7ff0432592866c48222d6bb90c1c90036d8a05e33a3cb"
+    },
+    {
+      "path": "gv1/d18_cycleaware/schema.py",
+      "size_bytes": 12089,
+      "sha256": "7f7a01cfa3afbe83655bba979bbb18efc9365c564646aa94254942cc03713431"
+    },
+    {
+      "path": "scripts/d18_package_selftest.py",
+      "size_bytes": 4222,
+      "sha256": "e1d83be920fbf9385ba7b418fc1ed66b798c7578341d1f3e18821d79ee4b7490"
+    },
+    {
+      "path": "scripts/d18_run_s0_s1_fix.py",
+      "size_bytes": 6309,
+      "sha256": "ce00e14721b69433afc089d187672431703a4d575bff8d1cc96af200818df0b1"
+    },
+    {
+      "path": "scripts/d18_s0_validate_architecture.py",
+      "size_bytes": 4631,
+      "sha256": "c2ca966f2ef24b18c98b636b2db448143dc5e4ca3274c85b9467e34e424912bf"
+    },
+    {
+      "path": "scripts/d18_s1_array_latent_diagnostic.py",
+      "size_bytes": 3849,
+      "sha256": "09fe34d835a4ef76610e15a14e2745180d15f83e502e72f912718b7616929c73"
+    },
+    {
+      "path": "scripts/d18_s1_build_dense_casepack.py",
+      "size_bytes": 2620,
+      "sha256": "f076d625553a85e0e68df861dae5ac120da6120ed4e8b738c22f85ea9311bae6"
+    },
+    {
+      "path": "scripts/d18_verify_package_manifest.py",
+      "size_bytes": 1756,
+      "sha256": "85c31c52d5728f2e8920d4be50cdd80bc0eb0943642955d1c76ef7bae2c6dcdd"
+    },
+    {
+      "path": "tests/test_d18_s0_s1_fix_v2.py",
+      "size_bytes": 10074,
+      "sha256": "bb963d27dcf49358ee9afdf69b585d5fa90165a7df91f1def75faad9206d3306"
+    }
+  ],
+  "manifest_self_excluded": true
+}

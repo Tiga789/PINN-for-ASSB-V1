@@ -1,0 +1,29 @@
+D18-P0_S0_S1 FULL-CYCLE PACKAGE FILE LIST
+Package version: D18-P0_S0_S1-v1.0.0
+Archive layout: direct overlay into PINN-for-ASSB-V1 project root
+
+PACKAGE_FILELIST.txt
+PACKAGE_MANIFEST.json
+README_D18_P0_S0_S1.md
+RUN_D18_P0_S0_S1.ps1
+VERIFY_D18_PACKAGE.ps1
+configs/d18_p0_s0_s1.json
+docs/D18_P0_S0_S1_RUNBOOK.md
+docs/D18_S0_ARCHITECTURE.md
+docs/D18_S1_DIAGNOSTIC_SCHEMA.md
+gv1/d18_cycleaware/__init__.py
+gv1/d18_cycleaware/array_io.py
+gv1/d18_cycleaware/common.py
+gv1/d18_cycleaware/cycle_features.py
+gv1/d18_cycleaware/diagnostics.py
+gv1/d18_cycleaware/metrics.py
+gv1/d18_cycleaware/model_scaffold.py
+gv1/d18_cycleaware/reporting.py
+gv1/d18_cycleaware/schema.py
+scripts/d18_p0_freeze.py
+scripts/d18_package_selftest.py
+scripts/d18_run_p0_s0_s1.py
+scripts/d18_s0_validate_architecture.py
+scripts/d18_s1_array_latent_diagnostic.py
+scripts/d18_verify_package_manifest.py
+tests/test_d18_core.py

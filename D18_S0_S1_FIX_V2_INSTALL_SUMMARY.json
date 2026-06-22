@@ -1,0 +1,22 @@
+{
+  "schema": "D18_S0_S1_FIX_V2_INSTALL_SUMMARY_v1",
+  "status": "PASS_INSTALLED_AND_RUNTIME_VERIFIED",
+  "project_root": "C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\PINN-for-ASSB-V1",
+  "backup_root": "C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\PINN-for-ASSB-V1\\D18_install_backups\\D18_S0_S1_FIX_V2_20260618T031235Z",
+  "changed_count": 2,
+  "created_count": 5,
+  "backed_up_count": 2,
+  "changed": [
+    "RUN_D18_S0_S1_FIX.ps1",
+    "VERIFY_D18_S0_S1_FIX.ps1"
+  ],
+  "created": [
+    "README_D18_S0_S1_FIX_V2.md",
+    "RUN_D18_S0_S1_FIX_V2.ps1",
+    "VERIFY_D18_S0_S1_FIX_V2.ps1",
+    "docs/D18_S0_S1_FIX_V2_RUNBOOK.md",
+    "tests/test_d18_s0_s1_fix_v2.py"
+  ],
+  "legacy_conflict_left_untouched": "tests/test_d18_core.py",
+  "package_specific_test": "tests/test_d18_s0_s1_fix_v2.py"
+}

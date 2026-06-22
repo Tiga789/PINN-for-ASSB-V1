@@ -1,0 +1,276 @@
+{
+  "package_version": "D18-P0_S0_S1-v1.0.0",
+  "project": {
+    "project_root": "..",
+    "github_url": "https://github.com/Tiga789/PINN-for-ASSB-V1",
+    "expected_remote_short_sha": "9d995eb",
+    "target_claim": "55_cells_all_cycles_high_accuracy_full_cycle_generator_surrogate"
+  },
+  "paths": {
+    "output_root": "E:/XJTU battery dataset/_gv1_cache/xjtu_d18_fullcycle",
+    "d17_g_root": "E:/XJTU battery dataset/_gv1_cache/xjtu_d17_g",
+    "d17_p_root": "E:/XJTU battery dataset/_gv1_cache/xjtu_d17_pinn_rebuild",
+    "all55_root": "E:/XJTU battery dataset/_gv1_cache/xjtu_softlabels_p2dlite_rg_v1_D15_ALL55_FINAL",
+    "d17_split_manifest": "${d17_p_root}/split/d17_split_manifest.json",
+    "p4d_replay_manifest": "E:/XJTU battery dataset/_gv1_cache/xjtu_batch56_remaining14_replay_profiles_d15p4c/xjtu_batch56_remaining14_replay_profile_manifest.csv"
+  },
+  "p0": {
+    "copy_evidence_max_bytes": 8388608,
+    "artifacts": [
+      {
+        "id": "D17_SPLIT_MANIFEST",
+        "description": "Fixed D17 development/validation/frozen-test/flagged-probe split.",
+        "required": true,
+        "candidates": [
+          "${d17_split_manifest}"
+        ]
+      },
+      {
+        "id": "D17_G4_G5_SAMPLED_WINDOW_RELEASE",
+        "description": "D17-G4 sampled-window candidate and G5 release evidence.",
+        "required": true,
+        "candidates": [
+          "${d17_g_root}/g5_release",
+          "${d17_g_root}/g4_final_scorecard",
+          "${d17_g_root}/g21_p4d_branch_repair"
+        ],
+        "include_globs": [
+          "**/*.json",
+          "**/*.csv",
+          "**/*.md",
+          "**/*.txt",
+          "**/*.pt"
+        ],
+        "exclude_globs": [
+          "**/prediction*.npz",
+          "**/*prediction*.npz",
+          "**/__pycache__/**",
+          "**/*.pyc"
+        ],
+        "max_files": 2500
+      },
+      {
+        "id": "D17_G6F_DENSE_SELECTED_CYCLE_EVIDENCE",
+        "description": "Exact-grid sanity and dense selected-cycle failure evidence.",
+        "required": true,
+        "candidates": [
+          "${d17_g_root}/g6f_selected_cycle_on_demand_inference",
+          "${d17_g_root}/g6f_on_demand_inference",
+          "${d17_g_root}/**/*g6f*"
+        ],
+        "include_globs": [
+          "**/*.json",
+          "**/*.csv",
+          "**/*.md",
+          "**/*.txt"
+        ],
+        "exclude_globs": [
+          "**/*.npz",
+          "**/__pycache__/**"
+        ],
+        "max_files": 1000
+      },
+      {
+        "id": "D17_G7_S0_SAMPLING_AUDIT",
+        "description": "Full-cycle sampling audit that may be reused only as a sampling plan.",
+        "required": true,
+        "candidates": [
+          "${d17_g_root}/g7s0_fullcycle_sampling_audit"
+        ],
+        "include_globs": [
+          "**/*.json",
+          "**/*.csv",
+          "**/*.md",
+          "**/*.txt"
+        ]
+      },
+      {
+        "id": "D17_G7_S1_FAILED_SMOKE",
+        "description": "Small full-cycle training failure evidence; not a checkpoint to continue training from.",
+        "required": true,
+        "candidates": [
+          "${d17_g_root}/g7s1_small_fullcycle_smoke"
+        ],
+        "include_globs": [
+          "**/*.json",
+          "**/*.csv",
+          "**/*.md",
+          "**/*.txt"
+        ],
+        "exclude_globs": [
+          "**/*.npz",
+          "**/*.pt"
+        ]
+      },
+      {
+        "id": "D17_G7_S1E_LATENT_EXPLAINABILITY",
+        "description": "Evidence that simple constant inventory/gauge shifts do not explain most failures.",
+        "required": true,
+        "candidates": [
+          "${d17_g_root}/g7s1e_profile_latent_explainability"
+        ],
+        "include_globs": [
+          "**/*.json",
+          "**/*.csv",
+          "**/*.md",
+          "**/*.txt"
+        ]
+      },
+      {
+        "id": "D15_ALL55_MANIFEST",
+        "description": "ALL55 teacher coverage manifest only; never copy the large NPZ dataset.",
+        "required": true,
+        "snapshot_small_files": true,
+        "candidates": [
+          "${all55_root}/D15_ALL55_SOFTLABEL_MANIFEST.csv",
+          "${all55_root}/**/*ALL55*MANIFEST*.csv"
+        ]
+      },
+      {
+        "id": "D15_ALL55_SUMMARY",
+        "description": "ALL55 teacher coverage summary only; never copy the large NPZ dataset.",
+        "required": true,
+        "snapshot_small_files": true,
+        "candidates": [
+          "${all55_root}/D15_ALL55_SOFTLABEL_SUMMARY.json",
+          "${all55_root}/**/*ALL55*SUMMARY*.json"
+        ]
+      },
+      {
+        "id": "D15_P4D_EXACT_REPLAY_SCRIPT",
+        "description": "Original D15-P4D generator script; simplified replay formulas are forbidden.",
+        "required": true,
+        "candidates": [
+          "scripts/d15_p4d_full_generate_one_rg_softlabel.py"
+        ]
+      },
+      {
+        "id": "D15_P4D_EXACT_REPLAY_CONFIG",
+        "description": "Original D15-P4D full remaining14 generator config.",
+        "required": true,
+        "candidates": [
+          "configs/d15_p4d_full_remaining14_config.json"
+        ]
+      },
+      {
+        "id": "D15_P4D_EXACT_REPLAY_MANIFEST",
+        "description": "Original Batch-5/6 P4D/GEO replay manifest used for exact replay.",
+        "required": true,
+        "candidates": [
+          "${p4d_replay_manifest}"
+        ],
+        "snapshot_small_files": true
+      },
+      {
+        "id": "D17_CODE_AND_README",
+        "description": "Current repository D17 code/README context.",
+        "required": true,
+        "candidates": [
+          "README.md",
+          "gv1/d17_g",
+          "scripts/d17_g*.py",
+          "configs/d17_g*.json"
+        ],
+        "include_globs": [
+          "**/*.py",
+          "**/*.json",
+          "**/*.md"
+        ],
+        "exclude_globs": [
+          "**/__pycache__/**",
+          "**/*.pyc"
+        ],
+        "max_files": 5000
+      }
+    ]
+  },
+  "s0": {
+    "synthetic_seed": 1801,
+    "synthetic_batch_size": 3,
+    "synthetic_cycle_count": 7,
+    "synthetic_time_count": 257,
+    "required_data_features": [
+      "cycle_id",
+      "t_global_s",
+      "t_in_cycle_s",
+      "normalized_cycle_index",
+      "I_profile",
+      "dI_dt",
+      "voltage_exp_or_generator_voltage",
+      "dV_dt",
+      "temperature_C",
+      "step_type",
+      "cumulative_signed_Ah",
+      "cumulative_abs_Ah",
+      "EFC_proxy",
+      "cycle_charge_Ah",
+      "cycle_discharge_Ah",
+      "cycle_duration_s",
+      "previous_cycle_terminal_latent",
+      "protocol",
+      "generator_branch_RG_or_P4D"
+    ],
+    "model": {
+      "cycle_feature_dim": 20,
+      "local_feature_dim": 14,
+      "cycle_hidden_dim": 64,
+      "local_hidden_dim": 64,
+      "fused_hidden_dim": 96,
+      "branch_embed_dim": 8,
+      "branch_count": 2,
+      "radial_basis_count": 6,
+      "n_radial_a": 17,
+      "n_radial_c": 17,
+      "dropout": 0.0,
+      "max_radial_fraction_a": 0.18,
+      "max_radial_fraction_c": 0.18,
+      "potential_residual_scale": 0.25,
+      "gauge_scale": 0.25
+    }
+  },
+  "s1": {
+    "prediction_roots": [
+      "${d17_g_root}/g6f_selected_cycle_on_demand_inference",
+      "${d17_g_root}/g6f_on_demand_inference",
+      "${d17_g_root}/g7s1_small_fullcycle_smoke",
+      "${d17_g_root}/g7s1d_fullcycle_failure_diagnostic",
+      "${d17_g_root}/g7s1e_profile_latent_explainability",
+      "${d17_g_root}"
+    ],
+    "prediction_globs": [
+      "**/*prediction*.npz",
+      "**/*selected*cycle*.npz",
+      "**/*dense*.npz",
+      "**/*.npz"
+    ],
+    "max_candidate_files": 3000,
+    "max_cases": 24,
+    "include_uids": [],
+    "exclude_uids": [],
+    "allowed_splits": [
+      "train",
+      "validation",
+      "internal_heldout"
+    ],
+    "blocked_splits": [
+      "frozen_test",
+      "flagged_probe",
+      "test",
+      "unknown"
+    ],
+    "cycle_ranges": [],
+    "min_time_points": 128,
+    "dense_min_time_points": 768,
+    "require_dense": true,
+    "max_truth_file_bytes": 2147483648,
+    "max_lag_samples": 96,
+    "r2_failure_threshold": 0.9,
+    "r2_recovery_threshold": 0.95,
+    "low_dim_rank95_max": 4,
+    "lag_gain_threshold": 0.08,
+    "boundary_jump_error_threshold": 0.02,
+    "branch_mean_r2_gap_threshold": 0.2,
+    "make_plots": true,
+    "max_plot_points": 3000
+  }
+}

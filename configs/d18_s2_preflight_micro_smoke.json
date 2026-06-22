@@ -1,0 +1,95 @@
+{
+  "package_version": "D18-S2-PREFLIGHT-MICRO-SMOKE-v1.0.0-20260618",
+  "expected_github_commit": "9d995eb",
+  "human_review_token": "D18_S1_REVIEW_ACCEPTED_FOR_S2_PREFLIGHT_ONLY_20260618",
+  "formal_s2_training_enabled": false,
+  "final_goal": "55_cells_x_all_cycles_high_accuracy_generator_surrogate",
+  "paths": {
+    "output_root": "E:/XJTU battery dataset/_gv1_cache/xjtu_d18_s2_preflight_micro_smoke",
+    "prior_s0_s1_root": "E:/XJTU battery dataset/_gv1_cache/xjtu_d18_fullcycle_fix",
+    "prior_s0_s1_overall_summary": "${prior_s0_s1_root}/D18_S0_S1_FIX_OVERALL_SUMMARY.json",
+    "prior_s0_validation": "${prior_s0_s1_root}/d18_s0_architecture_fix/d18_s0_validation.json",
+    "prior_s1_summary": "${prior_s0_s1_root}/d18_s1_array_diagnostic/d18_s1_array_latent_summary.json",
+    "prior_s1_coverage": "${prior_s0_s1_root}/d18_s1_array_diagnostic/d18_s1_coverage_audit.json",
+    "d17_split_manifest": "E:/XJTU battery dataset/_gv1_cache/xjtu_d17_pinn_rebuild/split/d17_split_manifest.json",
+    "d17_g2_prediction_manifest": "E:/XJTU battery dataset/_gv1_cache/xjtu_d17_g/g21_p4d_branch_repair/D17_G2_PREDICTION_MANIFEST.csv"
+  },
+  "preflight": {
+    "fit_train_uids": [
+      "Batch-1_2C_battery-1",
+      "Batch-2_3C_battery-5",
+      "Batch-3_R2.5_battery-2",
+      "Batch-4_R3_battery-4",
+      "Batch-5_random_walk_battery-2",
+      "Batch-6_GEO_battery-1"
+    ],
+    "internal_heldout_uids": [
+      "Batch-1_2C_battery-3",
+      "Batch-6_GEO_battery-5"
+    ],
+    "validation_report_only_uids": [
+      "Batch-2_3C_battery-10",
+      "Batch-5_random_walk_battery-3"
+    ],
+    "additional_replay_roots": [],
+    "min_source_points_per_cycle": 96,
+    "cycles_per_position": 2,
+    "micro_points_per_cycle": 64,
+    "target_radial_points": 17,
+    "minimum_free_disk_bytes": 2147483648
+  },
+  "micro_smoke": {
+    "model": {
+      "cycle_feature_dim": 20,
+      "local_feature_dim": 14,
+      "cycle_hidden_dim": 64,
+      "local_hidden_dim": 64,
+      "fused_hidden_dim": 96,
+      "branch_embed_dim": 8,
+      "branch_count": 2,
+      "radial_basis_count": 6,
+      "n_radial_a": 17,
+      "n_radial_c": 17,
+      "dropout": 0.0,
+      "max_radial_fraction_a": 0.18,
+      "max_radial_fraction_c": 0.18,
+      "max_inventory_residual_fraction_a": 0.20,
+      "max_inventory_residual_fraction_c": 0.20,
+      "potential_residual_scale": 0.35,
+      "gauge_scale": 0.25,
+      "theta_min": 0.0,
+      "theta_max": 1.0,
+      "physical_eps": 1e-6,
+      "min_inventory_margin": 1e-8
+    },
+    "loss": {
+      "w_cs_a": 1.0,
+      "w_cs_c": 1.0,
+      "w_theta_a": 0.25,
+      "w_theta_c": 0.25,
+      "w_phie": 1.5,
+      "w_phis_c": 1.0,
+      "w_cbar": 0.5,
+      "w_inventory_residual": 0.02,
+      "w_inventory_cycle_smooth": 0.02,
+      "w_boundary_jump_match": 0.10,
+      "w_gauge_smooth": 0.01,
+      "w_cbar_clip": 2.0,
+      "huber_beta": 0.5
+    },
+    "trainer": {
+      "seed": 1802,
+      "device": "auto",
+      "epochs": 8,
+      "batch_size_profiles": 2,
+      "learning_rate": 0.001,
+      "weight_decay": 1e-6,
+      "grad_clip_norm": 5.0,
+      "internal_selection_weight": 0.25,
+      "min_relative_train_improvement": 0.005,
+      "save_predictions": true,
+      "disable_amp": true,
+      "disable_torch_compile": true
+    }
+  }
+}

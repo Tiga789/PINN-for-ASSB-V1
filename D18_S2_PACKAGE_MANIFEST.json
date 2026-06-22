@@ -1,0 +1,99 @@
+{
+  "package": "D18-S2 preflight + micro-smoke",
+  "version": "D18-S2-PREFLIGHT-MICRO-SMOKE-v1.0.0-20260618",
+  "created_at_utc": "2026-06-18T04:28:48+00:00",
+  "file_count": 18,
+  "files": [
+    {
+      "relative_path": "README_D18_S2_PREFLIGHT_MICRO_SMOKE.md",
+      "size_bytes": 1838,
+      "sha256": "50c0ed833f4faba2dcf2989610a99847f5dc2e80cb09dc448d431cf6b16d9fc7"
+    },
+    {
+      "relative_path": "RUN_D18_S2_PREFLIGHT_MICRO_SMOKE.ps1",
+      "size_bytes": 1138,
+      "sha256": "51d1760eaca0122ba199c939506112c90fbb7f5f7c9e908a5fefe932d146863a"
+    },
+    {
+      "relative_path": "VERIFY_D18_S2_PACKAGE.ps1",
+      "size_bytes": 1286,
+      "sha256": "91618ab5fd9c304b0c1e0c8fe0d57190122c597e4d6406e627bf1bb9ac655614"
+    },
+    {
+      "relative_path": "configs/d18_s2_preflight_micro_smoke.json",
+      "size_bytes": 3273,
+      "sha256": "cefe00e5dbbe6df68236b609cd88b162d2c596c2914a063e5e8c3b20e8b355a9"
+    },
+    {
+      "relative_path": "docs/D18_S2_PREFLIGHT_MICRO_SMOKE_RUNBOOK.md",
+      "size_bytes": 3006,
+      "sha256": "2909afc5af1601c5799f0f25ee812257ea2521cb06b3c0eedbef304eac146e84"
+    },
+    {
+      "relative_path": "gv1/d18_s2/__init__.py",
+      "size_bytes": 162,
+      "sha256": "ebe7589dbb1bc74d22ecf1747c0dee7c9d3984b5aae20a4b17740fe83812d776"
+    },
+    {
+      "relative_path": "gv1/d18_s2/common.py",
+      "size_bytes": 7861,
+      "sha256": "f4273b17991b22beb588ecbbe81625bb3483b45352a7fe679a65384d8516ccb9"
+    },
+    {
+      "relative_path": "gv1/d18_s2/data.py",
+      "size_bytes": 35169,
+      "sha256": "ae6da60e728209e00735ac1e899f57d7068ea53e2996da6e5041155a13d562c6"
+    },
+    {
+      "relative_path": "gv1/d18_s2/losses.py",
+      "size_bytes": 4803,
+      "sha256": "65c91ef41353ec94ea15c7c66b0a596193bff6ef03aa56125a152c7e24fa89df"
+    },
+    {
+      "relative_path": "gv1/d18_s2/model.py",
+      "size_bytes": 19137,
+      "sha256": "9e428262bca18d5f97ab0e20376ddeda18c5915a83ce1d128b0962bbcf31e6b8"
+    },
+    {
+      "relative_path": "gv1/d18_s2/preflight.py",
+      "size_bytes": 15449,
+      "sha256": "2a6ee9ca281d036bace52ef4ae88d87e7ccc04605e02c4333295fa13ec94902e"
+    },
+    {
+      "relative_path": "gv1/d18_s2/trainer.py",
+      "size_bytes": 20520,
+      "sha256": "a590dc223d8425a780dbc0f9f0bea5841e782255b2c0839963bbb2bb412662d1"
+    },
+    {
+      "relative_path": "gv1/d18_s2/uid.py",
+      "size_bytes": 12195,
+      "sha256": "f826aea00470eb6d1fca74195674812c064489e0c454c98f6190d98f3d6c0936"
+    },
+    {
+      "relative_path": "scripts/d18_run_s2_preflight_micro_smoke.py",
+      "size_bytes": 7662,
+      "sha256": "eac7cae0cc473f6bae5ea7d279794b944a31f56df74eb167f84e1f45056a14ec"
+    },
+    {
+      "relative_path": "scripts/d18_s2_package_selftest.py",
+      "size_bytes": 11194,
+      "sha256": "81a19e2ab9a598fffd712f5d5d5f621083fae9e5d6bcf90a236658c9e52886f7"
+    },
+    {
+      "relative_path": "scripts/d18_s2_preflight.py",
+      "size_bytes": 1309,
+      "sha256": "90f481e90f3e6ecdf5570185136da7e11c2c13d1934754feb1817439f346c0cc"
+    },
+    {
+      "relative_path": "scripts/d18_verify_s2_package_manifest.py",
+      "size_bytes": 1777,
+      "sha256": "43688c70e7a40f50ba6d36041be425b5bd0f91bb14233932beb48d561036f2b1"
+    },
+    {
+      "relative_path": "tests/test_d18_s2_preflight_micro_smoke_v1.py",
+      "size_bytes": 5863,
+      "sha256": "eac468a2367b4ee3729dfc9d9e619c898ce11d9673f7762c99651b6d80de9cec"
+    }
+  ],
+  "manifest_self_excluded": true
+}

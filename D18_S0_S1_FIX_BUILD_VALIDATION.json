@@ -1,0 +1,63 @@
+{
+  "package": "D18-S0_S1-FIX",
+  "package_version": "v2.0.0",
+  "created_at_utc": "2026-06-18T02:37:36+00:00",
+  "status": "PASS",
+  "scope": "diagnostic-only overlay; no D18-S2 training",
+  "checks": {
+    "python_ast_parse": "PASS",
+    "compileall": "PASS",
+    "unit_tests": {
+      "status": "PASS",
+      "count": 12
+    },
+    "synthetic_end_to_end": {
+      "status": "PASS",
+      "stages": [
+        "prior P0 PASS fixture",
+        "S0 physical bounds PASS",
+        "8-case dense casepack PASS",
+        "S1 coverage PASS"
+      ],
+      "overall_status": "PASS_READY_FOR_HUMAN_ARCHITECTURE_REVIEW",
+      "training_launched": false,
+      "go_to_s2": false
+    },
+    "strict_json": "PASS; non-finite values serialize as null",
+    "empty_csv_schema": "PASS",
+    "s0_pointwise_bounds": {
+      "combined_radial_shape_peak_max": 1.0,
+      "theta_outside_fraction": 0.0,
+      "concentration_outside_fraction": 0.0
+    },
+    "blocked_split_guard": "PASS in unit/synthetic tests",
+    "archive_validation": {
+      "status": "PASS",
+      "zip_crc": "PASS",
+      "duplicate_member_check": "PASS",
+      "path_traversal_check": "PASS",
+      "fresh_extraction_manifest_verification": "PASS",
+      "fresh_extraction_unit_tests": "12/12 PASS",
+      "fresh_extraction_synthetic_end_to_end": "PASS"
+    }
+  },
+  "environment": {
+    "python": "3.13.5",
+    "platform": "Linux-4.4.0-x86_64-with-glibc2.41"
+  },
+  "limitations": [
+    {
+      "item": "formal real-data dense export",
+      "status": "not executed in the build container",
+      "reason": "the frozen D17-G21 checkpoint and 52.7 GB ALL55 cache live on the user workstation; package integrity was validated with a synthetic fixture and formal paths/interfaces were checked against the uploaded D17 evidence snapshot."
+    }
+  ],
+  "user_workstation_expected_inputs": [
+    "prior D18-P0 manifest",
+    "D17 split manifest",
+    "D17 G0 semantics CSV",
+    "D17 G21 checkpoint and summary",
+    "D15 ALL55 soft-label NPZ files",
+    "replay profile NPZ files"
+  ]
+}

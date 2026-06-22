@@ -1,0 +1,11 @@
+{
+  "self_test": "PASS",
+  "cycle_parser": [
+    13,
+    14,
+    15
+  ],
+  "non_exact_r2": 0.9995752251844332,
+  "exact_r2_detection_input": 1.0,
+  "plot_downsample_points": 35
+}

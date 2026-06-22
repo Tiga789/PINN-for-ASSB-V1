@@ -1,0 +1,25 @@
+{
+  "request_path": "C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\PINN-for-ASSB-V1\\formal55_selected_cycle_tool\\configs\\selected_cycle_request.json",
+  "request_name": "batch2_battery5_cycles35_37",
+  "project_root": "C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\PINN-for-ASSB-V1",
+  "formal_root": "C:\\Users\\Tiga_QJW\\Desktop\\XJTUstation\\D18\\Formal-A",
+  "cache_root": "E:\\XJTU battery dataset\\_gv1_cache",
+  "deploy_model_root": "C:\\Users\\Tiga_QJW\\Desktop\\XJTUstation\\D18\\Formal-A\\Deploy_build\\D18_DEPLOY_BUILD_OUTPUT\\D18_FORMAL55_DEPLOY_BUILD_20260621_215009\\MODELFIN_D18_FORMAL55_DEPLOY",
+  "deploy_ready_manifest": "C:\\Users\\Tiga_QJW\\Desktop\\XJTUstation\\D18\\Formal-A\\Deploy_build\\D18_DEPLOY_BUILD_OUTPUT\\D18_FORMAL55_DEPLOY_BUILD_20260621_215009\\D18_DEPLOY_READY_MANIFEST.json",
+  "canonical_uid": "Batch-2_3C_battery-5",
+  "protocol": "3C",
+  "branch": "RG",
+  "confidence": "HIGH",
+  "cycles": [
+    35,
+    36,
+    37
+  ],
+  "source_path": "E:\\XJTU battery dataset\\_gv1_cache\\xjtu_softlabels_p2dlite_rg_v1_D15_ALL55_FINAL\\profiles\\Batch-2_battery-5\\solution_softlabels.npz",
+  "source_uid_match_mode": "battery+batch+protocol",
+  "selected_point_count": 18855,
+  "history_points_before_selection": 230998,
+  "history_cycles_before_selection": 34,
+  "history_policy": "full observable/frozen-baseline profile loaded; cumulative features computed from profile start; only requested cycles emitted",
+  "target_policy": "target cs arrays streamed only after prediction completed"
+}

@@ -1,0 +1,20 @@
+{
+  "finite_ok": true,
+  "theta_bounds_ok": true,
+  "theta_min": 0.0,
+  "theta_max": 1.0,
+  "prediction_zero_mean_anode": 6.778864378016718e-10,
+  "prediction_zero_mean_cathode": 4.2035111616791937e-10,
+  "target_cbar_vs_frozen_cbar_max_gap_anode_theta": 0.006778798566952913,
+  "target_cbar_vs_frozen_cbar_max_gap_cathode_theta": 0.0037397853597265405,
+  "target_state_arrays_present_in_source": [
+    "cs_a",
+    "cs_c",
+    "theta_a",
+    "theta_c"
+  ],
+  "target_state_arrays_loaded_before_prediction": false,
+  "target_state_arrays_loaded_after_prediction": true,
+  "suspicious_exact_metric_count": 0,
+  "phie_phis_c_policy": "reference-only; no predictive R2 reported"
+}

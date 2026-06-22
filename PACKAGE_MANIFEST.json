@@ -1,23 +1,142 @@
 {
-  "package": "D16_P5K_G_rulev2_strict_gate_formal_training_package_v1",
-  "stage": "D16-P5K-G formal training",
-  "created_for": "QJW-2 / PINN-for-ASSB-V1",
-  "files": [
-    "configs/d16_p5kg_rulev2_strict_gate_config.json",
-    "scripts/gv1_d16_p5kg_build_manifest.py",
-    "scripts/gv1_d16_p5kg_train_rulev2_strict_fast.py",
-    "scripts/gv1_d16_p5kg_eval55_vs_softlabels_v3.py",
-    "scripts/gv1_d16_p5kg_baseline_only_audit.py",
-    "scripts/gv1_run_d16_p5kg_train_fast.ps1",
-    "scripts/gv1_check_d16_p5kg_outputs.ps1",
-    "README_D16_P5K_G_RULEV2_STRICT.md",
-    "PACKAGE_MANIFEST.json"
+  "package_name": "D18_P0_S0_S1_FULLCYCLE_PACKAGE",
+  "package_version": "D18-P0_S0_S1-v1.0.0",
+  "built_at_utc": "2026-06-18T01:19:25+00:00",
+  "target_project": "Tiga789/PINN-for-ASSB-V1",
+  "target_project_root_windows": "C:\\Users\\Tiga_QJW\\Desktop\\ASSB_Scheme_V1\\PINN-for-ASSB-V1",
+  "source_github_short_sha_at_build": "9d995eb",
+  "final_goal": "55 cells x all cycles high-accuracy full-cycle/arbitrary-cycle generator surrogate",
+  "scope": [
+    "D18-P0 freeze",
+    "D18-S0 architecture validation",
+    "D18-S1 array-level diagnostic"
   ],
-  "checks": {
-    "no_empty_config_dir": true,
-    "no_empty_directories": true,
-    "no_pycache": true,
-    "no_pyc": true,
-    "no_tabulate_dependency": true
-  }
+  "training_included": false,
+  "automatic_s2_promotion": false,
+  "archive_layout": "direct_overlay_project_root",
+  "manifest_self_hash_excluded": true,
+  "file_count": 24,
+  "total_size_bytes": 172340,
+  "files": [
+    {
+      "path": "PACKAGE_FILELIST.txt",
+      "size_bytes": 891,
+      "sha256": "6620f70e537b8fea71aa89edcbaff423050a5b1bc4672c4387883dc75973b773"
+    },
+    {
+      "path": "README_D18_P0_S0_S1.md",
+      "size_bytes": 5320,
+      "sha256": "dd808f4378648b4b1e8ecd939c8879ab42724c97a5d2826acc78155c43d1d42e"
+    },
+    {
+      "path": "RUN_D18_P0_S0_S1.ps1",
+      "size_bytes": 1296,
+      "sha256": "14ba98011a20ba866c5f68b63aed7f1054517ea01d25677fa0bc322581ae595e"
+    },
+    {
+      "path": "VERIFY_D18_PACKAGE.ps1",
+      "size_bytes": 1392,
+      "sha256": "02df0138fdcb012402397385727bb435154ba4a131e86f652e7faa95f78a0949"
+    },
+    {
+      "path": "configs/d18_p0_s0_s1.json",
+      "size_bytes": 8182,
+      "sha256": "e4559f388d6874dffea7b619133b34ec36af1e11ed14376be27eccf6b55986ea"
+    },
+    {
+      "path": "docs/D18_P0_S0_S1_RUNBOOK.md",
+      "size_bytes": 2718,
+      "sha256": "ad7ba1e835e0985351bd3a20ffb1e53d113a91aed5d967bd6e18842b8d525e5b"
+    },
+    {
+      "path": "docs/D18_S0_ARCHITECTURE.md",
+      "size_bytes": 3506,
+      "sha256": "ca85fbc453b168a6e0abc673f10fd49359941f5af12e9acc9fbabd4b07653fd7"
+    },
+    {
+      "path": "docs/D18_S1_DIAGNOSTIC_SCHEMA.md",
+      "size_bytes": 3188,
+      "sha256": "138012da460dea34372df23a5467dd49fa59d0dcec8fcacd594d6c8398ccc354"
+    },
+    {
+      "path": "gv1/d18_cycleaware/__init__.py",
+      "size_bytes": 225,
+      "sha256": "81f5c9091ecf28d4afe1ce67b3c7661a61eb06051a32455814335e0d299ce50b"
+    },
+    {
+      "path": "gv1/d18_cycleaware/array_io.py",
+      "size_bytes": 24164,
+      "sha256": "d2e7f98f0566a317752b26d05880abc6347d0fa08ba9d5fafbfa3493408b4342"
+    },
+    {
+      "path": "gv1/d18_cycleaware/common.py",
+      "size_bytes": 12297,
+      "sha256": "c82944aafdce178dff7454f346f67741926190a041f064701d510b45bd998a2c"
+    },
+    {
+      "path": "gv1/d18_cycleaware/cycle_features.py",
+      "size_bytes": 9858,
+      "sha256": "91632e7878a0deeb7bb64c5b0b6e682f05dd48a28a5429695293a27723ecc812"
+    },
+    {
+      "path": "gv1/d18_cycleaware/diagnostics.py",
+      "size_bytes": 16737,
+      "sha256": "e491c6b9325c1a9cf577979241c6c70861c3c0dfa763358262bf247814dce6dd"
+    },
+    {
+      "path": "gv1/d18_cycleaware/metrics.py",
+      "size_bytes": 9304,
+      "sha256": "5ea4d231a659cb8c56b30d12a3251ee15a74ea9ba15b0ba400d7f9ef688fe9ec"
+    },
+    {
+      "path": "gv1/d18_cycleaware/model_scaffold.py",
+      "size_bytes": 15212,
+      "sha256": "f96420a27556b3c40b108341aa8bb20ff367ac8bd3534be9c0747c27cbb6211a"
+    },
+    {
+      "path": "gv1/d18_cycleaware/reporting.py",
+      "size_bytes": 7321,
+      "sha256": "51e42cf2bc1aa801969113987c14e9bdd86e9f6acd7555ae3bdd35559a3db6fe"
+    },
+    {
+      "path": "gv1/d18_cycleaware/schema.py",
+      "size_bytes": 11874,
+      "sha256": "e7e7b71229f58cb6b2690cc96c8ec1400a4fade201200ce4b6f9e3d2f5ab1f7f"
+    },
+    {
+      "path": "scripts/d18_p0_freeze.py",
+      "size_bytes": 8529,
+      "sha256": "a8b76b91659c38f288537ee68793bda65c48e0aa50bc90da9454a8fe77946ba4"
+    },
+    {
+      "path": "scripts/d18_package_selftest.py",
+      "size_bytes": 10590,
+      "sha256": "5f2c32c9c5004584b77f0d094e41d3261f53b2b09606e0de240f120539acc39f"
+    },
+    {
+      "path": "scripts/d18_run_p0_s0_s1.py",
+      "size_bytes": 3663,
+      "sha256": "975ce66c4dc4d1a85db11dd2a18040d3361af1a1173a8eb3e72d3a32f51a219f"
+    },
+    {
+      "path": "scripts/d18_s0_validate_architecture.py",
+      "size_bytes": 4024,
+      "sha256": "c8add0555ab8698915fd695ae6794d215a28f1aa97db1c4decb5cb7d0c6454dd"
+    },
+    {
+      "path": "scripts/d18_s1_array_latent_diagnostic.py",
+      "size_bytes": 3122,
+      "sha256": "7f44730dc803ada341437b477c243377fc5a1bc96a664ff10e503a145dccbc7e"
+    },
+    {
+      "path": "scripts/d18_verify_package_manifest.py",
+      "size_bytes": 1731,
+      "sha256": "1dd081635d15fc52c5804cc129539991c02062e0f6c4cc8d326c22358dc600d0"
+    },
+    {
+      "path": "tests/test_d18_core.py",
+      "size_bytes": 7196,
+      "sha256": "9f1d8238f3644610bc77e4eddc9ce1b22097778969143058378663b62dd3aa4f"
+    }
+  ]
 }
